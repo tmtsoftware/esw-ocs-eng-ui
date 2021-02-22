@@ -6,7 +6,8 @@ import {
   LocationService,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
+import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
+import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -45,6 +46,8 @@ const getMockAuth = (loggedIn: boolean) => {
 type Services = {
   agentService: AgentService
   locationService: LocationService
+  configService: ConfigService
+  smService: SequenceManagerService
 }
 
 type MockServices = {
@@ -60,7 +63,7 @@ const getMockServices: () => MockServices = () => {
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
 
-  const smServiceMock = mock<SequenceManagerService>()
+  const smServiceMock = mock(SequenceManagerImpl)
   const smServiceInstance = instance(smServiceMock)
 
   const configServiceMock = mock<ConfigService>()
@@ -77,11 +80,15 @@ const getMockServices: () => MockServices = () => {
     serviceFactoryContext,
     mock: {
       agentService: agentServiceMock,
-      locationService: locationServiceMock
+      locationService: locationServiceMock,
+      configService: configServiceMock,
+      smService: smServiceMock
     },
     instance: {
       agentService: agentServiceInstance,
-      locationService: locationServiceInstance
+      locationService: locationServiceInstance,
+      configService: configServiceInstance,
+      smService: smServiceInstance
     }
   }
 }
@@ -131,6 +138,7 @@ const getContextWithQueryClientProvider = (
   )
   return provider
 }
+
 interface MockProps {
   ui: ReactElement
   loggedIn?: boolean

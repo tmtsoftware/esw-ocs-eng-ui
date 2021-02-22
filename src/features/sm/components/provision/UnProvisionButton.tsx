@@ -48,7 +48,7 @@ export const UnProvisionButton = (): JSX.Element => {
         smService.data &&
         showConfirmModal(() => unProvisionAction.mutateAsync(smService.data))
       }>
-      UnProvision
+      Unprovision
     </Button>
   )
 }

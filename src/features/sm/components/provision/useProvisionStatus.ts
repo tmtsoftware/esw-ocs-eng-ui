@@ -1,16 +1,18 @@
 import { useQuery, UseQueryResult } from 'react-query'
+import { useServiceFactory } from '../../../../contexts/serviceFactoryContext/ServiceFactoryContext'
 import { ProvisionActionQueryKey } from '../../hooks/useProvisionAction'
-import { useSMService } from '../hooks/useSMService'
 
 export const useProvisionStatus = (): UseQueryResult<boolean> => {
-  const smService = useSMService()
+  const { smServiceFactory } = useServiceFactory()
 
   return useQuery(ProvisionActionQueryKey, async () => {
-    if (!smService.data) return false
     //Fixme: useMutation
-    const agentStatus = await smService.data.getAgentStatus()
+    const smService = await smServiceFactory(() => undefined)
+    const agentStatus = await smService.getAgentStatus()
+
     return (
       agentStatus._type == 'Success' &&
+      agentStatus.agentStatus.length > 0 &&
       agentStatus.agentStatus.some((x) => {
         return x.seqCompsStatus.length > 0
       })

@@ -25,6 +25,7 @@ describe('SpawnSMButton', () => {
     when(locationServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
+
     when(
       agentServiceMock.spawnSequenceManager(anything(), obsModeConfig, false)
     ).thenResolve({ _type: 'Spawned' })
@@ -67,6 +68,7 @@ describe('SpawnSMButton', () => {
     const [prefix, expectedConfig, isLocal] = capture(
       agentServiceMock.spawnSequenceManager
     ).first()
+
     expect(prefix.toJSON()).eq(agentPrefix.toJSON())
     expect(expectedConfig).eq(obsModeConfig)
     expect(isLocal).to.false

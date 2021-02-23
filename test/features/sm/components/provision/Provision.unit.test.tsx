@@ -22,7 +22,7 @@ describe('Provision Component', () => {
     seqCompsStatus: [sequenceComponentStatus]
   }
 
-  it('should render Unprovision button', async () => {
+  it('should render Unprovision button | ESW-444', async () => {
     const agentStatusSuccess: AgentStatusResponse = {
       _type: 'Success',
       agentStatus: [agentStatus],
@@ -48,7 +48,7 @@ describe('Provision Component', () => {
     verify(smService.getAgentStatus()).called()
   })
 
-  it('should render Provision button', async () => {
+  it('should render Provision button | ESW-444', async () => {
     const agentStatusSuccess: AgentStatusResponse = {
       _type: 'Success',
       agentStatus: [],

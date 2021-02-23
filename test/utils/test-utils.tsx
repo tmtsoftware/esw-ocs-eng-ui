@@ -7,6 +7,7 @@ import {
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
+import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/config-service/ConfigServiceImpl'
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import type {
   KeycloakProfile,
@@ -66,7 +67,7 @@ const getMockServices: () => MockServices = () => {
   const smServiceMock = mock(SequenceManagerImpl)
   const smServiceInstance = instance(smServiceMock)
 
-  const configServiceMock = mock<ConfigService>()
+  const configServiceMock = mock(ConfigServiceImpl)
   const configServiceInstance = instance(configServiceMock)
 
   const serviceFactoryContext: ServiceFactoryContextType = {

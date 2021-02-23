@@ -74,8 +74,6 @@ export const ProvisionButton = (): JSX.Element => {
     'Failed to provision'
   )
 
-  const disabled = configService.isLoading || smService.isLoading
-
   const onProvisionClick = () => {
     if (configService.data) fetchProvisionConfAction.mutate(configService.data)
   }
@@ -90,7 +88,7 @@ export const ProvisionButton = (): JSX.Element => {
       <Button
         type='primary'
         size='middle'
-        disabled={disabled}
+        disabled={smService.isLoading}
         loading={provisionAction.isLoading}
         onClick={onProvisionClick}>
         Provision

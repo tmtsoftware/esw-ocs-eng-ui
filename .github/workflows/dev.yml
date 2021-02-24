@@ -11,21 +11,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Setup SSH Keys and known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: increase file watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
       - uses: actions/setup-node@v1
         with:
-          node-version: "14.x"
+          node-version: "15.x"
           registry-url: "https://registry.npmjs.org"
 
       - name: Cache ~/.npm

@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/models/SequenceManagerRes'
+import type { ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/models/SequenceManagerRes'
 import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'

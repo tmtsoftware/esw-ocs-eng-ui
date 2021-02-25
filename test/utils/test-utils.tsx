@@ -6,9 +6,9 @@ import {
   LocationService,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
-import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/config-service/ConfigServiceImpl'
-import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/SequenceManagerImpl'
+import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
+import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
+import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import type {
   KeycloakProfile,
   KeycloakPromise,

@@ -27,7 +27,7 @@ const shutdownAllSequenceComps = (
   sequenceManagerService.shutdownAllSequenceComponents().then((res) => {
     switch (res._type) {
       case 'LocationServiceError':
-        throw Error(res.msg)
+        throw Error(res.reason)
       case 'Unhandled':
         throw Error(res.msg)
       case 'Success':

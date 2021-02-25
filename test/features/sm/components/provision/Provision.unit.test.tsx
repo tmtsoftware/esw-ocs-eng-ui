@@ -4,8 +4,8 @@ import type {
   AgentStatus,
   AgentStatusResponse,
   SequenceComponentStatus
-} from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/models/SequenceManagerRes'
-import { ComponentId } from '@tmtsoftware/esw-ts/dist/src/models/ComponentId'
+} from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/models/SequenceManagerRes'
+import { ComponentId } from '@tmtsoftware/esw-ts/lib/dist/src/models/ComponentId'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'

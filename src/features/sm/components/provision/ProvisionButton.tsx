@@ -25,7 +25,7 @@ const provision = (provisionRecord: ProvisionRecord) => (
       case 'Success':
         return res
       case 'LocationServiceError':
-        throw Error(res.msg)
+        throw Error(res.reason)
       case 'Unhandled':
         throw Error(res.msg)
       case 'SpawningSequenceComponentsFailed':

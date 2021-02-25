@@ -13,5 +13,6 @@
   "packageOptions": {
     "polyfillNode": true,
     "external": ["fs", "os", "path"]
-  }
+  },
+  "routes": [{ "match": "routes", "src": ".*", "dest": "/index.html" }]
 }

@@ -24,10 +24,26 @@ describe('Infrastructure page', () => {
 
     const subtitle = screen.getByText(/sequence manager/i)
     const header = screen.getByText(/manage infrastructure/i)
+    const provision = screen.getByText(/provision/i)
+    const configure = screen.getByText(/configure/i)
 
     expect(subtitle).to.exist
     expect(header).to.exist
-    expect(screen.queryByText(/Loading/i)).to.exist
+    expect(provision).to.exist
+    expect(configure).to.exist
+  })
+
+  it('should render service down status if sequence manager is not spawned', async () => {
+    const mockServices = getMockServices()
+    const locationServiceMock = mockServices.mock.locationService
+
+    when(locationServiceMock.find(smConnection)).thenResolve(undefined)
+    renderWithAuth({
+      ui: <Infrastructure />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    expect(screen.getByText('Loading...')).to.exist
 
     await waitFor(() => {
       expect(screen.getByText(/service down/i)).to.exist
@@ -52,9 +68,10 @@ describe('Infrastructure page', () => {
       loggedIn: true,
       mockClients: mockServices.serviceFactoryContext
     })
-    expect(screen.queryByText(/Loading/i)).to.exist
+    expect(screen.getByText('Loading...')).to.exist
+
     await waitFor(() => {
-      expect(screen.queryByText(/Running on ESW.primary/i)).to.exist
+      expect(screen.getByText('Running on ESW.primary')).to.exist
     })
   })
 })

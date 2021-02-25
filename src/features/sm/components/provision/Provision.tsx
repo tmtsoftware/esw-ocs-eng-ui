@@ -1,6 +1,6 @@
+import { Button, message } from 'antd'
 import React from 'react'
-import { withErrorBoundary } from 'react-error-boundary'
-import { ErrorFallback } from '../../../../components/ErrorFallback/ErrorFallback'
+import { FallbackProps, withErrorBoundary } from 'react-error-boundary'
 import { ProvisionButton } from './ProvisionButton'
 import { UnProvisionButton } from './UnProvisionButton'
 import { useProvisionStatus } from './useProvisionStatus'
@@ -10,6 +10,17 @@ const Provision = (): JSX.Element => {
   return provisionStatus.data ? <UnProvisionButton /> : <ProvisionButton />
 }
 
+export function ProvisionErrorFallback({
+  resetErrorBoundary
+}: FallbackProps): JSX.Element {
+  return (
+    <Button size='middle' type='primary' onClick={resetErrorBoundary}>
+      Retry
+    </Button>
+  )
+}
+
 export default withErrorBoundary(Provision, {
-  FallbackComponent: ErrorFallback
+  onError: (err) => message.error(err.message),
+  FallbackComponent: ProvisionErrorFallback
 })

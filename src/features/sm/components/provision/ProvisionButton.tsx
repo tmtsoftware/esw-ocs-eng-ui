@@ -21,8 +21,22 @@ const provision = (provisionRecord: ProvisionRecord) => (
 ) => {
   const provisionConfig = parseProvisionConf(provisionRecord)
   return sequenceManagerService.provision(provisionConfig).then((res) => {
-    if (res._type == 'Success') return res
-    throw Error(JSON.stringify(res))
+    switch (res._type) {
+      case 'Success':
+        return res
+      case 'LocationServiceError':
+        throw Error(res.msg)
+      case 'Unhandled':
+        throw Error(res.msg)
+      case 'SpawningSequenceComponentsFailed':
+        throw Error(res.failureResponses.join('\n'))
+      case 'CouldNotFindMachines':
+        throw Error(
+          `Could not found following machine:\n ${res.prefix
+            .map((x) => x.toJSON())
+            .join('\n')}`
+        )
+    }
   })
 }
 

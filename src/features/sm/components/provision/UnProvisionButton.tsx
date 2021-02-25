@@ -25,8 +25,14 @@ const shutdownAllSequenceComps = (
   sequenceManagerService: SequenceManagerService
 ) =>
   sequenceManagerService.shutdownAllSequenceComponents().then((res) => {
-    if (res._type === 'Success') return res
-    throw new Error(JSON.stringify(res))
+    switch (res._type) {
+      case 'LocationServiceError':
+        throw Error(res.msg)
+      case 'Unhandled':
+        throw Error(res.msg)
+      case 'Success':
+        return res
+    }
   })
 
 export const UnProvisionButton = (): JSX.Element => {

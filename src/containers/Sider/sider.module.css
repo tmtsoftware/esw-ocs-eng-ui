@@ -1,13 +1,9 @@
-
-.sider {
-  width: fit-content !important;
-  max-width: fit-content !important;
-  min-height: inherit;
-  flex: 1 0 !important;
-}
-
 .menuIconSize {
   width: 24px;
   height: 24px;
-  vertical-align: middle;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
 }

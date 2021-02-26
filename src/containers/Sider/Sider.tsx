@@ -50,7 +50,6 @@ export const Sider = (): JSX.Element => {
 
   return (
     <Layout.Sider
-      className={styles.sider}
       theme={'light'}
       collapsible
       collapsed={collapsed}
@@ -58,6 +57,7 @@ export const Sider = (): JSX.Element => {
       <Menu selectedKeys={[selectedKey]}>
         {menuItemLabels.map((item, i) => (
           <Menu.Item
+            className={styles.menuItem}
             icon={item.defaultIcon}
             onClick={() => setSelectedKey(i.toString())}
             key={i}>

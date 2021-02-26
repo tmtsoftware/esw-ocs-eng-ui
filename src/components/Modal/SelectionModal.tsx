@@ -1,4 +1,4 @@
-import { Empty, Menu, Modal, ModalProps } from 'antd'
+import { Empty, Menu, Modal, ModalProps, Typography } from 'antd'
 import type { SelectInfo } from 'rc-menu/lib/interface'
 import React from 'react'
 import styles from './selectionModal.module.css'
@@ -15,12 +15,11 @@ const getList = (
   onChange: (value: string) => void
 ) => {
   const onSelect = (e: SelectInfo) => onChange(e.key as string)
-  if (data == undefined || data.length == 0) {
+  if (data === undefined || data.length === 0) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   }
-
   return (
-    <Menu selectable onSelect={onSelect}>
+    <Menu selectable onSelect={onSelect} selectedKeys={[selectedItem]}>
       {data.map((item) => {
         return (
           <Menu.Item
@@ -49,7 +48,11 @@ export const SelectionModal = ({
   onChange
 }: SelectionModalProps): JSX.Element => (
   <Modal
-    title={title}
+    title={
+      <Typography.Title level={5} style={{ marginBottom: 0 }}>
+        {title}
+      </Typography.Title>
+    }
     okText={okText}
     centered
     visible={visible}

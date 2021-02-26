@@ -1,5 +1,6 @@
-import { Button, Card, PageHeader, Space, Typography } from 'antd'
+import { Card, PageHeader, Space, Typography } from 'antd'
 import React from 'react'
+import Configure from '../../features/sm/components/configure/Configure'
 import Provision from '../../features/sm/components/provision/Provision'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
 import styles from './infrastructure.module.css'
@@ -27,9 +28,7 @@ const Infrastructure = (): JSX.Element => {
 const SmActions = (): JSX.Element => (
   <Space>
     <Provision />
-    <Button disabled size='middle'>
-      Configure
-    </Button>
+    <Configure />
   </Space>
 )
 

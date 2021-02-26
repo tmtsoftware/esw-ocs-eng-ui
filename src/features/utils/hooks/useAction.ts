@@ -6,15 +6,16 @@ export const useAction = <S, T>(
   mutationFn: (agent: S) => Promise<T>,
   successMsg: string,
   errorMsg: string,
-  onSuccess?: (a: T) => void
+  onSuccess?: (a: T) => void,
+  useErrorBoundary = true
 ): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
   return useMutation(mutationFn, {
     onSuccess: async (data) => {
       await qc.invalidateQueries(queryKey)
-      onSuccess?.(data)
       message.success(successMsg)
+      onSuccess?.(data)
     },
     onError: (e) =>
       Promise.resolve(
@@ -22,6 +23,6 @@ export const useAction = <S, T>(
           `${errorMsg}, reason: ${((e as unknown) as Error).message}`
         )
       ),
-    useErrorBoundary: true
+    useErrorBoundary
   })
 }

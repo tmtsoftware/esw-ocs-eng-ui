@@ -10,7 +10,12 @@ import { useAgentServiceAction } from '../../hooks/useAgentServiceAction'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
   agent
-    .spawnSequenceManager(Prefix.fromString(agentPrefix), obsModeConfig, false)
+    .spawnSequenceManager(
+      Prefix.fromString(agentPrefix),
+      obsModeConfig,
+      false,
+      '0.1.0-SNAPSHOT'
+    )
     .then((res) => {
       if (res._type === 'Failed') throw new Error(res.msg)
       return res

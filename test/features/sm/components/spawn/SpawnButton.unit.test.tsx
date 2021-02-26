@@ -25,14 +25,18 @@ describe('SpawnSMButton', () => {
     when(locationServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
-
+    //TODO : think about picking the version from versions file
     when(
-      agentServiceMock.spawnSequenceManager(anything(), obsModeConfig, false)
+      agentServiceMock.spawnSequenceManager(
+        anything(),
+        obsModeConfig,
+        false,
+        '0.1.0-SNAPSHOT'
+      )
     ).thenResolve({ _type: 'Spawned' })
 
     const { getByText, findByRole } = renderWithAuth({
       ui: <SpawnSMButton />,
-      loggedIn: true,
       mockClients: mockServices.serviceFactoryContext
     })
 

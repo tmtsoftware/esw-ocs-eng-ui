@@ -10,7 +10,6 @@ const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', '/')
   return renderWithAuth(<BrowserRouter>{ui}</BrowserRouter>, true)
 }
-
 describe('Full app navigation', () => {
   afterEach(() => {
     cleanup()

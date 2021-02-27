@@ -7,7 +7,6 @@ import {
 import App from '../../../src/containers/app/App' // fixed to absolute path
 import { BrowserRouter } from 'react-router-dom'
 import Routes from '../../../src/routes'
-
 describe('App page', () => {
   afterEach(() => {
     cleanup()

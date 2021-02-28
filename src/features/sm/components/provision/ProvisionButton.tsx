@@ -12,6 +12,7 @@ import { useAction } from '../../../utils/hooks/useAction'
 import { ProvisionConfPath } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { useSMService } from '../hooks/useSMService'
+import styles from './provision.module.css'
 import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
@@ -117,6 +118,7 @@ export const ProvisionButton = (): JSX.Element => {
         visible={modalVisibility}
         confirmLoading={provisionAction.isLoading}
         bodyStyle={{ padding: 0 }}
+        className={styles.modalHeader}
         onOk={handleModalOk}
         onCancel={handleModalCancel}>
         <ProvisionTable

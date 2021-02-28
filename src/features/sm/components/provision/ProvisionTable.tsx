@@ -1,6 +1,7 @@
 import { InputNumber, Table } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import React from 'react'
+import styles from './provision.module.css'
 
 type ProvisionProps = {
   provisionRecord: Record<string, number>
@@ -25,10 +26,12 @@ const columns = (
   },
   {
     title: 'Number of Sequence Component',
-    width: 100,
+    width: 120,
     dataIndex: 'numOfSequenceComps',
     key: 'numOfSequenceComps',
     fixed: 'left',
+    sorter: (f, s) => f.numOfSequenceComps - s.numOfSequenceComps,
+    defaultSortOrder: 'descend',
     // eslint-disable-next-line react/display-name
     render: (value: number, record) => (
       <InputNumber
@@ -63,6 +66,9 @@ export const ProvisionTable = ({
         setProvisionRecord(provisionRecord)
       })}
       dataSource={data}
+      onHeaderRow={() => ({ className: styles.header })}
+      onRow={() => ({ className: styles.cell })}
+      // sortDirections={asce}
     />
   )
 }

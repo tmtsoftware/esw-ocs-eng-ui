@@ -9,9 +9,9 @@ export const useService = <S, E>(
   onError?: (err: E) => void
 ): UseQueryResult<S> => {
   const { auth } = useContext(AuthContext)
-  // if (!auth) throw Error('Login to continue ...')
+  if (!auth) throw Error('Login to continue ...')
 
-  return useQuery(serviceName, () => factory(() => undefined), {
+  return useQuery(serviceName, () => factory(auth.token), {
     useErrorBoundary: useErrorBoundary,
     onError: onError
   })

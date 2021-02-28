@@ -59,19 +59,21 @@ const fetchProvisionConf = async (
 }
 
 export const ProvisionButton = (): JSX.Element => {
+  const useErrorBoundary = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
 
   const handleModalCancel = () => setModalVisibility(false)
 
-  const configService = useConfigService()
-  const smService = useSMService()
+  const configService = useConfigService(useErrorBoundary)
+  const smService = useSMService(useErrorBoundary)
 
   const fetchProvisionConfAction = useAction(
     'provisionConfig',
     fetchProvisionConf,
     'Successfully fetched Provision Config from ConfigService',
     'Failed to fetch Provision Config',
+    useErrorBoundary,
     async (data) => {
       if (Object.values(data).length <= 0) {
         await message.error('Provision config is empty')
@@ -85,7 +87,8 @@ export const ProvisionButton = (): JSX.Element => {
   const provisionAction = useProvisionAction(
     provision(provisionRecord),
     'Successfully provisioned',
-    'Failed to provision'
+    'Failed to provision',
+    useErrorBoundary
   )
 
   const onProvisionClick = () => {
@@ -102,7 +105,7 @@ export const ProvisionButton = (): JSX.Element => {
       <Button
         type='primary'
         size='middle'
-        disabled={smService.isLoading}
+        disabled={smService.isLoading || smService.isError}
         loading={provisionAction.isLoading}
         onClick={onProvisionClick}>
         Provision

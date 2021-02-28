@@ -6,8 +6,8 @@ export const useAction = <S, T>(
   mutationFn: (agent: S) => Promise<T>,
   successMsg: string,
   errorMsg: string,
-  onSuccess?: (a: T) => void,
-  useErrorBoundary = true
+  useErrorBoundary = true,
+  onSuccess?: (a: T) => void
 ): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 

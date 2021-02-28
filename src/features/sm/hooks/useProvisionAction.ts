@@ -7,6 +7,13 @@ export const ProvisionActionQueryKey = 'ProvisionAction'
 export const useProvisionAction = <T>(
   mutationFn: (agent: SequenceManagerService) => Promise<T>,
   successMsg: string,
-  errorMsg: string
+  errorMsg: string,
+  useErrorBoundary = true
 ): UseMutationResult<T, unknown, SequenceManagerService> =>
-  useAction(ProvisionActionQueryKey, mutationFn, successMsg, errorMsg)
+  useAction(
+    ProvisionActionQueryKey,
+    mutationFn,
+    successMsg,
+    errorMsg,
+    useErrorBoundary
+  )

@@ -74,6 +74,7 @@ const Configure = (): JSX.Element => {
     fetchObsModesDetails,
     'Successfully fetched ObsModes',
     'Failed to fetch Obsmodes',
+    true,
     async (data) => {
       setObsModesDetails(
         data.obsModes.filter((x) => x.status._type === 'Configurable')

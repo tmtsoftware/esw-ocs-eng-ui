@@ -36,12 +36,14 @@ const shutdownAllSequenceComps = (
   })
 
 export const UnProvisionButton = (): JSX.Element => {
-  const smService = useSMService()
+  const useErrorBoundary = false
+  const smService = useSMService(useErrorBoundary)
 
   const unProvisionAction = useProvisionAction(
     shutdownAllSequenceComps,
     'Successfully shutdown all the Sequence Components',
-    'Failed to shutdown all Sequence Components'
+    'Failed to shutdown all Sequence Components',
+    useErrorBoundary
   )
 
   if (smService.isLoading) return <Spinner />

@@ -3,7 +3,7 @@ import { Avatar, Button } from 'antd'
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
-import { RoutesConfig } from '../../routes'
+import RoutesConfig from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {

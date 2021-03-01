@@ -1,7 +1,7 @@
 import { Button, Result } from 'antd'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { RoutesConfig } from '.'
+import RoutesConfig from './RoutesConfig'
 
 const NoMatch = (): JSX.Element => {
   const history = useHistory()

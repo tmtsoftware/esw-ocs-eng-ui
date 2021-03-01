@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import Home from '../containers/home/Home'
 import Infrastructure from '../containers/infrastructure/Infrastructure'
 import NoMatch from './NoMatch'
+import RoutesConfig from './RoutesConfig'
 
 const LoginPage = () => <div>User not logged in!!!</div>
 
@@ -14,18 +15,11 @@ const Routes = (): JSX.Element => {
   }
   return (
     <Switch>
-      <Route exact path={RoutesConfig.home} component={Home} />
+      <Route exact path={RoutesConfig.home} render={() => <Home />} />
       <Route path={RoutesConfig.infrastructure} component={Infrastructure} />
-      <Route component={NoMatch} />
+      <Route path={'/*'} component={NoMatch} />
     </Switch>
   )
-}
-
-export const RoutesConfig = {
-  home: '/',
-  infrastructure: '/Infrastructure',
-  observations: '/Observations',
-  resources: '/Resources'
 }
 
 export default Routes

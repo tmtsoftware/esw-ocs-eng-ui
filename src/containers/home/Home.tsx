@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { InfraIcon, SettingsIcon, TelescopeIcon } from '../../components/Icons'
 import SMCard from '../../features/sm/components/smcard/SMCard'
-import { RoutesConfig } from '../../routes'
+import RoutesConfig from '../../routes/RoutesConfig'
 import styles from './home.module.css'
 
 type CardDetail = {

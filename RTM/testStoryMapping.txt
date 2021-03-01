@@ -7,17 +7,24 @@ ESW-441 | SelectionModal should not show menu if visible equals false | PASSED
 ESW-441 | SelectionModal should show empty if data is not present | PASSED
 ESW-441 | header bar renders with logout button & logo when user is logged in | PASSED
 ESW-441 | header bar renders with login button & logo when user is logged out | PASSED
-ESW-441 | header bar open logout modal on click of username button when user is logged in | PASSED
+ESW-441 | header bar open logout modal on click of username button when user is logged in | FAILED
 ESW-441 | header bar check login function of auth context is called | PASSED
-ESW-441 | useAgents should return list of agents up and running | PASSED
 ESW-442 | Infrastructure page should render infrastructure page | PASSED
+None | Infrastructure page should render service down status if sequence manager is not spawned | PASSED
 ESW-442 | Infrastructure page should render running status if sequence manager is up | PASSED
+ESW-441 | useAgents should return list of agents up and running | PASSED
 ESW-441 | App page should render app with layout when user is logged in | PASSED
 ESW-441 | App page should render app without layout when user is not logged in | PASSED
-ESW-441 | ShutdownSMButton should shutdown the sequence manager | PASSED
+ESW-445 | Configure button should be disabled | PASSED
+ESW-445 | Configure button should be enabled when sequence manager is spawned | PASSED
 ESW-441 | Full app navigation Infrastructure route | PASSED
 ESW-441 | Full app navigation Observations route | PASSED
 ESW-441 | Full app navigation Resources | PASSED
-ESW-441 | SpawnSMButton should spawn the sequence manager | PASSED
+ESW-444 | Provision Component should render Unprovision button | PASSED
+ESW-444 | Provision Component should render Provision button | PASSED
+ESW-444 | ProvisionButton component should be able to successfully provision | PASSED
+ESW-444 | should be able to shutdown all the sequence components | PASSED
+ESW-441 | ShutdownSMButton should shutdown the sequence manager | PASSED
 ESW-441 | SMCard should show Spawn button if Sequence Manager is not spawned | PASSED
 ESW-441 | SMCard should show Shutdown button if Sequence Manager is already spawned | PASSED
+ESW-441 | SpawnSMButton should spawn the sequence manager | PASSED

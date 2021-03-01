@@ -27,12 +27,7 @@ describe('SpawnSMButton', () => {
     ])
     //TODO : think about picking the version from versions file
     when(
-      agentServiceMock.spawnSequenceManager(
-        anything(),
-        obsModeConfig,
-        false,
-        '0.1.0-SNAPSHOT'
-      )
+      agentServiceMock.spawnSequenceManager(anything(), obsModeConfig, false)
     ).thenResolve({ _type: 'Spawned' })
 
     const { getByText, findByRole } = renderWithAuth({

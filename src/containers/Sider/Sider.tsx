@@ -2,7 +2,7 @@ import { Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { TelescopeIcon, InfraIcon, SettingsIcon } from '../../components/Icons'
-import { RoutesConfig } from '../../routes'
+import RoutesConfig from '../../routes/RoutesConfig'
 import styles from './sider.module.css'
 const getMenuLabel = (
   title: string,

@@ -5,10 +5,14 @@ This project is a React web application.
 ## Prerequisites Required for Running OCS-UI Application
 
 1. csw-services are required to be up & running.
-   using sbt shell inside csw `csw-services/run start -k -c`
+    using sbt shell inside csw `csw-services/run start -k -c`
 
 2. `AgentService`, along with one or more `Agent's` are required to be up & running.
-   using sbt shell inside esw `esw-services/run start -agent --agent-service`
+    using sbt shell inside esw `esw-services/run start -agent --agent-service`
+
+3. esw's latest binaries need to be present on machine with 0.1.0-SNAPSHOT version.
+    run `sbt publishLocal` inside esw's sbt shell.
+    Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
 
 The latest stable version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 

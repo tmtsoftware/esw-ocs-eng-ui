@@ -1,5 +1,6 @@
 import { Card, PageHeader, Space, Typography } from 'antd'
 import React from 'react'
+import AgentCards from '../../features/agent/agentCards/AgentCards'
 import Configure from '../../features/sm/components/configure/Configure'
 import Provision from '../../features/sm/components/provision/Provision'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
@@ -21,6 +22,7 @@ const Infrastructure = (): JSX.Element => {
         bodyStyle={{ display: 'none' }}
         extra={<SmActions />}
       />
+      <AgentCards />
     </>
   )
 }

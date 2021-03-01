@@ -1,26 +1,25 @@
 import { useQuery, UseQueryResult } from 'react-query'
-import { useServiceFactory } from '../../../contexts/serviceFactoryContext/ServiceFactoryContext'
 import { ProvisionActionQueryKey } from '../hooks/useProvisionAction'
+import { useSMService } from './useSMService'
 
 export const useProvisionStatus = (
   useErrorBoundary = true
 ): UseQueryResult<boolean> => {
-  const { smServiceFactory } = useServiceFactory()
+  const { data: smService } = useSMService()
 
   return useQuery(
     ProvisionActionQueryKey,
     async () => {
-      const smService = await smServiceFactory(() => undefined)
-      const agentStatus = await smService.getAgentStatus()
+      const agentStatus = await smService?.getAgentStatus()
 
       return (
-        agentStatus._type == 'Success' &&
+        agentStatus?._type == 'Success' &&
         agentStatus.agentStatus.length > 0 &&
         agentStatus.agentStatus.some((x) => {
           return x.seqCompsStatus.length > 0
         })
       )
     },
-    { useErrorBoundary }
+    { useErrorBoundary, enabled: !!smService }
   )
 }

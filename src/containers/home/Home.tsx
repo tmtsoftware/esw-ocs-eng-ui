@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { InfraIcon, SettingsIcon, TelescopeIcon } from '../../components/Icons'
 import SMCard from '../../features/sm/components/smcard/SMCard'
+import { RoutesConfig } from '../../routes'
 import styles from './home.module.css'
 
 type CardDetail = {
@@ -15,17 +16,17 @@ const cards: CardDetail[] = [
   {
     title: 'Manage Infrastructure',
     icon: <InfraIcon className={styles.commonIconSize} fill={'#1890FF'} />,
-    link: '/Infrastructure'
+    link: RoutesConfig.infrastructure
   },
   {
     title: 'Manage Observations',
     icon: <TelescopeIcon className={styles.commonIconSize} fill={'#9254DE'} />,
-    link: '/Observations'
+    link: RoutesConfig.observations
   },
   {
     title: 'Resources',
     icon: <SettingsIcon className={styles.settingsIcon} />,
-    link: '/Resources'
+    link: RoutesConfig.resources
   }
 ]
 

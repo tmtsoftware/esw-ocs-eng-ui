@@ -1,6 +1,5 @@
 import { Layout } from 'antd'
 import React from 'react'
-import CheckLogin from '../../routes/CheckLogin'
 import { Sider } from '../Sider/Sider'
 import styles from './app.module.css'
 
@@ -11,14 +10,12 @@ interface AppProps {
 
 const Container = ({ children }: AppProps): JSX.Element => {
   return (
-    <CheckLogin fallbackComponent={<></>}>
+    <Layout>
+      <Sider />
       <Layout>
-        <Sider />
-        <Layout>
-          <Content className={styles.content}>{children}</Content>
-        </Layout>
+        <Content className={styles.content}>{children}</Content>
       </Layout>
-    </CheckLogin>
+    </Layout>
   )
 }
 

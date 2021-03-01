@@ -1,9 +1,9 @@
-import { LogoutOutlined } from '@ant-design/icons'
 import { AuthContext } from '@tmtsoftware/esw-ts'
-import { Avatar, Button, Modal } from 'antd'
+import { Avatar, Button } from 'antd'
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
+import { RoutesConfig } from '../../routes'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {
@@ -16,23 +16,10 @@ const HeaderBar = (): JSX.Element => {
       setUsername(auth.tokenParsed()?.preferred_username)
   }, [auth])
 
-  const confirmLogout = () => {
-    Modal.confirm({
-      title: 'Logging out',
-      icon: <LogoutOutlined twoToneColor={'blue'} />,
-      okText: 'Logout',
-      cancelText: 'Cancel',
-      okType: 'danger',
-      onOk: () => {
-        logout()
-      }
-    })
-  }
-
   const Logout = () => (
     <>
       <Avatar size={'small'}>{username?.charAt(0).toUpperCase()}</Avatar>
-      <Button type='text' onClick={confirmLogout}>
+      <Button type='text' onClick={logout}>
         {username?.toUpperCase()}
       </Button>
     </>
@@ -47,7 +34,8 @@ const HeaderBar = (): JSX.Element => {
   return (
     <>
       {auth?.isAuthenticated() ? <Logout /> : <Login />}
-      <Link to={'/'}>
+      {/* TODO should we use history.push ? */}
+      <Link to={RoutesConfig.home}>
         <img role='tmt_logo' src={TMTLogo} className={styles.logo} />
       </Link>
     </>

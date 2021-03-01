@@ -1,6 +1,7 @@
 import { Button, Result } from 'antd'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { RoutesConfig } from '.'
 
 const NoMatch = (): JSX.Element => {
   const history = useHistory()
@@ -12,7 +13,7 @@ const NoMatch = (): JSX.Element => {
         <Button
           type='primary'
           onClick={() => {
-            history.push('/')
+            history.push(RoutesConfig.home)
           }}>
           Back Home
         </Button>

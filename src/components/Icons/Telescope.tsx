@@ -1,12 +1,9 @@
 import React from 'react'
-
-export const Telescope = ({
-  className,
-  fill
-}: {
+type IconProps = {
   className?: string
   fill?: string
-}): JSX.Element => {
+}
+export const Telescope = ({ className, fill }: IconProps): JSX.Element => {
   const fillCOlor = fill ? fill : 'currentColor'
   return (
     <svg

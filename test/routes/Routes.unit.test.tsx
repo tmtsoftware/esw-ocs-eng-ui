@@ -3,11 +3,11 @@ import { expect } from 'chai'
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import App from '../../src/containers/app/App'
-import Routes from '../../src/routes'
+import Routes, { RoutesConfig } from '../../src/routes'
 import { screen, renderWithAuth, cleanup } from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
-  window.history.pushState({}, 'Home page', '/')
+  window.history.pushState({}, 'Home page', RoutesConfig.home)
   return renderWithAuth({ ui: <HashRouter>{ui}</HashRouter> })
 }
 

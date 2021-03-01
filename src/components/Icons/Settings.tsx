@@ -1,12 +1,9 @@
 import React from 'react'
-
-export const Settings = ({
-  className,
-  fill
-}: {
+type IconProps = {
   className?: string
   fill?: string
-}): JSX.Element => {
+}
+export const Settings = ({ className, fill }: IconProps): JSX.Element => {
   return (
     <svg
       width='20'

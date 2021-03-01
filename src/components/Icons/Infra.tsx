@@ -1,12 +1,9 @@
 import React from 'react'
-
-export const Infra = ({
-  className,
-  fill
-}: {
+type IconProps = {
   className?: string
   fill?: string
-}): JSX.Element => {
+}
+export const Infra = ({ className, fill }: IconProps): JSX.Element => {
   return (
     <svg
       width='1.5em'

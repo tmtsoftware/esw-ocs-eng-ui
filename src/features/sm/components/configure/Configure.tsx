@@ -6,8 +6,8 @@ import {
 import { Button, message } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
-import { useAction } from '../../../utils/hooks/useAction'
-import { useSMService } from '../hooks/useSMService'
+import { useAction } from '../../../common/hooks/useAction'
+import { useSMService } from '../../hooks/useSMService'
 
 const Configure = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
@@ -47,7 +47,8 @@ const Configure = (): JSX.Element => {
     'ConfigureAction',
     configure(obsMode),
     `${obsMode} has been configured.`,
-    `Failed to configure ${obsMode}`
+    `Failed to configure ${obsMode}`,
+    false
   )
 
   const smService = useSMService()

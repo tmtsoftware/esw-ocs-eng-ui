@@ -1,6 +1,6 @@
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import type { UseMutationResult } from 'react-query'
-import { useAction } from '../../utils/hooks/useAction'
+import { useAction } from '../../common/hooks/useAction'
 
 export const ProvisionActionQueryKey = 'ProvisionAction'
 

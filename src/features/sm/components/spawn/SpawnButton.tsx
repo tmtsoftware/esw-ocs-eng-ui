@@ -5,8 +5,8 @@ import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgents } from '../../../agent/hooks/useAgents'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
+import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
 import { obsModeConfig } from '../../constants'
-import { useAgentServiceAction } from '../../hooks/useAgentServiceAction'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
   agent

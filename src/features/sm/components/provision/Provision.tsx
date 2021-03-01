@@ -1,7 +1,7 @@
 import React from 'react'
+import { useProvisionStatus } from '../../hooks/useProvisionStatus'
 import { ProvisionButton } from './ProvisionButton'
 import { UnProvisionButton } from './UnProvisionButton'
-import { useProvisionStatus } from './useProvisionStatus'
 
 const Provision = (): JSX.Element => {
   const provisionStatus = useProvisionStatus(false)

@@ -7,11 +7,11 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Button, message, Modal } from 'antd'
 import React, { useState } from 'react'
+import { useAction } from '../../../common/hooks/useAction'
 import { useConfigService } from '../../../config/hooks/useConfigService'
-import { useAction } from '../../../utils/hooks/useAction'
 import { ProvisionConfPath } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-import { useSMService } from '../hooks/useSMService'
+import { useSMService } from '../../hooks/useSMService'
 import styles from './provision.module.css'
 import { ProvisionTable } from './ProvisionTable'
 

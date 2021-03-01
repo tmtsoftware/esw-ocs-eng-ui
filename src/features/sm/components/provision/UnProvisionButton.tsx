@@ -4,7 +4,7 @@ import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-import { useSMService } from '../hooks/useSMService'
+import { useSMService } from '../../hooks/useSMService'
 
 function showConfirmModal<T>(onYes: () => Promise<T>): void {
   Modal.confirm({

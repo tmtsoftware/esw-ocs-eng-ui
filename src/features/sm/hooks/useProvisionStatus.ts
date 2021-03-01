@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from 'react-query'
-import { useServiceFactory } from '../../../../contexts/serviceFactoryContext/ServiceFactoryContext'
-import { ProvisionActionQueryKey } from '../../hooks/useProvisionAction'
+import { useServiceFactory } from '../../../contexts/serviceFactoryContext/ServiceFactoryContext'
+import { ProvisionActionQueryKey } from '../hooks/useProvisionAction'
 
 export const useProvisionStatus = (
   useErrorBoundary = true
@@ -10,7 +10,6 @@ export const useProvisionStatus = (
   return useQuery(
     ProvisionActionQueryKey,
     async () => {
-      //Fixme: useMutation
       const smService = await smServiceFactory(() => undefined)
       const agentStatus = await smService.getAgentStatus()
 

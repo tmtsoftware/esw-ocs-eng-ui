@@ -5,7 +5,7 @@ import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
-import { smComponentId } from '../../constants'
+import { SM_COMPONENT_ID } from '../../constants'
 
 function showConfirmModal<T>(onYes: () => Promise<T>): void {
   Modal.confirm({
@@ -25,7 +25,7 @@ function showConfirmModal<T>(onYes: () => Promise<T>): void {
 }
 
 const shutdownSM = (agent: AgentService) =>
-  agent.killComponent(smComponentId).then((res) => {
+  agent.killComponent(SM_COMPONENT_ID).then((res) => {
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })

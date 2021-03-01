@@ -9,7 +9,7 @@ import { Button, message, Modal } from 'antd'
 import React, { useState } from 'react'
 import { useAction } from '../../../common/hooks/useAction'
 import { useConfigService } from '../../../config/hooks/useConfigService'
-import { ProvisionConfPath } from '../../constants'
+import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { useSMService } from '../../hooks/useSMService'
 import styles from './provision.module.css'
@@ -53,7 +53,7 @@ const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
 const fetchProvisionConf = async (
   configService: ConfigService
 ): Promise<ProvisionRecord> => {
-  const confOption = await configService.getActive(ProvisionConfPath)
+  const confOption = await configService.getActive(PROVISION_CONF_PATH)
   if (!confOption) throw Error('Provision conf is not present')
   const provisionConfRecord = await confOption.fileContentAsString()
   return JSON.parse(provisionConfRecord)

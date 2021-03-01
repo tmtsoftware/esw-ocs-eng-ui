@@ -6,7 +6,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { anything, capture, when } from 'ts-mockito'
 import { SpawnSMButton } from '../../../../../src/features/sm/components/spawn/SpawnButton'
-import { obsModeConfig } from '../../../../../src/features/sm/constants'
+import { OBS_MODE_CONFIG } from '../../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('SpawnSMButton', () => {
@@ -27,7 +27,7 @@ describe('SpawnSMButton', () => {
     ])
     //TODO : think about picking the version from versions file
     when(
-      agentServiceMock.spawnSequenceManager(anything(), obsModeConfig, false)
+      agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)
     ).thenResolve({ _type: 'Spawned' })
 
     const { getByText, findByRole } = renderWithAuth({
@@ -69,7 +69,7 @@ describe('SpawnSMButton', () => {
     ).first()
 
     expect(prefix.toJSON()).eq(agentPrefix.toJSON())
-    expect(expectedConfig).eq(obsModeConfig)
+    expect(expectedConfig).eq(OBS_MODE_CONFIG)
     expect(isLocal).to.false
   })
 })

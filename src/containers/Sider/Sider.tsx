@@ -2,7 +2,12 @@ import { Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { TelescopeIcon, InfraIcon, SettingsIcon } from '../../components/Icons'
-import RoutesConfig from '../../routes/RoutesConfig'
+import {
+  HOME,
+  INFRASTRUCTURE,
+  OBSERVATIONS,
+  RESOURCES
+} from '../../routes/RoutesConfig'
 import styles from './sider.module.css'
 const getMenuLabel = (
   title: string,
@@ -20,17 +25,17 @@ const menuItemLabels = [
   getMenuLabel(
     'Manage Infrastructure',
     <InfraIcon className={styles.menuIconSize} />,
-    RoutesConfig.infrastructure
+    INFRASTRUCTURE
   ),
   getMenuLabel(
     'Manage Observations',
     <TelescopeIcon className={styles.menuIconSize} />,
-    RoutesConfig.observations
+    OBSERVATIONS
   ),
   getMenuLabel(
     'Resources',
     <SettingsIcon className={styles.menuIconSize} />,
-    RoutesConfig.resources
+    RESOURCES
   )
 ]
 export const Sider = (): JSX.Element => {
@@ -43,8 +48,8 @@ export const Sider = (): JSX.Element => {
   useEffect(() => {
     menuItemLabels.forEach((item, i) => {
       if (location.pathname === item.link) setSelectedKey(i.toString())
-      else if (location.pathname === RoutesConfig.home) {
-        setSelectedKey(RoutesConfig.home)
+      else if (location.pathname === HOME) {
+        setSelectedKey(HOME)
       }
     })
   }, [location])

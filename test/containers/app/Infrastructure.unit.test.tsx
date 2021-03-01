@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
 import Infrastructure from '../../../src/containers/infrastructure/Infrastructure'
-import { smConnection } from '../../../src/features/sm/constants'
+import { SM_CONNECTION } from '../../../src/features/sm/constants'
 import {
   cleanup,
   getMockServices,
@@ -37,7 +37,7 @@ describe('Infrastructure page', () => {
     const mockServices = getMockServices()
     const locationServiceMock = mockServices.mock.locationService
 
-    when(locationServiceMock.find(smConnection)).thenResolve(undefined)
+    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(undefined)
     renderWithAuth({
       ui: <Infrastructure />,
       mockClients: mockServices.serviceFactoryContext
@@ -56,12 +56,12 @@ describe('Infrastructure page', () => {
 
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
-      connection: smConnection,
+      connection: SM_CONNECTION,
       uri: 'url',
       metadata: { agentPrefix: 'ESW.primary' }
     }
 
-    when(locationServiceMock.find(smConnection)).thenResolve(smLocation)
+    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(smLocation)
 
     renderWithAuth({
       ui: <Infrastructure />,

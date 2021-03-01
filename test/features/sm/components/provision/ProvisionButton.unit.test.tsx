@@ -12,7 +12,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
-import { ProvisionConfPath } from '../../../../../src/features/sm/constants'
+import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('ProvisionButton component', () => {
@@ -38,7 +38,7 @@ describe('ProvisionButton component', () => {
   )
 
   it('should be able to successfully provision | ESW-444', async () => {
-    when(configService.getActive(ProvisionConfPath)).thenResolve(
+    when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
       ConfigData.fromString(JSON.stringify(confData))
     )
 
@@ -60,7 +60,7 @@ describe('ProvisionButton component', () => {
     //Provision config modal will appear with provision button
     await assertDialog((container, name) => getByRole(container, { name }))
 
-    verify(configService.getActive(ProvisionConfPath)).called()
+    verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
     const document = screen.getByRole('document')
     const confirmButton = within(document).getByRole('button', {

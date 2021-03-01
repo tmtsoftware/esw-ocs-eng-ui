@@ -1,6 +1,5 @@
-export default {
-  home: '/',
-  infrastructure: '/Infrastructure',
-  observations: '/Observations',
-  resources: '/Resources'
-}
+export const HOME = '/'
+export const INFRASTRUCTURE = '/infrastructure'
+export const OBSERVATIONS = '/observations'
+export const RESOURCES = '/resources'
+export const NO_MATCH = '/*'

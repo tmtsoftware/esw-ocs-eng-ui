@@ -1,10 +1,10 @@
 import { AkkaConnection, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 
-export const obsModeConfig = 'smObsModeConfig.conf'
+export const OBS_MODE_CONFIG = 'smObsModeConfig.conf'
 
-const smPrefix = new Prefix('ESW', 'sequence_manager')
-const smConnType = 'Service'
-export const ProvisionConfPath = '/tmt/esw/smProvisionConfig.json'
-export const smComponentId = new ComponentId(smPrefix, smConnType)
+const SM_PREFIX = new Prefix('ESW', 'sequence_manager')
+const SM_CONN_TYPE = 'Service'
+export const PROVISION_CONF_PATH = '/tmt/esw/smProvisionConfig.json'
+export const SM_COMPONENT_ID = new ComponentId(SM_PREFIX, SM_CONN_TYPE)
 
-export const smConnection = AkkaConnection(smPrefix, smConnType)
+export const SM_CONNECTION = AkkaConnection(SM_PREFIX, SM_CONN_TYPE)

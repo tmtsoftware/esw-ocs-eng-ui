@@ -4,7 +4,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { instance, mock, verify } from 'ts-mockito'
 import HeaderBar from '../../../src/components/HeaderBar/HeaderBar'
-import RoutesConfig from '../../../src/routes/RoutesConfig'
+import { HOME } from '../../../src/routes/RoutesConfig'
 import { cleanup, renderWithAuth, screen } from '../../utils/test-utils'
 
 const leftClick = { button: 0 }
@@ -25,7 +25,7 @@ describe('header bar', () => {
 
     //should be able to click on logo
     userEvent.click(logo, leftClick)
-    expect(window.location.pathname).to.equal(RoutesConfig.home)
+    expect(window.location.pathname).to.equal(HOME)
 
     const logoutButton = await screen.findByText('ESW-USER')
     expect(logoutButton).to.exist

@@ -3,7 +3,7 @@ import { Avatar, Button } from 'antd'
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
-import RoutesConfig from '../../routes/RoutesConfig'
+import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {
@@ -35,7 +35,7 @@ const HeaderBar = (): JSX.Element => {
     <>
       {auth?.isAuthenticated() ? <Logout /> : <Login />}
       {/* TODO should we use history.push ? */}
-      <Link to={RoutesConfig.home}>
+      <Link to={HOME}>
         <img role='tmt_logo' src={TMTLogo} className={styles.logo} />
       </Link>
     </>

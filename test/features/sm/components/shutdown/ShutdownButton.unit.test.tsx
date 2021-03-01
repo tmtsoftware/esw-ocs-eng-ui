@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { ShutdownSMButton } from '../../../../../src/features/sm/components/shutdown/ShutdownButton'
-import { smComponentId } from '../../../../../src/features/sm/constants'
+import { SM_COMPONENT_ID } from '../../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('ShutdownSMButton', () => {
@@ -12,7 +12,7 @@ describe('ShutdownSMButton', () => {
     const mockServices = getMockServices()
     const agentServiceMock = mockServices.mock.agentService
 
-    when(agentServiceMock.killComponent(smComponentId)).thenResolve({
+    when(agentServiceMock.killComponent(SM_COMPONENT_ID)).thenResolve({
       _type: 'Killed'
     })
 
@@ -40,6 +40,6 @@ describe('ShutdownSMButton', () => {
     await waitFor(() => {
       expect(getByText('Successfully shutdown Sequence Manager')).to.exist
     })
-    verify(agentServiceMock.killComponent(smComponentId)).called()
+    verify(agentServiceMock.killComponent(SM_COMPONENT_ID)).called()
   })
 })

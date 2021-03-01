@@ -6,11 +6,11 @@ import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgents } from '../../../agent/hooks/useAgents'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
-import { obsModeConfig } from '../../constants'
+import { OBS_MODE_CONFIG } from '../../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
   agent
-    .spawnSequenceManager(Prefix.fromString(agentPrefix), obsModeConfig, false)
+    .spawnSequenceManager(Prefix.fromString(agentPrefix), OBS_MODE_CONFIG, false)
     .then((res) => {
       if (res._type === 'Failed') throw new Error(res.msg)
       return res

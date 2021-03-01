@@ -1,4 +1,4 @@
-.commonIconSize {
+.commonIconSize, .settingsIcon {
   font-size: 64px;
   height: 64px;
   width: 64px;
@@ -6,7 +6,6 @@
 }
 
 .settingsIcon {
-  composes: commonIconSize;
   color: rgba(0, 0, 0, 0.45);
 }
 

@@ -1,8 +1,8 @@
 .pageHeader {
   background-color: white;
-  font-weight: 400 !important;
 }
 
 .pageTitle {
-  font-size: 20px;
+  font-size: 1.25em;
+  font-weight: 400;
 }

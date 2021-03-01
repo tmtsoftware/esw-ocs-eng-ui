@@ -15,7 +15,7 @@ const Container = ({ children }: AppProps): JSX.Element => {
       <Layout>
         <Sider />
         <Layout>
-          <Content className={[styles.content].join(' ')}>{children}</Content>
+          <Content className={styles.content}>{children}</Content>
         </Layout>
       </Layout>
     </CheckLogin>

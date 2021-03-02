@@ -69,13 +69,11 @@ export const ProvisionButton = (): JSX.Element => {
   const configService = useConfigService(useErrorBoundary)
   const smService = useSMService(useErrorBoundary)
 
-  const fetchProvisionConfAction = useAction(
-    'provisionConfig',
-    fetchProvisionConf,
-    'Successfully fetched Provision Config from ConfigService',
-    'Failed to fetch Provision Config',
+  const fetchProvisionConfAction = useAction({
+    queryKey: 'provisionConfig',
+    mutationFn: fetchProvisionConf,
     useErrorBoundary,
-    async (data) => {
+    onSuccess: async (data) => {
       if (Object.values(data).length <= 0) {
         await message.error('Provision config is empty')
       } else {
@@ -83,7 +81,7 @@ export const ProvisionButton = (): JSX.Element => {
         setModalVisibility(true)
       }
     }
-  )
+  })
 
   const provisionAction = useProvisionAction(
     provision(provisionRecord),

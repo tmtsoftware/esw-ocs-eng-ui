@@ -8,4 +8,4 @@ export const useAgentServiceAction = <T>(
   successMsg: string,
   errorMsg: string
 ): UseMutationResult<T, unknown, AgentService> =>
-  useAction(smStatusKey, mutationFn, successMsg, errorMsg)
+  useAction({ queryKey: smStatusKey, mutationFn, successMsg, errorMsg })

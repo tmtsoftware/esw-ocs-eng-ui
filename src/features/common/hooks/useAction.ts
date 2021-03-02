@@ -1,20 +1,29 @@
 import { message } from 'antd'
 import { useMutation, UseMutationResult, useQueryClient } from 'react-query'
 
-export const useAction = <S, T>(
-  queryKey: string,
-  mutationFn: (agent: S) => Promise<T>,
-  successMsg: string,
-  errorMsg: string,
-  useErrorBoundary = true,
+interface useActionProps<S, T> {
+  queryKey: string
+  mutationFn: (agent: S) => Promise<T>
+  successMsg?: string
+  errorMsg?: string
+  useErrorBoundary?: boolean
   onSuccess?: (a: T) => void
-): UseMutationResult<T, unknown, S> => {
+}
+
+export const useAction = <S, T>({
+  queryKey,
+  mutationFn,
+  successMsg,
+  errorMsg,
+  useErrorBoundary = true,
+  onSuccess
+}: useActionProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
   return useMutation(mutationFn, {
     onSuccess: async (data) => {
       await qc.invalidateQueries(queryKey)
-      message.success(successMsg)
+      if (successMsg) message.success(successMsg)
       onSuccess?.(data)
     },
     onError: (e) =>

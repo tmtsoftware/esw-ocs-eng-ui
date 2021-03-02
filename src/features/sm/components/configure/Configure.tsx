@@ -43,13 +43,13 @@ const Configure = (): JSX.Element => {
     })
   }
 
-  const configureAction = useAction(
-    'ConfigureAction',
-    configure(obsMode),
-    `${obsMode} has been configured.`,
-    `Failed to configure ${obsMode}`,
-    false
-  )
+  const configureAction = useAction({
+    queryKey: 'ConfigureAction',
+    mutationFn: configure(obsMode),
+    successMsg: `${obsMode?.name} has been configured.`,
+    errorMsg: `Failed to configure ${obsMode?.name}`,
+    useErrorBoundary: false
+  })
 
   const smService = useSMService(false)
 
@@ -70,18 +70,16 @@ const Configure = (): JSX.Element => {
     throw Error('Failed to fetch ObsModes details')
   }
 
-  const fetchConfigureConfAction = useAction(
-    'Obsmodes',
-    fetchObsModesDetails,
-    'Successfully fetched ObsModes',
-    'Failed to fetch Obsmodes',
-    true,
-    async (data) => {
+  const fetchConfigureConfAction = useAction({
+    queryKey: 'Obsmodes',
+    mutationFn: fetchObsModesDetails,
+    useErrorBoundary: false,
+    onSuccess: async (data) => {
       setObsModesDetails(
         data.obsModes.filter((x) => x.status._type === 'Configurable')
       )
     }
-  )
+  })
 
   const handleModalOk = () => {
     if (obsMode) {

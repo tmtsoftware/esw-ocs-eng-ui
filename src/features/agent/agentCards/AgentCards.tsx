@@ -13,6 +13,7 @@ const AgentCard = ({
   name,
   sequenceCompsStatus
 }: AgentCardProps): JSX.Element => {
+  const bodyStyle = sequenceCompsStatus.length == 0 ? { display: 'none' } : {}
   return (
     <Card
       title={
@@ -25,7 +26,7 @@ const AgentCard = ({
           </Col>
         </Row>
       }
-      bodyStyle={{ display: 'none' }}></Card>
+      bodyStyle={bodyStyle}></Card>
   )
 }
 

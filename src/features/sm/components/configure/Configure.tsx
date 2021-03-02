@@ -86,7 +86,6 @@ const Configure = (): JSX.Element => {
   const handleModalOk = () => {
     if (obsMode) {
       if (smService.data) configureAction.mutate(smService.data)
-      //.mutateAsync(agentServiceQuery.data)
       setModalVisibility(false)
     } else {
       message.error(`Please select observation mode!`)

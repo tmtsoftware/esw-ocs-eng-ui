@@ -1,5 +1,6 @@
+import { AuthContext } from '@tmtsoftware/esw-ts'
 import { Layout } from 'antd'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Sider } from '../Sider/Sider'
 import styles from './app.module.css'
 
@@ -9,9 +10,10 @@ interface AppProps {
 }
 
 const Container = ({ children }: AppProps): JSX.Element => {
+  const { auth } = useContext(AuthContext)
   return (
     <Layout>
-      <Sider />
+      {auth?.isAuthenticated() ? <Sider /> : <></>}
       <Layout>
         <Content className={styles.content}>{children}</Content>
       </Layout>

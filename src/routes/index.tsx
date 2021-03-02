@@ -3,10 +3,9 @@ import React, { useContext } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from '../containers/home/Home'
 import Infrastructure from '../containers/infrastructure/Infrastructure'
+import LoginPage from './LoginPage'
 import NoMatch from './NoMatch'
 import { HOME, INFRASTRUCTURE, NO_MATCH } from './RoutesConfig'
-
-const LoginPage = () => <div>User not logged in!!!</div>
 
 const Routes = (): JSX.Element => {
   const { auth } = useContext(AuthContext)

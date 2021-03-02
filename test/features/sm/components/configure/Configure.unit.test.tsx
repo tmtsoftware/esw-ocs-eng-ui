@@ -3,7 +3,8 @@ import {
   ObsModesDetailsResponse,
   ObsMode,
   ComponentId,
-  Prefix
+  Prefix,
+  ConfigureResponse
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -19,11 +20,81 @@ import {
   ByRoleMatcher
 } from '../../../../utils/test-utils'
 
-describe('Configure button', () => {
-  afterEach(() => cleanup())
-  const mockServices = getMockServices()
-  const smService = mockServices.mock.smService
+const obsModesDetails: ObsModesDetailsResponse = {
+  _type: 'Success',
+  obsModes: [
+    {
+      obsMode: new ObsMode('ESW_DARKNIGHT'),
+      resources: ['ESW', 'TCS', 'WFOS'],
+      status: {
+        _type: 'Configurable'
+      },
+      sequencers: ['ESW', 'TCS', 'WFOS']
+    },
+    {
+      obsMode: new ObsMode('ESW_CLEARSKY'),
+      resources: [],
+      status: {
+        _type: 'Configured'
+      },
+      sequencers: []
+    },
+    {
+      obsMode: new ObsMode('ESW_RANDOM'),
+      resources: [],
+      status: {
+        _type: 'NonConfigurable'
+      },
+      sequencers: []
+    }
+  ]
+}
+afterEach(() => {
+  cleanup()
+})
 
+const mockServices = getMockServices()
+const smService = mockServices.mock.smService
+const darkNight = new ObsMode('ESW_DARKNIGHT')
+when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
+const successResponse: ConfigureResponse = {
+  _type: 'Success',
+  masterSequencerComponentId: new ComponentId(
+    Prefix.fromString('ESW.primary'),
+    'Sequencer'
+  )
+}
+const configurationMissingResponse: ConfigureResponse = {
+  _type: 'ConfigurationMissing',
+  obsMode: darkNight
+}
+
+const conflictingResourcesResponse: ConfigureResponse = {
+  _type: 'ConflictingResourcesWithRunningObsMode',
+  runningObsMode: [new ObsMode('ESW_CLEARSKY')]
+}
+
+const failedToStartSequencersResponse: ConfigureResponse = {
+  _type: 'FailedToStartSequencers',
+  reasons: ['sequence component not found']
+}
+
+const locationServiceError: ConfigureResponse = {
+  _type: 'LocationServiceError',
+  reason: 'LocationNotFound'
+}
+const sequenceComponentNotAvailable: ConfigureResponse = {
+  _type: 'SequenceComponentNotAvailable',
+  msg: 'Not Available',
+  subsystems: ['IRIS']
+}
+const unhandled: ConfigureResponse = {
+  _type: 'Unhandled',
+  msg: 'Bad request',
+  messageType: 'TransportError',
+  state: ''
+}
+describe('Configure button', () => {
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({
       ui: <Configure />,
@@ -44,83 +115,56 @@ describe('Configure button', () => {
   })
 
   it('should be enabled when sequence manager is spawned | ESW-445', async () => {
-    const obsModesDetails: ObsModesDetailsResponse = {
-      _type: 'Success',
-      obsModes: [
-        {
-          obsMode: new ObsMode('ESW_DARKNIGHT'),
-          resources: ['ESW', 'TCS', 'WFOS'],
-          status: {
-            _type: 'Configurable'
-          },
-          sequencers: ['ESW', 'TCS', 'WFOS']
-        },
-        {
-          obsMode: new ObsMode('ESW_CLEARSKY'),
-          resources: [],
-          status: {
-            _type: 'Configured'
-          },
-          sequencers: []
-        },
-        {
-          obsMode: new ObsMode('ESW_RANDOM'),
-          resources: [],
-          status: {
-            _type: 'NonConfigurable'
-          },
-          sequencers: []
-        }
-      ]
-    }
-    const darkNight = new ObsMode('ESW_DARKNIGHT')
-    when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
-    when(smService.configure(deepEqual(darkNight))).thenResolve({
-      _type: 'Success',
-      masterSequencerComponentId: new ComponentId(
-        Prefix.fromString('ESW.primary'),
-        'Sequencer'
-      )
-    })
+    when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
 
-    const { getByRole } = renderWithAuth({
+    renderWithAuth({
       ui: <Configure />,
       mockClients: mockServices.serviceFactoryContext
     })
-
-    const button = await screen.findByRole('button', { name: 'Configure' })
-    userEvent.click(button, { button: 1 })
-
-    await assertDialog((container, name) => getByRole(container, { name }))
-
-    verify(smService.getObsModesDetails()).called()
-
+    await openConfigureModalAndClickConfigureButton()
     //verify only configurable obsmodes are shown in the list
-    const dialog = getByRole('dialog', {
+    const dialog = screen.getByRole('dialog', {
       name: /Select an Observation Mode to configure:/i
     })
-    await waitFor(() => {
-      expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
-        .null
-      expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i }))
-        .to.null
-    })
-    const darkNightObsMode = getByRole('menuitem', {
-      name: /ESW_DARKNIGHT/i
-    })
+    expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
+      .null
+    expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i })).to
+      .null
 
-    //should send  selected obsMode to configure call
+    await assertDialog((container, name) =>
+      screen.getByRole(container, { name })
+    )
+    //verify obsModesDetails are fetched when dialog is opened
+    verify(smService.getObsModesDetails()).called()
 
-    //select item by clicking on it
-    userEvent.click(darkNightObsMode)
-    // wait for button to be enabled.
-    await waitFor(() => {
-      const configureButton = within(dialog).getByRole('button', {
-        name: /configure/i
-      })
-      userEvent.click(configureButton)
-    })
     verify(smService.configure(deepEqual(darkNight))).called()
+    await waitFor(
+      () =>
+        expect(screen.getByText('ESW_DARKNIGHT has been configured.')).to.exist
+    )
+  })
+
+  const testcases: Array<[ConfigureResponse, string]> = [
+    [locationServiceError, 'LocationNotFound'],
+    [conflictingResourcesResponse, 'Running ObsModes: ESW_CLEARSKY'],
+    [configurationMissingResponse, 'ConfigurationMissing for ESW_DARKNIGHT'],
+    [failedToStartSequencersResponse, 'sequence component not found'],
+    [sequenceComponentNotAvailable, 'Not Available'],
+    [unhandled, 'Bad request']
+  ]
+  testcases.map(([response, message]) => {
+    it(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
+      when(smService.configure(deepEqual(darkNight))).thenResolve(response)
+
+      renderWithAuth({
+        ui: <Configure />,
+        mockClients: mockServices.serviceFactoryContext
+      })
+      await openConfigureModalAndClickConfigureButton()
+      const matchRegex = new RegExp(`${message}`)
+      await waitFor(() => expect(screen.getByText(matchRegex)).to.exist)
+      verify(smService.configure(deepEqual(darkNight))).called()
+    })
   })
 })
 
@@ -151,4 +195,27 @@ const assertDialog = async (
       )
     })
   )
+}
+const openConfigureModalAndClickConfigureButton = async () => {
+  const button = await screen.findByRole('button', { name: 'Configure' })
+  userEvent.click(button, { button: 1 })
+
+  //verify only configurable obsmodes are shown in the list
+  const dialog = screen.getByRole('dialog', {
+    name: /Select an Observation Mode to configure:/i
+  })
+
+  const darkNightObsMode = await screen.findByRole('menuitem', {
+    name: /ESW_DARKNIGHT/i
+  })
+
+  //select item by clicking on it
+  userEvent.click(darkNightObsMode)
+  // wait for button to be enabled.
+  await waitFor(() => {
+    const configureButton = within(dialog).getByRole('button', {
+      name: /configure/i
+    })
+    userEvent.click(configureButton)
+  })
 }

@@ -14,38 +14,41 @@ const Configure = (): JSX.Element => {
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
 
-  const configure = (obsMode: ObsMode | undefined) => async (
+  const configure = () => async (
     sequenceManagerService: SequenceManagerService
   ) => {
-    if (!obsMode) throw Error('Please select obsmode!')
-
-    return sequenceManagerService.configure(obsMode).then((res) => {
-      switch (res._type) {
-        case 'Success':
-          return res
-        case 'ConfigurationMissing':
-          throw Error(`ConfigurationMissing for ${obsMode}`)
-        case 'ConflictingResourcesWithRunningObsMode':
-          throw Error(
-            `${obsMode} is conflicting with currently running Observation Modes. Running ObsModes: ${res.runningObsMode.join(
-              ','
-            )} `
-          )
-        case 'FailedToStartSequencers':
-          throw Error(`Failed to start Sequencers. Reason: ${res.reasons}`)
-        case 'SequenceComponentNotAvailable':
-          throw Error(res.msg)
-        case 'LocationServiceError':
-          throw Error(res.reason)
-        case 'Unhandled':
-          throw Error(res.msg)
-      }
-    })
+    return (
+      obsMode &&
+      sequenceManagerService.configure(obsMode).then((res) => {
+        switch (res._type) {
+          case 'Success':
+            return res
+          case 'ConfigurationMissing':
+            throw Error(`ConfigurationMissing for ${obsMode?.name}`)
+          case 'ConflictingResourcesWithRunningObsMode':
+            throw Error(
+              `${
+                obsMode?.name
+              } is conflicting with currently running Observation Modes. Running ObsModes: ${res.runningObsMode.map(
+                (x) => x.name
+              )}`
+            )
+          case 'FailedToStartSequencers':
+            throw Error(`Failed to start Sequencers. Reason: ${res.reasons}`)
+          case 'SequenceComponentNotAvailable':
+            throw Error(res.msg)
+          case 'LocationServiceError':
+            throw Error(res.reason)
+          case 'Unhandled':
+            throw Error(res.msg)
+        }
+      })
+    )
   }
 
   const configureAction = useAction({
     queryKey: 'ConfigureAction',
-    mutationFn: configure(obsMode),
+    mutationFn: configure(),
     successMsg: `${obsMode?.name} has been configured.`,
     errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false

@@ -23,6 +23,7 @@ import {
   ServiceFactoryContextType,
   ServiceFactoryProvider
 } from '../../src/contexts/serviceFactoryContext/ServiceFactoryContext'
+import 'antd/dist/antd.css'
 
 const getMockAuth = (loggedIn: boolean) => {
   let loggedInValue = loggedIn

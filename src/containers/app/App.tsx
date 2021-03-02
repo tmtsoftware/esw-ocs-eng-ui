@@ -24,7 +24,7 @@ const App = ({ children }: AppProps): JSX.Element => {
         </Header>
         <Container>{children}</Container>
       </Layout>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
     </QueryClientProvider>
   )
 }

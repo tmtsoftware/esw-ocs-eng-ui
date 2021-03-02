@@ -44,31 +44,33 @@ const columns = (
     )
   }
 ]
+
+const createColumnData = (provisionRecord: Record<string, number>) =>
+  Object.entries(provisionRecord).map(([prefixStr, num], index) => {
+    return {
+      key: index.toString(),
+      agentPrefix: prefixStr,
+      numOfSequenceComps: num
+    }
+  })
+
 export const ProvisionTable = ({
   provisionRecord,
   setProvisionRecord
 }: ProvisionProps): JSX.Element => {
-  const data: ProvisionDataType[] = Object.entries(provisionRecord).map(
-    ([prefixStr, num], index) => {
-      return {
-        key: index.toString(),
-        agentPrefix: prefixStr,
-        numOfSequenceComps: num
-      }
-    }
-  )
+  const data = createColumnData(provisionRecord)
 
   return (
     <Table
       pagination={false}
       columns={columns((numOfSeqComp, record) => {
         provisionRecord[record.agentPrefix] = numOfSeqComp
+        record.numOfSequenceComps = numOfSeqComp
         setProvisionRecord(provisionRecord)
       })}
       dataSource={data}
       onHeaderRow={() => ({ className: styles.header })}
       onRow={() => ({ className: styles.cell })}
-      // sortDirections={asce}
     />
   )
 }

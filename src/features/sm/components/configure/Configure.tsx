@@ -51,7 +51,7 @@ const Configure = (): JSX.Element => {
     false
   )
 
-  const smService = useSMService()
+  const smService = useSMService(false)
 
   const fetchObsModesDetails = async () => {
     const response = await smService.data?.getObsModesDetails()
@@ -104,7 +104,9 @@ const Configure = (): JSX.Element => {
 
   return (
     <>
-      <Button disabled={smService.isLoading} onClick={onConfigureClick}>
+      <Button
+        disabled={smService.isLoading || smService.isError}
+        onClick={onConfigureClick}>
         Configure
       </Button>
       <SelectionModal

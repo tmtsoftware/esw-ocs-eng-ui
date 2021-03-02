@@ -5,7 +5,7 @@ import { useSMService } from './useSMService'
 export const useProvisionStatus = (
   useErrorBoundary = true
 ): UseQueryResult<boolean> => {
-  const { data: smService } = useSMService()
+  const { data: smService } = useSMService(useErrorBoundary)
 
   return useQuery(
     ProvisionActionQueryKey,

@@ -29,23 +29,6 @@ const AgentCard = ({
   )
 }
 
-// const AgentCard = (): JSX.Element => {
-//   return (
-//     <Card
-//       title={
-//         <Row justify='space-between'>
-//           <Col>
-//             <Typography.Text>Esw.primary</Typography.Text>
-//           </Col>
-//           <Col>
-//             <Icon component={() => <img src={PlusIcon} />} />
-//           </Col>
-//         </Row>
-//       }
-//       bodyStyle={{ display: 'none' }}></Card>
-//   )
-// }
-
 const AgentCards = (): JSX.Element => {
   const { data } = useSMAgentsStatus()
   const agentCards = data?.map((agentStatus, index) => (

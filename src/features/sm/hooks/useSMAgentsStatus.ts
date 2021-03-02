@@ -1,13 +1,9 @@
-import type {
-  AgentStatus,
-  AgentStatusResponse,
-  Option
-} from '@tmtsoftware/esw-ts'
+import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from 'react-query'
 import { useSMService } from './useSMService'
 
 export const useSMAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
-  const { data: smService } = useSMService()
+  const { data: smService } = useSMService(false)
 
   return useQuery(
     'agentsStatus',

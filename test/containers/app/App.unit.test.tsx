@@ -44,7 +44,7 @@ describe('App page', () => {
       loggedIn: false
     })
 
-    const loginButton = screen.queryByText('Login')
-    expect(loginButton).to.exist
+    const loginButton = screen.queryAllByText('Login')
+    expect(loginButton).to.have.length(2)
   })
 })

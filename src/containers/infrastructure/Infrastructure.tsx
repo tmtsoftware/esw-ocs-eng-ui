@@ -40,9 +40,9 @@ const SmStatus = (): JSX.Element => {
     return <Typography.Text type='warning'>Loading...</Typography.Text>
   }
 
-  const smStatus = data?.metadata.agentPrefix ? (
+  const smStatus = data?.metadata ? (
     <Typography.Text type='success'>
-      Running on {data.metadata.agentPrefix}
+      Running on {data.metadata.agentPrefix || 'unknown'}
     </Typography.Text>
   ) : (
     <Typography.Text type='danger'>Service down</Typography.Text>

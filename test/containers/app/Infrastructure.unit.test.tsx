@@ -74,4 +74,29 @@ describe('Infrastructure page', () => {
       expect(screen.getByText('Running on ESW.primary')).to.exist
     })
   })
+
+  it('should render running on unknown status if sequence manager is not running on agent | ESW-442', async () => {
+    const mockServices = getMockServices()
+    const locationServiceMock = mockServices.mock.locationService
+
+    const smLocation: HttpLocation = {
+      _type: 'HttpLocation',
+      connection: SM_CONNECTION,
+      uri: 'url',
+      metadata: {}
+    }
+
+    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(smLocation)
+
+    renderWithAuth({
+      ui: <Infrastructure />,
+      loggedIn: true,
+      mockClients: mockServices.serviceFactoryContext
+    })
+    expect(screen.getByText('Loading...')).to.exist
+
+    await waitFor(() => {
+      expect(screen.getByText('Running on unknown')).to.exist
+    })
+  })
 })

@@ -48,8 +48,8 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   }
 
   const configureAction = useAction({
-    queryKey: 'ConfigureAction',
     mutationFn: configure,
+    queryKey: ['ConfigureAction', 'AgentsStatus'],
     successMsg: `${obsMode?.name} has been configured.`,
     errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false
@@ -75,7 +75,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   }
 
   const fetchConfigureConfAction = useAction({
-    queryKey: 'Obsmodes',
+    queryKey: ['Obsmodes'],
     mutationFn: fetchObsModesDetails,
     useErrorBoundary: false,
     onSuccess: async (data) => {

@@ -11,7 +11,7 @@ export const useProvisionAction = <T>(
   useErrorBoundary = true
 ): UseMutationResult<T, unknown, SequenceManagerService> =>
   useAction({
-    queryKey: ProvisionActionQueryKey,
+    queryKey: [ProvisionActionQueryKey, 'AgentsStatus'],
     mutationFn,
     successMsg,
     errorMsg,

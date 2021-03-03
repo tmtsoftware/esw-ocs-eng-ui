@@ -6,7 +6,7 @@ export const useSMAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(
-    'agentsStatus',
+    'AgentsStatus',
     async () => {
       const agentStatus = await smService?.getAgentStatus()
       if (agentStatus?._type === 'Success') {

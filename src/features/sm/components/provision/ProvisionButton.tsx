@@ -84,7 +84,7 @@ export const ProvisionButton = (): JSX.Element => {
   const smService = useSMService(useErrorBoundary)
 
   const fetchProvisionConfAction = useAction({
-    queryKey: 'provisionConfig',
+    queryKey: ['provisionConfig'],
     mutationFn: fetchProvisionConf,
     useErrorBoundary,
     onSuccess: async (data) => {

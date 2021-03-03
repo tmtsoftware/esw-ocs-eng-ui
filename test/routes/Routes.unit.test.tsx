@@ -3,14 +3,13 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import App from '../../src/containers/app/App'
-import Routes from '../../src/routes'
 import {
   HOME,
   INFRASTRUCTURE,
   OBSERVATIONS,
   RESOURCES
 } from '../../src/routes/RoutesConfig'
-import { screen, renderWithAuth, cleanup } from '../utils/test-utils'
+import { cleanup, renderWithAuth, screen } from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
@@ -24,11 +23,7 @@ describe('Full app navigation', () => {
   })
 
   it('Infrastructure route | ESW-441', () => {
-    renderWithRouter(
-      <App>
-        <Routes />
-      </App>
-    )
+    renderWithRouter(<App />)
 
     const manageInfra = screen.getByRole('ManageInfrastructure')
     expect(manageInfra).to.exist
@@ -38,11 +33,7 @@ describe('Full app navigation', () => {
   })
 
   it('Observations route | ESW-441', () => {
-    renderWithRouter(
-      <App>
-        <Routes />
-      </App>
-    )
+    renderWithRouter(<App />)
 
     const manageObservations = screen.getByRole('ManageObservations')
     expect(manageObservations).to.exist
@@ -52,11 +43,7 @@ describe('Full app navigation', () => {
   })
 
   it('Resources | ESW-441', () => {
-    renderWithRouter(
-      <App>
-        <Routes />
-      </App>
-    )
+    renderWithRouter(<App />)
 
     const resources = screen.getAllByRole('Resources')
     expect(resources).to.have.length(2)

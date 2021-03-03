@@ -1,5 +1,6 @@
+import { DownOutlined, LogoutOutlined } from '@ant-design/icons'
 import { AuthContext } from '@tmtsoftware/esw-ts'
-import { Avatar, Button } from 'antd'
+import { Button, Dropdown, Menu } from 'antd'
 import React, { useContext, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
@@ -16,12 +17,21 @@ const HeaderBar = (): JSX.Element => {
       setUsername(auth.tokenParsed()?.preferred_username)
   }, [auth])
 
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' danger icon={<LogoutOutlined />} onClick={logout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  )
+
   const Logout = () => (
     <>
-      <Avatar size={'small'}>{username?.charAt(0).toUpperCase()}</Avatar>
-      <Button type='text' onClick={logout}>
-        {username?.toUpperCase()}
-      </Button>
+      <Dropdown trigger={['click']} overlay={menu}>
+        <Button type={'text'}>
+          {username?.toUpperCase()} <DownOutlined />
+        </Button>
+      </Dropdown>
     </>
   )
 

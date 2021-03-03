@@ -36,7 +36,7 @@ const cards: CardDetail[] = [
 
 const HomePageCard = (card: CardDetail) => (
   <Link role={card.title} to={card.link}>
-    <Card hoverable className={styles.homePageCards}>
+    <Card hoverable>
       {card.icon}
       <Typography.Title className={styles.cardTitle} level={3}>
         {card.title}
@@ -47,19 +47,17 @@ const HomePageCard = (card: CardDetail) => (
 
 const Home = (): JSX.Element => (
   <>
-    <Row align={'middle'} className={styles.inheritMinHeight}>
-      <Row className={styles.smCard}>
-        <Col>{<SMCard />}</Col>
-      </Row>
-      <Col span={24}>
-        <Row gutter={[32, 32]} className={styles.homePageCardsRow}>
-          {cards.map((x, index) => (
-            <Col key={index} span={8}>
-              {HomePageCard(x)}
-            </Col>
-          ))}
-        </Row>
+    <Row justify='center' style={{ margin: '0 32px' }}>
+      <Col xs={24} className={styles.smCard}>
+        {<SMCard />}
       </Col>
+    </Row>
+    <Row gutter={[32, 32]} className={styles.homePageCardsRow}>
+      {cards.map((x, index) => (
+        <Col key={index} xs={24} md={12} xl={8}>
+          {HomePageCard(x)}
+        </Col>
+      ))}
     </Row>
   </>
 )

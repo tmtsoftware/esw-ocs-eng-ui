@@ -17,6 +17,7 @@ const SMCard = (): JSX.Element => {
           Sequence Manager
         </Typography.Title>
       }
+      headStyle={{ paddingTop: '8px', paddingBottom: '8px' }}
       extra={smStatus.data ? <ShutdownSMButton /> : <SpawnSMButton />}
       bodyStyle={{ display: 'none' }}
     />

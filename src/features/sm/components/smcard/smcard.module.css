@@ -1,17 +1,4 @@
-
-
 h4.title {
   font-weight: 500;
   margin-right: 50px;
-}
-
-@media all and (max-width: 786px) {
-  h4.title {
-    margin-right: 10px;
-  }
-}
-
-
-:global .ant-card-extra {
-  padding: 24px 0;
 }

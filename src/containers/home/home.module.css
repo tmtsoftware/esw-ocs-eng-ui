@@ -9,25 +9,19 @@
   color: rgba(0, 0, 0, 0.45);
 }
 
-.inheritMinHeight {
-  min-height: inherit;
-}
-
-.homePageCards {
-  height: 100%;
-}
-
 .homePageCardsRow {
-  margin: 0 60px !important;
+  min-height: 65vh;
+  margin: 16px 16px !important;
+  align-content:center;
 }
 
 h3.cardTitle {
   margin-bottom: 0em;
 }
 
-.smCard {
-  top: 65px;
-  position: absolute;
-  width: 88%;
-  justify-content: center;
+@media all and (min-width: 768px) {
+  .smCard {
+    width: 23rem;
+    flex: none;
+  }
 }

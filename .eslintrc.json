@@ -2,7 +2,6 @@
   "parser": "@typescript-eslint/parser",
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:import/errors",
@@ -35,7 +34,13 @@
     "import/order": [
       "error",
       {
-        "groups": [["builtin", "external", "internal"]],
+        "groups": [
+          [
+            "builtin",
+            "external",
+            "internal"
+          ]
+        ],
         "alphabetize": {
           "order": "asc" /* sort in ascending order. Options: ["ignore", "asc", "desc"] */,
           "caseInsensitive": true /* ignore case. Options: [true, false] */

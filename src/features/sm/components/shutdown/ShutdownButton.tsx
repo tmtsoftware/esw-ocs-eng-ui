@@ -7,7 +7,7 @@ import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
 import { SM_COMPONENT_ID } from '../../constants'
 
-function showConfirmModal<T>(onYes: () => Promise<T>): void {
+function showConfirmModal(onYes: () => void): void {
   Modal.confirm({
     title: 'Do you want to shutdown Sequence Manager?',
     icon: <ExclamationCircleOutlined />,
@@ -47,7 +47,9 @@ export const ShutdownSMButton = (): JSX.Element => {
       loading={shutdownSmAction.isLoading}
       onClick={() =>
         agentQuery.data &&
-        showConfirmModal(() => shutdownSmAction.mutateAsync(agentQuery.data))
+        showConfirmModal(() => {
+          shutdownSmAction.mutateAsync(agentQuery.data)
+        })
       }>
       Shutdown
     </Button>

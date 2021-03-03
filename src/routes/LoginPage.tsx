@@ -7,7 +7,7 @@ const LoginPage = (): JSX.Element => {
   return (
     <Result
       title='403'
-      subTitle='User need to login first to access OCS Eng UI application.'
+      subTitle='You are not logged in. Please Login'
       extra={
         <Button type='primary' onClick={login}>
           Login

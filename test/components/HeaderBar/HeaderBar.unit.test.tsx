@@ -48,7 +48,7 @@ describe('header bar', () => {
     expect(loginButton).to.exist
   })
 
-  it.skip('open logout modal on click of username button when user is logged in | ESW-441', async () => {
+  it('open logout modal on click of username button when user is logged in | ESW-441', async () => {
     const mockAuthFunctions = mock<{ logout: () => void }>()
     const authFunctionsInstance = instance(mockAuthFunctions)
     renderWithAuth({
@@ -63,14 +63,10 @@ describe('header bar', () => {
 
     const logoutButton = await screen.findByText('ESW-USER')
     userEvent.click(logoutButton, leftClick)
+    // wait for dropdown to appear
+    const logoutMenuItem = await screen.findByText('Logout')
+    userEvent.click(logoutMenuItem, leftClick)
 
-    //wait for modal text to appear
-    const modalText = await screen.findByText('Logging out')
-    expect(modalText).to.exist
-
-    //click logout
-    const logoutButtonOnModal = screen.getByText('Logout')
-    userEvent.click(logoutButtonOnModal, leftClick)
     //verify that the logout function passed by auth context is called on click of logout button of modal
     verify(mockAuthFunctions.logout()).called()
   })

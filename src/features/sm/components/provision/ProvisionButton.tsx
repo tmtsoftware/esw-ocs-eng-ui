@@ -33,9 +33,9 @@ const provision = (provisionRecord: ProvisionRecord) => (
         throw Error(res.failureResponses.join('\n'))
       case 'CouldNotFindMachines':
         throw Error(
-          `Could not found following machine:\n ${res.prefix
+          `Could not found following machine: ${res.prefix
             .map((x) => x.toJSON())
-            .join('\n')}`
+            .join(',')}`
         )
     }
   })
@@ -50,13 +50,27 @@ const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
   return new ProvisionConfig(agentProvisionConfigs)
 }
 
+const validateProvisionConf = (
+  provisionRecord: ProvisionRecord
+): ProvisionRecord => {
+  Object.entries(provisionRecord).forEach(([key, value]) => {
+    if (!Number.isInteger(value)) {
+      throw Error(
+        `value of number of sequence components for ${key} is not an Integer`
+      )
+    }
+    Prefix.fromString(key)
+  })
+  return provisionRecord
+}
+
 const fetchProvisionConf = async (
   configService: ConfigService
 ): Promise<ProvisionRecord> => {
   const confOption = await configService.getActive(PROVISION_CONF_PATH)
   if (!confOption) throw Error('Provision conf is not present')
   const provisionConfRecord = await confOption.fileContentAsString()
-  return JSON.parse(provisionConfRecord)
+  return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
 export const ProvisionButton = (): JSX.Element => {

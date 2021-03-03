@@ -13,3 +13,4 @@ yarn.lock
 .DS_Store
 target
 **/web_modules/*
+.metals

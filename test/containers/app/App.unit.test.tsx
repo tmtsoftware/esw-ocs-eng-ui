@@ -1,9 +1,7 @@
 import { expect } from 'chai'
 import React from 'react'
-import { HashRouter as Router } from 'react-router-dom'
 import App from '../../../src/containers/app/App' // fixed to absolute path
-import Routes from '../../../src/routes'
-import { renderWithAuth, screen, cleanup } from '../../utils/test-utils'
+import { cleanup, renderWithAuth, screen } from '../../utils/test-utils'
 
 describe('App page', () => {
   afterEach(() => {
@@ -11,15 +9,7 @@ describe('App page', () => {
   })
 
   it('should render app with layout when user is logged in | ESW-441', async () => {
-    renderWithAuth({
-      ui: (
-        <Router>
-          <App>
-            <Routes />
-          </App>
-        </Router>
-      )
-    })
+    renderWithAuth({ ui: <App /> })
 
     const resources = screen.queryAllByText('Resources')
     const manageObservations = screen.queryAllByText('Manage Observations')
@@ -34,13 +24,7 @@ describe('App page', () => {
 
   it('should render app without layout when user is not logged in | ESW-441', () => {
     renderWithAuth({
-      ui: (
-        <Router>
-          <App>
-            <Routes />
-          </App>
-        </Router>
-      ),
+      ui: <App />,
       loggedIn: false
     })
 

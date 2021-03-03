@@ -6,7 +6,7 @@ import { Spinner } from '../../../../components/spinners/Spinner'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { useSMService } from '../../hooks/useSMService'
 
-function showConfirmModal<T>(onYes: () => Promise<T>): void {
+function showConfirmModal(onYes: () => void): void {
   Modal.confirm({
     title: 'Do you want to shutdown all the Sequence Components?',
     icon: <ExclamationCircleOutlined />,
@@ -54,7 +54,9 @@ export const UnProvisionButton = (): JSX.Element => {
       loading={unProvisionAction.isLoading}
       onClick={() =>
         smService.data &&
-        showConfirmModal(() => unProvisionAction.mutateAsync(smService.data))
+        showConfirmModal(() => {
+          unProvisionAction.mutateAsync(smService.data)
+        })
       }>
       Unprovision
     </Button>

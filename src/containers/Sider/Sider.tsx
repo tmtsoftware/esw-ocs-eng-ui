@@ -39,7 +39,7 @@ const menuItemLabels = [
   )
 ]
 export const Sider = (): JSX.Element => {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const [selectedKey, setSelectedKey] = useState<string>('')
   const location = useLocation()
   const onCollapse = () => {

@@ -124,7 +124,7 @@ export const ProvisionButton = (): JSX.Element => {
         Provision
       </Button>
       <Modal
-        title='Provision Config'
+        title='Provision Configuration:'
         okText='Provision'
         centered
         visible={modalVisibility}

@@ -1,8 +1,5 @@
 import { Card, Typography } from 'antd'
 import React from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
-import { QueryErrorResetBoundary } from 'react-query'
-import { ErrorFallback } from '../../../../components/ErrorBoundary/ErrorFallback'
 import CustomErrorBoundary from '../../../../components/ErrorBoundary/CustomErrorBoundary'
 import { useSMStatus } from '../../hooks/useSMStatus'
 import { ShutdownSMButton } from '../shutdown/ShutdownButton'

@@ -1,14 +1,14 @@
-import { AuthContext } from '@tmtsoftware/esw-ts'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from '../containers/home/Home'
 import Infrastructure from '../containers/infrastructure/Infrastructure'
+import { useAuthContext } from '../contexts/useAuthContext'
 import LoginPage from './LoginPage'
 import NoMatch from './NoMatch'
 import { HOME, INFRASTRUCTURE, NO_MATCH } from './RoutesConfig'
 
 const Routes = (): JSX.Element => {
-  const { auth } = useContext(AuthContext)
+  const { auth } = useAuthContext()
   if (!(auth && auth.isAuthenticated && auth.isAuthenticated())) {
     return <LoginPage />
   }

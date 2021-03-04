@@ -11,7 +11,7 @@ import type { ProvisionResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, verify, when } from 'ts-mockito'
-import type { ServiceFactoryContextType } from '../../../../../src/contexts/serviceFactoryContext/ServiceFactoryContext'
+import type { ServiceFactoryContextType } from '../../../../../src/contexts/ServiceFactoryContext'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'

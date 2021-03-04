@@ -1,9 +1,9 @@
-import { AuthContext } from '@tmtsoftware/esw-ts'
 import { Button, Result } from 'antd'
-import React, { useContext } from 'react'
+import React from 'react'
+import { useAuthContext } from '../contexts/useAuthContext'
 
 const LoginPage = (): JSX.Element => {
-  const { login } = useContext(AuthContext)
+  const { login } = useAuthContext()
   return (
     <Result
       title='403'

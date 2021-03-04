@@ -1,6 +1,6 @@
 import type { Prefix } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from 'react-query'
-import { useServiceFactory } from '../../../contexts/serviceFactoryContext/ServiceFactoryContext'
+import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
 
 export const useAgents = (): UseQueryResult<Prefix[]> => {
   const { locationServiceFactory } = useServiceFactory()

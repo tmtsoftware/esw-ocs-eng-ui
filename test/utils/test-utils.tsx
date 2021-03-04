@@ -22,7 +22,7 @@ import { instance, mock } from 'ts-mockito'
 import {
   ServiceFactoryContextType,
   ServiceFactoryProvider
-} from '../../src/contexts/serviceFactoryContext/ServiceFactoryContext'
+} from '../../src/contexts/ServiceFactoryContext'
 import 'antd/dist/antd.css'
 
 const getMockAuth = (loggedIn: boolean) => {

@@ -1,14 +1,14 @@
 import { DownOutlined, LogoutOutlined } from '@ant-design/icons'
-import { AuthContext } from '@tmtsoftware/esw-ts'
 import { Button, Dropdown, Menu } from 'antd'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
+import { useAuthContext } from '../../contexts/useAuthContext'
 import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {
-  const { auth, login, logout } = useContext(AuthContext)
+  const { auth, login, logout } = useAuthContext()
   const [username, setUsername] = useState<string | undefined>(undefined)
 
   useEffect(() => {

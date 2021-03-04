@@ -3,6 +3,7 @@
     "clean": true,
     "sourceMap": true
   },
+  "testOptions": { "files": ["**/test/**/*.*"] },
   "mount": {
     "public": "/",
     "src": "/_dist_",

@@ -14,7 +14,7 @@ This project is a React web application.
     run `sbt publishLocal` inside esw's sbt shell.
     Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
 
-The latest stable version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## Run the Application in Local Environment
 

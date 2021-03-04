@@ -22,30 +22,43 @@ describe('Provision Component', () => {
     seqCompsStatus: [sequenceComponentStatus]
   }
 
-  it('should render Unprovision button | ESW-444', async () => {
-    const agentStatusSuccess: AgentStatusResponse = {
-      _type: 'Success',
-      agentStatus: [agentStatus],
-      seqCompsWithoutAgent: []
-    }
+  const agentStatusSuccess1: AgentStatusResponse = {
+    _type: 'Success',
+    agentStatus: [agentStatus],
+    seqCompsWithoutAgent: []
+  }
 
-    when(smService.getAgentStatus()).thenResolve(agentStatusSuccess)
+  const agentStatusSuccess2: AgentStatusResponse = {
+    _type: 'Success',
+    agentStatus: [],
+    seqCompsWithoutAgent: [sequenceComponentStatus]
+  }
 
-    const { getByRole, queryByRole } = renderWithAuth({
-      ui: <Provision />,
-      loggedIn: true,
-      mockClients: mockServices.serviceFactoryContext
+  const unProvisionRenderTestData: [AgentStatusResponse, string][] = [
+    [agentStatusSuccess1, 'on any agent'],
+    [agentStatusSuccess2, 'without any agent']
+  ]
+
+  unProvisionRenderTestData.forEach(([agentStatus, name]) => {
+    it(`should render Unprovision button if there is no sequence component running ${name} | ESW-444`, async () => {
+      when(smService.getAgentStatus()).thenResolve(agentStatus)
+
+      const { getByRole, queryByRole } = renderWithAuth({
+        ui: <Provision />,
+        loggedIn: true,
+        mockClients: mockServices.serviceFactoryContext
+      })
+
+      await waitFor(
+        () => expect(getByRole('button', { name: 'Unprovision' })).to.be.exist
+      )
+
+      await waitFor(
+        () => expect(queryByRole('button', { name: 'Provision' })).to.null
+      )
+
+      verify(smService.getAgentStatus()).called()
     })
-
-    await waitFor(
-      () => expect(getByRole('button', { name: 'Unprovision' })).to.be.exist
-    )
-
-    await waitFor(
-      () => expect(queryByRole('button', { name: 'Provision' })).to.null
-    )
-
-    verify(smService.getAgentStatus()).called()
   })
 
   it('should render Provision button | ESW-444', async () => {

@@ -14,10 +14,11 @@ export const useProvisionStatus = (
 
       return (
         agentStatus?._type == 'Success' &&
-        agentStatus.agentStatus.length > 0 &&
-        agentStatus.agentStatus.some((x) => {
-          return x.seqCompsStatus.length > 0
-        })
+        (agentStatus.seqCompsWithoutAgent.length > 0 ||
+          (agentStatus.agentStatus.length > 0 &&
+            agentStatus.agentStatus.some((x) => {
+              return x.seqCompsStatus.length > 0
+            })))
       )
     },
     { useErrorBoundary, enabled: !!smService }

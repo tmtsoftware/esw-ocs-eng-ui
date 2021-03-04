@@ -63,7 +63,7 @@ export const SelectionModal = ({
     confirmLoading={confirmLoading}
     bodyStyle={{ padding: 0 }}
     okButtonProps={{
-      disabled: !selectedItem
+      disabled: !selectedItem || !data || data?.length === 0
     }}
     onOk={onOk}
     onCancel={onCancel}>

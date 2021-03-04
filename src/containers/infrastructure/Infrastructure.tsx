@@ -1,10 +1,9 @@
 import { Card, PageHeader, Space, Typography } from 'antd'
 import React from 'react'
 import AgentCards from '../../features/agent/agentCards/AgentCards'
-import Configure from '../../features/sm/components/configure/Configure'
-import Provision from '../../features/sm/components/provision/Provision'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
 import styles from './infrastructure.module.css'
+import SmActions from './SMActions'
 
 const { Meta } = Card
 
@@ -26,13 +25,6 @@ const Infrastructure = (): JSX.Element => {
     </>
   )
 }
-
-const SmActions = (): JSX.Element => (
-  <Space>
-    <Provision />
-    <Configure />
-  </Space>
-)
 
 const SmStatus = (): JSX.Element => {
   const { data, isLoading } = useSMStatus()

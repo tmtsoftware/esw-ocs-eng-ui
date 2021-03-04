@@ -97,7 +97,7 @@ const unhandled: ConfigureResponse = {
 describe('Configure button', () => {
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({
-      ui: <Configure />,
+      ui: <Configure disabled={true} />,
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -118,7 +118,7 @@ describe('Configure button', () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
 
     renderWithAuth({
-      ui: <Configure />,
+      ui: <Configure disabled={false} />,
       mockClients: mockServices.serviceFactoryContext
     })
     await openConfigureModalAndClickConfigureButton()
@@ -157,7 +157,7 @@ describe('Configure button', () => {
       when(smService.configure(deepEqual(darkNight))).thenResolve(response)
 
       renderWithAuth({
-        ui: <Configure />,
+        ui: <Configure disabled={false} />,
         mockClients: mockServices.serviceFactoryContext
       })
       await openConfigureModalAndClickConfigureButton()

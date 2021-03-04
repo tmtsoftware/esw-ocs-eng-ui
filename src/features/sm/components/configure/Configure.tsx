@@ -9,7 +9,10 @@ import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { useAction } from '../../../common/hooks/useAction'
 import { useSMService } from '../../hooks/useSMService'
 
-const Configure = (): JSX.Element => {
+type ConfigureProps = {
+  disabled: boolean | undefined
+}
+const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
@@ -106,7 +109,7 @@ const Configure = (): JSX.Element => {
   return (
     <>
       <Button
-        disabled={smService.isLoading || smService.isError}
+        disabled={disabled || smService.isLoading || smService.isError}
         onClick={onConfigureClick}>
         Configure
       </Button>

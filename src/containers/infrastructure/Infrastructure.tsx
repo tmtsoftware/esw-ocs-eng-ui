@@ -31,7 +31,6 @@ const SmStatus = (): JSX.Element => {
   if (isLoading) {
     return <Typography.Text type='warning'>Loading...</Typography.Text>
   }
-
   const smStatus = data?.metadata ? (
     <Typography.Text type='success'>
       Running on {data.metadata.agentPrefix || 'unknown'}

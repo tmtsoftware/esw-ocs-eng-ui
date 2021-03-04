@@ -24,8 +24,8 @@ describe('Infrastructure page', () => {
 
     const subtitle = screen.getByText(/sequence manager/i)
     const header = screen.getByText(/manage infrastructure/i)
-    const provision = screen.getByText(/provision/i)
-    const configure = screen.getByText(/configure/i)
+    const provision = screen.getByRole('button', { name: /provision/i })
+    const configure = screen.getByRole('button', { name: /configure/i })
 
     expect(subtitle).to.exist
     expect(header).to.exist
@@ -33,7 +33,7 @@ describe('Infrastructure page', () => {
     expect(configure).to.exist
   })
 
-  it('should render service down status if sequence manager is not spawned', async () => {
+  it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
     const mockServices = getMockServices()
     const locationServiceMock = mockServices.mock.locationService
 
@@ -46,11 +46,11 @@ describe('Infrastructure page', () => {
     expect(screen.getByText('Loading...')).to.exist
 
     await waitFor(() => {
-      expect(screen.getByText(/service down/i)).to.exist
+      expect(screen.getByText('Service down')).to.exist
     })
   })
 
-  it('should render running status if sequence manager is up| ESW-442', async () => {
+  it('should render running status with agent machine if sequence manager is running on an agent | ESW-442', async () => {
     const mockServices = getMockServices()
     const locationServiceMock = mockServices.mock.locationService
 
@@ -75,7 +75,7 @@ describe('Infrastructure page', () => {
     })
   })
 
-  it('should render running on unknown status if sequence manager is not running on agent | ESW-442', async () => {
+  it('should render running on unknown status if sequence manager is running standalone(not on agent) | ESW-442', async () => {
     const mockServices = getMockServices()
     const locationServiceMock = mockServices.mock.locationService
 

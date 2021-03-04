@@ -4,9 +4,9 @@ import type { ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts/lib/
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
+import type { ServiceFactoryContextType } from '../../../../../src/contexts/serviceFactoryContext/ServiceFactoryContext'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
-import type { ServiceFactoryContextType } from '../../../../../src/contexts/serviceFactoryContext/ServiceFactoryContext'
 
 describe('', () => {
   const modalTitle = 'Do you want to shutdown all the Sequence Components?'

@@ -19,7 +19,11 @@ const getList = (
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   }
   return (
-    <Menu selectable onSelect={onSelect} selectedKeys={[selectedItem]}>
+    <Menu
+      selectable
+      onSelect={onSelect}
+      selectedKeys={[selectedItem]}
+      className={styles.menu}>
       {data.map((item) => {
         return (
           <Menu.Item

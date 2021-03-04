@@ -16,6 +16,13 @@ This project is a React web application.
 
 The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
+## User role for login
+
+For testing purposes, we are creating a `esw-user` while launching the Keycloak from csw-services
+
+Username: esw-user
+Password: esw-user
+
 ## Run the Application in Local Environment
 
 Run following commands in the terminal.

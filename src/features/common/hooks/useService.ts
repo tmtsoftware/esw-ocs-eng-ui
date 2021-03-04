@@ -13,6 +13,7 @@ export const useService = <S, E>(
 
   return useQuery(serviceName, () => factory(auth.token), {
     useErrorBoundary: useErrorBoundary,
-    onError: onError
+    onError: onError,
+    retry: 1
   })
 }

@@ -59,7 +59,7 @@ describe('', () => {
   ]
 
   unProvisionTestData.forEach(([type, name, shutdownRes, errMsg]) => {
-    it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name}`, async () => {
+    it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name} | ESW-444`, async () => {
       const mockServices = getMockServices()
       const smService = mockServices.mock.smService
 

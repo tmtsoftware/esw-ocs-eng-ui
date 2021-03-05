@@ -56,10 +56,10 @@ const buildResultText = (storyId: string, name: string, status: boolean) => {
 const sanitizeTestSuite = (suite: TestSuiteResult): string[] => {
   const listOfStrings: string[] = []
   if (!!suite.tests && suite.tests.length > 0) {
-    suite.tests?.forEach((test) => {
+    suite.tests.forEach((test) => {
       const [testName, storyIds] = test.name.split(PIPE)
       const name = suite.name + SPACE + testName
-      if (Boolean(storyIds)) {
+      if (Boolean(storyIds.trim())) {
         storyIds
           .split(COMMA)
           .forEach((storyId: string) =>

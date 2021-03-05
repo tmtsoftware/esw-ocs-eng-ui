@@ -128,5 +128,8 @@ describe('SelectionModal', () => {
 
     expect(getByText(/No Data/i)).to.exist
     expect(queryByRole('menuitem')).to.null
+    expect(
+      (queryByRole('button', { name: 'Start' }) as HTMLButtonElement).disabled
+    ).to.true
   })
 })

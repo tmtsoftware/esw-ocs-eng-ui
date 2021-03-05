@@ -58,7 +58,7 @@ function generateTestReport(sessionsForTestFile) {
   return results
 }
 
-const SpecReporter = ({ reportResults = true } = {}) => {
+const ConsoleReporter = ({ reportResults = true } = {}) => {
   return {
     reportTestFileResults({ logger, sessionsForTestFile }) {
       if (!reportResults) {
@@ -73,4 +73,4 @@ const SpecReporter = ({ reportResults = true } = {}) => {
   }
 }
 
-export default SpecReporter
+export default ConsoleReporter

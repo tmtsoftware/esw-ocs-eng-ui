@@ -2,18 +2,35 @@ import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { when } from 'ts-mockito'
 import App from '../../src/containers/app/App'
+import { ServiceFactoryContextType } from '../../src/contexts/ServiceFactoryContext'
 import {
   HOME,
   INFRASTRUCTURE,
   OBSERVATIONS,
   RESOURCES
 } from '../../src/routes/RoutesConfig'
-import { cleanup, renderWithAuth, screen } from '../utils/test-utils'
+import {
+  getMockServices,
+  cleanup,
+  renderWithAuth,
+  screen
+} from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
-  return renderWithAuth({ ui: <BrowserRouter>{ui}</BrowserRouter> })
+  // Mocking locationService.listByComponentType, 
+  // because on Home page a call happens on render to get list of agents
+  const mockServices = getMockServices()
+  when(
+    mockServices.mock.locationService.listByComponentType('Machine')
+  ).thenResolve([])
+
+  return renderWithAuth({
+    ui: <BrowserRouter>{ui}</BrowserRouter>,
+    mockClients: mockServices.serviceFactoryContext
+  })
 }
 
 const leftClick = { button: 0 }

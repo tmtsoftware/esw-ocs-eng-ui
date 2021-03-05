@@ -25,7 +25,7 @@ describe('SpawnSMButton', () => {
     when(locationServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
-    //TODO : think about picking the version from versions file
+
     when(
       agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)
     ).thenResolve({ _type: 'Spawned' })

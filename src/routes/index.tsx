@@ -14,7 +14,7 @@ const Routes = (): JSX.Element => {
   }
   return (
     <Switch>
-      <Route exact path={HOME} render={() => <Home />} />
+      <Route exact path={HOME} component={Home} />
       <Route path={INFRASTRUCTURE} component={Infrastructure} />
       <Route path={NO_MATCH} component={NoMatch} />
     </Switch>

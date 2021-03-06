@@ -287,18 +287,14 @@ describe('ProvisionButton component', () => {
 
     const dialog = getByRole('dialog', /provision config/i)
 
-    const elementsInsideDialog = [
-      ['table'],
-      ['button', /provision/i],
-      ['button', /cancel/i]
-    ]
+    const items = await waitFor(() => [
+      within(dialog).getByRole('table'),
+      within(dialog).getByRole('button', { name: /provision/i }),
+      within(dialog).getByRole('button', { name: /cancel/i })
+    ])
 
-    await Promise.all(
-      elementsInsideDialog.map(([container, name]) => {
-        return waitFor(
-          () => expect(within(dialog).getByRole(container, { name })).to.exist
-        )
-      })
-    )
+    items.forEach((item) => {
+      expect(item).to.exist
+    })
   }
 })

@@ -17,9 +17,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
 
-  const configure = () => async (
-    sequenceManagerService: SequenceManagerService
-  ) => {
+  const configure = async (sequenceManagerService: SequenceManagerService) => {
     return (
       obsMode &&
       sequenceManagerService.configure(obsMode).then((res) => {
@@ -51,7 +49,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const configureAction = useAction({
     queryKey: 'ConfigureAction',
-    mutationFn: configure(),
+    mutationFn: configure,
     successMsg: `${obsMode?.name} has been configured.`,
     errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false
@@ -84,12 +82,15 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
       setObsModesDetails(
         data.obsModes.filter((x) => x.status._type === 'Configurable')
       )
+      setObsMode(undefined) // on success clear the local selected obsMode
     }
   })
 
   const handleModalOk = () => {
     if (obsMode) {
-      if (smService.data) configureAction.mutate(smService.data)
+      if (smService.data) {
+        configureAction.mutate(smService.data)
+      }
       setModalVisibility(false)
     } else {
       message.error(`Please select observation mode!`)

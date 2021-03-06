@@ -4,7 +4,8 @@ import {
   ObsMode,
   ComponentId,
   Prefix,
-  ConfigureResponse
+  ConfigureResponse,
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -17,7 +18,9 @@ import {
   cleanup,
   waitFor,
   within,
-  ByRoleMatcher
+  ByRoleMatcher,
+  act,
+  MockServices
 } from '../../../../utils/test-utils'
 
 const obsModesDetails: ObsModesDetailsResponse = {
@@ -53,10 +56,11 @@ afterEach(() => {
   cleanup()
 })
 
-const mockServices = getMockServices()
-const smService = mockServices.mock.smService
+let mockServices: MockServices
+let smService: SequenceManagerService
+
 const darkNight = new ObsMode('ESW_DARKNIGHT')
-when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
+
 const successResponse: ConfigureResponse = {
   _type: 'Success',
   masterSequencerComponentId: new ComponentId(
@@ -95,13 +99,21 @@ const unhandled: ConfigureResponse = {
   state: ''
 }
 describe('Configure button', () => {
+  beforeEach(() => {
+    mockServices = getMockServices()
+    smService = mockServices.mock.smService
+    when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
+  })
+  afterEach(() => {
+    cleanup()
+  })
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({
       ui: <Configure disabled={true} />,
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const button = screen.getByRole('button', {
+    const button = await screen.findByRole('button', {
       name: 'Configure'
     })
     userEvent.click(button)
@@ -114,34 +126,34 @@ describe('Configure button', () => {
     ).to.null
   })
 
-  it('should be enabled when sequence manager is spawned | ESW-445', async () => {
+  it.only('should be enabled when sequence manager is spawned | ESW-445', async () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
+    await act(async () => {
+      renderWithAuth({
+        ui: <Configure disabled={false} />,
+        mockClients: mockServices.serviceFactoryContext
+      })
+      await openConfigureModalAndClickConfigureButton()
+      //verify only configurable obsmodes are shown in the list
+      const dialog = await screen.findByRole('dialog', {
+        name: /Select an Observation Mode to configure:/i
+      })
+      expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
+        .null
+      expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i }))
+        .to.null
 
-    renderWithAuth({
-      ui: <Configure disabled={false} />,
-      mockClients: mockServices.serviceFactoryContext
+      await assertDialog((container, name) =>
+        screen.getByRole(container, { name })
+      )
+      //verify obsModesDetails are fetched when dialog is opened
+      verify(smService.getObsModesDetails()).called()
+
+      verify(smService.configure(deepEqual(darkNight))).called()
+      expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
+        .exist
+      expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
     })
-    await openConfigureModalAndClickConfigureButton()
-    //verify only configurable obsmodes are shown in the list
-    const dialog = screen.getByRole('dialog', {
-      name: /Select an Observation Mode to configure:/i
-    })
-    expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
-      .null
-    expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i })).to
-      .null
-
-    await assertDialog((container, name) =>
-      screen.getByRole(container, { name })
-    )
-    //verify obsModesDetails are fetched when dialog is opened
-    verify(smService.getObsModesDetails()).called()
-
-    verify(smService.configure(deepEqual(darkNight))).called()
-    await waitFor(
-      () =>
-        expect(screen.getByText('ESW_DARKNIGHT has been configured.')).to.exist
-    )
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [
@@ -152,6 +164,7 @@ describe('Configure button', () => {
     [sequenceComponentNotAvailable, 'Not Available'],
     [unhandled, 'Bad request']
   ]
+
   testcases.map(([response, message]) => {
     it(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
       when(smService.configure(deepEqual(darkNight))).thenResolve(response)
@@ -182,19 +195,15 @@ const assertDialog = async (
     /Select an Observation Mode to configure:/i
   )
 
-  const elementsInsideDialog = [
-    ['menuitem', /esw_darknight/i],
-    ['button', /configure/i],
-    ['button', /cancel/i]
-  ]
+  const items = await waitFor(() => [
+    within(dialog).getByRole('menuitem', { name: /esw_darknight/i }),
+    within(dialog).getByRole('button', { name: /configure/i }),
+    within(dialog).getByRole('button', { name: /cancel/i })
+  ])
 
-  await Promise.all(
-    elementsInsideDialog.map(([container, name]) => {
-      return waitFor(
-        () => expect(within(dialog).getByRole(container, { name })).to.exist
-      )
-    })
-  )
+  items.forEach((item) => {
+    expect(item).to.exist
+  })
 }
 const openConfigureModalAndClickConfigureButton = async () => {
   const button = await screen.findByRole('button', { name: 'Configure' })
@@ -215,7 +224,8 @@ const openConfigureModalAndClickConfigureButton = async () => {
   await waitFor(() => {
     const configureButton = within(dialog).getByRole('button', {
       name: /configure/i
-    })
+    }) as HTMLButtonElement
+    expect(configureButton.disabled).false
     userEvent.click(configureButton)
   })
 }

@@ -4,7 +4,6 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { when } from 'ts-mockito'
 import App from '../../src/containers/app/App'
-import { ServiceFactoryContextType } from '../../src/contexts/ServiceFactoryContext'
 import {
   HOME,
   INFRASTRUCTURE,
@@ -20,7 +19,7 @@ import {
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
-  // Mocking locationService.listByComponentType, 
+  // Mocking locationService.listByComponentType,
   // because on Home page a call happens on render to get list of agents
   const mockServices = getMockServices()
   when(

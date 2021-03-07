@@ -6,7 +6,7 @@
   "type": "module",
   "dependencies": {
     "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts",
-    "antd": "^4.13.0",
+    "antd": "^4.13.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-error-boundary": "^3.1.1",
@@ -41,7 +41,7 @@
     "@testing-library/react-hooks": "^5.1.0",
     "@testing-library/user-event": "^12.8.1",
     "@types/chai": "^4.2.15",
-    "@types/react": "^17.0.2",
+    "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
@@ -62,6 +62,6 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "snowpack": "^3.0.13",
     "ts-mockito": "^2.6.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.3"
   }
 }

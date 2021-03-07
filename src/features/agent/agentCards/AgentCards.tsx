@@ -1,49 +1,84 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
-import { Card, Col, Row, Typography } from 'antd'
+import { Card, Col, Grid, Row, Tooltip, Typography } from 'antd'
 import React from 'react'
 import { useSMAgentsStatus } from '../../sm/hooks/useSMAgentsStatus'
 import styles from './agentCards.module.css'
+import SequenceComponentCard from './SequenceComponentCard'
 
+const { useBreakpoint } = Grid
 type AgentCardProps = {
   name: Prefix
-  sequenceCompsStatus: SequenceComponentStatus[]
+  seqCompsStatus: SequenceComponentStatus[]
 }
-const AgentCard = ({
-  name,
-  sequenceCompsStatus
-}: AgentCardProps): JSX.Element => {
-  const bodyStyle = sequenceCompsStatus.length == 0 ? { display: 'none' } : {}
+
+const AgentCard = ({ name, seqCompsStatus }: AgentCardProps): JSX.Element => {
+  const bodyStyle =
+    seqCompsStatus.length == 0 ? { display: 'none' } : { padding: '1px 0 0' }
+
+  const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => {
+    return (
+      <SequenceComponentCard
+        key={index}
+        seqCompId={seqCompStatus.seqCompId}
+        location={seqCompStatus.sequencerLocation}
+      />
+    )
+  })
+
   return (
     <Card
+      className={styles.agentCard}
       title={
         <Row justify='space-between'>
           <Col>
             <Typography.Text>{name.toJSON()}</Typography.Text>
           </Col>
           <Col>
-            <PlusCircleOutlined style={{ fontSize: '1.35rem' }} />
+            <Tooltip placement='bottom' title={'Add sequence component'}>
+              <PlusCircleOutlined style={{ fontSize: '1.35rem' }} />
+            </Tooltip>
           </Col>
         </Row>
       }
-      bodyStyle={bodyStyle}></Card>
+      bodyStyle={bodyStyle}>
+      {sequenceCompCards}
+    </Card>
   )
 }
 
 const AgentCards = (): JSX.Element => {
   const { data } = useSMAgentsStatus()
-  const agentCards = data?.map((agentStatus, index) => (
-    <Col span={6} key={index}>
+  const screen = useBreakpoint()
+
+  const agentCards = data?.map((agentStatus, index) => {
+    return (
       <AgentCard
+        key={index}
         name={agentStatus.agentId.prefix}
-        sequenceCompsStatus={agentStatus.seqCompsStatus}
+        seqCompsStatus={agentStatus.seqCompsStatus}
       />
-    </Col>
-  ))
+    )
+  })
+
+  const [columnCount, span] = screen.xl ? [4, 6] : screen.lg ? [3, 8] : [2, 12]
+
+  const columns = agentCards?.reduce((columns, agentCard, index) => {
+    const currentColumn = index % columnCount
+    if (!columns[currentColumn]) {
+      columns[currentColumn] = []
+    }
+    columns[currentColumn].push(agentCard)
+    return columns
+  }, Array(columnCount))
 
   return (
     <Row justify='start' gutter={[24, 24]} wrap={true} className={styles.grid}>
-      {agentCards}
+      {columns?.map((value, index) => (
+        <Col key={index} span={span}>
+          {value}
+        </Col>
+      ))}
     </Row>
   )
 }

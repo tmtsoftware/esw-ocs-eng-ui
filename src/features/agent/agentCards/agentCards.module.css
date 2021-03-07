@@ -2,3 +2,39 @@
   padding: 1.5rem 0.75rem;
   margin: 0 !important;
 }
+
+.agentCard {
+  margin-bottom: 1.5rem;
+}
+
+.iconBoxSequencer {
+  background-color: white;
+  border-color: #b7eb8f;
+}
+
+.iconBox,
+.iconBoxSequencer {
+  display: flex;
+  align-items: center;
+  border-left: 1px solid #d9d9d9;
+}
+
+.icon {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.seqComp,
+.sequencerComp {
+  border: 1px solid #d9d9d9;
+  font-size: 14px;
+}
+
+.seqCompTitle {
+  padding: 8px 12px;
+}
+
+.sequencerComp {
+  background-color: #f6ffed;
+  border-color: #b7eb8f;
+}

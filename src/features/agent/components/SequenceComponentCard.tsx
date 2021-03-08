@@ -1,4 +1,8 @@
-import { DeleteOutlined, FileAddOutlined, FileExcelOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  FileAddOutlined,
+  FileExcelOutlined
+} from '@ant-design/icons'
 import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
 import { Card, Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
@@ -14,10 +18,7 @@ type TitleProps = {
   obsMode: string | undefined
 }
 
-const Sequencer = ({
-  seqCompId,
-  obsMode
-}: TitleProps): JSX.Element => {
+const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
   return (
     <Row className={styles.sequencerComp}>
       <Col flex='auto' className={styles.seqCompTitle}>

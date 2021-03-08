@@ -1,9 +1,12 @@
 import type { AgentService } from '@tmtsoftware/esw-ts'
-import type { UseQueryResult } from 'react-query'
+import { useQuery, UseQueryResult } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
-import { useService } from '../../common/hooks/useService'
 
 export const useAgentService = (): UseQueryResult<AgentService> => {
   const { agentServiceFactory } = useServiceFactory()
-  return useService('agentService', agentServiceFactory)
+  return useQuery('agentService', agentServiceFactory, {
+    useErrorBoundary: true,
+    // FIXME Why 1? can be set to false if want to disable
+    retry: 1
+  })
 }

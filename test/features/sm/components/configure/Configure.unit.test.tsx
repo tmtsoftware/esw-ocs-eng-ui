@@ -5,11 +5,13 @@ import {
   ComponentId,
   Prefix,
   ConfigureResponse,
-  SequenceManagerService
+  SequenceManagerService,
+  SequenceComponentStatus
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { deepEqual, mock, verify, when } from 'ts-mockito'
+import Infrastructure from '../../../../../src/containers/infrastructure/Infrastructure'
 import Configure from '../../../../../src/features/sm/components/configure/Configure'
 import {
   getMockServices,
@@ -19,7 +21,6 @@ import {
   waitFor,
   within,
   ByRoleMatcher,
-  act,
   MockServices
 } from '../../../../utils/test-utils'
 
@@ -126,34 +127,33 @@ describe('Configure button', () => {
     ).to.null
   })
 
-  it.only('should be enabled when sequence manager is spawned | ESW-445', async () => {
+  it('should be enabled when sequence manager is spawned | ESW-445', async () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
-    await act(async () => {
-      renderWithAuth({
-        ui: <Configure disabled={false} />,
-        mockClients: mockServices.serviceFactoryContext
-      })
-      await openConfigureModalAndClickConfigureButton()
-      //verify only configurable obsmodes are shown in the list
-      const dialog = await screen.findByRole('dialog', {
-        name: /Select an Observation Mode to configure:/i
-      })
-      expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
-        .null
-      expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i }))
-        .to.null
-
-      await assertDialog((container, name) =>
-        screen.getByRole(container, { name })
-      )
-      //verify obsModesDetails are fetched when dialog is opened
-      verify(smService.getObsModesDetails()).called()
-
-      verify(smService.configure(deepEqual(darkNight))).called()
-      expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
-        .exist
-      expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
+    renderWithAuth({
+      ui: <Configure disabled={false} />,
+      mockClients: mockServices.serviceFactoryContext
     })
+    await openConfigureModalAndClickConfigureButton()
+    //verify only configurable obsmodes are shown in the list
+    const dialog = await screen.findByRole('dialog', {
+      name: /Select an Observation Mode to configure:/i
+    })
+    expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
+      .null
+    expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i })).to
+      .null
+
+    await assertDialog((container, name) =>
+      screen.getByRole(container, { name })
+    )
+    //verify obsModesDetails are fetched when dialog is opened
+    verify(smService.getObsModesDetails()).called()
+
+    verify(smService.configure(deepEqual(darkNight))).called()
+    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
+      .exist
+
+    expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [

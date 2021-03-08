@@ -8,11 +8,14 @@ import SequenceComponentCard from './SequenceComponentCard'
 
 const { useBreakpoint } = Grid
 type AgentCardProps = {
-  name: Prefix
+  agentPrefix: Prefix
   seqCompsStatus: SequenceComponentStatus[]
 }
 
-const AgentCard = ({ name, seqCompsStatus }: AgentCardProps): JSX.Element => {
+const AgentCard = ({
+  agentPrefix,
+  seqCompsStatus
+}: AgentCardProps): JSX.Element => {
   const bodyStyle =
     seqCompsStatus.length == 0 ? { display: 'none' } : { padding: '1px 0 0' }
 
@@ -32,7 +35,7 @@ const AgentCard = ({ name, seqCompsStatus }: AgentCardProps): JSX.Element => {
       title={
         <Row justify='space-between'>
           <Col>
-            <Typography.Text>{name.toJSON()}</Typography.Text>
+            <Typography.Text>{agentPrefix.toJSON()}</Typography.Text>
           </Col>
           <Col>
             <Tooltip placement='bottom' title={'Add sequence component'}>
@@ -55,7 +58,7 @@ const AgentCards = (): JSX.Element => {
     return (
       <AgentCard
         key={index}
-        name={agentStatus.agentId.prefix}
+        agentPrefix={agentStatus.agentId.prefix}
         seqCompsStatus={agentStatus.seqCompsStatus}
       />
     )

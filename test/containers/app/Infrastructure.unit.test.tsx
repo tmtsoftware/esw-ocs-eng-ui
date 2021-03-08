@@ -1,16 +1,55 @@
-import type { HttpLocation } from '@tmtsoftware/esw-ts'
+import userEvent from '@testing-library/user-event'
+import {
+  AgentProvisionConfig,
+  AgentStatusResponse,
+  ComponentId,
+  ConfigData,
+  ConfigureResponse,
+  HttpLocation,
+  ObsMode,
+  ObsModesDetailsResponse,
+  Prefix,
+  ProvisionConfig,
+  SequenceComponentStatus
+} from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { when } from 'ts-mockito'
+import { deepEqual, mock, verify, when } from 'ts-mockito'
 import Infrastructure from '../../../src/containers/infrastructure/Infrastructure'
-import { SM_CONNECTION } from '../../../src/features/sm/constants'
+import {
+  PROVISION_CONF_PATH,
+  SM_CONNECTION
+} from '../../../src/features/sm/constants'
 import {
   cleanup,
   getMockServices,
   renderWithAuth,
   screen,
-  waitFor
+  waitFor,
+  within
 } from '../../utils/test-utils'
+
+const obsModeDetails: ObsModesDetailsResponse = {
+  _type: 'Success',
+  obsModes: [
+    {
+      obsMode: new ObsMode('ESW_DARKNIGHT'),
+      resources: ['ESW', 'TCS', 'WFOS'],
+      status: {
+        _type: 'Configurable'
+      },
+      sequencers: ['ESW', 'TCS', 'WFOS']
+    }
+  ]
+}
+
+const successResponse: ConfigureResponse = {
+  _type: 'Success',
+  masterSequencerComponentId: new ComponentId(
+    Prefix.fromString('ESW.primary'),
+    'Sequencer'
+  )
+}
 
 describe('Infrastructure page', () => {
   afterEach(() => {
@@ -18,19 +57,27 @@ describe('Infrastructure page', () => {
   })
 
   it('should render infrastructure page | ESW-442', async () => {
+    const mockServices = getMockServices()
+    const smService = mockServices.mock.smService
     renderWithAuth({
-      ui: <Infrastructure />
+      ui: <Infrastructure />,
+      mockClients: mockServices.serviceFactoryContext
     })
-
+    when(smService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [],
+      seqCompsWithoutAgent: []
+    })
     const subtitle = screen.getByText(/sequence manager/i)
     const header = screen.getByText(/manage infrastructure/i)
-    const provision = screen.getByRole('button', { name: /provision/i })
-    const configure = screen.getByRole('button', { name: /configure/i })
+    const provision = await screen.findByRole('button', { name: /provision/i })
+    const configure = await screen.findByRole('button', { name: /configure/i })
 
     expect(subtitle).to.exist
     expect(header).to.exist
     expect(provision).to.exist
     expect(configure).to.exist
+    verify(smService.getAgentStatus()).called()
   })
 
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
@@ -90,7 +137,6 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: <Infrastructure />,
-      loggedIn: true,
       mockClients: mockServices.serviceFactoryContext
     })
     expect(screen.getByText('Loading...')).to.exist
@@ -98,5 +144,111 @@ describe('Infrastructure page', () => {
     await waitFor(() => {
       expect(screen.getByText('Running on unknown')).to.exist
     })
+  })
+
+  it('should refetch agent cards after configure success | ESW-443', async () => {
+    const mockServices = getMockServices()
+    const smService = mockServices.mock.smService
+
+    const darkNight = new ObsMode('ESW_DARKNIGHT')
+
+    when(smService.getObsModesDetails()).thenResolve(obsModeDetails)
+    when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
+    when(smService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [],
+      seqCompsWithoutAgent: [mock<SequenceComponentStatus>()]
+    })
+    renderWithAuth({
+      ui: <Infrastructure />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+    const button = await screen.findByRole('button', { name: 'Configure' })
+    userEvent.click(button, { button: 1 })
+
+    //verify only configurable obsmodes are shown in the list
+    const dialog = await screen.findByRole('dialog', {
+      name: /Select an Observation Mode to configure:/i
+    })
+
+    const darkNightObsMode = await screen.findByRole('menuitem', {
+      name: /ESW_DARKNIGHT/i
+    })
+
+    //select item by clicking on it
+    userEvent.click(darkNightObsMode)
+    // wait for button to be enabled.
+    await waitFor(() => {
+      const configureButton = within(dialog).getByRole('button', {
+        name: /configure/i
+      }) as HTMLButtonElement
+      expect(configureButton.disabled).false
+      userEvent.click(configureButton)
+    })
+
+    verify(smService.getObsModesDetails()).called()
+
+    verify(smService.configure(deepEqual(darkNight))).called()
+    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
+      .exist
+    verify(smService.getAgentStatus()).called()
+    expect(screen.queryByRole('ESW_DARKNIGHT hasasd been configured.')).to.null
+  })
+
+  it('should refetch agent cards after provision success | ESW-443', async () => {
+    const mockServices = getMockServices()
+    const smService = mockServices.mock.smService
+    const configService = mockServices.mock.configService
+
+    const eswPrefixStr = 'ESW.machine1'
+    const tcsPrefixStr = 'TCS.machine1'
+
+    const confData: Record<string, number> = {
+      [eswPrefixStr]: 2,
+      [tcsPrefixStr]: 2
+    }
+
+    const provisionConfig = new ProvisionConfig(
+      Object.entries(confData).map(([pStr, num]) => {
+        return new AgentProvisionConfig(Prefix.fromString(pStr), num)
+      })
+    )
+    when(smService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [],
+      seqCompsWithoutAgent: []
+    })
+    when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
+      ConfigData.fromString(JSON.stringify(confData))
+    )
+
+    when(smService.provision(deepEqual(provisionConfig))).thenResolve({
+      _type: 'Success'
+    })
+    renderWithAuth({
+      ui: <Infrastructure />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    const provisionButton = await screen.findByRole('button', {
+      name: 'Provision'
+    })
+
+    //User clicks provision button
+    userEvent.click(provisionButton)
+
+    const document = await screen.findByRole('document')
+    const confirmButton = within(document).getByRole('button', {
+      name: /provision/i
+    })
+
+    userEvent.click(confirmButton)
+
+    await waitFor(() => {
+      expect(screen.getByText('Successfully provisioned')).to.exist
+    })
+
+    verify(smService.provision(deepEqual(provisionConfig))).called()
+    verify(smService.getAgentStatus()).called()
   })
 })

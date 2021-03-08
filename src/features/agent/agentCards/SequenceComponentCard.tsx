@@ -31,7 +31,7 @@ const SequencerComponent = ({
 
       <div className={styles.iconBoxSequencer}>
         <Tooltip placement='bottom' title={'Unload script'}>
-          <FileExcelOutlined className={styles.icon} />
+          <FileExcelOutlined className={styles.icon} role='unloadScriptIcon' />
         </Tooltip>
       </div>
     </Row>
@@ -54,7 +54,7 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
       </Col>
       <div className={styles.iconBox}>
         <Tooltip placement='bottom' title={'Load script'}>
-          <FileExcelOutlined className={styles.icon} />
+          <FileExcelOutlined className={styles.icon} role='loadScriptIcon' />
         </Tooltip>
       </div>
     </Row>
@@ -77,7 +77,7 @@ const SequenceComponentCard = ({
       bordered={false}
       extra={
         <Tooltip placement='bottom' title={'Delete sequence component'}>
-          <DeleteOutlined className={styles.icon} />
+          <DeleteOutlined className={styles.icon} role='deleteSeqCompIcon' />
         </Tooltip>
       }
     />

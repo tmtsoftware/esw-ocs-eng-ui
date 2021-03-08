@@ -24,6 +24,13 @@
     "importsNotUsedAsValues": "error",
     "strictNullChecks": true
   },
-  "include": ["src", "types", "test"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "types",
+    "test"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

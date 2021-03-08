@@ -2,7 +2,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Tooltip, Typography } from 'antd'
 import React from 'react'
-import { useSMAgentsStatus } from '../../sm/hooks/useSMAgentsStatus'
+import { useAgentsStatus } from '../../sm/hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
 import SequenceComponentCard from './SequenceComponentCard'
 
@@ -58,7 +58,7 @@ const AgentCard = ({
 }
 
 const AgentCards = (): JSX.Element => {
-  const { data } = useSMAgentsStatus()
+  const { data } = useAgentsStatus()
   const screen = useBreakpoint()
 
   const agentCards = data?.map((agentStatus, index) => {

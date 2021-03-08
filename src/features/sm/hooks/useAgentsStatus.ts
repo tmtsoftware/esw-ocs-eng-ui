@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from 'react-query'
 import { AGENTS_STATUS_KEY } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
-export const useSMAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
+export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(

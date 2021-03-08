@@ -3,9 +3,9 @@ import { Button, message } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import { useAgents } from '../../../agent/hooks/useAgents'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
+import { useAgentsList } from '../../../agent/hooks/useAgentsList'
 import { OBS_MODE_CONFIG } from '../../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
@@ -24,7 +24,7 @@ export const SpawnSMButton = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [agentPrefix, setAgentPrefix] = useState('')
 
-  const allAgentsQuery = useAgents()
+  const allAgentsQuery = useAgentsList()
   const agentServiceQuery = useAgentService()
 
   const spawnSmAction = useAgentServiceAction(

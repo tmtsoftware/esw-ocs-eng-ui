@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks/dom'
 import { HttpConnection, HttpLocation, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import { verify, when } from 'ts-mockito'
-import { useAgents } from '../../../../src/features/agent/hooks/useAgents'
+import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
 import {
   getContextWithQueryClientProvider,
   getMockServices
@@ -27,7 +27,7 @@ describe('useAgents', () => {
       mockServices.serviceFactoryContext
     )
 
-    const { result, waitFor } = renderHook(() => useAgents(), {
+    const { result, waitFor } = renderHook(() => useAgentsList(), {
       wrapper: ContextAndQueryClientProvider
     })
 

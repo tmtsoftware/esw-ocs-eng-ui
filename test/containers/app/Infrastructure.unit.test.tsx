@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
+  AgentStatus,
   AgentStatusResponse,
   ComponentId,
   ConfigData,
@@ -41,6 +42,26 @@ const obsModeDetails: ObsModesDetailsResponse = {
       sequencers: ['ESW', 'TCS', 'WFOS']
     }
   ]
+}
+
+const agentStatus: AgentStatus = {
+  agentId: new ComponentId(new Prefix('APS', 'jdks'), 'Machine'),
+  seqCompsStatus: [
+    {
+      seqCompId: new ComponentId(
+        new Prefix('ESW', 'DARKNIGHT'),
+        'SequenceComponent'
+      ),
+      sequencerLocation: []
+    }
+  ]
+}
+
+const smLocation: HttpLocation = {
+  _type: 'HttpLocation',
+  connection: SM_CONNECTION,
+  uri: 'url',
+  metadata: { prefix: 'ESW.primary' }
 }
 
 const successResponse: ConfigureResponse = {
@@ -149,16 +170,20 @@ describe('Infrastructure page', () => {
   it('should refetch agent cards after configure success | ESW-443', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
+    const locationService = mockServices.mock.locationService
+
+    when(locationService.find(SM_CONNECTION)).thenResolve(smLocation)
 
     const darkNight = new ObsMode('ESW_DARKNIGHT')
 
+    const agentStatusSuccess: AgentStatusResponse = {
+      _type: 'Success',
+      agentStatus: [agentStatus],
+      seqCompsWithoutAgent: []
+    }
     when(smService.getObsModesDetails()).thenResolve(obsModeDetails)
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
-    when(smService.getAgentStatus()).thenResolve({
-      _type: 'Success',
-      agentStatus: [],
-      seqCompsWithoutAgent: [mock<SequenceComponentStatus>()]
-    })
+    when(smService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
       ui: <Infrastructure />,
       mockClients: mockServices.serviceFactoryContext
@@ -192,7 +217,7 @@ describe('Infrastructure page', () => {
     expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
       .exist
     verify(smService.getAgentStatus()).called()
-    expect(screen.queryByRole('ESW_DARKNIGHT hasasd been configured.')).to.null
+    expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
 
   it('should refetch agent cards after provision success | ESW-443', async () => {

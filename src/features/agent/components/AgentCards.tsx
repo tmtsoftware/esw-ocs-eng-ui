@@ -35,7 +35,11 @@ const AgentCard = ({
       title={
         <Row justify='space-between'>
           <Col>
-            <Typography.Text>{agentPrefix.toJSON()}</Typography.Text>
+            <Typography.Text>
+              {agentPrefix.componentName.toLowerCase() === 'unknown'
+                ? 'Unknown'
+                : agentPrefix.toJSON()}
+            </Typography.Text>
           </Col>
           <Col>
             <Tooltip placement='bottom' title={'Add sequence component'}>
@@ -69,7 +73,7 @@ const AgentCards = (): JSX.Element => {
 
   const [columnCount, span] = screen.xl ? [4, 6] : screen.lg ? [3, 8] : [2, 12]
 
-  const columns = agentCards?.reduce((columns, agentCard, index) => {
+  const agents = agentCards?.reduce((columns, agentCard, index) => {
     const currentColumn = index % columnCount
     if (!columns[currentColumn]) {
       columns[currentColumn] = []
@@ -80,9 +84,9 @@ const AgentCards = (): JSX.Element => {
 
   return (
     <Row justify='start' gutter={[24, 24]} wrap={true} className={styles.grid}>
-      {columns?.map((value, index) => (
+      {agents?.map((agent, index) => (
         <Col key={index} span={span}>
-          {value}
+          {agent}
         </Col>
       ))}
     </Row>

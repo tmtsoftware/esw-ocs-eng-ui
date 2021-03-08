@@ -1,4 +1,4 @@
-import { DeleteOutlined, FileExcelOutlined } from '@ant-design/icons'
+import { DeleteOutlined, FileAddOutlined, FileExcelOutlined } from '@ant-design/icons'
 import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
 import { Card, Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
@@ -14,7 +14,7 @@ type TitleProps = {
   obsMode: string | undefined
 }
 
-const SequencerComponent = ({
+const Sequencer = ({
   seqCompId,
   obsMode
 }: TitleProps): JSX.Element => {
@@ -40,7 +40,7 @@ const SequencerComponent = ({
 
 const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
   if (obsMode) {
-    return <SequencerComponent seqCompId={seqCompId} obsMode={obsMode} />
+    return <Sequencer seqCompId={seqCompId} obsMode={obsMode} />
   }
 
   return (
@@ -54,7 +54,7 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
       </Col>
       <div className={styles.iconBox}>
         <Tooltip placement='bottom' title={'Load script'}>
-          <FileExcelOutlined className={styles.icon} role='loadScriptIcon' />
+          <FileAddOutlined className={styles.icon} role='loadScriptIcon' />
         </Tooltip>
       </div>
     </Row>

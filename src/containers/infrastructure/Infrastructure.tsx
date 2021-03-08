@@ -1,6 +1,6 @@
 import { Card, PageHeader, Space, Typography } from 'antd'
 import React from 'react'
-import AgentCards from '../../features/agent/agentCards/AgentCards'
+import AgentCards from '../../features/agent/components/AgentCards'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
 import styles from './infrastructure.module.css'
 import SmActions from './SMActions'

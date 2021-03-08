@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from 'react-query'
-import { ProvisionActionQueryKey } from '../hooks/useProvisionAction'
+import { PROVISION_STATUS_KEY } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
 export const useProvisionStatus = (
@@ -8,7 +8,7 @@ export const useProvisionStatus = (
   const { data: smService } = useSMService(useErrorBoundary)
 
   return useQuery(
-    ProvisionActionQueryKey,
+    PROVISION_STATUS_KEY,
     async () => {
       const agentStatus = await smService?.getAgentStatus()
 

@@ -84,7 +84,7 @@ export const ProvisionButton = (): JSX.Element => {
   const smService = useSMService(useErrorBoundary)
 
   const fetchProvisionConfAction = useAction({
-    queryKey: ['provisionConfig'],
+    invalidateKeysOnSuccess: ['provisionConfig'], // FIXME: what us 'provisionConfig', do we need that?
     mutationFn: fetchProvisionConf,
     useErrorBoundary,
     onSuccess: async (data) => {

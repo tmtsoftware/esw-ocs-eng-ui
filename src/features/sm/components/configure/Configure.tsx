@@ -7,6 +7,7 @@ import { Button, message } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { useAction } from '../../../common/hooks/useAction'
+import { AGENTS_STATUS_KEY } from '../../../queryKeys'
 import { useSMService } from '../../hooks/useSMService'
 
 type ConfigureProps = {
@@ -49,7 +50,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const configureAction = useAction({
     mutationFn: configure,
-    queryKey: ['ConfigureAction', 'AgentsStatus'],
+    invalidateKeysOnSuccess: ['ConfigureAction', AGENTS_STATUS_KEY], // FIXME: what us 'ConfigureAction', do we need that?
     successMsg: `${obsMode?.name} has been configured.`,
     errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false
@@ -75,7 +76,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   }
 
   const fetchConfigureConfAction = useAction({
-    queryKey: ['Obsmodes'],
+    invalidateKeysOnSuccess: ['Obsmodes'], // FIXME: what is 'Obsmodes', do we need that?
     mutationFn: fetchObsModesDetails,
     useErrorBoundary: false,
     onSuccess: async (data) => {

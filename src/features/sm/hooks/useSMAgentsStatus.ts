@@ -1,16 +1,17 @@
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from 'react-query'
+import { AGENTS_STATUS_KEY } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
 export const useSMAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(
-    'AgentsStatus',
+    AGENTS_STATUS_KEY,
     async () => {
       const agentStatus = await smService?.getAgentStatus()
       if (agentStatus?._type === 'Success') {
-        if (agentStatus.seqCompsWithoutAgent.length === 0){
+        if (agentStatus.seqCompsWithoutAgent.length === 0) {
           return agentStatus.agentStatus
         }
         const unknownAgentData: AgentStatus = {

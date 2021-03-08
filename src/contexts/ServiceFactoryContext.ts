@@ -17,7 +17,7 @@ export type ServiceFactoryContextType = {
 const createServiceFactories = (
   tokenFactory: TokenFactory
 ): ServiceFactoryContextType => ({
-  locationServiceFactory: () => LocationService(),
+  locationServiceFactory: () => LocationService(tokenFactory),
   agentServiceFactory: () => AgentService(tokenFactory),
   configServiceFactory: () => ConfigService(tokenFactory),
   smServiceFactory: () => SequenceManagerService(tokenFactory)

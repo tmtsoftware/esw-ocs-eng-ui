@@ -107,7 +107,9 @@ describe('ProvisionButton component', () => {
     verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
     await waitFor(() => {
-      expect(getByText(/error occurred/i)).to.exist
+      expect(
+        getByText(/Failed to fetch provision config, reason: error occurred/i)
+      ).to.exist
     })
 
     verify(smService.provision(anything())).never()

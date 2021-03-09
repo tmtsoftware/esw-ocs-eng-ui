@@ -3,10 +3,11 @@ import {
   ObsModeDetails,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { Button, message } from 'antd'
+import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { useAction } from '../../../common/hooks/useAction'
+import { errorMessage, successMessage } from '../../../common/message'
 import { AGENTS_STATUS_KEY } from '../../../queryKeys'
 import { useSMService } from '../../hooks/useSMService'
 
@@ -50,9 +51,9 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const configureAction = useAction({
     mutationFn: configure,
+    onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
+    onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),
     invalidateKeysOnSuccess: [AGENTS_STATUS_KEY],
-    successMsg: `${obsMode?.name} has been configured.`,
-    errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false
   })
 
@@ -65,25 +66,27 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
         case 'Success':
           return response
         case 'Failed':
-          message.error(response.msg)
+          errorMessage(response.msg)
           break
         case 'LocationServiceError':
-          message.error(response.reason)
+          errorMessage(response.reason)
           break
       }
     }
     throw Error('Failed to fetch ObsModes details')
   }
 
+  // FIXME: why is it mutation instead of query?
   const fetchConfigureConfAction = useAction({
     mutationFn: fetchObsModesDetails,
-    useErrorBoundary: false,
     onSuccess: async (data) => {
       setObsModesDetails(
         data.obsModes.filter((x) => x.status._type === 'Configurable')
       )
       setObsMode(undefined) // on success clear the local selected obsMode
-    }
+    },
+    onError: (e) => errorMessage('Failed to fetch obs mode details', e),
+    useErrorBoundary: false
   })
 
   const handleModalOk = () => {
@@ -93,7 +96,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
       }
       setModalVisibility(false)
     } else {
-      message.error(`Please select observation mode!`)
+      errorMessage(`Please select observation mode!`)
     }
   }
 

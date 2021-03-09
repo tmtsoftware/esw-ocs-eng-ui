@@ -5,9 +5,10 @@ import {
   ProvisionConfig,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { Button, message, Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import React, { useState } from 'react'
 import { useAction } from '../../../common/hooks/useAction'
+import { errorMessage } from '../../../common/message'
 import { useConfigService } from '../../../config/hooks/useConfigService'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
@@ -85,15 +86,16 @@ export const ProvisionButton = (): JSX.Element => {
 
   const fetchProvisionConfAction = useAction({
     mutationFn: fetchProvisionConf,
-    useErrorBoundary,
     onSuccess: async (data) => {
       if (Object.values(data).length <= 0) {
-        await message.error('Provision config is empty')
+        await errorMessage('Provision config is empty')
       } else {
         setProvisionRecord(data)
         setModalVisibility(true)
       }
-    }
+    },
+    onError: (e) => errorMessage('Failed to fetch provision config', e),
+    useErrorBoundary
   })
 
   const provisionAction = useProvisionAction(

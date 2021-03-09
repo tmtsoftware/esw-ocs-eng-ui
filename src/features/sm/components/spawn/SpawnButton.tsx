@@ -1,11 +1,12 @@
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
-import { Button, message } from 'antd'
+import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
 import { useAgentsList } from '../../../agent/hooks/useAgentsList'
+import { errorMessage } from '../../../common/message'
 import { OBS_MODE_CONFIG } from '../../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
@@ -39,7 +40,7 @@ export const SpawnSMButton = (): JSX.Element => {
         spawnSmAction.mutateAsync(agentServiceQuery.data)
       setModalVisibility(false)
     } else {
-      message.error(`Please select agent!`)
+      errorMessage(`Please select agent!`)
     }
   }
 
@@ -47,7 +48,7 @@ export const SpawnSMButton = (): JSX.Element => {
     if (allAgentsQuery.data && allAgentsQuery.data.length !== 0) {
       setModalVisibility(true)
     } else {
-      message.error('Agents are not running. Please start an agent first.')
+      errorMessage('Agents are not running. Please start an agent first.')
     }
   }
   const handleModalCancel = () => setModalVisibility(false)

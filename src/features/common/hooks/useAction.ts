@@ -1,4 +1,3 @@
-import { message } from 'antd'
 import {
   QueryKey,
   useMutation,
@@ -6,23 +5,21 @@ import {
   useQueryClient
 } from 'react-query'
 
-interface useActionProps<S, T> {
-  invalidateKeysOnSuccess?: QueryKey[]
+interface ActionProps<S, T> {
   mutationFn: (agent: S) => Promise<T>
-  successMsg?: string
-  errorMsg?: string
+  onSuccess: (a: T) => void
+  onError: (e: unknown) => void
+  invalidateKeysOnSuccess?: QueryKey[]
   useErrorBoundary?: boolean
-  onSuccess?: (a: T) => void
 }
 
 export const useAction = <S, T>({
-  invalidateKeysOnSuccess,
   mutationFn,
-  successMsg,
-  errorMsg,
-  useErrorBoundary = true,
-  onSuccess
-}: useActionProps<S, T>): UseMutationResult<T, unknown, S> => {
+  onSuccess,
+  onError,
+  invalidateKeysOnSuccess,
+  useErrorBoundary = true
+}: ActionProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
   return useMutation(mutationFn, {
@@ -31,15 +28,9 @@ export const useAction = <S, T>({
         (await Promise.all(
           invalidateKeysOnSuccess.map((key) => qc.invalidateQueries(key))
         ))
-      if (successMsg) message.success(successMsg)
-      onSuccess?.(data)
+      onSuccess(data)
     },
-    onError: (e) =>
-      Promise.resolve(
-        message.error(
-          `${errorMsg}, reason: ${((e as unknown) as Error).message}`
-        )
-      ),
+    onError: (e) => onError(e),
     useErrorBoundary
   })
 }

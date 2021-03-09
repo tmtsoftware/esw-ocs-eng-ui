@@ -1,7 +1,7 @@
 import type { ConfigService } from '@tmtsoftware/esw-ts'
-import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
+import { errorMessage } from '../../common/message'
 import { CONFIG_SERVICE_KEY } from '../../queryKeys'
 
 export const useConfigService = (
@@ -10,7 +10,7 @@ export const useConfigService = (
   const { configServiceFactory } = useServiceFactory()
   return useQuery(CONFIG_SERVICE_KEY, configServiceFactory, {
     useErrorBoundary,
-    onError: message.error,
+    onError: errorMessage,
     retry: 1
   })
 }

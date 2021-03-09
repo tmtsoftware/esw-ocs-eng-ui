@@ -7,7 +7,6 @@ export const useAgentService = (): UseQueryResult<AgentService> => {
   const { agentServiceFactory } = useServiceFactory()
   return useQuery(AGENT_SERVICE_KEY, agentServiceFactory, {
     useErrorBoundary: true,
-    // FIXME Why 1? can be set to false if want to disable
     retry: 1
   })
 }

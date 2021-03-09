@@ -11,7 +11,6 @@ export const useConfigService = (
   return useQuery(CONFIG_SERVICE_KEY, configServiceFactory, {
     useErrorBoundary,
     onError: message.error,
-    // FIXME Why 1? can be set to false if want to disable
     retry: 1
   })
 }

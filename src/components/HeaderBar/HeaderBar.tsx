@@ -44,7 +44,6 @@ const HeaderBar = (): JSX.Element => {
   return (
     <>
       {auth?.isAuthenticated() ? <Logout /> : <Login />}
-      {/* TODO should we use history.push ? */}
       <Link to={HOME}>
         <img role='tmt_logo' src={TMTLogo} className={styles.logo} />
       </Link>

@@ -61,7 +61,6 @@ type MockServices = {
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
-  //FIXME: TypeError: Cannot read property 'map' of null at Object.getAllAgentPrefix while running tests
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
 

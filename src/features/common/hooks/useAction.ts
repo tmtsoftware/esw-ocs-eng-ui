@@ -7,7 +7,7 @@ import {
 } from 'react-query'
 
 interface useActionProps<S, T> {
-  invalidateKeysOnSuccess: QueryKey[]
+  invalidateKeysOnSuccess?: QueryKey[]
   mutationFn: (agent: S) => Promise<T>
   successMsg?: string
   errorMsg?: string
@@ -27,9 +27,10 @@ export const useAction = <S, T>({
 
   return useMutation(mutationFn, {
     onSuccess: async (data) => {
-      await Promise.all(
-        invalidateKeysOnSuccess.map((key) => qc.invalidateQueries(key))
-      )
+      invalidateKeysOnSuccess &&
+        (await Promise.all(
+          invalidateKeysOnSuccess.map((key) => qc.invalidateQueries(key))
+        ))
       if (successMsg) message.success(successMsg)
       onSuccess?.(data)
     },

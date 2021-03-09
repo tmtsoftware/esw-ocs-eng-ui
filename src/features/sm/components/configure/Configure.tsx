@@ -50,7 +50,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const configureAction = useAction({
     mutationFn: configure,
-    invalidateKeysOnSuccess: ['ConfigureAction', AGENTS_STATUS_KEY], // FIXME: what us 'ConfigureAction', do we need that?
+    invalidateKeysOnSuccess: [AGENTS_STATUS_KEY],
     successMsg: `${obsMode?.name} has been configured.`,
     errorMsg: `Failed to configure ${obsMode?.name}`,
     useErrorBoundary: false
@@ -76,7 +76,6 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   }
 
   const fetchConfigureConfAction = useAction({
-    invalidateKeysOnSuccess: ['Obsmodes'], // FIXME: what is 'Obsmodes', do we need that?
     mutationFn: fetchObsModesDetails,
     useErrorBoundary: false,
     onSuccess: async (data) => {

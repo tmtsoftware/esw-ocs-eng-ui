@@ -59,8 +59,9 @@ const sanitizeTestSuite = (suite: TestSuiteResult): string[] => {
     suite.tests.forEach((test) => {
       const [testName, storyIds] = test.name.split(PIPE)
       const name = suite.name + SPACE + testName
-      if (Boolean(storyIds.trim())) {
+      if (Boolean(storyIds)) {
         storyIds
+          .trim()
           .split(COMMA)
           .forEach((storyId: string) =>
             listOfStrings.push(buildResultText(storyId, name, test.passed))

@@ -18,10 +18,20 @@
   align-items: center;
   border-left: 1px solid #d9d9d9;
 }
-
-.icon {
+.agentIcon {
+  font-size: 1.35rem;
+}
+.icon, .deleteIcon {
   padding: 0.25rem 0.5rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
+}
+
+.icon:hover, .agentIcon:hover {
+  color: #1890ff;
+}
+
+.deleteIcon:hover {
+  color: #FF4D4F;
 }
 
 .seqComp,

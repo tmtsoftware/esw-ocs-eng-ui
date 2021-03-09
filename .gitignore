@@ -14,3 +14,4 @@ yarn.lock
 target
 **/web_modules/*
 .metals
+testStoryMappping.txt

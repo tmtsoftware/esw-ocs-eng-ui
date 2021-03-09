@@ -5,13 +5,11 @@ import {
   ComponentId,
   Prefix,
   ConfigureResponse,
-  SequenceManagerService,
-  SequenceComponentStatus
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, mock, verify, when } from 'ts-mockito'
-import Infrastructure from '../../../../../src/containers/infrastructure/Infrastructure'
+import { deepEqual, verify, when } from 'ts-mockito'
 import Configure from '../../../../../src/features/sm/components/configure/Configure'
 import {
   getMockServices,

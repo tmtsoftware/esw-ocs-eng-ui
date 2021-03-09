@@ -10,12 +10,11 @@ import {
   ObsMode,
   ObsModesDetailsResponse,
   Prefix,
-  ProvisionConfig,
-  SequenceComponentStatus
+  ProvisionConfig
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, mock, verify, when } from 'ts-mockito'
+import { deepEqual, verify, when } from 'ts-mockito'
 import Infrastructure from '../../../src/containers/infrastructure/Infrastructure'
 import {
   PROVISION_CONF_PATH,

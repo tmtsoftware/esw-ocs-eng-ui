@@ -44,8 +44,9 @@ const AgentCard = ({
           <Col>
             <Tooltip placement='bottom' title={'Add sequence component'}>
               <PlusCircleOutlined
-                style={{ fontSize: '1.35rem' }}
+                className={styles.agentIcon}
                 role='addSeqCompIcon'
+                onClick={() => ({})}
               />
             </Tooltip>
           </Col>

@@ -37,6 +37,7 @@ const ObservationTab = ({
     const defaultObsModeForTab = data[0]
     setCurrentObsMode(defaultObsModeForTab)
     // intentionally kept dependency array empty as we don't want to override user's selected obsMode
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

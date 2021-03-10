@@ -25,7 +25,7 @@ describe('', () => {
 
   const locServiceError: ShutdownSequenceComponentResponse = {
     _type: 'LocationServiceError',
-    reason: 'Esw.sequence_manger is not found'
+    reason: 'ESW.sequence_manager is not found'
   }
 
   const shutdownRes: ShutdownSequenceComponentResponse = {
@@ -36,25 +36,25 @@ describe('', () => {
     string,
     string,
     Promise<ShutdownSequenceComponentResponse>,
-    RegExp
+    string
   ][] = [
     [
       'error',
       'Unhandled',
       Promise.resolve(unhandled),
-      /shutdownallsequencecomponents message type is not supported in processing state/i
+      'Failed to shutdown all Sequence Components, reason: ShutdownAllSequenceComponents message type is not supported in Processing state'
     ],
     [
       'error',
       'LocationServiceError',
       Promise.resolve(locServiceError),
-      /esw\.sequence_manger is not found/i
+      'Failed to shutdown all Sequence Components, reason: ESW.sequence_manager is not found'
     ],
     [
       'success',
       'Success',
       Promise.resolve(shutdownRes),
-      /successfully shutdown all the sequence components/i
+      'Successfully shutdown all the Sequence Components'
     ]
   ]
 
@@ -80,7 +80,7 @@ describe('', () => {
       const modalDocument = screen.getByRole('dialog')
 
       const modalShutdownButton = within(modalDocument).getByRole('button', {
-        name: /shutdown/i
+        name: 'Shutdown'
       })
 
       //User clicks modal's shutdown button

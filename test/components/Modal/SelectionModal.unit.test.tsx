@@ -16,7 +16,7 @@ describe('SelectionModal', () => {
     }
     const { getByText, getByRole } = render(<SelectionModal {...modalProps} />)
 
-    const title = getByText(/some-title/i)
+    const title = getByText('some-title')
     const data1 = getByRole('menuitem', {
       name: 'data-1'
     })
@@ -64,8 +64,8 @@ describe('SelectionModal', () => {
     }
     const { getByRole } = render(<SelectionModal {...modalProps} />)
 
-    const okButton = getByRole('button', { name: /start/i })
-    const cancelButton = getByRole('button', { name: /cancel/i })
+    const okButton = getByRole('button', { name: 'Start' })
+    const cancelButton = getByRole('button', { name: 'Cancel' })
 
     userEvent.click(okButton)
     expect(value).eq('Ok')
@@ -88,7 +88,7 @@ describe('SelectionModal', () => {
     }
     const { getByRole } = render(<SelectionModal {...modalProps} />)
 
-    const okButton = getByRole('button', { name: /start/i })
+    const okButton = getByRole('button', { name: 'Start' })
 
     userEvent.click(okButton)
     expect(value).eq('value not changed')
@@ -107,7 +107,7 @@ describe('SelectionModal', () => {
     }
 
     const { queryByText } = render(<SelectionModal {...modalProps} />)
-    expect(queryByText(/some-title/i)).to.null
+    expect(queryByText('some-title')).to.null
   })
 
   it('should show empty if data is not present | ESW-441', () => {
@@ -126,7 +126,7 @@ describe('SelectionModal', () => {
       <SelectionModal {...modalProps} />
     )
 
-    expect(getByText(/No Data/i)).to.exist
+    expect(getByText('No Data')).to.exist
     expect(queryByRole('menuitem')).to.null
     expect(
       (queryByRole('button', { name: 'Start' }) as HTMLButtonElement).disabled

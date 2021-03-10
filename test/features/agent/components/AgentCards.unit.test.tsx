@@ -60,18 +60,18 @@ describe('Agents Grid View', () => {
       mockClients: mockServices.serviceFactoryContext
     })
     await waitFor(() => {
-      return screen.getByText(/esw.machine1/i)
+      return screen.getByText('ESW.machine1')
     })
-    expect(screen.getByText(/esw.machine1/i)).exist
-    expect(screen.getByText(/esw.esw1/i)).exist
-    expect(screen.getByText(/esw.esw2/i)).exist
-    expect(screen.getByText(/esw.darkNight/i)).exist
+    expect(screen.getByText('ESW.machine1')).exist
+    expect(screen.getByText('ESW.ESW1')).exist
+    expect(screen.getByText('ESW.ESW2')).exist
+    expect(screen.getByText('[ESW.darkNight]')).exist
     expect(screen.getAllByRole('deleteSeqCompIcon')).length(2)
     expect(screen.getByRole('addSeqCompIcon')).exist
 
-    // esw.esw1 is with sequencer hence unload icon will appear
+    // ESW.esw1 is with sequencer hence unload icon will appear
     expect(screen.getByRole('unloadScriptIcon')).exist
-    // esw.esw2 is without sequencer hence load icon will appear
+    // ESW.esw2 is without sequencer hence load icon will appear
     expect(screen.getByRole('loadScriptIcon')).exist
     verify(smService.getAgentStatus()).called()
   })
@@ -86,10 +86,10 @@ describe('Agents Grid View', () => {
       mockClients: mockServices.serviceFactoryContext
     })
     await waitFor(() => {
-      return screen.getByText(/esw.machine1/i)
+      return screen.getByText('ESW.machine1')
     })
-    expect(screen.getByText(/esw.machine1/i)).exist
-    expect(screen.getByText(/esw.machine2/i)).exist
+    expect(screen.getByText('ESW.machine1')).exist
+    expect(screen.getByText('ESW.machine2')).exist
     expect(screen.getAllByRole('deleteSeqCompIcon')).length(2)
     expect(screen.getAllByRole('addSeqCompIcon')).length(2)
     verify(smService.getAgentStatus()).called()
@@ -114,11 +114,11 @@ describe('Agents Grid View', () => {
       mockClients: mockServices.serviceFactoryContext
     })
     await waitFor(() => {
-      return screen.getByText(/esw.machine1/i)
+      return screen.getByText('ESW.machine1')
     })
-    expect(screen.getByText(/esw.machine1/i)).exist
-    expect(screen.getByText(/IRIS.comp1/i)).exist
-    expect(screen.getByText(/unknown/i)).exist
+    expect(screen.getByText('ESW.machine1')).exist
+    expect(screen.getByText('IRIS.comp1')).exist
+    expect(screen.getByText('Unknown')).exist
     verify(smService.getAgentStatus()).called()
   })
 
@@ -131,9 +131,9 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-    expect(screen.queryByText(/esw.machine1/i)).null
-    expect(screen.queryByText(/IRIS.comp1/i)).null
-    expect(screen.queryByText(/unknown/i)).null
+    expect(screen.queryByText('ESW.machine1')).null
+    expect(screen.queryByText('IRIS.comp1')).null
+    expect(screen.queryByText('unknown')).null
     verify(smService.getAgentStatus()).called()
   })
 
@@ -148,9 +148,9 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-    expect(screen.queryByText(/esw.machine1/i)).null
-    expect(screen.queryByText(/IRIS.comp1/i)).null
-    expect(screen.queryByText(/unknown/i)).null
+    expect(screen.queryByText('ESW.machine1')).null
+    expect(screen.queryByText('IRIS.comp1')).null
+    expect(screen.queryByText('unknown')).null
     verify(smService.getAgentStatus()).called()
   })
 })

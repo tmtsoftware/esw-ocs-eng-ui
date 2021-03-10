@@ -81,10 +81,10 @@ describe('Infrastructure page', () => {
       agentStatus: [],
       seqCompsWithoutAgent: []
     })
-    const subtitle = screen.getByText(/sequence manager/i)
-    const header = screen.getByText(/manage infrastructure/i)
-    const provision = await screen.findByRole('button', { name: /provision/i })
-    const configure = await screen.findByRole('button', { name: /configure/i })
+    const subtitle = screen.getByText('Sequence Manager')
+    const header = screen.getByText('Manage Infrastructure')
+    const provision = await screen.findByRole('button', { name: 'Provision' })
+    const configure = await screen.findByRole('button', { name: 'Configure' })
 
     expect(subtitle).to.exist
     expect(header).to.exist
@@ -185,11 +185,11 @@ describe('Infrastructure page', () => {
 
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {
-      name: /Select an Observation Mode to configure:/i
+      name: 'Select an Observation Mode to configure:'
     })
 
     const darkNightObsMode = await screen.findByRole('menuitem', {
-      name: /ESW_DARKNIGHT/i
+      name: 'ESW_DARKNIGHT'
     })
 
     //select item by clicking on it
@@ -197,7 +197,7 @@ describe('Infrastructure page', () => {
     // wait for button to be enabled.
     await waitFor(() => {
       const configureButton = within(dialog).getByRole('button', {
-        name: /configure/i
+        name: 'Configure'
       }) as HTMLButtonElement
       expect(configureButton.disabled).false
       userEvent.click(configureButton)
@@ -256,7 +256,7 @@ describe('Infrastructure page', () => {
 
     const document = await screen.findByRole('document')
     const confirmButton = within(document).getByRole('button', {
-      name: /provision/i
+      name: 'Provision'
     })
 
     userEvent.click(confirmButton)

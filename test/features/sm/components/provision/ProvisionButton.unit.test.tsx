@@ -64,7 +64,7 @@ describe('ProvisionButton component', () => {
 
     const document = screen.getByRole('document')
     const confirmButton = within(document).getByRole('button', {
-      name: /provision/i
+      name: 'Provision'
     })
 
     userEvent.click(confirmButton)
@@ -99,7 +99,7 @@ describe('ProvisionButton component', () => {
       () =>
         expect(
           queryByRole('dialog', {
-            name: /provision config/i
+            name: 'Provision Config'
           })
         ).to.null
     )
@@ -108,25 +108,29 @@ describe('ProvisionButton component', () => {
 
     await waitFor(() => {
       expect(
-        getByText(/Failed to fetch provision config, reason: error occurred/i)
+        getByText('Failed to fetch provision config, reason: error occurred')
       ).to.exist
     })
 
     verify(smService.provision(anything())).never()
   })
 
-  const provisionConfTestData: [string, RegExp, string][] = [
+  const provisionConfTestData: [string, string, string][] = [
     [
       'esw.esw-machine',
-      /component name esw-machine has '-'/i,
+      "Failed to fetch provision config, reason: Requirement failed - component name esw-machine has '-'",
       'prefix(esw.esw-machine)'
     ],
     [
       'esw.esw_machine ',
-      /component name esw_machine has leading\/trailing whitespace/i,
-      'prefix(esw.esw_machine )'
+      'Failed to fetch provision config, reason: Requirement failed - component name esw_machine has leading/trailing whitespace',
+      'prefix(esw.esw_machine)'
     ],
-    ['rms.esw_machine', /Subsystem: rms is invalid/i, 'subsystem(rms)']
+    [
+      'rms.esw_machine',
+      'Failed to fetch provision config, reason: Subsystem: rms is invalid',
+      'subsystem(rms)'
+    ]
   ]
 
   provisionConfTestData.forEach(([agentPrefix, errMsg, statement]) => {
@@ -157,7 +161,7 @@ describe('ProvisionButton component', () => {
         () =>
           expect(
             queryByRole('dialog', {
-              name: /provision config/i
+              name: 'Provision config'
             })
           ).to.null
       )
@@ -181,7 +185,7 @@ describe('ProvisionButton component', () => {
 
   const locServiceError: ProvisionResponse = {
     _type: 'LocationServiceError',
-    reason: 'Esw.sequence_manger is not found'
+    reason: 'ESW.sequence_manager is not found'
   }
 
   const spawnSeqCompError: ProvisionResponse = {
@@ -197,29 +201,33 @@ describe('ProvisionButton component', () => {
   const provisionErrorTestData: [
     string,
     Promise<ProvisionResponse>,
-    RegExp
+    string
   ][] = [
     [
       'Unhandled',
       Promise.resolve(unhandled),
-      /provision message type is not supported in processing state/i
+      'Failed to provision, reason: Provision message type is not supported in Processing state'
     ],
     [
       'LocationServiceError',
       Promise.resolve(locServiceError),
-      /esw\.sequence_manger is not found/i
+      'Failed to provision, reason: ESW.sequence_manager is not found'
     ],
     [
       'SpawningSequenceComponentsFailed',
       Promise.resolve(spawnSeqCompError),
-      /failed to spawn/i
+      'Failed to provision, reason: failed to spawn'
     ],
     [
       'CouldNotFindMachines',
       Promise.resolve(couldNotFindMachine),
-      /could not find following machine: esw.esw_machine/i
+      'Failed to provision, reason: Could not find following machine: ESW.esw_machine'
     ],
-    ['Exception', Promise.reject(Error('error occured')), /error occured/i]
+    [
+      'Exception',
+      Promise.reject(Error('error occured')),
+      'Failed to provision, reason: error occured'
+    ]
   ]
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
@@ -253,7 +261,7 @@ describe('ProvisionButton component', () => {
 
       const document = screen.getByRole('document')
       const confirmButton = within(document).getByRole('button', {
-        name: /provision/i
+        name: 'Provision'
       })
 
       userEvent.click(confirmButton)
@@ -284,15 +292,15 @@ describe('ProvisionButton component', () => {
     getByRole: (con: ByRoleMatcher, name: string | RegExp) => HTMLElement
   ) => {
     await waitFor(
-      () => expect(getByRole('dialog', /provision config/i)).to.exist
+      () => expect(getByRole('dialog', 'Provision Configuration:')).to.exist
     )
 
-    const dialog = getByRole('dialog', /provision config/i)
+    const dialog = getByRole('dialog', 'Provision Configuration:')
 
     const items = await waitFor(() => [
       within(dialog).getByRole('table'),
-      within(dialog).getByRole('button', { name: /provision/i }),
-      within(dialog).getByRole('button', { name: /cancel/i })
+      within(dialog).getByRole('button', { name: 'Provision' }),
+      within(dialog).getByRole('button', { name: 'Cancel' })
     ])
 
     items.forEach((item) => {

@@ -23,7 +23,7 @@ describe('ShutdownSMButton', () => {
     })
 
     const shutdownButton = await screen.findByRole('button', {
-      name: /shutdown/i
+      name: 'Shutdown'
     })
 
     //User clicks shutdown button
@@ -33,7 +33,7 @@ describe('ShutdownSMButton', () => {
     await waitFor(() => expect(screen.getByText(modalTitle)).to.exist)
     const modalDocument = screen.getByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
-      name: /shutdown/i
+      name: 'Shutdown'
     })
 
     //User clicks modal's shutdown button
@@ -64,7 +64,7 @@ describe('ShutdownSMButton', () => {
     })
 
     const shutdownButton = await screen.findByRole('button', {
-      name: /shutdown/i
+      name: 'Shutdown'
     })
 
     //User clicks shutdown button
@@ -73,7 +73,7 @@ describe('ShutdownSMButton', () => {
     //Modal will appear with shutdown button
     const modalDocument = await screen.findByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
-      name: /shutdown/i
+      name: 'Shutdown'
     })
 
     //User clicks modal's shutdown button

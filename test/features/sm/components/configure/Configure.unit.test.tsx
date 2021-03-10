@@ -136,11 +136,11 @@ describe('Configure button', () => {
     await openConfigureModalAndClickConfigureButton()
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {
-      name: /Select an Observation Mode to configure:/i
+      name: 'Select an Observation Mode to configure:'
     })
-    expect(within(dialog).queryByRole('menuitem', { name: /ESW_RANDOM/i })).to
+    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_RANDOM' })).to
       .null
-    expect(within(dialog).queryByRole('menuitem', { name: /ESW_CLEARSKY/i })).to
+    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to
       .null
 
     await assertDialog((container, name) =>
@@ -157,16 +157,31 @@ describe('Configure button', () => {
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [
-    [locationServiceError, 'LocationNotFound'],
-    [conflictingResourcesResponse, 'Running ObsModes: ESW_CLEARSKY'],
-    [configurationMissingResponse, 'ConfigurationMissing for ESW_DARKNIGHT'],
-    [failedToStartSequencersResponse, 'sequence component not found'],
-    [sequenceComponentNotAvailable, 'Not Available'],
-    [unhandled, 'Bad request']
+    [
+      locationServiceError,
+      'Failed to configure ESW_DARKNIGHT, reason: LocationNotFound'
+    ],
+    [
+      conflictingResourcesResponse,
+      'Failed to configure ESW_DARKNIGHT, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY'
+    ],
+    [
+      configurationMissingResponse,
+      'Failed to configure ESW_DARKNIGHT, reason: ConfigurationMissing for ESW_DARKNIGHT'
+    ],
+    [
+      failedToStartSequencersResponse,
+      'Failed to configure ESW_DARKNIGHT, reason: Failed to start Sequencers. Reason: sequence component not found'
+    ],
+    [
+      sequenceComponentNotAvailable,
+      'Failed to configure ESW_DARKNIGHT, reason: Not Available'
+    ],
+    [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request']
   ]
 
   testcases.map(([response, message]) => {
-    it(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
+    it.only(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
       when(smService.configure(deepEqual(darkNight))).thenResolve(response)
 
       renderWithAuth({
@@ -174,8 +189,7 @@ describe('Configure button', () => {
         mockClients: mockServices.serviceFactoryContext
       })
       await openConfigureModalAndClickConfigureButton()
-      const matchRegex = new RegExp(`${message}`)
-      await waitFor(() => expect(screen.getByText(matchRegex)).to.exist)
+      await waitFor(() => expect(screen.getByText(message)).to.exist)
       verify(smService.configure(deepEqual(darkNight))).called()
     })
   })
@@ -186,19 +200,16 @@ const assertDialog = async (
 ) => {
   await waitFor(
     () =>
-      expect(getByRole('dialog', /Select an Observation Mode to configure:/i))
-        .to.exist
+      expect(getByRole('dialog', 'Select an Observation Mode to configure:')).to
+        .exist
   )
 
-  const dialog = getByRole(
-    'dialog',
-    /Select an Observation Mode to configure:/i
-  )
+  const dialog = getByRole('dialog', 'Select an Observation Mode to configure:')
 
   const items = await waitFor(() => [
-    within(dialog).getByRole('menuitem', { name: /esw_darknight/i }),
-    within(dialog).getByRole('button', { name: /configure/i }),
-    within(dialog).getByRole('button', { name: /cancel/i })
+    within(dialog).getByRole('menuitem', { name: 'ESW_DARKNIGHT' }),
+    within(dialog).getByRole('button', { name: 'Configure' }),
+    within(dialog).getByRole('button', { name: 'Cancel' })
   ])
 
   items.forEach((item) => {
@@ -211,11 +222,11 @@ const openConfigureModalAndClickConfigureButton = async () => {
 
   //verify only configurable obsmodes are shown in the list
   const dialog = screen.getByRole('dialog', {
-    name: /Select an Observation Mode to configure:/i
+    name: 'Select an Observation Mode to configure:'
   })
 
   const darkNightObsMode = await screen.findByRole('menuitem', {
-    name: /ESW_DARKNIGHT/i
+    name: 'ESW_DARKNIGHT'
   })
 
   //select item by clicking on it
@@ -223,7 +234,7 @@ const openConfigureModalAndClickConfigureButton = async () => {
   // wait for button to be enabled.
   await waitFor(() => {
     const configureButton = within(dialog).getByRole('button', {
-      name: /configure/i
+      name: 'Configure'
     }) as HTMLButtonElement
     expect(configureButton.disabled).false
     userEvent.click(configureButton)

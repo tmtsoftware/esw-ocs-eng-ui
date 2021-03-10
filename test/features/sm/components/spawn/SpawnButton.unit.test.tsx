@@ -36,19 +36,19 @@ describe('SpawnSMButton', () => {
     })
 
     //User clicks spawn button
-    const spawnButton = await screen.findByRole('button', { name: /spawn/i })
+    const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
     userEvent.click(spawnButton)
 
     //modal will appear with spawn button
     await waitFor(
       () =>
         expect(
-          screen.getByText(/choose an agent to spawn the sequence manager/i)
+          screen.getByText('Choose an agent to spawn the Sequence Manager')
         ).to.exist
     )
     const modalDocument = screen.getByRole('document')
     const modalSpawnButton = within(modalDocument).getByRole('button', {
-      name: /spawn/i
+      name: 'Spawn'
     })
 
     //User selects agent machine
@@ -85,7 +85,7 @@ describe('SpawnSMButton', () => {
     })
 
     //User clicks spawn button
-    const spawnButton = await screen.findByRole('button', { name: /spawn/i })
+    const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
     userEvent.click(spawnButton)
 
     await waitFor(
@@ -99,7 +99,7 @@ describe('SpawnSMButton', () => {
     await waitFor(
       () =>
         expect(
-          screen.queryByText(/choose an agent to spawn the sequence manager/i)
+          screen.queryByText('Choose an agent to spawn the Sequence Manager')
         ).not.exist
     )
   })
@@ -130,19 +130,19 @@ describe('SpawnSMButton', () => {
     })
 
     //User clicks spawn button
-    const spawnButton = await screen.findByRole('button', { name: /spawn/i })
+    const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
     userEvent.click(spawnButton)
 
     //modal will appear with spawn button
     await waitFor(
       () =>
         expect(
-          screen.getByText(/choose an agent to spawn the sequence manager/i)
+          screen.getByText('Choose an agent to spawn the Sequence Manager')
         ).to.exist
     )
     const modalDocument = screen.getByRole('document')
     const modalSpawnButton = within(modalDocument).getByRole('button', {
-      name: /spawn/i
+      name: 'Spawn'
     })
 
     //User selects agent machine

@@ -9,6 +9,7 @@ import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { useAction } from '../../../common/hooks/useAction'
 import { errorMessage, successMessage } from '../../../common/message'
 import { AGENTS_STATUS_KEY } from '../../../queryKeys'
+import { useObsModesDetails } from '../../hooks/useObsModesDetails'
 import { useSMService } from '../../hooks/useSMService'
 
 type ConfigureProps = {
@@ -59,35 +60,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const smService = useSMService(false)
 
-  const fetchObsModesDetails = async () => {
-    const response = await smService.data?.getObsModesDetails()
-    if (response) {
-      switch (response._type) {
-        case 'Success':
-          return response
-        case 'Failed':
-          errorMessage(response.msg)
-          break
-        case 'LocationServiceError':
-          errorMessage(response.reason)
-          break
-      }
-    }
-    throw Error('Failed to fetch ObsModes details')
-  }
-
-  // FIXME: why is it mutation instead of query?
-  const fetchConfigureConfAction = useAction({
-    mutationFn: fetchObsModesDetails,
-    onSuccess: async (data) => {
-      setObsModesDetails(
-        data.obsModes.filter((x) => x.status._type === 'Configurable')
-      )
-      setObsMode(undefined) // on success clear the local selected obsMode
-    },
-    onError: (e) => errorMessage('Failed to fetch obs mode details', e),
-    useErrorBoundary: false
-  })
+  const { data } = useObsModesDetails()
 
   const handleModalOk = () => {
     if (obsMode) {
@@ -101,7 +74,12 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   }
 
   const onConfigureClick = () => {
-    fetchConfigureConfAction.mutate(smService.data)
+    if (data) {
+      setObsModesDetails(
+        data.obsModes.filter((x) => x.status._type === 'Configurable')
+      )
+    }
+    setObsMode(undefined)
     setModalVisibility(true)
   }
 

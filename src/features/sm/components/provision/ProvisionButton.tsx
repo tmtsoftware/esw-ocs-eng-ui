@@ -34,7 +34,7 @@ const provision = (provisionRecord: ProvisionRecord) => (
         throw Error(res.failureResponses.join('\n'))
       case 'CouldNotFindMachines':
         throw Error(
-          `Could not found following machine: ${res.prefix
+          `Could not find following machine: ${res.prefix
             .map((x) => x.toJSON())
             .join(',')}`
         )

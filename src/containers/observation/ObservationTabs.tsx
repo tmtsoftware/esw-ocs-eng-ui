@@ -1,19 +1,25 @@
 import type { ObsModeDetails } from '@tmtsoftware/esw-ts'
-import { Button, Card, Empty, Layout, Menu, Space, Tabs } from 'antd'
-import { Content } from 'antd/lib/layout/layout'
-import React, { useEffect, useState } from 'react'
-import PageHeader from '../../components/PageHeader/PageHeader'
+import { Card, Empty, Tabs } from 'antd'
+import React, { useState } from 'react'
 import { groupBy } from '../../config/AppConfig'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
-import type { ObsModesDataType } from './Observations'
 import ObservationTab from './ObservationTab'
 const { TabPane } = Tabs
 
-export const TabStatusMap: Record<string, ObsModeDetails['status']['_type']> = {
-  Running: 'Configured',
-  'Non-configurable': 'NonConfigurable',
-  Configurable: 'Configurable'
+type ObsModesDataType = {
+  keyName: TabName
+  data?: ObsModeDetails[]
 }
+
+export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
+
+export const TabStatusMap: Array<
+  [TabName, ObsModeDetails['status']['_type']]
+> = [
+  ['Running', 'Configured'],
+  ['Non-configurable', 'NonConfigurable'],
+  ['Configurable', 'Configurable']
+]
 
 const ObservationTabs = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<string>()
@@ -39,12 +45,12 @@ const ObservationTabs = (): JSX.Element => {
           activeKey={selectedTab}
           onTabClick={(key: string) => setSelectedTab(key)}
           tabBarStyle={{ marginBottom: '1em' }}>
-          {Object.keys(TabStatusMap).map((tabName) => {
+          {TabStatusMap.map(([tabName, tabValue]) => {
             return (
               <TabPane key={tabName} tab={tabName}>
                 {getObservationTabs({
                   keyName: tabName,
-                  data: grouped?.get(TabStatusMap[tabName])
+                  data: grouped?.get(tabValue)
                 })}
               </TabPane>
             )

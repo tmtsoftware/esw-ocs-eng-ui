@@ -3,22 +3,40 @@ import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
-import type { TabStatusMap } from './ObservationTabs'
+import type { TabName } from './ObservationTabs'
 
 const { Sider } = Layout
+
+const ObsModeActions = ({
+  currentTab
+}: {
+  currentTab: TabName
+}): JSX.Element => {
+  if (currentTab === 'Running') {
+    return (
+      <Space>
+        <Button>Pause</Button>
+        <Button>Shutdown</Button>
+      </Space>
+    )
+  }
+
+  return <Button disabled={currentTab === 'Non-configurable'}>Configure</Button>
+}
 
 const ObservationTab = ({
   data,
   currentTab
 }: {
   data: ObsModeDetails[]
-  currentTab: keyof typeof TabStatusMap
+  currentTab: TabName
 }): JSX.Element => {
   const [currentObsMode, setCurrentObsMode] = useState<ObsModeDetails>()
 
   useEffect(() => {
     const defaultObsModeForTab = data[0]
     setCurrentObsMode(defaultObsModeForTab)
+    // intentionally kept dependency array empty as we don't want to override user's selected obsMode
   }, [])
 
   return (
@@ -41,16 +59,7 @@ const ObservationTab = ({
           <PageHeader
             extra={
               <Space>
-                {currentTab === 'Configurable' && <Button>Configure</Button>}
-                {currentTab === 'Non-configurable' && (
-                  <Button disabled>Configure</Button>
-                )}
-                {currentTab === 'Running' && (
-                  <>
-                    <Button>Pause</Button>
-                    <Button>Shutdown</Button>
-                  </>
-                )}
+                <ObsModeActions currentTab={currentTab} />
               </Space>
             }
             title={currentObsMode.obsMode.toJSON()}

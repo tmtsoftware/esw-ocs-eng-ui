@@ -30,6 +30,6 @@ describe('App page', () => {
     })
 
     const loginButton = screen.queryAllByText('Login')
-    expect(loginButton).to.have.length(2)
+    expect(loginButton).to.have.length(1)
   })
 })

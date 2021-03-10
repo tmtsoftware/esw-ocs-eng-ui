@@ -1,16 +1,10 @@
+import { cleanup, screen, waitFor } from '@testing-library/react'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import AgentCards from '../../../../src/features/agent/components/AgentCards'
-import {
-  cleanup,
-  getMockServices,
-  renderWithAuth,
-  screen,
-  waitFor
-} from '../../../utils/test-utils'
-
+import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
   seqCompsStatus: []

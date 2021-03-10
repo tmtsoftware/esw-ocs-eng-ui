@@ -1,3 +1,10 @@
+import {
+  cleanup,
+  screen,
+  waitFor,
+  within,
+  ByRoleMatcher
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   ObsModesDetailsResponse,
@@ -13,12 +20,7 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import Configure from '../../../../../src/features/sm/components/configure/Configure'
 import {
   getMockServices,
-  screen,
   renderWithAuth,
-  cleanup,
-  waitFor,
-  within,
-  ByRoleMatcher,
   MockServices
 } from '../../../../utils/test-utils'
 

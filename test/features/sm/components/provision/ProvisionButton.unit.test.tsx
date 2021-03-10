@@ -217,7 +217,7 @@ describe('ProvisionButton component', () => {
     [
       'CouldNotFindMachines',
       Promise.resolve(couldNotFindMachine),
-      /could not found following machine: esw.esw_machine/i
+      /could not find following machine: esw.esw_machine/i
     ],
     ['Exception', Promise.reject(Error('error occured')), /error occured/i]
   ]

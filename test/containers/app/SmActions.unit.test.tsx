@@ -1,3 +1,4 @@
+import { waitFor, screen } from '@testing-library/react'
 import {
   AgentStatus,
   AgentStatusResponse,
@@ -9,12 +10,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import SmActions from '../../../src/containers/infrastructure/SMActions'
-import {
-  getMockServices,
-  renderWithAuth,
-  screen,
-  waitFor
-} from '../../utils/test-utils'
+import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 describe('SM actions', () => {
   const mockServices = getMockServices()
   const smService = mockServices.mock.smService

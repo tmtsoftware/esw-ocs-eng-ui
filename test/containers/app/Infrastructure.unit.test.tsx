@@ -1,3 +1,4 @@
+import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
@@ -20,15 +21,7 @@ import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import {
-  cleanup,
-  getMockServices,
-  renderWithAuth,
-  screen,
-  waitFor,
-  within
-} from '../../utils/test-utils'
-
+import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',
   obsModes: [

@@ -1,3 +1,4 @@
+import { cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
@@ -10,12 +11,7 @@ import {
   OBSERVATIONS,
   RESOURCES
 } from '../../src/routes/RoutesConfig'
-import {
-  getMockServices,
-  cleanup,
-  renderWithAuth,
-  screen
-} from '../utils/test-utils'
+import { getMockServices, renderWithAuth } from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)

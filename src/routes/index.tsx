@@ -1,18 +1,19 @@
+import { useKeycloak } from '@react-keycloak/web'
 import React, { useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import Home from '../containers/home/Home'
 import Infrastructure from '../containers/infrastructure/Infrastructure'
 import Observations from '../containers/observation/Observations'
-import { useAuthContext } from '../contexts/useAuthContext'
 import NoMatch from './NoMatch'
 import { HOME, INFRASTRUCTURE, NO_MATCH, OBSERVATIONS } from './RoutesConfig'
 
 const Routes = (): JSX.Element => {
-  const { login, auth } = useAuthContext()
+  const { keycloak } = useKeycloak()
+  const history = useHistory()
 
   useEffect(() => {
-    auth && auth.isAuthenticated && !auth.isAuthenticated() && login()
-  }, [auth, login])
+    !keycloak.authenticated && keycloak.login().then(() => history.push(HOME))
+  }, [keycloak, history])
 
   return (
     <Switch>

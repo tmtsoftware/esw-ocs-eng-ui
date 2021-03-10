@@ -5,6 +5,7 @@
   "license": "Apache License, Version 2.0",
   "type": "module",
   "dependencies": {
+    "@react-keycloak/web": "^3.4.0",
     "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts",
     "antd": "^4.13.1",
     "react": "^17.0.1",

@@ -1,19 +1,20 @@
-import { AuthContextProvider } from '@tmtsoftware/esw-ts'
+import { useKeycloak } from '@react-keycloak/web'
 import React from 'react'
 import { render } from 'react-dom'
-import { AppConfig } from './config/AppConfig'
 import App from './containers/app/App'
+import { AuthProvider } from './contexts/AuthContext'
 import {
   createServiceFactories,
   ServiceFactoryProvider
 } from './contexts/ServiceFactoryContext'
 import './index.module.css'
-import { useAuthContext } from './contexts/useAuthContext'
 
 const Main = () => {
-  const { auth } = useAuthContext()
-  const tokenFactory = auth ? auth.token : () => undefined
+  const { initialized, keycloak } = useKeycloak()
+  const tokenFactory = () => keycloak.token
   const serviceFactories = createServiceFactories(tokenFactory)
+
+  if (!initialized) return <p>Loading ...</p>
 
   return (
     <ServiceFactoryProvider value={serviceFactories}>
@@ -24,9 +25,9 @@ const Main = () => {
 
 render(
   <React.StrictMode>
-    <AuthContextProvider config={AppConfig}>
+    <AuthProvider>
       <Main />
-    </AuthContextProvider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

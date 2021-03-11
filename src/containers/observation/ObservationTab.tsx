@@ -24,13 +24,14 @@ const ObsModeActions = ({
   return <Button disabled={currentTab === 'Non-configurable'}>Configure</Button>
 }
 
+interface ObservationTabProps {
+  data: ObsModeDetails[]
+  currentTab: TabName
+}
 const ObservationTab = ({
   data,
   currentTab
-}: {
-  data: ObsModeDetails[]
-  currentTab: TabName
-}): JSX.Element => {
+}: ObservationTabProps): JSX.Element => {
   const [currentObsMode, setCurrentObsMode] = useState<ObsModeDetails>()
 
   useEffect(() => {

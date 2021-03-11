@@ -1,4 +1,4 @@
-import type { ObsModeDetails } from '@tmtsoftware/esw-ts'
+import type { ObsModeDetails, ObsModeStatus } from '@tmtsoftware/esw-ts'
 import { Card, Empty, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { groupBy } from '../../config/AppConfig'
@@ -13,9 +13,7 @@ type ObsModesDataType = {
 
 export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
 
-export const TabStatusMap: Array<
-  [TabName, ObsModeDetails['status']['_type']]
-> = [
+export const TabStatusMap: Array<[TabName, ObsModeStatus['_type']]> = [
   ['Running', 'Configured'],
   ['Non-configurable', 'NonConfigurable'],
   ['Configurable', 'Configurable']
@@ -26,16 +24,15 @@ const ObservationTabs = (): JSX.Element => {
   const { data } = useObsModesDetails()
   const grouped = data && groupBy(data.obsModes, (x) => x.status._type)
 
-  const getObservationTabs = ({ keyName, data }: ObsModesDataType) => {
-    if (!data)
-      return (
-        <Empty
-          description={`No ${keyName} ObsModes`}
-          style={{ minHeight: '80vh' }}
-        />
-      )
-    return <ObservationTab data={data} currentTab={keyName} />
-  }
+  const getObservationTab = ({ keyName, data }: ObsModesDataType) =>
+    data ? (
+      <ObservationTab data={data} currentTab={keyName} />
+    ) : (
+      <Empty
+        description={`No ${keyName} ObsModes`}
+        style={{ minHeight: '80vh' }}
+      />
+    )
 
   return (
     <Card
@@ -48,7 +45,7 @@ const ObservationTabs = (): JSX.Element => {
           {TabStatusMap.map(([tabName, tabValue]) => {
             return (
               <TabPane key={tabName} tab={tabName}>
-                {getObservationTabs({
+                {getObservationTab({
                   keyName: tabName,
                   data: grouped?.get(tabValue)
                 })}

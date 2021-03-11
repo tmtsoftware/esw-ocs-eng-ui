@@ -1,11 +1,12 @@
 import { Card, Space, Typography } from 'antd'
-
+import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import styles from '../../components/PageHeader/pageHeader.module.css'
 import AgentCards from '../../features/agent/components/AgentCards'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
 import SmActions from './SMActions'
+
 const { Meta } = Card
 
 const Infrastructure = (): JSX.Element => {
@@ -16,7 +17,6 @@ const Infrastructure = (): JSX.Element => {
         title='Manage Infrastructure'
       />
       <Card
-        size='default'
         title={<SmStatusCard />}
         bodyStyle={{ display: 'none' }}
         extra={<SmActions />}
@@ -26,19 +26,15 @@ const Infrastructure = (): JSX.Element => {
   )
 }
 
-const SmStatus = (): JSX.Element => {
+const SMStatus = (): JSX.Element => {
   const { data, isLoading } = useSMStatus()
-  if (isLoading) {
-    return <Typography.Text type='warning'>Loading...</Typography.Text>
-  }
-  const smStatus = data?.metadata ? (
-    <Typography.Text type='success'>
-      Running on {data.metadata.agentPrefix || 'unknown'}
-    </Typography.Text>
-  ) : (
-    <Typography.Text type='danger'>Service down</Typography.Text>
-  )
-  return smStatus
+  const [txtType, text]: [BaseType, string] = isLoading
+    ? ['warning', 'Loading...']
+    : data?.metadata
+    ? ['success', `Running on ${data.metadata.agentPrefix || 'unknown'}`]
+    : ['danger', 'Service down']
+
+  return <Typography.Text type={txtType}>{text}</Typography.Text>
 }
 
 const SmStatusCard = (): JSX.Element => {
@@ -51,7 +47,7 @@ const SmStatusCard = (): JSX.Element => {
         description={
           <>
             <Typography.Text type='secondary'>{' Status: '}</Typography.Text>
-            <SmStatus />
+            <SMStatus />
           </>
         }
       />

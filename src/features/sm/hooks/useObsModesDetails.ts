@@ -1,13 +1,10 @@
 import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
-import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
+import { errorMessage } from '../../common/message'
 import { OBS_MODES_DETAILS_KEY } from '../../queryKeys'
 import { useSMService } from '../hooks/useSMService'
 
-export const useObsModesDetails = (): UseQueryResult<
-  ObsModesDetailsResponseSuccess,
-  unknown
-> => {
+export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSuccess> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(
@@ -15,10 +12,10 @@ export const useObsModesDetails = (): UseQueryResult<
     async () => {
       const response = await smService?.getObsModesDetails()
       if (response?._type === 'Failed') {
-        message.error(response.msg)
+        errorMessage(response.msg)
       }
       if (response?._type === 'LocationServiceError') {
-        message.error(response.reason)
+        errorMessage(response.reason)
       }
       return response
     },

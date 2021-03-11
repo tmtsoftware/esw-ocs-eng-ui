@@ -6,7 +6,7 @@ import {
 } from 'react-query'
 
 interface ActionProps<S, T> {
-  mutationFn: (agent: S) => Promise<T>
+  mutationFn: (service: S) => Promise<T>
   onSuccess: (a: T) => void
   onError: (e: unknown) => void
   invalidateKeysOnSuccess?: QueryKey[]

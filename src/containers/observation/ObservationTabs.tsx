@@ -1,5 +1,5 @@
 import type { ObsModeDetails, ObsModeStatus } from '@tmtsoftware/esw-ts'
-import { Card, Empty, Tabs } from 'antd'
+import { Empty, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { groupBy } from '../../config/AppConfig'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
@@ -35,26 +35,28 @@ const ObservationTabs = (): JSX.Element => {
     )
 
   return (
-    <Card
-      bodyStyle={{ display: 'none' }}
-      title={
-        <Tabs
-          activeKey={selectedTab}
-          onTabClick={(key: string) => setSelectedTab(key)}
-          tabBarStyle={{ marginBottom: '1em' }}>
-          {TabStatusMap.map(([tabName, tabValue]) => {
-            return (
-              <TabPane key={tabName} tab={tabName}>
-                {getObservationTab({
-                  keyName: tabName,
-                  data: grouped?.get(tabValue)
-                })}
-              </TabPane>
-            )
-          })}
-        </Tabs>
-      }
-    />
+    <Tabs
+      activeKey={selectedTab}
+      onTabClick={(key: string) => setSelectedTab(key)}
+      tabBarStyle={{
+        backgroundColor: 'white',
+        paddingLeft: '1.5rem',
+        marginBottom: '1.5rem'
+      }}>
+      {TabStatusMap.map(([tabName, tabValue]) => {
+        return (
+          <TabPane
+            key={tabName}
+            tab={tabName}
+            style={{ marginLeft: '1.5rem', width: '99%' }}>
+            {getObservationTab({
+              keyName: tabName,
+              data: grouped?.get(tabValue)
+            })}
+          </TabPane>
+        )
+      })}
+    </Tabs>
   )
 }
 

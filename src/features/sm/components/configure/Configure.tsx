@@ -1,14 +1,9 @@
-import {
-  ObsMode,
-  ObsModeDetails,
-  SequenceManagerService
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
-import { useAction } from '../../../common/hooks/useAction'
-import { errorMessage, successMessage } from '../../../common/message'
-import { AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY } from '../../../queryKeys'
+import { errorMessage } from '../../../common/message'
+import { useConfigureAction } from '../../hooks/useConfigureAction'
 import { useObsModesDetails } from '../../hooks/useObsModesDetails'
 import { useSMService } from '../../hooks/useSMService'
 
@@ -20,48 +15,10 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
 
-  const configure = async (sequenceManagerService: SequenceManagerService) => {
-    return (
-      obsMode &&
-      sequenceManagerService.configure(obsMode).then((res) => {
-        switch (res._type) {
-          case 'Success':
-            return res
-          case 'ConfigurationMissing':
-            throw Error(`ConfigurationMissing for ${obsMode?.name}`)
-          case 'ConflictingResourcesWithRunningObsMode':
-            throw Error(
-              `${
-                obsMode?.name
-              } is conflicting with currently running Observation Modes. Running ObsModes: ${res.runningObsMode.map(
-                (x) => x.name
-              )}`
-            )
-          case 'FailedToStartSequencers':
-            throw Error(`Failed to start Sequencers. Reason: ${res.reasons}`)
-          case 'SequenceComponentNotAvailable':
-            throw Error(res.msg)
-          case 'LocationServiceError':
-            throw Error(res.reason)
-          case 'Unhandled':
-            throw Error(res.msg)
-        }
-      })
-    )
-  }
-
-  const configureAction = useAction({
-    mutationFn: configure,
-    onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
-    onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY],
-    useErrorBoundary: false
-  })
-
   const smService = useSMService(false)
-
   const { data } = useObsModesDetails()
 
+  const configureAction = useConfigureAction(obsMode)
   const handleModalOk = () => {
     if (obsMode) {
       if (smService.data) {

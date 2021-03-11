@@ -3,25 +3,40 @@ import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import PauseButton from '../../features/sequencer/components/editorActions/PauseButton'
+import ShutdownButton from '../../features/sequencer/components/editorActions/ShutdownButton'
+import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
+import { useSMService } from '../../features/sm/hooks/useSMService'
 import type { TabName } from './ObservationTabs'
 
 const { Sider } = Layout
 
 const ObsModeActions = ({
-  currentTab
+  currentTab,
+  currentObsMode
 }: {
   currentTab: TabName
+  currentObsMode: ObsModeDetails
 }): JSX.Element => {
+  const configureAction = useConfigureAction(currentObsMode.obsMode)
+  const smService = useSMService(false)
+
   if (currentTab === 'Running') {
     return (
       <Space>
-        <Button>Pause</Button>
-        <Button>Shutdown</Button>
+        <PauseButton obsMode={currentObsMode.obsMode.name} />
+        <ShutdownButton obsMode={currentObsMode.obsMode} />
       </Space>
     )
   }
 
-  return <Button disabled={currentTab === 'Non-configurable'}>Configure</Button>
+  return (
+    <Button
+      onClick={() => smService.data && configureAction.mutate(smService.data)}
+      disabled={currentTab === 'Non-configurable'}>
+      Configure
+    </Button>
+  )
 }
 
 interface ObservationTabProps {
@@ -60,8 +75,11 @@ const ObservationTab = ({
         {currentObsMode && (
           <PageHeader
             extra={
-              <Space>
-                <ObsModeActions currentTab={currentTab} />
+              <Space style={{ paddingRight: '2.5rem' }}>
+                <ObsModeActions
+                  currentTab={currentTab}
+                  currentObsMode={currentObsMode}
+                />
               </Space>
             }
             title={currentObsMode.obsMode.toJSON()}

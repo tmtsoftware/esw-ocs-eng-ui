@@ -4,11 +4,13 @@ import {
   AuthContext,
   ConfigService,
   LocationService,
-  SequenceManagerService
+  SequenceManagerService,
+  SequencerService
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
+import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -70,11 +72,17 @@ const getMockServices: () => MockServices = () => {
   const configServiceMock = mock<ConfigService>(ConfigServiceImpl)
   const configServiceInstance = instance<ConfigService>(configServiceMock)
 
+  const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
+  const sequencerServiceInstance = instance<SequencerService>(
+    sequencerServiceMock
+  )
+
   const serviceFactoryContext: ServiceFactoryContextType = {
     agentServiceFactory: () => Promise.resolve(agentServiceInstance),
     locationServiceFactory: () => locationServiceInstance,
     configServiceFactory: () => Promise.resolve(configServiceInstance),
-    smServiceFactory: () => Promise.resolve(smServiceInstance)
+    smServiceFactory: () => Promise.resolve(smServiceInstance),
+    sequencerServiceFactory: () => Promise.resolve(sequencerServiceInstance)
   }
 
   return {

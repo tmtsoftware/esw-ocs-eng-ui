@@ -1,8 +1,10 @@
 import {
   AgentService,
+  ComponentId,
   ConfigService,
   LocationService,
   SequenceManagerService,
+  SequencerService,
   TokenFactory
 } from '@tmtsoftware/esw-ts'
 import { createContext, useContext } from 'react'
@@ -12,6 +14,9 @@ export type ServiceFactoryContextType = {
   agentServiceFactory: () => Promise<AgentService>
   configServiceFactory: () => Promise<ConfigService>
   smServiceFactory: () => Promise<SequenceManagerService>
+  sequencerServiceFactory: (
+    componentId: ComponentId
+  ) => Promise<SequencerService>
 }
 
 const createServiceFactories = (
@@ -20,7 +25,9 @@ const createServiceFactories = (
   locationServiceFactory: () => LocationService(tokenFactory),
   agentServiceFactory: () => AgentService(tokenFactory),
   configServiceFactory: () => ConfigService(tokenFactory),
-  smServiceFactory: () => SequenceManagerService(tokenFactory)
+  smServiceFactory: () => SequenceManagerService(tokenFactory),
+  sequencerServiceFactory: (componentId) =>
+    SequencerService(componentId, tokenFactory)
 })
 
 const defaultServiceFactories = createServiceFactories(() => undefined)

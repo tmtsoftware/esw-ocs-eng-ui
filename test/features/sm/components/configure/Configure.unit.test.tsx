@@ -125,6 +125,7 @@ describe('Configure button', () => {
         name: 'Select an Observation Mode to configure:'
       })
     ).to.null
+    verify(smService.getObsModesDetails()).called()
   })
 
   it('should be enabled when sequence manager is spawned | ESW-445', async () => {
@@ -154,6 +155,7 @@ describe('Configure button', () => {
       .exist
 
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
+    verify(smService.getObsModesDetails()).called()
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [
@@ -191,6 +193,7 @@ describe('Configure button', () => {
       await openConfigureModalAndClickConfigureButton()
       await waitFor(() => expect(screen.getByText(message)).to.exist)
       verify(smService.configure(deepEqual(darkNight))).called()
+      verify(smService.getObsModesDetails()).called()
     })
   })
 })

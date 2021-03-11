@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { useAction } from '../../../common/hooks/useAction'
 import { errorMessage, successMessage } from '../../../common/message'
-import { AGENTS_STATUS_KEY } from '../../../queryKeys'
+import { AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY } from '../../../queryKeys'
 import { useObsModesDetails } from '../../hooks/useObsModesDetails'
 import { useSMService } from '../../hooks/useSMService'
 
@@ -54,7 +54,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
     mutationFn: configure,
     onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
     onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS_KEY],
+    invalidateKeysOnSuccess: [AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY],
     useErrorBoundary: false
   })
 

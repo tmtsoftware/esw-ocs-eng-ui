@@ -56,3 +56,4 @@ const SmStatusCard = (): JSX.Element => {
 }
 
 export default Infrastructure
+  

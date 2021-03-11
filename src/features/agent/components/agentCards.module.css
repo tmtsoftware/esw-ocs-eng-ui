@@ -9,29 +9,36 @@
 
 .iconBoxSequencer {
   background-color: white;
-  border-color: #b7eb8f;
+  border-left: 1px solid #b7eb8f;
+}
+
+.iconBoxSeqComp {
+  border-left: 1px solid #d9d9d9;
 }
 
 .iconBox,
-.iconBoxSequencer {
+.iconBoxSequencer,
+.iconBoxSeqComp {
   display: flex;
   align-items: center;
-  border-left: 1px solid #d9d9d9;
 }
+
 .agentIcon {
   font-size: 1.35rem;
 }
-.icon, .deleteIcon {
+.icon,
+.deleteIcon {
   padding: 0.25rem 0.5rem;
   font-size: 1.25rem;
 }
 
-.icon:hover, .agentIcon:hover {
+.icon:hover,
+.agentIcon:hover {
   color: #1890ff;
 }
 
 .deleteIcon:hover {
-  color: #FF4D4F;
+  color: #ff4d4f;
 }
 
 .seqComp,

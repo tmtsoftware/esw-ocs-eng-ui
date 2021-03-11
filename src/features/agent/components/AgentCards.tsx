@@ -17,7 +17,9 @@ const AgentCard = ({
   seqCompsStatus
 }: AgentCardProps): JSX.Element => {
   const bodyStyle =
-    seqCompsStatus.length == 0 ? { display: 'none' } : { padding: '1px 0 0' }
+    seqCompsStatus.length == 0
+      ? { display: 'none' }
+      : { padding: '1.5rem 1rem 1rem' }
 
   const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => {
     return (

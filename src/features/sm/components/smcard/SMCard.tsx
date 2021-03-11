@@ -11,7 +11,6 @@ const SMCard = (): JSX.Element => {
   return (
     <CustomErrorBoundary>
       <Card
-        size='default'
         title={
           <Typography.Title level={4} className={styles.title}>
             Sequence Manager

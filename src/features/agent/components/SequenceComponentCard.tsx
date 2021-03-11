@@ -4,7 +4,7 @@ import {
   FileExcelOutlined
 } from '@ant-design/icons'
 import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
-import { Card, Col, Row, Space, Tooltip, Typography } from 'antd'
+import { Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
 
@@ -30,7 +30,7 @@ const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
         </Space>
       </Col>
 
-      <div className={styles.iconBoxSequencer}>
+      <Col className={styles.iconBoxSequencer}>
         <Tooltip placement='bottom' title={'Unload script'}>
           <FileExcelOutlined
             className={styles.icon}
@@ -38,7 +38,7 @@ const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
             onClick={() => ({})}
           />
         </Tooltip>
-      </div>
+      </Col>
     </Row>
   )
 }
@@ -57,7 +57,7 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
           </Typography.Text>
         </Space>
       </Col>
-      <div className={styles.iconBox}>
+      <Col className={styles.iconBoxSeqComp}>
         <Tooltip placement='bottom' title={'Load script'}>
           <FileAddOutlined
             className={styles.icon}
@@ -65,7 +65,7 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
             onClick={() => ({})}
           />
         </Tooltip>
-      </div>
+      </Col>
     </Row>
   )
 }
@@ -75,17 +75,14 @@ const SequenceComponentCard = ({
   location
 }: SequenceComponentProps): JSX.Element => {
   return (
-    <Card
-      title={
+    <Row style={{ paddingBottom: '1rem' }}>
+      <Col flex='auto'>
         <SequenceComponent
           seqCompId={seqCompId.prefix.toJSON()}
           obsMode={location[0]?.connection.prefix.toJSON()}
         />
-      }
-      headStyle={{ paddingRight: '1.125rem' }}
-      bodyStyle={{ display: 'none' }}
-      bordered={false}
-      extra={
+      </Col>
+      <Col className={styles.iconBox}>
         <Tooltip placement='bottom' title={'Delete sequence component'}>
           <DeleteOutlined
             className={styles.deleteIcon}
@@ -93,8 +90,8 @@ const SequenceComponentCard = ({
             onClick={() => ({})}
           />
         </Tooltip>
-      }
-    />
+      </Col>
+    </Row>
   )
 }
 

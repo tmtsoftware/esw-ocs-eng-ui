@@ -13,7 +13,7 @@ type ObsModesDataType = {
 
 export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
 
-export const TabStatusMap: Array<[TabName, ObsModeStatus['_type']]> = [
+export const tabNames: Array<[TabName, ObsModeStatus['_type']]> = [
   ['Running', 'Configured'],
   ['Non-configurable', 'NonConfigurable'],
   ['Configurable', 'Configurable']
@@ -43,7 +43,7 @@ const ObservationTabs = (): JSX.Element => {
         paddingLeft: '1.5rem',
         marginBottom: '1.5rem'
       }}>
-      {TabStatusMap.map(([tabName, tabValue]) => {
+      {tabNames.map(([tabName, tabValue]) => {
         return (
           <TabPane
             key={tabName}

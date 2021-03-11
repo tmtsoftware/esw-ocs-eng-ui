@@ -1,7 +1,7 @@
-import type { ObsModeDetails } from '@tmtsoftware/esw-ts'
+import type { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/editorActions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/editorActions/ShutdownButton'
@@ -11,33 +11,41 @@ import type { TabName } from './ObservationTabs'
 
 const { Sider } = Layout
 
-const ObsModeActions = ({
-  currentTab,
-  currentObsMode
-}: {
-  currentTab: TabName
-  currentObsMode: ObsModeDetails
-}): JSX.Element => {
-  const configureAction = useConfigureAction(currentObsMode.obsMode)
-  const smService = useSMService(false)
+interface ObsModeActionsProps {
+  tabName: TabName
+  obsMode: ObsMode
+}
 
-  if (currentTab === 'Running') {
-    return (
-      <Space>
-        <PauseButton obsMode={currentObsMode.obsMode.name} />
-        <ShutdownButton obsMode={currentObsMode.obsMode} />
-      </Space>
-    )
-  }
+const RunningActions = ({ obsMode }: { obsMode: ObsMode }) => (
+  <Space>
+    <PauseButton obsMode={obsMode.name} />
+    <ShutdownButton obsMode={obsMode} />
+  </Space>
+)
+
+const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
+  const configureAction = useConfigureAction(obsMode)
+  const smService = useSMService(false)
 
   return (
     <Button
       onClick={() => smService.data && configureAction.mutate(smService.data)}
-      disabled={currentTab === 'Non-configurable'}>
+      disabled={tabName === 'Non-configurable'}>
       Configure
     </Button>
   )
 }
+
+// TODO: memoise these components  to avoid unnecessary renders
+const ObsModeActions = ({
+  tabName,
+  obsMode
+}: ObsModeActionsProps): JSX.Element =>
+  tabName === 'Running' ? (
+    <RunningActions obsMode={obsMode} />
+  ) : (
+    <NonRunningActions tabName={tabName} obsMode={obsMode} />
+  )
 
 interface ObservationTabProps {
   data: ObsModeDetails[]
@@ -47,42 +55,38 @@ const ObservationTab = ({
   data,
   currentTab
 }: ObservationTabProps): JSX.Element => {
-  const [currentObsMode, setCurrentObsMode] = useState<ObsModeDetails>()
-
-  useEffect(() => {
-    const defaultObsModeForTab = data[0]
-    setCurrentObsMode(defaultObsModeForTab)
-    // intentionally kept dependency array empty as we don't want to override user's selected obsMode
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const [selectedObsModeDetails, setSelectedObsModeDetails] = useState<
+    ObsModeDetails | undefined
+  >(data[0])
 
   return (
     <Layout>
       <Sider theme='light' style={{ minHeight: '80vh', paddingTop: '1rem' }}>
-        <Menu selectedKeys={[currentObsMode?.obsMode.toJSON() || '']}>
-          {data.map((item) => {
-            return (
-              <Menu.Item
-                onClick={() => setCurrentObsMode(item)}
-                key={item.obsMode.toJSON()}>
-                {item.obsMode.toJSON()}
-              </Menu.Item>
-            )
-          })}
+        <Menu
+          selectedKeys={
+            selectedObsModeDetails && [selectedObsModeDetails.obsMode.name]
+          }>
+          {data.map((item) => (
+            <Menu.Item
+              onClick={() => setSelectedObsModeDetails(item)}
+              key={item.obsMode.name}>
+              {item.obsMode.name}
+            </Menu.Item>
+          ))}
         </Menu>
       </Sider>
       <Content>
-        {currentObsMode && (
+        {selectedObsModeDetails && (
           <PageHeader
             extra={
               <Space style={{ paddingRight: '2.5rem' }}>
                 <ObsModeActions
-                  currentTab={currentTab}
-                  currentObsMode={currentObsMode}
+                  tabName={currentTab}
+                  obsMode={selectedObsModeDetails.obsMode}
                 />
               </Space>
             }
-            title={currentObsMode.obsMode.toJSON()}
+            title={selectedObsModeDetails.obsMode.name}
           />
         )}
       </Content>

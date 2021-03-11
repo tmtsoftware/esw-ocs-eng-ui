@@ -9,18 +9,18 @@ import {
   RESOURCES
 } from '../../routes/RoutesConfig'
 import styles from './sider.module.css'
+
 const getMenuLabel = (
   title: string,
   defaultIcon: React.ReactNode,
   link: string
-) => {
-  return {
-    title,
-    link,
-    role: title.replace(' ', ''),
-    defaultIcon: defaultIcon
-  }
-}
+) => ({
+  title,
+  link,
+  role: title.replace(' ', ''),
+  defaultIcon: defaultIcon
+})
+
 const menuItemLabels = [
   getMenuLabel(
     'Manage Infrastructure',
@@ -42,9 +42,9 @@ export const Sider = (): JSX.Element => {
   const [collapsed, setCollapsed] = useState(true)
   const [selectedKey, setSelectedKey] = useState<string>('')
   const location = useLocation()
-  const onCollapse = () => {
-    setCollapsed(!collapsed)
-  }
+
+  const onCollapse = () => setCollapsed(!collapsed)
+
   useEffect(() => {
     menuItemLabels.forEach((item, i) => {
       if (location.pathname === item.link) setSelectedKey(i.toString())

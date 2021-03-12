@@ -3,12 +3,12 @@ import { Button, Dropdown, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
-import { useAuthContext } from '../../contexts/useAuthContext'
+import { useAuth } from '../../contexts/useAuthContext'
 import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {
-  const { auth, login, logout } = useAuthContext()
+  const { auth, login, logout } = useAuth()
   const [username, setUsername] = useState<string | undefined>(undefined)
 
   useEffect(() => {

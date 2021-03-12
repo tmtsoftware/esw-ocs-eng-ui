@@ -8,10 +8,10 @@ import {
   ServiceFactoryProvider
 } from './contexts/ServiceFactoryContext'
 import './index.module.css'
-import { useAuthContext } from './contexts/useAuthContext'
+import { useAuth } from './contexts/useAuthContext'
 
 const Main = () => {
-  const { auth } = useAuthContext()
+  const { auth } = useAuth()
   const tokenFactory = auth ? auth.token : () => undefined
   const serviceFactories = createServiceFactories(tokenFactory)
 

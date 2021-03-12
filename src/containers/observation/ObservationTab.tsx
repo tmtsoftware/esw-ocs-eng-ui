@@ -6,6 +6,7 @@ import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
+import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
 import type { TabName } from './ObservationTabs'
 
@@ -26,11 +27,12 @@ const RunningActions = ({ obsMode }: { obsMode: ObsMode }) => (
 const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
   const configureAction = useConfigureAction(obsMode)
   const smService = useSMService(false)
+  const provisionStatus = useProvisionStatus(false)
 
   return (
     <Button
       onClick={() => smService.data && configureAction.mutate(smService.data)}
-      disabled={tabName === 'Non-configurable'}>
+      disabled={tabName === 'Non-configurable' || !provisionStatus.data}>
       Configure
     </Button>
   )

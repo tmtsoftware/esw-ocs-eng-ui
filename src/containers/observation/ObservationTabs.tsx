@@ -15,8 +15,8 @@ export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
 
 export const tabNames: Array<[TabName, ObsModeStatus['_type']]> = [
   ['Running', 'Configured'],
-  ['Non-configurable', 'NonConfigurable'],
-  ['Configurable', 'Configurable']
+  ['Configurable', 'Configurable'],
+  ['Non-configurable', 'NonConfigurable']
 ]
 
 const ObservationTabs = (): JSX.Element => {

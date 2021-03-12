@@ -6,7 +6,7 @@ import { errorMessage, successMessage } from '../../../common/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const ResumeButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
-  const sequencerService = useSequencerService(obsMode)
+  const sequencerService = useSequencerService(obsMode, false)
 
   const resumeAction = useAction({
     mutationFn: async (sequencerService: SequencerService) => {
@@ -20,7 +20,8 @@ const ResumeButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
       })
     },
     onSuccess: () => successMessage('Successfully resumed sequencer'),
-    onError: (e) => errorMessage('Failed to resume sequencer :', e)
+    onError: (e) => errorMessage('Failed to resume sequencer :', e),
+    useErrorBoundary: false
   })
 
   return (

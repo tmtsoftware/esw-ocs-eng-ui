@@ -23,8 +23,10 @@ const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
       }),
     onSuccess: () => successMessage('Successfully shutdown sequencer'),
     onError: () => errorMessage('Failed to shutdown sequencer'),
-    invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY]
+    invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY],
+    useErrorBoundary: false
   })
+
   return (
     <Button
       disabled={smService.isLoading || smService.isError}

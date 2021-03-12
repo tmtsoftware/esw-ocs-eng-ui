@@ -52,6 +52,7 @@ type Services = {
   locationService: LocationService
   configService: ConfigService
   smService: SequenceManagerService
+  sequencerService: SequencerService
 }
 
 type MockServices = {
@@ -91,13 +92,15 @@ const getMockServices: () => MockServices = () => {
       agentService: agentServiceMock,
       locationService: locationServiceMock,
       configService: configServiceMock,
-      smService: smServiceMock
+      smService: smServiceMock,
+      sequencerService: sequencerServiceMock
     },
     instance: {
       agentService: agentServiceInstance,
       locationService: locationServiceInstance,
       configService: configServiceInstance,
-      smService: smServiceInstance
+      smService: smServiceInstance,
+      sequencerService: sequencerServiceInstance
     }
   }
 }

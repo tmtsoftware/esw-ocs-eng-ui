@@ -6,10 +6,10 @@ import { errorMessage, successMessage } from '../../../common/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
-  const sequencerService = useSequencerService(obsMode)
+  const sequencerService = useSequencerService(obsMode, false)
 
   const pauseAction = useAction({
-    mutationFn: (sequencerService: SequencerService) =>
+    mutationFn: async (sequencerService: SequencerService) =>
       sequencerService.pause().then((res) => {
         switch (res._type) {
           case 'Ok':
@@ -20,9 +20,9 @@ const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
             throw new Error('Cannot operate on in progress or finished step')
         }
       }),
-
-    onSuccess: () => successMessage('Successfully paused sequencer'),
-    onError: (e) => errorMessage(`Failed to pause sequencer :`, e)
+    onSuccess: () => successMessage('Successfully paused sequencer.'),
+    onError: (e) => errorMessage('Failed to pause sequencer', e),
+    useErrorBoundary: false
   })
 
   return (

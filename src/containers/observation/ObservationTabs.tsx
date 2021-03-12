@@ -1,12 +1,12 @@
 import type { ObsModeDetails, ObsModeStatus } from '@tmtsoftware/esw-ts'
 import { Empty, Tabs } from 'antd'
 import React, { useState } from 'react'
-import { groupBy } from '../../config/AppConfig'
+import { groupBy } from '../../features/common/groupBy'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import ObservationTab from './ObservationTab'
 const { TabPane } = Tabs
 
-type ObsModesDataType = {
+export type ObservationTab = {
   keyName: TabName
   data?: ObsModeDetails[]
 }
@@ -24,7 +24,7 @@ const ObservationTabs = (): JSX.Element => {
   const { data } = useObsModesDetails()
   const grouped = data && groupBy(data.obsModes, (x) => x.status._type)
 
-  const getObservationTab = ({ keyName, data }: ObsModesDataType) =>
+  const getObservationTab = ({ keyName, data }: ObservationTab) =>
     data ? (
       <ObservationTab data={data} currentTab={keyName} />
     ) : (

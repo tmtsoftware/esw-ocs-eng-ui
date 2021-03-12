@@ -3,8 +3,8 @@ import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
-import PauseButton from '../../features/sequencer/components/editorActions/PauseButton'
-import ShutdownButton from '../../features/sequencer/components/editorActions/ShutdownButton'
+import PauseButton from '../../features/sequencer/components/actions/PauseButton'
+import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useSMService } from '../../features/sm/hooks/useSMService'
 import type { TabName } from './ObservationTabs'
@@ -51,6 +51,7 @@ interface ObservationTabProps {
   data: ObsModeDetails[]
   currentTab: TabName
 }
+
 const ObservationTab = ({
   data,
   currentTab

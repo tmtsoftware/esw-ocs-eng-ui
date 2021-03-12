@@ -7,10 +7,20 @@ import { OBS_MODES_DETAILS_KEY } from '../../../queryKeys'
 import { useSMService } from '../../../sm/hooks/useSMService'
 
 const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
-  const smService = useSMService()
+  const smService = useSMService(false)
+
   const shutdownAction = useAction({
-    mutationFn: (smService: SequenceManagerService) =>
-      smService.shutdownObsModeSequencers(obsMode),
+    mutationFn: async (smService: SequenceManagerService) =>
+      smService.shutdownObsModeSequencers(obsMode).then((res) => {
+        switch (res._type) {
+          case 'Success':
+            return res
+          case 'LocationServiceError':
+            throw new Error(res.reason)
+          case 'Unhandled':
+            throw new Error(res.msg)
+        }
+      }),
     onSuccess: () => successMessage('Successfully shutdown sequencer'),
     onError: () => errorMessage('Failed to shutdown sequencer'),
     invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY]

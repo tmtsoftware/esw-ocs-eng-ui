@@ -7,13 +7,24 @@ import { useSequencerService } from '../../hooks/useSequencerService'
 
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const sequencerService = useSequencerService(obsMode)
+
   const pauseAction = useAction({
-    mutationFn: async (sequencerService: SequencerService) => {
-      sequencerService.pause()
-    },
-    onSuccess: () => successMessage('Successfully paused'),
-    onError: () => errorMessage('Failed to pause sequencer')
+    mutationFn: (sequencerService: SequencerService) =>
+      sequencerService.pause().then((res) => {
+        switch (res._type) {
+          case 'Ok':
+            return res
+          case 'Unhandled':
+            throw new Error(res.msg)
+          case 'CannotOperateOnAnInFlightOrFinishedStep':
+            throw new Error('Cannot operate on in progress or finished step')
+        }
+      }),
+
+    onSuccess: () => successMessage('Successfully paused sequencer'),
+    onError: (e) => errorMessage(`Failed to pause sequencer :`, e)
   })
+
   return (
     <Button
       disabled={sequencerService.isLoading || sequencerService.isError}

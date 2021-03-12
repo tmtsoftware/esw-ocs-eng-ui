@@ -4,7 +4,9 @@ import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
-import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
+import { useAction } from '../../../common/hooks/useAction'
+import { errorMessage, successMessage } from '../../../common/message'
+import { SM_STATUS_KEY } from '../../../queryKeys'
 import { SM_COMPONENT_ID } from '../../constants'
 
 function showConfirmModal(onYes: () => void): void {
@@ -33,11 +35,13 @@ const shutdownSM = (agent: AgentService) =>
 export const ShutdownSMButton = (): JSX.Element => {
   const agentQuery = useAgentService()
 
-  const shutdownSmAction = useAgentServiceAction(
-    shutdownSM,
-    'Successfully shutdown Sequence Manager',
-    'Failed to shutdown Sequence Manager'
-  )
+  const shutdownSmAction = useAction({
+    mutationFn: shutdownSM,
+    onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
+    onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),
+    invalidateKeysOnSuccess: [SM_STATUS_KEY],
+    useErrorBoundary: true
+  })
 
   if (agentQuery.isLoading) return <Spinner />
 

@@ -4,9 +4,10 @@ import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
-import { useAgentServiceAction } from '../../../agent/hooks/useAgentServiceAction'
 import { useAgentsList } from '../../../agent/hooks/useAgentsList'
-import { errorMessage } from '../../../common/message'
+import { useAction } from '../../../common/hooks/useAction'
+import { errorMessage, successMessage } from '../../../common/message'
+import { SM_STATUS_KEY } from '../../../queryKeys'
 import { OBS_MODE_CONFIG } from '../../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
@@ -28,11 +29,17 @@ export const SpawnSMButton = (): JSX.Element => {
   const allAgentsQuery = useAgentsList()
   const agentServiceQuery = useAgentService()
 
-  const spawnSmAction = useAgentServiceAction(
-    spawnSM(agentPrefix),
-    'Successfully spawned Sequence Manager',
-    'Sequence Manager could not be spawned. Please try again.'
-  )
+  const spawnSmAction = useAction({
+    mutationFn: spawnSM(agentPrefix),
+    onSuccess: () => successMessage('Successfully spawned Sequence Manager'),
+    onError: (e) =>
+      errorMessage(
+        'Sequence Manager could not be spawned. Please try again.',
+        e
+      ),
+    invalidateKeysOnSuccess: [SM_STATUS_KEY],
+    useErrorBoundary: true
+  })
 
   const handleModalOk = () => {
     if (agentPrefix && agentPrefix !== '') {

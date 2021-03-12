@@ -10,18 +10,16 @@ const ResumeButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
 
   const resumeAction = useAction({
     mutationFn: async (sequencerService: SequencerService) => {
-      sequencerService.resume().then((res) => {
-        switch (res._type) {
-          case 'Ok':
-            return res
-          case 'Unhandled':
-            throw new Error(res.msg)
-        }
-      })
+      const res = await sequencerService.resume()
+      switch (res._type) {
+        case 'Ok':
+          return res
+        case 'Unhandled':
+          throw new Error(res.msg)
+      }
     },
     onSuccess: () => successMessage('Successfully resumed sequencer'),
-    onError: (e) => errorMessage('Failed to resume sequencer :', e),
-    useErrorBoundary: false
+    onError: (e) => errorMessage('Failed to resume sequencer', e)
   })
 
   return (

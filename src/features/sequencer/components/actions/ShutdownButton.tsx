@@ -10,21 +10,20 @@ const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
   const smService = useSMService(false)
 
   const shutdownAction = useAction({
-    mutationFn: async (smService: SequenceManagerService) =>
-      smService.shutdownObsModeSequencers(obsMode).then((res) => {
-        switch (res._type) {
-          case 'Success':
-            return res
-          case 'LocationServiceError':
-            throw new Error(res.reason)
-          case 'Unhandled':
-            throw new Error(res.msg)
-        }
-      }),
+    mutationFn: async (smService: SequenceManagerService) => {
+      const res = await smService.shutdownObsModeSequencers(obsMode)
+      switch (res._type) {
+        case 'Success':
+          return res
+        case 'LocationServiceError':
+          throw new Error(res.reason)
+        case 'Unhandled':
+          throw new Error(res.msg)
+      }
+    },
     onSuccess: () => successMessage('Successfully shutdown sequencer'),
-    onError: () => errorMessage('Failed to shutdown sequencer'),
-    invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY],
-    useErrorBoundary: false
+    onError: (e) => errorMessage('Failed to shutdown sequencer', e),
+    invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY]
   })
 
   return (

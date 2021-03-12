@@ -18,7 +18,7 @@ export const useAction = <S, T>({
   onSuccess,
   onError,
   invalidateKeysOnSuccess,
-  useErrorBoundary = true
+  useErrorBoundary = false
 }: ActionProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 

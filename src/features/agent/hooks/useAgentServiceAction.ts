@@ -7,11 +7,13 @@ import { SM_STATUS_KEY } from '../../queryKeys'
 export const useAgentServiceAction = <T>(
   mutationFn: (agent: AgentService) => Promise<T>,
   successMsg: string,
-  errorMsg: string
+  errorMsg: string,
+  useErrorBoundary: boolean
 ): UseMutationResult<T, unknown, AgentService> =>
   useAction({
     mutationFn,
     onSuccess: () => successMessage(successMsg),
     onError: (e) => errorMessage(errorMsg, e),
-    invalidateKeysOnSuccess: [SM_STATUS_KEY]
+    invalidateKeysOnSuccess: [SM_STATUS_KEY],
+    useErrorBoundary
   })

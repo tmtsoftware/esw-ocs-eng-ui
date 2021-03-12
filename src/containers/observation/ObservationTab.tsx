@@ -1,7 +1,7 @@
 import type { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
@@ -61,6 +61,10 @@ const ObservationTab = ({
   const [selectedObsModeDetails, setSelectedObsModeDetails] = useState<
     ObsModeDetails | undefined
   >(data[0])
+
+  useEffect(() => {
+    data && data.length >= 0 && setSelectedObsModeDetails(data[0])
+  }, [data])
 
   return (
     <Layout>

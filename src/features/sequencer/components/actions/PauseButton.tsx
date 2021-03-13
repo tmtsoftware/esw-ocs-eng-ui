@@ -1,8 +1,8 @@
 import type { SequencerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
-import { useAction } from '../../../common/hooks/useAction'
-import { errorMessage, successMessage } from '../../../common/message'
+import { useAction } from '../../../../hooks/useAction'
+import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {

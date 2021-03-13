@@ -12,9 +12,7 @@ const HeaderBar = (): JSX.Element => {
   const [username, setUsername] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    !!auth &&
-      !!auth.isAuthenticated() &&
-      setUsername(auth.tokenParsed()?.preferred_username)
+    setUsername(auth?.tokenParsed()?.preferred_username)
   }, [auth])
 
   const menu = (

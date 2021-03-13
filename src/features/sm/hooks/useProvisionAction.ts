@@ -1,7 +1,7 @@
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import type { UseMutationResult } from 'react-query'
-import { useAction } from '../../common/hooks/useAction'
-import { errorMessage, successMessage } from '../../common/message'
+import { useAction } from '../../../hooks/useAction'
+import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS_KEY, PROVISION_STATUS_KEY } from '../../queryKeys'
 
 export const useProvisionAction = <T>(

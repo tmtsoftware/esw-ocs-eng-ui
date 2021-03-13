@@ -1,6 +1,6 @@
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { SM_SERVICE_KEY } from '../../queryKeys'
 
 export const useSMService = <E>(

@@ -1,5 +1,5 @@
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { AGENTS_STATUS_KEY } from '../../queryKeys'
 import { useSMService } from './useSMService'
 

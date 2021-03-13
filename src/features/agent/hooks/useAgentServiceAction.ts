@@ -1,6 +1,5 @@
 import type { AgentService } from '@tmtsoftware/esw-ts'
-import type { UseMutationResult } from 'react-query'
-import { useAction } from '../../../hooks/useAction'
+import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { SM_STATUS_KEY } from '../../queryKeys'
 
@@ -10,7 +9,7 @@ export const useAgentServiceAction = <T>(
   errorMsg: string,
   useErrorBoundary: boolean
 ): UseMutationResult<T, unknown, AgentService> =>
-  useAction({
+  useMutation({
     mutationFn,
     onSuccess: () => successMessage(successMsg),
     onError: (e) => errorMessage(errorMsg, e),

@@ -1,6 +1,6 @@
 import type { ConfigService } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { errorMessage } from '../../../utils/message'
 import { CONFIG_SERVICE_KEY } from '../../queryKeys'
 

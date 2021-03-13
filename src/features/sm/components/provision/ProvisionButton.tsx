@@ -7,7 +7,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React, { useState } from 'react'
-import { useAction } from '../../../../hooks/useAction'
+import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
 import { useConfigService } from '../../../config/hooks/useConfigService'
 import { PROVISION_CONF_PATH } from '../../constants'
@@ -84,7 +84,7 @@ export const ProvisionButton = (): JSX.Element => {
   const configService = useConfigService(useErrorBoundary)
   const smService = useSMService(useErrorBoundary)
 
-  const fetchProvisionConfAction = useAction({
+  const fetchProvisionConfAction = useMutation({
     mutationFn: fetchProvisionConf,
     onSuccess: async (data) => {
       if (Object.values(data).length <= 0) {

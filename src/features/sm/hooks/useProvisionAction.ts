@@ -1,6 +1,5 @@
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
-import type { UseMutationResult } from 'react-query'
-import { useAction } from '../../../hooks/useAction'
+import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS_KEY, PROVISION_STATUS_KEY } from '../../queryKeys'
 
@@ -10,7 +9,7 @@ export const useProvisionAction = <T>(
   errorMsg: string,
   useErrorBoundary = true
 ): UseMutationResult<T, unknown, SequenceManagerService> =>
-  useAction({
+  useMutation({
     mutationFn,
     onSuccess: () => successMessage(successMsg),
     onError: (e) => errorMessage(errorMsg, e),

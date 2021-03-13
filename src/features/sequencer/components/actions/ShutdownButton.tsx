@@ -1,7 +1,7 @@
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
-import { useAction } from '../../../../hooks/useAction'
+import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS_KEY } from '../../../queryKeys'
 import { useSMService } from '../../../sm/hooks/useSMService'
@@ -9,7 +9,7 @@ import { useSMService } from '../../../sm/hooks/useSMService'
 const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
   const smService = useSMService(false)
 
-  const shutdownAction = useAction({
+  const shutdownAction = useMutation({
     mutationFn: async (smService: SequenceManagerService) => {
       const res = await smService.shutdownObsModeSequencers(obsMode)
       switch (res._type) {

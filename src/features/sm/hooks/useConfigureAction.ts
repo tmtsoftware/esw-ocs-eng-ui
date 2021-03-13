@@ -3,8 +3,7 @@ import type {
   ObsMode,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import type { UseMutationResult } from 'react-query'
-import { useAction } from '../../../hooks/useAction'
+import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY } from '../../queryKeys'
 
@@ -45,7 +44,7 @@ export const useConfigureAction = (
     )
   }
 
-  return useAction({
+  return useMutation({
     mutationFn: configure,
     onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
     onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),

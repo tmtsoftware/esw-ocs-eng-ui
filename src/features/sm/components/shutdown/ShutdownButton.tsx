@@ -3,7 +3,7 @@ import type { AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import { useAction } from '../../../../hooks/useAction'
+import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { SM_STATUS_KEY } from '../../../queryKeys'
@@ -35,7 +35,7 @@ const shutdownSM = (agent: AgentService) =>
 export const ShutdownSMButton = (): JSX.Element => {
   const agentQuery = useAgentService()
 
-  const shutdownSmAction = useAction({
+  const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
     onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
     onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),

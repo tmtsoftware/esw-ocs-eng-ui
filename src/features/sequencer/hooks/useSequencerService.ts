@@ -1,6 +1,6 @@
 import { ComponentId, Prefix, SequencerService } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { SEQUENCER_SERVICE_KEY } from '../../queryKeys'
 
 const masterSequencer = (obsMode: string) =>

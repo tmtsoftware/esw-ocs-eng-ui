@@ -1,5 +1,5 @@
 import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { errorMessage } from '../../../utils/message'
 import { OBS_MODES_DETAILS_KEY } from '../../queryKeys'
 import { useSMService } from '../hooks/useSMService'

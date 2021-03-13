@@ -1,14 +1,14 @@
 import type { SequencerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
-import { useAction } from '../../../../hooks/useAction'
+import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const sequencerService = useSequencerService(obsMode, false)
 
-  const pauseAction = useAction({
+  const pauseAction = useMutation({
     mutationFn: async (sequencerService: SequencerService) => {
       const res = await sequencerService.pause()
       switch (res._type) {

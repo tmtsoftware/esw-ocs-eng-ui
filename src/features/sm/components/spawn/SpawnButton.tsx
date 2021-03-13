@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import { useAction } from '../../../../hooks/useAction'
+import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentsList } from '../../../agent/hooks/useAgentsList'
@@ -29,7 +29,7 @@ export const SpawnSMButton = (): JSX.Element => {
   const allAgentsQuery = useAgentsList()
   const agentServiceQuery = useAgentService()
 
-  const spawnSmAction = useAction({
+  const spawnSmAction = useMutation({
     mutationFn: spawnSM(agentPrefix),
     onSuccess: () => successMessage('Successfully spawned Sequence Manager'),
     onError: (e) =>

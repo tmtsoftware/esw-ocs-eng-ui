@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from 'react-query'
+import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { PROVISION_STATUS_KEY } from '../../queryKeys'
 import { useSMService } from './useSMService'
 

@@ -1,11 +1,11 @@
 import {
   QueryKey,
-  useMutation,
+  useMutation as useReactMutation,
   UseMutationResult,
   useQueryClient
 } from 'react-query'
 
-interface ActionProps<S, T> {
+interface UseMutationProps<S, T> {
   mutationFn: (service: S) => Promise<T>
   onSuccess: (a: T) => void
   onError: (e: unknown) => void
@@ -13,16 +13,16 @@ interface ActionProps<S, T> {
   useErrorBoundary?: boolean
 }
 
-export const useAction = <S, T>({
+export const useMutation = <S, T>({
   mutationFn,
   onSuccess,
   onError,
   invalidateKeysOnSuccess,
   useErrorBoundary = false
-}: ActionProps<S, T>): UseMutationResult<T, unknown, S> => {
+}: UseMutationProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
-  return useMutation(mutationFn, {
+  return useReactMutation(mutationFn, {
     onSuccess: async (data) => {
       invalidateKeysOnSuccess &&
         (await Promise.all(
@@ -34,3 +34,5 @@ export const useAction = <S, T>({
     useErrorBoundary
   })
 }
+
+export type { UseMutationResult }

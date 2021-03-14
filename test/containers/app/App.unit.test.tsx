@@ -22,14 +22,4 @@ describe('App page', () => {
     expect(manageInfra).to.have.length(2)
     expect(logoutButton).to.exist
   })
-
-  it('should render app without layout when user is not logged in | ESW-441', () => {
-    renderWithAuth({
-      ui: <App />,
-      loggedIn: false
-    })
-
-    const loginButton = screen.queryAllByText('Login')
-    expect(loginButton).to.have.length(1)
-  })
 })

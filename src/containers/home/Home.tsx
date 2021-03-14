@@ -47,7 +47,7 @@ const HomePageCard = (card: CardDetail) => (
 
 const Home = (): JSX.Element => (
   <>
-    <Row justify='center' style={{ margin: '0 32px' }}>
+    <Row justify='center'>
       <Col xs={24} className={styles.smCard}>
         {<SMCard />}
       </Col>

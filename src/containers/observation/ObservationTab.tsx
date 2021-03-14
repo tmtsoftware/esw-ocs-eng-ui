@@ -63,7 +63,7 @@ const ObservationTab = ({
   >(data[0])
 
   useEffect(() => {
-    data && data.length >= 0 && setSelectedObsModeDetails(data[0])
+    setSelectedObsModeDetails(data[0])
   }, [data])
 
   return (

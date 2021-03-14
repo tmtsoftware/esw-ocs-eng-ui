@@ -39,7 +39,7 @@ describe('Pause button', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname}`, async () => {
+    it(`should return ${testname} | ESW-450`, async () => {
       when(sequencerService.pause()).thenResolve(response)
 
       renderWithAuth({

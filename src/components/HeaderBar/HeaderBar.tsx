@@ -8,7 +8,7 @@ import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
 const HeaderBar = (): JSX.Element => {
-  const { auth, login, logout } = useAuth()
+  const { auth, logout } = useAuth()
   const [username, setUsername] = useState<string | undefined>(undefined)
 
   useEffect(() => {
@@ -24,24 +24,21 @@ const HeaderBar = (): JSX.Element => {
   )
 
   const Logout = () => (
-    <>
-      <Dropdown trigger={['click']} overlay={menu}>
+    <Dropdown trigger={['click']} overlay={menu}>
+      {username ? (
         <Button type={'text'}>
-          {username?.toUpperCase()} <DownOutlined />
+          {username.toUpperCase()}
+          <DownOutlined />
         </Button>
-      </Dropdown>
-    </>
-  )
-
-  const Login = () => (
-    <Button type='text' onClick={login}>
-      Login
-    </Button>
+      ) : (
+        <></>
+      )}
+    </Dropdown>
   )
 
   return (
     <>
-      {auth?.isAuthenticated() ? <Logout /> : <Login />}
+      <Logout />
       <Link to={HOME}>
         <img role='tmt_logo' src={TMTLogo} className={styles.logo} />
       </Link>

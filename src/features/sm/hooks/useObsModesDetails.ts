@@ -12,10 +12,10 @@ export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSucc
     async () => {
       const response = await smService?.getObsModesDetails()
       if (response?._type === 'Failed') {
-        errorMessage(response.msg)
+        return errorMessage(response.msg)
       }
       if (response?._type === 'LocationServiceError') {
-        errorMessage(response.reason)
+        return errorMessage(response.reason)
       }
       return response
     },

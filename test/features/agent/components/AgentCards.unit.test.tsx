@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -59,9 +59,8 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-    await waitFor(() => {
-      return screen.getByText('ESW.machine1')
-    })
+
+    await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('ESW.ESW1')).exist
     expect(screen.getByText('ESW.ESW2')).exist
@@ -75,6 +74,7 @@ describe('Agents Grid View', () => {
     expect(screen.getByRole('loadScriptIcon')).exist
     verify(smService.getAgentStatus()).called()
   })
+
   it('should render multiple agents', async () => {
     when(smService.getAgentStatus()).thenResolve({
       _type: 'Success',
@@ -85,9 +85,8 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-    await waitFor(() => {
-      return screen.getByText('ESW.machine1')
-    })
+
+    await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('ESW.machine2')).exist
     expect(screen.getAllByRole('deleteSeqCompIcon')).length(2)
@@ -113,9 +112,8 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-    await waitFor(() => {
-      return screen.getByText('ESW.machine1')
-    })
+
+    await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('IRIS.comp1')).exist
     expect(screen.getByText('Unknown')).exist

@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -40,11 +40,11 @@ describe('Resume button', () => {
         mockClients: mockServices.serviceFactoryContext
       })
 
-      const resumeButton = screen.getByRole('button', {
+      const resumeButton = (await screen.findByRole('button', {
         name: 'Resume'
-      }) as HTMLButtonElement
+      })) as HTMLButtonElement
 
-      await waitFor(() => expect(resumeButton.disabled).false)
+      expect(resumeButton.disabled).false
 
       userEvent.click(resumeButton, { button: 0 })
 

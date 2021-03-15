@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -25,16 +25,18 @@ describe('SMCard', () => {
     ])
     when(locationServiceMock.find(SM_CONNECTION)).thenResolve(undefined)
 
-    const { getByRole, queryByRole } = renderWithAuth({
+    renderWithAuth({
       ui: <SMCard />,
       loggedIn: true,
       mockClients: mockServices.serviceFactoryContext
     })
 
     await waitFor(
-      () => expect(queryByRole('button', { name: 'Shutdown' })).to.null
+      () => expect(screen.queryByRole('button', { name: 'Shutdown' })).to.null
     )
-    await waitFor(() => expect(getByRole('button', { name: 'Spawn' })).to.exist)
+
+    await screen.findByRole('button', { name: 'Spawn' })
+
     verify(locationServiceMock.find(SM_CONNECTION)).called()
   })
 
@@ -60,18 +62,17 @@ describe('SMCard', () => {
     }
     when(locationServiceMock.find(SM_CONNECTION)).thenResolve(smLocation)
 
-    const { queryByRole, getByRole } = renderWithAuth({
+    renderWithAuth({
       ui: <SMCard />,
       loggedIn: true,
       mockClients: mockServices.serviceFactoryContext
     })
 
     await waitFor(
-      () => expect(queryByRole('button', { name: 'Spawn' })).to.null
+      () => expect(screen.queryByRole('button', { name: 'Spawn' })).to.null
     )
-    await waitFor(
-      () => expect(getByRole('button', { name: 'Shutdown' })).to.exist
-    )
+
+    await screen.findByRole('button', { name: 'Shutdown' })
     verify(locationServiceMock.find(SM_CONNECTION)).called()
   })
 })

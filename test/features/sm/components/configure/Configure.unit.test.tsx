@@ -1,17 +1,17 @@
 import {
+  ByRoleMatcher,
   cleanup,
   screen,
   waitFor,
-  within,
-  ByRoleMatcher
+  within
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
-  ObsModesDetailsResponse,
-  ObsMode,
   ComponentId,
-  Prefix,
   ConfigureResponse,
+  ObsMode,
+  ObsModesDetailsResponse,
+  Prefix,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -20,8 +20,8 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import Configure from '../../../../../src/features/sm/components/configure/Configure'
 import {
   getMockServices,
-  renderWithAuth,
-  MockServices
+  MockServices,
+  renderWithAuth
 } from '../../../../utils/test-utils'
 
 const obsModesDetails: ObsModesDetailsResponse = {
@@ -119,12 +119,11 @@ describe('Configure button', () => {
     })
     userEvent.click(button)
 
+    const dialog = screen.queryByRole('dialog', {
+      name: 'Select an Observation Mode to configure:'
+    })
     // modal should not open on click of configure button
-    expect(
-      screen.queryByRole('dialog', {
-        name: 'Select an Observation Mode to configure:'
-      })
-    ).to.null
+    expect(dialog).to.null
     verify(smService.getObsModesDetails()).called()
   })
 
@@ -191,7 +190,8 @@ describe('Configure button', () => {
         mockClients: mockServices.serviceFactoryContext
       })
       await openConfigureModalAndClickConfigureButton()
-      await waitFor(() => expect(screen.getByText(message)).to.exist)
+
+      await screen.findByText(message)
       verify(smService.configure(deepEqual(darkNight))).called()
       verify(smService.getObsModesDetails()).called()
     })
@@ -201,23 +201,15 @@ describe('Configure button', () => {
 const assertDialog = async (
   getByRole: (con: ByRoleMatcher, name: string | RegExp) => HTMLElement
 ) => {
-  await waitFor(
-    () =>
-      expect(getByRole('dialog', 'Select an Observation Mode to configure:')).to
-        .exist
-  )
+  await screen.findByRole('dialog', {
+    name: 'Select an Observation Mode to configure:'
+  })
 
   const dialog = getByRole('dialog', 'Select an Observation Mode to configure:')
 
-  const items = await waitFor(() => [
-    within(dialog).getByRole('menuitem', { name: 'ESW_DARKNIGHT' }),
-    within(dialog).getByRole('button', { name: 'Configure' }),
-    within(dialog).getByRole('button', { name: 'Cancel' })
-  ])
-
-  items.forEach((item) => {
-    expect(item).to.exist
-  })
+  await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
+  await within(dialog).findByRole('button', { name: 'Configure' })
+  await within(dialog).findByRole('button', { name: 'Cancel' })
 }
 const openConfigureModalAndClickConfigureButton = async () => {
   const button = await screen.findByRole('button', { name: 'Configure' })
@@ -234,11 +226,12 @@ const openConfigureModalAndClickConfigureButton = async () => {
 
   //select item by clicking on it
   userEvent.click(darkNightObsMode)
-  // wait for button to be enabled.
+  const configureButton = within(dialog).getByRole('button', {
+    name: 'Configure'
+
+    // wait for button to be enabled.
+  }) as HTMLButtonElement
   await waitFor(() => {
-    const configureButton = within(dialog).getByRole('button', {
-      name: 'Configure'
-    }) as HTMLButtonElement
     expect(configureButton.disabled).false
     userEvent.click(configureButton)
   })

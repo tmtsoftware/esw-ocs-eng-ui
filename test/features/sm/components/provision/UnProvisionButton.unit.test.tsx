@@ -65,17 +65,15 @@ describe('', () => {
 
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)
 
-      const {
-        unProvisionButton,
-        getByText,
-        getByRole
-      } = await renderAndFindProvisionButton(mockServices.serviceFactoryContext)
+      const { unProvisionButton } = await renderAndFindProvisionButton(
+        mockServices.serviceFactoryContext
+      )
 
       //User clicks unprovision button
       userEvent.click(unProvisionButton)
 
       //modal will appear with shutdown button
-      await waitFor(() => expect(getByRole('dialog')).to.exist)
+      await screen.findByRole('dialog')
 
       const modalDocument = screen.getByRole('dialog')
 
@@ -89,10 +87,7 @@ describe('', () => {
       await waitFor(() => {
         expect(screen.queryByText(modalTitle)).to.null
       })
-
-      await waitFor(() => {
-        expect(getByText(errMsg)).to.exist
-      })
+      await screen.findByText(errMsg)
 
       verify(smService.shutdownAllSequenceComponents()).called()
     })
@@ -101,16 +96,16 @@ describe('', () => {
   const renderAndFindProvisionButton = async (
     serviceFactory: ServiceFactoryContextType
   ) => {
-    const { getByText, getByRole, findByRole } = renderWithAuth({
+    renderWithAuth({
       ui: <UnProvisionButton />,
       loggedIn: true,
       mockClients: serviceFactory
     })
 
-    const unProvisionButton = await findByRole('button', {
+    const unProvisionButton = await screen.findByRole('button', {
       name: 'Unprovision'
     })
 
-    return { unProvisionButton, getByText, getByRole, findByRole }
+    return { unProvisionButton }
   }
 })

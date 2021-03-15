@@ -40,12 +40,8 @@ describe('SpawnSMButton', () => {
     userEvent.click(spawnButton)
 
     //modal will appear with spawn button
-    await waitFor(
-      () =>
-        expect(
-          screen.getByText('Choose an agent to spawn the Sequence Manager')
-        ).to.exist
-    )
+    await screen.findByText('Choose an agent to spawn the Sequence Manager')
+
     const modalDocument = screen.getByRole('document')
     const modalSpawnButton = within(modalDocument).getByRole('button', {
       name: 'Spawn'
@@ -61,9 +57,7 @@ describe('SpawnSMButton', () => {
     //User clicks modal's spawn button
     userEvent.click(modalSpawnButton)
 
-    await waitFor(() => {
-      expect(screen.getByText('Successfully spawned Sequence Manager')).to.exist
-    })
+    await screen.findByText('Successfully spawned Sequence Manager')
 
     const [prefix, expectedConfig, isLocal] = capture(
       agentServiceMock.spawnSequenceManager
@@ -88,14 +82,10 @@ describe('SpawnSMButton', () => {
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
     userEvent.click(spawnButton)
 
-    await waitFor(
-      () =>
-        expect(
-          screen.getByText(
-            'Agents are not running. Please start an agent first.'
-          )
-        ).to.exist
+    await screen.findByText(
+      'Agents are not running. Please start an agent first.'
     )
+
     await waitFor(
       () =>
         expect(
@@ -134,12 +124,8 @@ describe('SpawnSMButton', () => {
     userEvent.click(spawnButton)
 
     //modal will appear with spawn button
-    await waitFor(
-      () =>
-        expect(
-          screen.getByText('Choose an agent to spawn the Sequence Manager')
-        ).to.exist
-    )
+    await screen.findByText('Choose an agent to spawn the Sequence Manager')
+
     const modalDocument = screen.getByRole('document')
     const modalSpawnButton = within(modalDocument).getByRole('button', {
       name: 'Spawn'
@@ -155,12 +141,8 @@ describe('SpawnSMButton', () => {
     //User clicks modal's spawn button
     userEvent.click(modalSpawnButton)
 
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          'Sequence Manager could not be spawned. Please try again., reason: Config file not found'
-        )
-      ).to.exist
-    })
+    await screen.findByText(
+      'Sequence Manager could not be spawned. Please try again., reason: Config file not found'
+    )
   })
 })

@@ -47,14 +47,17 @@ describe('SM actions', () => {
         mockClients: mockServices.serviceFactoryContext
       })
 
-      expect(
-        (screen.getByRole('button', { name: 'Configure' }) as HTMLButtonElement)
-          .disabled
-      ).true
-      expect(
-        (screen.getByRole('button', { name: 'Provision' }) as HTMLButtonElement)
-          .disabled
-      ).true
+      const configureButton = screen.getByRole('button', {
+        name: 'Configure'
+      }) as HTMLButtonElement
+
+      const provisionButton = screen.getByRole('button', {
+        name: 'Provision'
+      }) as HTMLButtonElement
+
+      expect(configureButton.disabled).true
+      expect(provisionButton.disabled).true
+
       // wait for both buttons to be enabled once data is loaded in async manner
       await waitFor(() => {
         expect(

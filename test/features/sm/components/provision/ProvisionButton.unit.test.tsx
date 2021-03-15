@@ -48,17 +48,17 @@ describe('ProvisionButton component', () => {
       provisionRes
     )
 
-    const {
-      provisionButton,
-      getByText,
-      getByRole
-    } = await renderAndFindProvision(mockServices.serviceFactoryContext)
+    const { provisionButton } = await renderAndFindProvision(
+      mockServices.serviceFactoryContext
+    )
 
     //User clicks provision button
     userEvent.click(provisionButton)
 
     //Provision config modal will appear with provision button
-    await assertDialog((container, name) => getByRole(container, { name }))
+    await assertDialog((container, name) =>
+      screen.getByRole(container, { name })
+    )
 
     verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
@@ -68,10 +68,7 @@ describe('ProvisionButton component', () => {
     })
 
     userEvent.click(confirmButton)
-
-    await waitFor(() => {
-      expect(getByText('Successfully provisioned')).to.exist
-    })
+    await screen.findByText('Successfully provisioned')
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
   })
@@ -85,11 +82,9 @@ describe('ProvisionButton component', () => {
       Error('error occurred')
     )
 
-    const {
-      provisionButton,
-      getByText,
-      queryByRole
-    } = await renderAndFindProvision(mockServices.serviceFactoryContext)
+    const { provisionButton } = await renderAndFindProvision(
+      mockServices.serviceFactoryContext
+    )
 
     //User clicks provision button
     userEvent.click(provisionButton)
@@ -98,19 +93,16 @@ describe('ProvisionButton component', () => {
     await waitFor(
       () =>
         expect(
-          queryByRole('dialog', {
+          screen.queryByRole('dialog', {
             name: 'Provision Config'
           })
         ).to.null
     )
 
     verify(configService.getActive(PROVISION_CONF_PATH)).called()
-
-    await waitFor(() => {
-      expect(
-        getByText('Failed to fetch provision config, reason: error occurred')
-      ).to.exist
-    })
+    await screen.findByText(
+      'Failed to fetch provision config, reason: error occurred'
+    )
 
     verify(smService.provision(anything())).never()
   })
@@ -147,11 +139,9 @@ describe('ProvisionButton component', () => {
         )
       )
 
-      const {
-        provisionButton,
-        getByText,
-        queryByRole
-      } = await renderAndFindProvision(mockServices.serviceFactoryContext)
+      const { provisionButton } = await renderAndFindProvision(
+        mockServices.serviceFactoryContext
+      )
 
       //User clicks provision button
       userEvent.click(provisionButton)
@@ -160,17 +150,14 @@ describe('ProvisionButton component', () => {
       await waitFor(
         () =>
           expect(
-            queryByRole('dialog', {
+            screen.queryByRole('dialog', {
               name: 'Provision config'
             })
           ).to.null
       )
 
       verify(configService.getActive(PROVISION_CONF_PATH)).called()
-
-      await waitFor(() => {
-        expect(getByText(errMsg)).to.exist
-      })
+      await screen.findByText(errMsg)
 
       verify(smService.provision(anything())).never()
     })
@@ -245,17 +232,17 @@ describe('ProvisionButton component', () => {
         provisionRes
       )
 
-      const {
-        provisionButton,
-        getByText,
-        getByRole
-      } = await renderAndFindProvision(mockServices.serviceFactoryContext)
+      const { provisionButton } = await renderAndFindProvision(
+        mockServices.serviceFactoryContext
+      )
 
       //User clicks provision button
       userEvent.click(provisionButton)
 
       //Provision config modal will appear with provision button
-      await assertDialog((container, name) => getByRole(container, { name }))
+      await assertDialog((container, name) =>
+        screen.getByRole(container, { name })
+      )
 
       verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
@@ -265,10 +252,7 @@ describe('ProvisionButton component', () => {
       })
 
       userEvent.click(confirmButton)
-
-      await waitFor(() => {
-        expect(getByText(errMsg)).to.exist
-      })
+      await screen.findByText(errMsg)
 
       verify(smService.provision(deepEqual(provisionConfig))).called()
     })
@@ -277,15 +261,17 @@ describe('ProvisionButton component', () => {
   const renderAndFindProvision = async (
     serviceFactoryContext: ServiceFactoryContextType
   ) => {
-    const { getByText, queryByRole, findByRole, getByRole } = renderWithAuth({
+    renderWithAuth({
       ui: <ProvisionButton />,
       loggedIn: true,
       mockClients: serviceFactoryContext
     })
 
-    const provisionButton = await findByRole('button', { name: 'Provision' })
+    const provisionButton = await screen.findByRole('button', {
+      name: 'Provision'
+    })
 
-    return { provisionButton, getByText, queryByRole, findByRole, getByRole }
+    return { provisionButton }
   }
 
   const assertDialog = async (
@@ -297,14 +283,8 @@ describe('ProvisionButton component', () => {
 
     const dialog = getByRole('dialog', 'Provision Configuration:')
 
-    const items = await waitFor(() => [
-      within(dialog).getByRole('table'),
-      within(dialog).getByRole('button', { name: 'Provision' }),
-      within(dialog).getByRole('button', { name: 'Cancel' })
-    ])
-
-    items.forEach((item) => {
-      expect(item).to.exist
-    })
+    await within(dialog).findByRole('table')
+    await within(dialog).findByRole('button', { name: 'Provision' })
+    await within(dialog).findByRole('button', { name: 'Cancel' })
   }
 })

@@ -105,9 +105,7 @@ describe('Infrastructure page', () => {
 
     expect(screen.getByText('Loading...')).to.exist
 
-    await waitFor(() => {
-      expect(screen.getByText('Service down')).to.exist
-    })
+    await screen.findByText('Service down')
   })
 
   it('should render running status with agent machine if sequence manager is running on an agent | ESW-442', async () => {
@@ -130,9 +128,7 @@ describe('Infrastructure page', () => {
     })
     expect(screen.getByText('Loading...')).to.exist
 
-    await waitFor(() => {
-      expect(screen.getByText('Running on ESW.primary')).to.exist
-    })
+    await screen.findByText('Running on ESW.primary')
   })
 
   it('should render running on unknown status if sequence manager is running standalone(not on agent) | ESW-442', async () => {
@@ -154,9 +150,7 @@ describe('Infrastructure page', () => {
     })
     expect(screen.getByText('Loading...')).to.exist
 
-    await waitFor(() => {
-      expect(screen.getByText('Running on unknown')).to.exist
-    })
+    await screen.findByText('Running on unknown')
   })
 
   it('should refetch agent cards after configure success | ESW-443', async () => {
@@ -261,9 +255,7 @@ describe('Infrastructure page', () => {
 
     userEvent.click(confirmButton)
 
-    await waitFor(() => {
-      expect(screen.getByText('Successfully provisioned')).to.exist
-    })
+    await screen.findByText('Successfully provisioned')
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
     verify(smService.getAgentStatus()).called()

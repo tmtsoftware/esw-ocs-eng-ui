@@ -38,11 +38,8 @@ describe('ShutdownSMButton', () => {
 
     //User clicks modal's shutdown button
     userEvent.click(modalShutdownButton)
+    await screen.findByText('Successfully shutdown Sequence Manager')
 
-    await waitFor(() => {
-      expect(screen.getByText('Successfully shutdown Sequence Manager')).to
-        .exist
-    })
     await waitFor(() => {
       expect(screen.queryByText(modalTitle)).to.null
     })
@@ -78,14 +75,9 @@ describe('ShutdownSMButton', () => {
 
     //User clicks modal's shutdown button
     userEvent.click(modalShutdownButton)
-
-    await waitFor(() => {
-      expect(
-        screen.getByText(
-          'Failed to shutdown Sequence Manager, reason: Cant kill'
-        )
-      ).to.exist
-    })
+    await screen.findByText(
+      'Failed to shutdown Sequence Manager, reason: Cant kill'
+    )
 
     verify(agentServiceMock.killComponent(SM_COMPONENT_ID)).called()
   })

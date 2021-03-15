@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { PauseResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -47,18 +47,16 @@ describe('Pause button', () => {
         mockClients: mockServices.serviceFactoryContext
       })
 
-      const pauseButton = screen.getByRole('button', {
+      const pauseButton = (await screen.findByRole('button', {
         name: 'Pause'
-      }) as HTMLButtonElement
+      })) as HTMLButtonElement
 
-      await waitFor(() => expect(pauseButton.disabled).false)
+      expect(pauseButton.disabled).false
 
       userEvent.click(pauseButton, { button: 0 })
 
       await screen.findByText(message)
-
       verify(sequencerService.pause()).called()
-
       expect(screen.queryByRole(message)).to.null
     })
   })

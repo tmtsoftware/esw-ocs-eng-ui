@@ -5,19 +5,21 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
+const resume = async (sequencerService: SequencerService) => {
+  const res = await sequencerService.resume()
+  switch (res._type) {
+    case 'Ok':
+      return res
+    case 'Unhandled':
+      throw new Error(res.msg)
+  }
+}
+
 const ResumeButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const sequencerService = useSequencerService(obsMode, false)
 
   const resumeAction = useMutation({
-    mutationFn: async (sequencerService: SequencerService) => {
-      const res = await sequencerService.resume()
-      switch (res._type) {
-        case 'Ok':
-          return res
-        case 'Unhandled':
-          throw new Error(res.msg)
-      }
-    },
+    mutationFn: resume,
     onSuccess: () => successMessage('Successfully resumed sequencer'),
     onError: (e) => errorMessage('Failed to resume sequencer', e)
   })

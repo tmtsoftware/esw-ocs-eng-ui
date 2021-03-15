@@ -1,3 +1,5 @@
+import { LoadingOutlined } from '@ant-design/icons'
+import { Result } from 'antd'
 import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Home from '../containers/home/Home'
@@ -12,13 +14,13 @@ const RedirectToLogin = ({ login }: { login: () => void }) => {
     login()
   }, [login])
 
-  return <></>
+  return <Result icon={<LoadingOutlined />} />
 }
 
 const Routes = (): JSX.Element => {
   const { login, auth } = useAuth()
 
-  if (auth === null) return <p>Loading...</p>
+  if (auth === null) return <Result icon={<LoadingOutlined />} />
 
   return auth.isAuthenticated() ? (
     <Switch>

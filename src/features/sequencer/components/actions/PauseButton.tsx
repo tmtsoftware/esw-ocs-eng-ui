@@ -5,21 +5,23 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
+const pause = async (sequencerService: SequencerService) => {
+  const res = await sequencerService.pause()
+  switch (res._type) {
+    case 'Ok':
+      return res
+    case 'Unhandled':
+      throw new Error(res.msg)
+    case 'CannotOperateOnAnInFlightOrFinishedStep':
+      throw new Error('Cannot operate on in progress or finished step')
+  }
+}
+
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const sequencerService = useSequencerService(obsMode, false)
 
   const pauseAction = useMutation({
-    mutationFn: async (sequencerService: SequencerService) => {
-      const res = await sequencerService.pause()
-      switch (res._type) {
-        case 'Ok':
-          return res
-        case 'Unhandled':
-          throw new Error(res.msg)
-        case 'CannotOperateOnAnInFlightOrFinishedStep':
-          throw new Error('Cannot operate on in progress or finished step')
-      }
-    },
+    mutationFn: pause,
     onSuccess: () => successMessage('Successfully paused sequencer.'),
     onError: (e) => errorMessage('Failed to pause sequencer', e)
   })

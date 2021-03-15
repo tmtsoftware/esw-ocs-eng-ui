@@ -164,7 +164,6 @@ describe('observation tabs', () => {
   })
 
   it('should not be able to configure on non-configurable observation tab', async () => {
-
     renderWithAuth({
       ui: (
         <ObservationTab

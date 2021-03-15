@@ -1,6 +1,8 @@
 .grid {
   padding: 1.5rem 0.75rem;
   margin: 0 !important;
+  max-height: 80%;
+  overflow-y: scroll;
 }
 
 .agentCard {

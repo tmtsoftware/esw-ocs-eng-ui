@@ -5,6 +5,7 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import AgentCards from '../../../../src/features/agent/components/AgentCards'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
   seqCompsStatus: []
@@ -104,6 +105,24 @@ describe('Agents Grid View', () => {
             Prefix.fromString('IRIS.comp1'),
             'SequenceComponent'
           ),
+          sequencerLocation: [
+            {
+              _type: 'AkkaLocation',
+              connection: {
+                componentType: 'Sequencer',
+                connectionType: 'akka',
+                prefix: Prefix.fromString('IRIS.clearskies')
+              },
+              metadata: {},
+              uri: ''
+            }
+          ]
+        },
+        {
+          seqCompId: new ComponentId(
+            Prefix.fromString('TCS.comp1'),
+            'SequenceComponent'
+          ),
           sequencerLocation: []
         }
       ]
@@ -117,10 +136,13 @@ describe('Agents Grid View', () => {
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('IRIS.comp1')).exist
     expect(screen.getByText('Unknown')).exist
+    expect(screen.getByText('IRIS.comp1')).exist
+    expect(screen.getByText('[IRIS.clearskies]')).exist
+    expect(screen.getByText('TCS.comp1')).exist
     verify(smService.getAgentStatus()).called()
   })
 
-  it('should render empty agents when getAgentStatus returns locationServiceError | ESW-443', async () => {
+  it('should not render agents when getAgentStatus returns locationServiceError | ESW-443', async () => {
     when(smService.getAgentStatus()).thenResolve({
       _type: 'LocationServiceError',
       reason: 'Failed to fetch agents location'
@@ -135,7 +157,7 @@ describe('Agents Grid View', () => {
     verify(smService.getAgentStatus()).called()
   })
 
-  it('should render empty agents when getAgentStatus returns unhandled error | ESW-443', async () => {
+  it('should not render agents when getAgentStatus returns unhandled error | ESW-443', async () => {
     when(smService.getAgentStatus()).thenResolve({
       _type: 'Unhandled',
       msg: 'failed to process getAgentStatus',

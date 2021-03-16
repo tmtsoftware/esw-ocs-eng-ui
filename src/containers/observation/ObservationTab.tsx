@@ -1,4 +1,4 @@
-import type { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
+import type { ObsMode, ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Button, Drawer, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
@@ -53,20 +53,25 @@ const ObsModeActions = ({
 
 const CurrentObsMode = ({
   currentTab,
-  obsMode
+  obsMode,
+  sequencers
 }: {
   currentTab: TabName
   obsMode: ObsMode
+  sequencers: Subsystem[]
 }): JSX.Element => {
   return (
-    <PageHeader
-      extra={
-        <Space style={{ paddingRight: '2.5rem' }}>
-          <ObsModeActions tabName={currentTab} obsMode={obsMode} />
-        </Space>
-      }
-      title={obsMode.name}
-    />
+    <>
+      <PageHeader
+        extra={
+          <Space style={{ paddingRight: '2.5rem' }}>
+            <ObsModeActions tabName={currentTab} obsMode={obsMode} />
+          </Space>
+        }
+        title={obsMode.name}
+      />
+      <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+    </>
   )
 }
 
@@ -108,18 +113,12 @@ const ObservationTab = ({
       </Sider>
       <Content>
         {selectedObsModeDetails && (
-          <>
-            <CurrentObsMode
-              obsMode={selectedObsModeDetails.obsMode}
-              currentTab={currentTab}
-            />
-            <SequencersTable
-              obsMode={selectedObsModeDetails.obsMode}
-              sequencers={selectedObsModeDetails.sequencers}
-            />
-          </>
+          <CurrentObsMode
+            obsMode={selectedObsModeDetails.obsMode}
+            sequencers={selectedObsModeDetails.sequencers}
+            currentTab={currentTab}
+          />
         )}
-
         <Button onClick={() => setVisible(true)}>Open</Button>
       </Content>
       <Drawer

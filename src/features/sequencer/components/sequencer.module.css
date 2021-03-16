@@ -1,15 +1,15 @@
 .actionEnabled,
 .actionDisabled {
   font-size: 1.5rem;
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--labelColor);
 }
 
 .actionDisabled {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--disabledColor);
 }
 
 .actionEnabled :hover {
-  color: #1890ff;
+  color: var(--activeColor);
 }
 
 .headerBox {

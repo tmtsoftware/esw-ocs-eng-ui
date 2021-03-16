@@ -36,7 +36,7 @@
 
 .icon:hover,
 .agentIcon:hover {
-  color: #1890ff;
+  color: var(--activeColor);
 }
 
 .deleteIcon:hover {

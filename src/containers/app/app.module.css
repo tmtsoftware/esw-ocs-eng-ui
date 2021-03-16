@@ -5,9 +5,9 @@
 
 .tmtHeader {
   display: flex;
-  background-color: #ffffff;
+  background-color: white;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  box-shadow: 0px -1px 0px 0px #F0F0F0 inset;
+  box-shadow: 0px -1px 0px 0px #f0f0f0 inset;
 }

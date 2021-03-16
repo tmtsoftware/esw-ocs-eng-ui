@@ -19,7 +19,12 @@ type CardDetail = {
 const cards: CardDetail[] = [
   {
     title: 'Manage Infrastructure',
-    icon: <InfraIcon className={styles.commonIconSize} fill={'#1890FF'} />,
+    icon: (
+      <InfraIcon
+        className={styles.commonIconSize}
+        fill={'var(--activeColor)'}
+      />
+    ),
     link: INFRASTRUCTURE
   },
   {

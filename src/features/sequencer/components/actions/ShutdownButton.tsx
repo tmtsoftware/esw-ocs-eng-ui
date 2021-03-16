@@ -36,7 +36,8 @@ const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
       loading={shutdownAction.isLoading}
       onClick={() =>
         smService.data && shutdownAction.mutateAsync(smService.data)
-      }>
+      }
+      danger>
       Shutdown
     </Button>
   )

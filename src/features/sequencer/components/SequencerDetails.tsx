@@ -65,13 +65,13 @@ const SequencerDescription = ({
     <Descriptions column={1}>
       <Descriptions.Item
         label='Agent'
-        labelStyle={{ color: 'rgba(0,0,0,0.65)' }}
+        labelStyle={{ color: 'var(--labelColor)' }}
         style={{ padding: 0 }}>
         {agent}
       </Descriptions.Item>
       <Descriptions.Item
         label='Sequence Component'
-        labelStyle={{ color: 'rgba(0,0,0,0.65)' }}
+        labelStyle={{ color: 'var(--labelColor)' }}
         style={{ padding: 0 }}>
         {seqComp?.seqCompId.prefix.toJSON()}
       </Descriptions.Item>

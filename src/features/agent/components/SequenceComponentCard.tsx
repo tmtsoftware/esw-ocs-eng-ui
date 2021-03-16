@@ -52,7 +52,7 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
     <Row className={styles.seqComp}>
       <Col flex='auto' className={styles.seqCompTitle}>
         <Space direction='vertical' size={1}>
-          <Typography.Text style={{ color: ' rgba(0, 0, 0, 0.65)' }}>
+          <Typography.Text style={{ color: 'var(--labelColor)' }}>
             {seqCompId}
           </Typography.Text>
         </Space>

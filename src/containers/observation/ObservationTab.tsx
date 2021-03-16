@@ -10,6 +10,7 @@ import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
 import type { TabName } from './ObservationTabs'
+import { SequencersTable } from './SequencersTable'
 
 const { Sider } = Layout
 
@@ -68,6 +69,7 @@ const CurrentObsMode = ({
     />
   )
 }
+
 interface ObservationTabProps {
   data: ObsModeDetails[]
   currentTab: TabName
@@ -106,10 +108,16 @@ const ObservationTab = ({
       </Sider>
       <Content>
         {selectedObsModeDetails && (
-          <CurrentObsMode
-            obsMode={selectedObsModeDetails.obsMode}
-            currentTab={currentTab}
-          />
+          <>
+            <CurrentObsMode
+              obsMode={selectedObsModeDetails.obsMode}
+              currentTab={currentTab}
+            />
+            <SequencersTable
+              obsMode={selectedObsModeDetails.obsMode}
+              sequencers={selectedObsModeDetails.sequencers}
+            />
+          </>
         )}
 
         <Button onClick={() => setVisible(true)}>Open</Button>

@@ -26,7 +26,7 @@ const columns = (
   },
   {
     title: 'Number of Sequence Component',
-    width: 120,
+    width: 140,
     dataIndex: 'numOfSequenceComps',
     key: 'numOfSequenceComps',
     fixed: 'left',

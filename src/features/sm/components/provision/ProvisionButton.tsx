@@ -131,7 +131,6 @@ export const ProvisionButton = (): JSX.Element => {
         visible={modalVisibility}
         confirmLoading={provisionAction.isLoading}
         bodyStyle={{ padding: 0 }}
-        className={styles.modalHeader}
         onOk={handleModalOk}
         onCancel={handleModalCancel}>
         <ProvisionTable

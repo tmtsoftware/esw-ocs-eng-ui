@@ -3,7 +3,6 @@ import type { ObsMode, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
-import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import {

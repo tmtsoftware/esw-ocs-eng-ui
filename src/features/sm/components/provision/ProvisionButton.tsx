@@ -13,7 +13,6 @@ import { useConfigService } from '../../../config/hooks/useConfigService'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { useSMService } from '../../hooks/useSMService'
-import styles from './provision.module.css'
 import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>

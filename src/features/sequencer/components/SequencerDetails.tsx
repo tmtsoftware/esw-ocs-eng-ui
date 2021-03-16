@@ -3,7 +3,7 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import { ObsMode, Location } from '@tmtsoftware/esw-ts'
+import { ObsMode } from '@tmtsoftware/esw-ts'
 import { Badge, Button, Descriptions, PageHeader, Space, Tooltip } from 'antd'
 import React from 'react'
 import { useAgentsStatus } from '../../sm/hooks/useAgentsStatus'

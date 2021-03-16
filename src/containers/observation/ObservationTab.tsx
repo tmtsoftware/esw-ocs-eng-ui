@@ -1,10 +1,11 @@
 import type { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
-import { Button, Layout, Menu, Space } from 'antd'
+import { Button, Drawer, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
+import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
@@ -49,6 +50,24 @@ const ObsModeActions = ({
     <NonRunningActions tabName={tabName} obsMode={obsMode} />
   )
 
+const CurrentObsMode = ({
+  currentTab,
+  obsMode
+}: {
+  currentTab: TabName
+  obsMode: ObsMode
+}): JSX.Element => {
+  return (
+    <PageHeader
+      extra={
+        <Space style={{ paddingRight: '2.5rem' }}>
+          <ObsModeActions tabName={currentTab} obsMode={obsMode} />
+        </Space>
+      }
+      title={obsMode.name}
+    />
+  )
+}
 interface ObservationTabProps {
   data: ObsModeDetails[]
   currentTab: TabName
@@ -61,6 +80,9 @@ const ObservationTab = ({
   const [selectedObsModeDetails, setSelectedObsModeDetails] = useState<
     ObsModeDetails | undefined
   >(data[0])
+
+  const [isVisible, setVisible] = useState(false)
+  // const [selectedSequencer, selectSequencer] = useState<HttpLocation>()
 
   useEffect(() => {
     setSelectedObsModeDetails(data[0])
@@ -84,19 +106,26 @@ const ObservationTab = ({
       </Sider>
       <Content>
         {selectedObsModeDetails && (
-          <PageHeader
-            extra={
-              <Space style={{ paddingRight: '2.5rem' }}>
-                <ObsModeActions
-                  tabName={currentTab}
-                  obsMode={selectedObsModeDetails.obsMode}
-                />
-              </Space>
-            }
-            title={selectedObsModeDetails.obsMode.name}
+          <CurrentObsMode
+            obsMode={selectedObsModeDetails.obsMode}
+            currentTab={currentTab}
           />
         )}
+
+        <Button onClick={() => setVisible(true)}>Open</Button>
       </Content>
+      <Drawer
+        visible={isVisible}
+        width={'80%'}
+        onClose={() => setVisible(false)}>
+        {
+          // TODO : Update hardcoded values with selected sequencer once ESW-451 is done
+        }
+        <SequencerDetails
+          sequencer='IRIS.IRIS_Darknight'
+          agentPrefix='IRIS.machine1'
+        />
+      </Drawer>
     </Layout>
   )
 }

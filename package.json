@@ -24,12 +24,13 @@
     "test": "npm run test:unit",
     "test:logsEnabled": "export LOGS=true && npm run test:unit",
     "clean": "rm -rf dist && mkdir dist",
-    "prebuild": "npm-run-all --parallel clean eslint:check audit",
+    "prebuild": "npm-run-all --parallel clean eslint:check style:check audit",
     "eslint:check": "eslint --config .eslintrc.json './{src,test}/**/*.{ts,tsx}'",
     "fix": "npm-run-all --parallel clean fix:eslint fix:prettier",
     "fix:eslint": "eslint --fix --config .eslintrc.json './**/*.{ts,tsx}'",
     "fix:prettier": "prettier --write --config ./.prettierrc './**/*.{ts,tsx}' ",
-    "audit": "npm audit"
+    "audit": "npm audit",
+    "style:check": "stylelint 'src/**/*.css' "
   },
   "browserslist": [
     "last 1 chrome version"
@@ -61,6 +62,8 @@
     "prettier": "^2.2.1",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "snowpack": "^3.0.13",
+    "stylelint": "^13.12.0",
+    "stylelint-config-standard": "^21.0.0",
     "ts-mockito": "^2.6.1",
     "typescript": "^4.2.3"
   }

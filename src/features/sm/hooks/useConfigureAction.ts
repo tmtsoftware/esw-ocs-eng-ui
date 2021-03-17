@@ -5,7 +5,7 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY } from '../../queryKeys'
+import { AGENTS_STATUS, OBS_MODES_DETAILS } from '../../queryKeys'
 
 export const useConfigureAction = (
   obsMode: ObsMode | undefined
@@ -48,7 +48,7 @@ export const useConfigureAction = (
     mutationFn: configure,
     onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
     onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS_KEY, OBS_MODES_DETAILS_KEY],
+    invalidateKeysOnSuccess: [AGENTS_STATUS.key, OBS_MODES_DETAILS.key],
     useErrorBoundary: false
   })
 }

@@ -1,14 +1,14 @@
 import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { errorMessage } from '../../../utils/message'
-import { OBS_MODES_DETAILS_KEY } from '../../queryKeys'
+import { OBS_MODES_DETAILS } from '../../queryKeys'
 import { useSMService } from '../hooks/useSMService'
 
 export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSuccess> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(
-    OBS_MODES_DETAILS_KEY,
+    OBS_MODES_DETAILS.key,
     async () => {
       const response = await smService?.getObsModesDetails()
       if (response?._type === 'Failed') {
@@ -21,7 +21,10 @@ export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSucc
     },
     {
       // The query will not execute until the smService is resolved
-      enabled: !!smService
+      enabled: !!smService,
+      refetchIntervalInBackground:
+        OBS_MODES_DETAILS.refetchIntervalInBackground,
+      refetchInterval: OBS_MODES_DETAILS.refetchInterval
     }
   )
 }

@@ -1,7 +1,7 @@
 import type { Prefix } from '@tmtsoftware/esw-ts'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { LIST_AGENTS_KEY } from '../../queryKeys'
+import { LIST_AGENTS } from '../../queryKeys'
 
 export const useAgentsList = (): UseQueryResult<Prefix[]> => {
   const { locationServiceFactory } = useServiceFactory()
@@ -10,5 +10,5 @@ export const useAgentsList = (): UseQueryResult<Prefix[]> => {
     return agents.map((l) => l.connection.prefix)
   }
 
-  return useQuery(LIST_AGENTS_KEY, getAllAgentPrefix)
+  return useQuery(LIST_AGENTS.key, getAllAgentPrefix)
 }

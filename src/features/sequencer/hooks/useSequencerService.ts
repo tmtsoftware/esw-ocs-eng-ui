@@ -1,7 +1,7 @@
 import { ComponentId, Prefix, SequencerService } from '@tmtsoftware/esw-ts'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { SEQUENCER_SERVICE_KEY } from '../../queryKeys'
+import { SEQUENCER_SERVICE } from '../../queryKeys'
 
 const masterSequencer = (obsMode: string) =>
   new ComponentId(new Prefix('ESW', obsMode), 'Sequencer')
@@ -14,12 +14,12 @@ export const useSequencerService = <E>(
   const { sequencerServiceFactory } = useServiceFactory()
   const masterSequencerCompId = masterSequencer(obsMode)
   return useQuery(
-    SEQUENCER_SERVICE_KEY,
+    SEQUENCER_SERVICE.key,
     () => sequencerServiceFactory(masterSequencerCompId),
     {
       useErrorBoundary,
       onError,
-      retry: 1
+      retry: SEQUENCER_SERVICE.retry
     }
   )
 }

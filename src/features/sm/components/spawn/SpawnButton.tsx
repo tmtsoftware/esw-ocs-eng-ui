@@ -7,7 +7,7 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { useAgentsList } from '../../../agent/hooks/useAgentsList'
-import { SM_STATUS_KEY } from '../../../queryKeys'
+import { SM_STATUS } from '../../../queryKeys'
 import { OBS_MODE_CONFIG } from '../../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
@@ -37,7 +37,7 @@ export const SpawnSMButton = (): JSX.Element => {
         'Sequence Manager could not be spawned. Please try again.',
         e
       ),
-    invalidateKeysOnSuccess: [SM_STATUS_KEY],
+    invalidateKeysOnSuccess: [SM_STATUS.key],
     useErrorBoundary: true
   })
 

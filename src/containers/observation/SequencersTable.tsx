@@ -17,7 +17,7 @@ import {
   ServiceFactoryContextType,
   useServiceFactory
 } from '../../contexts/ServiceFactoryContext'
-import { OBS_MODE_SEQUENCERS_KEY } from '../../features/queryKeys'
+import { OBS_MODE_SEQUENCERS } from '../../features/queryKeys'
 import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 import styles from '../../features/sm/components/provision/provision.module.css'
 
@@ -130,12 +130,13 @@ const useSequencerStatus = (
 
   const locationService = locationServiceFactory()
   return useQuery(
-    OBS_MODE_SEQUENCERS_KEY,
+    OBS_MODE_SEQUENCERS.key,
     () => getData(sequencers, sequencerServiceFactory, locationService),
     {
       enabled: !!locationService,
-      retry: true,
-      retryDelay: 2000
+      refetchIntervalInBackground:
+        OBS_MODE_SEQUENCERS.refetchIntervalInBackground,
+      refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
     }
   )
 }

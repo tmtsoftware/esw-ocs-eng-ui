@@ -6,7 +6,7 @@ import { Spinner } from '../../../../components/spinners/Spinner'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useAgentService } from '../../../agent/hooks/useAgentService'
-import { SM_STATUS_KEY } from '../../../queryKeys'
+import { SM_STATUS } from '../../../queryKeys'
 import { SM_COMPONENT_ID } from '../../constants'
 
 function showConfirmModal(onYes: () => void): void {
@@ -39,7 +39,7 @@ export const ShutdownSMButton = (): JSX.Element => {
     mutationFn: shutdownSM,
     onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
     onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),
-    invalidateKeysOnSuccess: [SM_STATUS_KEY],
+    invalidateKeysOnSuccess: [SM_STATUS.key],
     useErrorBoundary: true
   })
 

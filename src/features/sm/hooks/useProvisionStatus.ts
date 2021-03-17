@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { PROVISION_STATUS_KEY } from '../../queryKeys'
+import { PROVISION_STATUS } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
 export const useProvisionStatus = (
@@ -8,7 +8,7 @@ export const useProvisionStatus = (
   const { data: smService } = useSMService(useErrorBoundary)
 
   return useQuery(
-    PROVISION_STATUS_KEY,
+    PROVISION_STATUS.key,
     async () => {
       const agentStatus = await smService?.getAgentStatus()
 

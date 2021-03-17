@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { OBS_MODES_DETAILS_KEY } from '../../../queryKeys'
+import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useSMService } from '../../../sm/hooks/useSMService'
 
 const shutdown = (obsMode: ObsMode) => async (
@@ -27,7 +27,7 @@ const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
     mutationFn: shutdown(obsMode),
     onSuccess: () => successMessage('Successfully shutdown sequencer'),
     onError: (e) => errorMessage('Failed to shutdown sequencer', e),
-    invalidateKeysOnSuccess: [OBS_MODES_DETAILS_KEY]
+    invalidateKeysOnSuccess: [OBS_MODES_DETAILS.key]
   })
 
   return (

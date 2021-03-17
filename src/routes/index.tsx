@@ -20,17 +20,15 @@ const RedirectToLogin = ({ login }: { login: () => void }) => {
 const Routes = (): JSX.Element => {
   const { login, auth } = useAuth()
 
-  if (auth === null) return <Result icon={<LoadingOutlined />} />
+  // if (auth === null) return <Result icon={<LoadingOutlined />} />
 
-  return auth.isAuthenticated() ? (
+  return (
     <Switch>
       <Route exact path={HOME} component={Home} />
       <Route path={INFRASTRUCTURE} component={Infrastructure} />
       <Route path={OBSERVATIONS} component={Observations} />
       <Route path={NO_MATCH} component={NoMatch} />
     </Switch>
-  ) : (
-    <RedirectToLogin login={login} />
   )
 }
 

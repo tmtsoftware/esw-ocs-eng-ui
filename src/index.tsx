@@ -1,7 +1,5 @@
-import { AuthContextProvider } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { render } from 'react-dom'
-import { AppConfig } from './config/AppConfig'
 import App from './containers/app/App'
 import {
   createServiceFactories,
@@ -11,8 +9,8 @@ import './index.module.css'
 import { useAuth } from './contexts/useAuthContext'
 
 const Main = () => {
-  const { auth } = useAuth()
-  const tokenFactory = auth ? auth.token : () => undefined
+  // const { auth } = useAuth()
+  const tokenFactory = () => undefined
   const serviceFactories = createServiceFactories(tokenFactory)
 
   return (
@@ -24,9 +22,9 @@ const Main = () => {
 
 render(
   <React.StrictMode>
-    <AuthContextProvider config={AppConfig}>
-      <Main />
-    </AuthContextProvider>
+    {/*<AuthContextProvider config={AppConfig}>*/}
+    <Main />
+    {/*</AuthContextProvider>*/}
   </React.StrictMode>,
   document.getElementById('root')
 )

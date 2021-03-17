@@ -8,6 +8,7 @@ import {
   TokenFactory
 } from '@tmtsoftware/esw-ts'
 import { createContext, useContext } from 'react'
+import { serviceFactoryMocks } from './mocks'
 
 export type ServiceFactoryContextType = {
   locationServiceFactory: () => LocationService
@@ -19,9 +20,7 @@ export type ServiceFactoryContextType = {
   ) => Promise<SequencerService>
 }
 
-const createServiceFactories = (
-  tokenFactory: TokenFactory
-): ServiceFactoryContextType => ({
+const services = (tokenFactory: TokenFactory): ServiceFactoryContextType => ({
   locationServiceFactory: () => LocationService(tokenFactory),
   agentServiceFactory: () => AgentService(tokenFactory),
   configServiceFactory: () => ConfigService(tokenFactory),
@@ -29,6 +28,13 @@ const createServiceFactories = (
   sequencerServiceFactory: (componentId) =>
     SequencerService(componentId, tokenFactory)
 })
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
+// @ts-ignore
+const createServiceFactories = (tokenFactory: TokenFactory) => {
+  return serviceFactoryMocks
+  // return services(tokenFactory)
+}
 
 const defaultServiceFactories = createServiceFactories(() => undefined)
 const ServiceFactoryContext = createContext(defaultServiceFactories)

@@ -10,10 +10,10 @@ interface AppProps {
 }
 
 const Container = ({ children }: AppProps): JSX.Element => {
-  const { auth } = useAuth()
+  // const { auth } = useAuth()
   return (
     <Layout>
-      {auth?.isAuthenticated() ? <Sider /> : <></>}
+      <Sider />
       <Layout>
         <Content className={styles.content}>{children}</Content>
       </Layout>

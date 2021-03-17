@@ -31,7 +31,7 @@ const getList = (
               styles.menuItem +
               ` ${item == selectedItem ? styles.selectedItem : ''}`
             }
-            style={{ paddingLeft: '24px', marginTop: 0, marginBottom: 0 }}
+            style={{ paddingLeft: '1.5rem', marginTop: 0, marginBottom: 0 }}
             key={item}>
             {item}
           </Menu.Item>

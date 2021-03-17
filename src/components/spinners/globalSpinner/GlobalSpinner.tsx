@@ -1,13 +1,13 @@
 import { Spin } from 'antd'
 import React from 'react'
 import { useIsFetching } from 'react-query'
-import './GlobalSpinner.css'
+import styles from './globalSpinner.module.css'
 
 export default function GlobalSpinner(): JSX.Element {
   const isFetching = useIsFetching()
 
   return (
-    <div className='global-spinner'>
+    <div className={styles.globalSpinner}>
       <Spin spinning={isFetching ? true : false} />
     </div>
   )

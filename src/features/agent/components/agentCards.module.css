@@ -40,7 +40,7 @@
 }
 
 .deleteIcon:hover {
-  color: #ff4d4f;
+  color: var(--dangerColor);
 }
 
 .seqComp,
@@ -50,7 +50,7 @@
 }
 
 .seqCompTitle {
-  padding: 8px 12px;
+  padding: 0.5rem 0.75rem;
 }
 
 .sequencerComp {

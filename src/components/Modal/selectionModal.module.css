@@ -10,5 +10,5 @@
 
 .menu {
   overflow-y: scroll;
-  max-height: 400px;
+  max-height: 25rem;
 }

@@ -1,8 +1,9 @@
-.commonIconSize, .settingsIcon {
-  font-size: 64px;
-  height: 64px;
-  width: 64px;
-  margin-bottom: 24px;
+.commonIconSize,
+.settingsIcon {
+  font-size: 4rem;
+  height: 4rem;
+  width: 4rem;
+  margin-bottom: 1.5rem;
 }
 
 .settingsIcon {
@@ -11,15 +12,15 @@
 
 .homePageCardsRow {
   min-height: 65vh;
-  margin: 16px 16px !important;
-  align-content:center;
+  margin: 1rem 1rem !important;
+  align-content: center;
 }
 
 h3.cardTitle {
   margin-bottom: 0em;
 }
 
-@media all and (min-width: 768px) {
+@media all and (min-width: 48rem) {
   .smCard {
     width: 23rem;
     flex: none;

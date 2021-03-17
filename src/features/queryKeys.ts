@@ -13,4 +13,7 @@ export const SM_SERVICE_KEY = 'SMService'
 export const AGENTS_STATUS_KEY = 'AgentsStatus'
 export const PROVISION_STATUS_KEY = 'ProvisionStatus'
 export const OBS_MODES_DETAILS_KEY = 'ObsModesDetails'
+
+// Sequencers
 export const SEQUENCER_SERVICE_KEY = 'SequencerService'
+export const OBS_MODE_SEQUENCERS_KEY = 'ObsModeSequencers'

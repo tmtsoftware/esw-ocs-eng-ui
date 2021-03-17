@@ -3,11 +3,15 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import { ObsMode } from '@tmtsoftware/esw-ts'
+import type { Location } from '@tmtsoftware/esw-ts'
 import { Badge, Button, Descriptions, PageHeader, Space, Tooltip } from 'antd'
 import React from 'react'
-import { useAgentsStatus } from '../../sm/hooks/useAgentsStatus'
 import styles from './sequencer.module.css'
+
+type DescriptionProps = {
+  agent: string
+  seqComp: string
+}
 
 const SequencerActions = (): JSX.Element => (
   <Space size={15}>
@@ -42,67 +46,45 @@ const Actions = (): JSX.Element => (
 )
 
 const SequencerDescription = ({
-  obsMode,
-  agent
-}: {
-  obsMode: ObsMode
-  agent: string
-}): JSX.Element => {
-  const { data } = useAgentsStatus()
-  const thisAgent = data?.filter(
-    (agentStatus) => agentStatus.agentId.prefix.toJSON() == agent
-  )[0]
-
-  // This filter logic will be removed once we have seq component info in metadata of sequencer location
-
-  const seqComp = thisAgent?.seqCompsStatus.filter(
-    (seqCompStatus) =>
-      seqCompStatus.sequencerLocation[0]?.connection.prefix.toJSON() ==
-      obsMode.toJSON()
-  )[0]
-
-  return (
-    <Descriptions column={1}>
-      <Descriptions.Item
-        label='Agent'
-        labelStyle={{ color: 'var(--labelColor)' }}
-        style={{ padding: 0 }}>
-        {agent}
-      </Descriptions.Item>
-      <Descriptions.Item
-        label='Sequence Component'
-        labelStyle={{ color: 'var(--labelColor)' }}
-        style={{ padding: 0 }}>
-        {seqComp?.seqCompId.prefix.toJSON()}
-      </Descriptions.Item>
-    </Descriptions>
-  )
-}
+  agent,
+  seqComp
+}: DescriptionProps): JSX.Element => (
+  <Descriptions column={1}>
+    <Descriptions.Item
+      label='Agent'
+      labelStyle={{ color: 'var(--labelColor)' }}
+      style={{ padding: 0 }}>
+      {agent}
+    </Descriptions.Item>
+    <Descriptions.Item
+      label='Sequence Component'
+      labelStyle={{ color: 'var(--labelColor)' }}
+      style={{ padding: 0 }}>
+      {seqComp}
+    </Descriptions.Item>
+  </Descriptions>
+)
 
 const SequencerDetails = ({
-  sequencer,
-  agentPrefix
+  sequencer
 }: {
-  sequencer: string
-  agentPrefix: string
-}): JSX.Element => {
-  return (
-    <PageHeader
-      ghost={false}
-      title={
-        <>
-          <Badge status='success' />
-          {sequencer}
-        </>
-      }
-      className={styles.headerBox}
-      extra={<Actions />}>
-      <SequencerDescription
-        obsMode={new ObsMode('IRIS.IRIS_Darknight')}
-        agent={agentPrefix}
-      />
-    </PageHeader>
-  )
-}
+  sequencer: Location
+}): JSX.Element => (
+  <PageHeader
+    ghost={false}
+    title={
+      <>
+        <Badge status='success' />
+        {sequencer.connection.prefix.toJSON()}
+      </>
+    }
+    className={styles.headerBox}
+    extra={<Actions />}>
+    <SequencerDescription
+      agent={sequencer.metadata.agentPrefix}
+      seqComp={sequencer.metadata.sequenceComponentPrefix}
+    />
+  </PageHeader>
+)
 
 export default SequencerDetails

@@ -1,14 +1,24 @@
 import { EditOutlined } from '@ant-design/icons'
-import type { ObsMode, StepList, Subsystem } from '@tmtsoftware/esw-ts'
-import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-import { Table, Typography } from 'antd'
+import {
+  ComponentId,
+  HttpConnection,
+  Location,
+  LocationService,
+  ObsMode,
+  Prefix,
+  StepList,
+  Subsystem
+} from '@tmtsoftware/esw-ts'
+import { Drawer, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import {
   ServiceFactoryContextType,
   useServiceFactory
 } from '../../contexts/ServiceFactoryContext'
+import { OBS_MODE_SEQUENCERS_KEY } from '../../features/queryKeys'
+import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 import styles from '../../features/sm/components/provision/provision.module.css'
 
 type StepStatus =
@@ -23,21 +33,26 @@ type Datatype = {
   prefix: string
   status: { stepNumber: number; status: StepStatus }
   totalSteps: number
+  location: Location | undefined
 }
 
-const columns: ColumnsType<Datatype> = [
+const columns = (
+  onEditHandle: (sequencer?: Location) => void
+): ColumnsType<Datatype> => [
   {
     title: 'Sequencers',
     dataIndex: 'prefix',
     key: 'prefix',
     fixed: 'left',
     // eslint-disable-next-line react/display-name
-    render: (value) => (
-      <>
-        <EditOutlined />
-        <Typography.Text>{value}</Typography.Text>
-      </>
-    )
+    render: (value, record) => {
+      return (
+        <>
+          <EditOutlined onClick={() => onEditHandle(record.location)} />
+          <Typography.Text>{value}</Typography.Text>
+        </>
+      )
+    }
   },
   {
     title: 'Current Step',
@@ -76,12 +91,16 @@ const calcStatus = (stepList: StepList): Datatype['status'] => {
 
 const getData = (
   sequencers: Prefix[],
-  sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory']
+  sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory'],
+  locationService: LocationService
 ): Promise<Datatype[]> =>
   Promise.all(
     sequencers.map(async (prefix) => {
       const sequencer = await sequencerServiceFactory(
         new ComponentId(prefix, 'Sequencer')
+      )
+      const location: Location | undefined = await locationService.find(
+        HttpConnection(prefix, 'Sequencer')
       )
 
       const stepList = await sequencer.getSequence()
@@ -95,7 +114,8 @@ const getData = (
       return {
         prefix: prefix.toJSON(),
         status,
-        totalSteps: stepList ? stepList.length : 0
+        totalSteps: stepList ? stepList.length : 0,
+        location: location
       }
     })
   )
@@ -109,10 +129,15 @@ const useSequencerStatus = (
   } = useServiceFactory()
 
   const locationService = locationServiceFactory()
-
-  return useQuery('', () => getData(sequencers, sequencerServiceFactory), {
-    enabled: !!locationService
-  })
+  return useQuery(
+    OBS_MODE_SEQUENCERS_KEY,
+    () => getData(sequencers, sequencerServiceFactory, locationService),
+    {
+      enabled: !!locationService,
+      retry: true,
+      retryDelay: 2000
+    }
+  )
 }
 
 type ObsModeSeqTableProps = {
@@ -128,14 +153,32 @@ export const SequencersTable = ({
     sequencers.map((seq) => new Prefix(seq, obsMode.name))
   )
 
+  const [isVisible, setVisible] = useState(false)
+  const [selectedSequencer, selectSequencer] = useState<Location>()
+
+  const onEditHandle = (sequencer?: Location) => {
+    selectSequencer(sequencer)
+    setVisible(true)
+  }
+
   return (
-    <Table
-      pagination={false}
-      loading={sequencerStatus.isLoading}
-      columns={columns}
-      dataSource={sequencerStatus.data}
-      onHeaderRow={() => ({ className: styles.header })}
-      onRow={() => ({ className: styles.cell })}
-    />
+    <>
+      <Drawer
+        visible={selectedSequencer && isVisible}
+        width={'80%'}
+        onClose={() => setVisible(false)}>
+        {selectedSequencer && (
+          <SequencerDetails sequencer={selectedSequencer} />
+        )}
+      </Drawer>
+      <Table
+        pagination={false}
+        loading={sequencerStatus.isLoading}
+        columns={columns(onEditHandle)}
+        dataSource={sequencerStatus.data}
+        onHeaderRow={() => ({ className: styles.header })}
+        onRow={() => ({ className: styles.cell })}
+      />
+    </>
   )
 }

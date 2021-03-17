@@ -1,11 +1,10 @@
 import type { ObsMode, ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
-import { Button, Drawer, Layout, Menu, Space } from 'antd'
+import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
-import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
@@ -88,9 +87,6 @@ const ObservationTab = ({
     ObsModeDetails | undefined
   >(data[0])
 
-  const [isVisible, setVisible] = useState(false)
-  // const [selectedSequencer, selectSequencer] = useState<HttpLocation>()
-
   useEffect(() => {
     setSelectedObsModeDetails(data[0])
   }, [data])
@@ -119,20 +115,7 @@ const ObservationTab = ({
             currentTab={currentTab}
           />
         )}
-        <Button onClick={() => setVisible(true)}>Open</Button>
       </Content>
-      <Drawer
-        visible={isVisible}
-        width={'80%'}
-        onClose={() => setVisible(false)}>
-        {
-          // TODO : Update hardcoded values with selected sequencer once ESW-451 is done
-        }
-        <SequencerDetails
-          sequencer='IRIS.IRIS_Darknight'
-          agentPrefix='IRIS.machine1'
-        />
-      </Drawer>
     </Layout>
   )
 }

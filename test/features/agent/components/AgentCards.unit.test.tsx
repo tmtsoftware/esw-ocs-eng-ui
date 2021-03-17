@@ -45,10 +45,7 @@ describe('Agents Grid View', () => {
   const smService = mockServices.mock.smService
   afterEach(() => {
     cleanup()
-    console.log('cleanup finished')
   })
-
-  after(() => console.log('going out of this agent test'))
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(smService.getAgentStatus()).thenResolve({

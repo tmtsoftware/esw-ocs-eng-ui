@@ -81,7 +81,7 @@ const SequencerDetails = ({
     className={styles.headerBox}
     extra={<Actions />}>
     <SequencerDescription
-      agent={sequencer.metadata.agentPrefix}
+      agent={sequencer.metadata.agentPrefix ?? 'Unknown'}
       seqComp={sequencer.metadata.sequenceComponentPrefix}
     />
   </PageHeader>

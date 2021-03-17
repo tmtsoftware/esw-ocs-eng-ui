@@ -24,6 +24,11 @@ describe('sequencer details', () => {
     uri: ''
   }
 
+  const sequencerWithoutAgentPrefix: Location = {
+    ...sequencerLoc,
+    metadata: { sequenceComponentPrefix }
+  }
+
   it('Should render the sequencerDetails | ESW-455', async () => {
     const mockServices = getMockServices()
 
@@ -56,5 +61,18 @@ describe('sequencer details', () => {
     expect(screen.getByRole('PlaySequencer')).to.exist
     expect(screen.getByRole('StopSequencer')).to.exist
     expect(screen.getByRole('ResetSequencer')).to.exist
+  })
+
+  it('should render agentPrefix as unknown if sequencer is standalone', async () => {
+    const mockServices = getMockServices()
+
+    renderWithAuth({
+      ui: <SequencerDetails sequencer={sequencerWithoutAgentPrefix} />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    expect(screen.getByText(darkNightSequencer)).to.exist
+    expect(screen.getByText('Unknown')).to.exist
+    expect(screen.getByText(sequenceComponentPrefix)).to.exist
   })
 })

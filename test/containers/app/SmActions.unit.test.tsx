@@ -1,4 +1,4 @@
-import { waitFor, screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import {
   AgentStatus,
   AgentStatusResponse,
@@ -11,6 +11,7 @@ import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import SmActions from '../../../src/containers/infrastructure/SMActions'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+
 describe('SM actions', () => {
   const mockServices = getMockServices()
   const smService = mockServices.mock.smService
@@ -42,7 +43,7 @@ describe('SM actions', () => {
       when(smService.getAgentStatus()).thenResolve(agentStatusResponse)
 
       renderWithAuth({
-        ui: <SmActions />,
+        ui: <SmActions disabled={false} />,
         loggedIn: true,
         mockClients: mockServices.serviceFactoryContext
       })

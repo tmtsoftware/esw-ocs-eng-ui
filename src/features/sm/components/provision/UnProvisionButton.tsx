@@ -36,9 +36,9 @@ const shutdownAllSequenceComps = (
   })
 
 export const UnProvisionButton = ({
-  disabled
+  disabled = false
 }: {
-  disabled: boolean
+  disabled?: boolean
 }): JSX.Element => {
   const useErrorBoundary = false
   const smService = useSMService(useErrorBoundary)

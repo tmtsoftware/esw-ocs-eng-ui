@@ -74,9 +74,9 @@ const fetchProvisionConf = async (
 }
 
 export const ProvisionButton = ({
-  disabled
+  disabled = false
 }: {
-  disabled: boolean
+  disabled?: boolean
 }): JSX.Element => {
   const useErrorBoundary = false
   const [modalVisibility, setModalVisibility] = useState(false)

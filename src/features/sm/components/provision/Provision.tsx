@@ -4,10 +4,10 @@ import { UnProvisionButton } from './UnProvisionButton'
 
 const Provision = ({
   provisionStatus,
-  disabled
+  disabled = false
 }: {
   provisionStatus: boolean | undefined
-  disabled: boolean
+  disabled?: boolean
 }): JSX.Element => {
   return provisionStatus ? (
     <UnProvisionButton disabled={disabled} />

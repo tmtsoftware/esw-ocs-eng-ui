@@ -18,9 +18,9 @@ import {
   ServiceFactoryContextType,
   useServiceFactory
 } from '../../contexts/ServiceFactoryContext'
+import styles from '../../features/agent/components/agentCards.module.css'
 import { OBS_MODE_SEQUENCERS } from '../../features/queryKeys'
 import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
-import styles from '../../features/sm/components/provision/provision.module.css'
 
 type StepStatus =
   | 'completed'
@@ -53,6 +53,7 @@ const columns = (
           <EditOutlined
             onClick={() => onEditHandle(record.location)}
             style={{ marginRight: '0.5rem' }}
+            className={styles.commonIcon}
           />
           <Typography.Text>{value}</Typography.Text>
         </>
@@ -220,8 +221,7 @@ export const SequencersTable = ({
         loading={sequencerStatus.isLoading || sequencerStatus.isError}
         columns={columns(onEditHandle)}
         dataSource={sequencerStatus.data}
-        onHeaderRow={() => ({ className: styles.header })}
-        onRow={() => ({ className: styles.cell })}
+        onRow={() => ({ style: { fontSize: '1rem' } })}
         style={{ marginLeft: '0.8rem', marginTop: '0.8rem' }}
       />
     </>

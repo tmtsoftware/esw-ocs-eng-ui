@@ -4,7 +4,7 @@ import {
   StopOutlined
 } from '@ant-design/icons'
 import type { Location } from '@tmtsoftware/esw-ts'
-import { Badge, Button, Descriptions, PageHeader, Space, Tooltip } from 'antd'
+import { Badge, Button, PageHeader, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
 import styles from './sequencer.module.css'
 
@@ -45,14 +45,12 @@ const Actions = (): JSX.Element => (
 )
 
 const SequencerDescription = ({ seqComp }: DescriptionProps): JSX.Element => (
-  <Descriptions column={1}>
-    <Descriptions.Item
-      label='Sequence Component'
-      labelStyle={{ color: 'var(--labelColor)' }}
-      style={{ padding: 0 }}>
-      {seqComp}
-    </Descriptions.Item>
-  </Descriptions>
+  <Space>
+    <Typography.Text type='secondary' strong>
+      Sequence Component :
+    </Typography.Text>
+    <Typography.Text>{seqComp}</Typography.Text>
+  </Space>
 )
 
 const SequencerDetails = ({

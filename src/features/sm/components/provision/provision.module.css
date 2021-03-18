@@ -1,15 +1,10 @@
 tr.header > th {
   padding: 0 1.5rem;
   height: 3rem;
-  margin-bottom: 0;
 }
 
 tr.cell > td {
   padding: 0 1.5rem;
   height: 3rem;
-  font-family: Roboto, sans-serif;
   font-size: 1rem;
-  font-style: normal;
-  font-weight: 500;
-  text-align: left;
 }

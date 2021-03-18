@@ -1,5 +1,5 @@
 import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
-import { Button, Layout, Menu, Space, Typography } from 'antd'
+import { Button, Layout, Menu, Space } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
@@ -81,13 +81,16 @@ const ObservationTab = ({
   setObservation
 }: ObservationTabProps): JSX.Element => (
   <Layout>
-    <Sider theme='light' style={{ minHeight: '80vh', paddingTop: '1rem' }}>
+    <Sider
+      theme='light'
+      style={{ minHeight: '80vh', paddingTop: '1rem' }}
+      width={'13rem'}>
       <Menu selectedKeys={data[selected] && [data[selected].obsMode.name]}>
         {data.map((item, index) => (
           <Menu.Item
             onClick={() => setObservation(index)}
             key={item.obsMode.name}>
-            <Typography.Text>{item.obsMode.name}</Typography.Text>
+            {item.obsMode.name}
           </Menu.Item>
         ))}
       </Menu>

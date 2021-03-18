@@ -14,6 +14,7 @@ export const useQuery = <
   queryKey: QueryKey,
   queryFn: QueryFunction<TQueryFnData>,
   options?: UseQueryOptions<TQueryFnData, TError, TData>
-): UseQueryResult<TData, TError> => useReactQuery(queryKey, queryFn, options)
+): UseQueryResult<TData, TError> =>
+  useReactQuery(queryKey, queryFn, { ...options, retry: 1 })
 
 export type { UseQueryResult }

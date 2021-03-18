@@ -22,8 +22,6 @@ export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSucc
     {
       // The query will not execute until the smService is resolved
       enabled: !!smService,
-      refetchIntervalInBackground:
-        OBS_MODES_DETAILS.refetchIntervalInBackground,
       refetchInterval: OBS_MODES_DETAILS.refetchInterval
     }
   )

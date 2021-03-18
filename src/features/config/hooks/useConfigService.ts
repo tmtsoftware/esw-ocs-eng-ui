@@ -10,7 +10,6 @@ export const useConfigService = (
   const { configServiceFactory } = useServiceFactory()
   return useQuery(CONFIG_SERVICE.key, configServiceFactory, {
     useErrorBoundary,
-    onError: errorMessage,
-    retry: CONFIG_SERVICE.retry
+    onError: errorMessage
   })
 }

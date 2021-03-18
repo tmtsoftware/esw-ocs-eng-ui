@@ -11,7 +11,6 @@ export const useSMService = <E>(
   return useQuery(SM_SERVICE.key, smServiceFactory, {
     useErrorBoundary,
     onError,
-    refetchIntervalInBackground: SM_SERVICE.refetchIntervalInBackground,
     refetchInterval: SM_SERVICE.refetchInterval
   })
 }

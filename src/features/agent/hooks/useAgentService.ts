@@ -6,7 +6,6 @@ import { AGENT_SERVICE } from '../../queryKeys'
 export const useAgentService = (): UseQueryResult<AgentService> => {
   const { agentServiceFactory } = useServiceFactory()
   return useQuery(AGENT_SERVICE.key, agentServiceFactory, {
-    useErrorBoundary: true,
-    retry: AGENT_SERVICE.retry
+    useErrorBoundary: true
   })
 }

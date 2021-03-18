@@ -25,7 +25,6 @@ export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
     {
       // The query will not execute until the smService is resolved
       enabled: !!smService,
-      refetchIntervalInBackground: AGENTS_STATUS.refetchIntervalInBackground,
       refetchInterval: AGENTS_STATUS.refetchInterval
     }
   )

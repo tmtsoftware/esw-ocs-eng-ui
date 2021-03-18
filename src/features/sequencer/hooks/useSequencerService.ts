@@ -18,8 +18,7 @@ export const useSequencerService = <E>(
     () => sequencerServiceFactory(masterSequencerCompId),
     {
       useErrorBoundary,
-      onError,
-      retry: SEQUENCER_SERVICE.retry
+      onError
     }
   )
 }

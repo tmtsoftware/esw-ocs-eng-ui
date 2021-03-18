@@ -10,7 +10,6 @@ export const useSMStatus = (): UseQueryResult<Option<Location>, unknown> => {
     SM_STATUS.key,
     () => locationServiceFactory().find(SM_CONNECTION),
     {
-      refetchIntervalInBackground: SM_STATUS.refetchIntervalInBackground,
       refetchInterval: SM_STATUS.refetchInterval
     }
   )

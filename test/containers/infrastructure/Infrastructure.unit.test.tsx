@@ -206,9 +206,10 @@ describe('Infrastructure page', () => {
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
 
-  it('should refetch agent cards after provision success | ESW-443', async () => {
+  it.only('should refetch agent cards after provision success | ESW-443', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
+    const locationService = mockServices.mock.locationService
     const configService = mockServices.mock.configService
 
     const eswPrefixStr = 'ESW.machine1'
@@ -224,6 +225,7 @@ describe('Infrastructure page', () => {
         return new AgentProvisionConfig(Prefix.fromString(pStr), num)
       })
     )
+    when(locationService.find(deepEqual(SM_CONNECTION))).thenResolve(smLocation)
     when(smService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
@@ -241,9 +243,11 @@ describe('Infrastructure page', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const provisionButton = await screen.findByRole('button', {
+    const provisionButton = (await screen.findByRole('button', {
       name: 'Provision'
-    })
+    })) as HTMLButtonElement
+
+    await waitFor(() => expect(provisionButton.disabled).false)
 
     //User clicks provision button
     userEvent.click(provisionButton)

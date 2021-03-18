@@ -57,7 +57,7 @@ describe('SM actions', () => {
       }) as HTMLButtonElement
 
       expect(configureButton.disabled).true
-      expect(provisionButton.disabled).true
+      expect(provisionButton.disabled).false
 
       // wait for both buttons to be enabled once data is loaded in async manner
       await waitFor(() => {

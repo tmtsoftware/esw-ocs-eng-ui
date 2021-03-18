@@ -35,7 +35,11 @@ const shutdownAllSequenceComps = (
     }
   })
 
-export const UnProvisionButton = (): JSX.Element => {
+export const UnProvisionButton = ({
+  disabled
+}: {
+  disabled: boolean
+}): JSX.Element => {
   const useErrorBoundary = false
   const smService = useSMService(useErrorBoundary)
 
@@ -51,6 +55,7 @@ export const UnProvisionButton = (): JSX.Element => {
   return (
     <Button
       danger
+      disabled={disabled}
       loading={unProvisionAction.isLoading}
       onClick={() =>
         smService.data &&

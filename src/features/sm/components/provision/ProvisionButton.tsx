@@ -73,7 +73,11 @@ const fetchProvisionConf = async (
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
-export const ProvisionButton = (): JSX.Element => {
+export const ProvisionButton = ({
+  disabled
+}: {
+  disabled: boolean
+}): JSX.Element => {
   const useErrorBoundary = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
@@ -118,7 +122,7 @@ export const ProvisionButton = (): JSX.Element => {
       <Button
         type='primary'
         size='middle'
-        disabled={smService.isLoading || smService.isError}
+        disabled={disabled}
         loading={provisionAction.isLoading}
         onClick={onProvisionClick}>
         Provision

@@ -4,12 +4,12 @@ import Configure from '../../features/sm/components/configure/Configure'
 import Provision from '../../features/sm/components/provision/Provision'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 
-const SmActions = (): JSX.Element => {
+const SmActions = ({ disabled }: { disabled: boolean }): JSX.Element => {
   const provisionStatus = useProvisionStatus(false)
   return (
     <Space>
-      <Provision provisionStatus={provisionStatus.data} />
-      <Configure disabled={!provisionStatus.data} />
+      <Provision provisionStatus={provisionStatus.data} disabled={disabled}/>
+      <Configure disabled={!provisionStatus.data || disabled} />
     </Space>
   )
 }

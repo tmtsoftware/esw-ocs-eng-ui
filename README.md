@@ -7,12 +7,15 @@ This project is a React web application.
 1. csw-services should be up & running.
     using sbt shell inside CSW `csw-services/run start -k -c`.
 
-2. `AgentService` along with one or more `Agent's` should be up & running.
-    using sbt shell inside ESW `esw-services/run start --agent --agent-service`.
-
-3. The latest binaries of ESW need to be present on machine with 0.1.0-SNAPSHOT version.
+2. The latest binaries of ESW need to be present on machine with 0.1.0-SNAPSHOT version.
     run `sbt publishLocal` inside ESW sbt shell.
     Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
+
+3a. `AgentService` along with one or more `Agent's` should be up & running.
+    using sbt shell inside ESW `esw-services/run start --agent --agent-service`.
+
+3b. Alternatively, to run esw-services with a simulated Sequence Manager, use
+    `esw-services/run start --agent-service -s --simulation`
 
 The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 

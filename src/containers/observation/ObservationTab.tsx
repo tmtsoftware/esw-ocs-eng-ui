@@ -1,14 +1,14 @@
-import type { ObsMode, ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
-import { Button, Layout, Menu, Space } from 'antd'
+import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
+import { Button, Layout, Menu, Space, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
-import type { TabName } from './ObservationTabs'
+import type { ObservationTabProps, TabName } from './ObservationTabs'
 import { SequencersTable } from './SequencersTable'
 
 const { Sider } = Layout
@@ -74,50 +74,34 @@ const CurrentObsMode = ({
   )
 }
 
-interface ObservationTabProps {
-  data: ObsModeDetails[]
-  currentTab: TabName
-}
-
 const ObservationTab = ({
   data,
-  currentTab
-}: ObservationTabProps): JSX.Element => {
-  const [selectedObsModeDetails, setSelectedObsModeDetails] = useState<
-    ObsModeDetails | undefined
-  >(data[0])
-
-  useEffect(() => {
-    setSelectedObsModeDetails(data[0])
-  }, [data])
-
-  return (
-    <Layout>
-      <Sider theme='light' style={{ minHeight: '80vh', paddingTop: '1rem' }}>
-        <Menu
-          selectedKeys={
-            selectedObsModeDetails && [selectedObsModeDetails.obsMode.name]
-          }>
-          {data.map((item) => (
-            <Menu.Item
-              onClick={() => setSelectedObsModeDetails(item)}
-              key={item.obsMode.name}>
-              {item.obsMode.name}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider>
-      <Content>
-        {selectedObsModeDetails && (
-          <CurrentObsMode
-            obsMode={selectedObsModeDetails.obsMode}
-            sequencers={selectedObsModeDetails.sequencers}
-            currentTab={currentTab}
-          />
-        )}
-      </Content>
-    </Layout>
-  )
-}
+  currentTab,
+  selected,
+  setObservation
+}: ObservationTabProps): JSX.Element => (
+  <Layout>
+    <Sider theme='light' style={{ minHeight: '80vh', paddingTop: '1rem' }}>
+      <Menu selectedKeys={data[selected] && [data[selected].obsMode.name]}>
+        {data.map((item, index) => (
+          <Menu.Item
+            onClick={() => setObservation(index)}
+            key={item.obsMode.name}>
+            <Typography.Text>{item.obsMode.name}</Typography.Text>
+          </Menu.Item>
+        ))}
+      </Menu>
+    </Sider>
+    <Content>
+      {data[selected] && (
+        <CurrentObsMode
+          obsMode={data[selected].obsMode}
+          sequencers={data[selected].sequencers}
+          currentTab={currentTab}
+        />
+      )}
+    </Content>
+  </Layout>
+)
 
 export default ObservationTab

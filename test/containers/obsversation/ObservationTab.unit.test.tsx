@@ -39,6 +39,8 @@ describe('observation tabs', () => {
         <ObservationTab
           currentTab={'Running'}
           data={runningObsModes}
+          selected={0}
+          setObservation={() => ({})}
           key={'Running'}
         />
       ),
@@ -70,6 +72,8 @@ describe('observation tabs', () => {
         <ObservationTab
           currentTab={'Running'}
           data={runningObsModes}
+          selected={0}
+          setObservation={() => ({})}
           key={'Running'}
         />
       ),
@@ -141,6 +145,8 @@ describe('observation tabs', () => {
         <ObservationTab
           currentTab={'Configurable'}
           data={configurable}
+          selected={0}
+          setObservation={() => ({})}
           key={'Configurable'}
         />
       ),
@@ -169,6 +175,8 @@ describe('observation tabs', () => {
         <ObservationTab
           currentTab={'Non-configurable'}
           data={nonConfigurable}
+          selected={0}
+          setObservation={() => ({})}
           key={'non-configurable'}
         />
       ),
@@ -202,6 +210,8 @@ describe('observation tabs', () => {
         <ObservationTab
           currentTab={'Running'}
           data={runningObsModes}
+          selected={0}
+          setObservation={() => ({})}
           key={'Running'}
         />
       ),

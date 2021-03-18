@@ -6,9 +6,11 @@ import { groupBy } from '../../utils/groupBy'
 import ObservationTab from './ObservationTab'
 const { TabPane } = Tabs
 
-export type ObservationTab = {
-  keyName: TabName
-  data?: ObsModeDetails[]
+export type ObservationTabProps = {
+  currentTab: TabName
+  data: ObsModeDetails[]
+  selected: number
+  setObservation: (_: number) => void
 }
 
 export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
@@ -21,15 +23,27 @@ export const tabNames: Array<[TabName, ObsModeStatus['_type']]> = [
 
 const ObservationTabs = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<string>()
+  const [selectedObservation, setSelectedObservation] = useState(0)
+
   const { data } = useObsModesDetails()
   const grouped = data && groupBy(data.obsModes, (x) => x.status._type)
 
-  const getObservationTab = ({ keyName, data }: ObservationTab) =>
-    data ? (
-      <ObservationTab data={data} currentTab={keyName} />
+  const getObservationTab = ({
+    currentTab,
+    data,
+    selected,
+    setObservation
+  }: ObservationTabProps) =>
+    data.length > 0 ? (
+      <ObservationTab
+        data={data}
+        currentTab={currentTab}
+        selected={selected}
+        setObservation={setObservation}
+      />
     ) : (
       <Empty
-        description={`No ${keyName} ObsModes`}
+        description={`No ${currentTab} ObsModes`}
         style={{ minHeight: '80vh' }}
       />
     )
@@ -37,7 +51,11 @@ const ObservationTabs = (): JSX.Element => {
   return (
     <Tabs
       activeKey={selectedTab}
-      onTabClick={(key: string) => setSelectedTab(key)}
+      onTabClick={(key: string) => {
+        setSelectedTab(key)
+        selectedTab != key && setSelectedObservation(0)
+      }}
+      size={'large'}
       tabBarStyle={{
         backgroundColor: 'white',
         paddingLeft: '1.5rem',
@@ -50,8 +68,10 @@ const ObservationTabs = (): JSX.Element => {
             tab={tabName}
             style={{ marginLeft: '1.5rem', width: '99%' }}>
             {getObservationTab({
-              keyName: tabName,
-              data: grouped?.get(tabValue)
+              currentTab: tabName,
+              data: grouped?.get(tabValue) || [],
+              selected: selectedObservation,
+              setObservation: (number) => setSelectedObservation(number)
             })}
           </TabPane>
         )

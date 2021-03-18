@@ -9,7 +9,6 @@ import React from 'react'
 import styles from './sequencer.module.css'
 
 type DescriptionProps = {
-  agent: string
   seqComp: string
 }
 
@@ -45,17 +44,8 @@ const Actions = (): JSX.Element => (
   </Space>
 )
 
-const SequencerDescription = ({
-  agent,
-  seqComp
-}: DescriptionProps): JSX.Element => (
+const SequencerDescription = ({ seqComp }: DescriptionProps): JSX.Element => (
   <Descriptions column={1}>
-    <Descriptions.Item
-      label='Agent'
-      labelStyle={{ color: 'var(--labelColor)' }}
-      style={{ padding: 0 }}>
-      {agent}
-    </Descriptions.Item>
     <Descriptions.Item
       label='Sequence Component'
       labelStyle={{ color: 'var(--labelColor)' }}
@@ -81,7 +71,6 @@ const SequencerDetails = ({
     className={styles.headerBox}
     extra={<Actions />}>
     <SequencerDescription
-      agent={sequencer.metadata.agentPrefix ?? 'Unknown'}
       seqComp={sequencer.metadata.sequenceComponentPrefix}
     />
   </PageHeader>

@@ -179,8 +179,6 @@ const useSequencerStatus = (
     () => getData(sequencers, sequencerServiceFactory, locationService),
     {
       enabled: !!locationService,
-      refetchIntervalInBackground:
-        OBS_MODE_SEQUENCERS.refetchIntervalInBackground,
       refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
     }
   )

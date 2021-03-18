@@ -8,7 +8,6 @@ import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 describe('sequencer details', () => {
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
   const sequenceComponentPrefix = 'ESW.ESW1'
-  const agentPrefix = 'IRIS.machine1'
 
   const sequencerLoc: Location = {
     _type: 'AkkaLocation',
@@ -18,15 +17,9 @@ describe('sequencer details', () => {
       prefix: Prefix.fromString(darkNightSequencer)
     },
     metadata: {
-      agentPrefix,
       sequenceComponentPrefix
     },
     uri: ''
-  }
-
-  const sequencerWithoutAgentPrefix: Location = {
-    ...sequencerLoc,
-    metadata: { sequenceComponentPrefix }
   }
 
   it('Should render the sequencerDetails | ESW-455', async () => {
@@ -38,7 +31,6 @@ describe('sequencer details', () => {
     })
 
     expect(screen.getByText(darkNightSequencer)).to.exist
-    expect(screen.getByText(agentPrefix)).to.exist
     expect(screen.getByText(sequenceComponentPrefix)).to.exist
   })
 
@@ -61,18 +53,5 @@ describe('sequencer details', () => {
     expect(screen.getByRole('PlaySequencer')).to.exist
     expect(screen.getByRole('StopSequencer')).to.exist
     expect(screen.getByRole('ResetSequencer')).to.exist
-  })
-
-  it('should render agentPrefix as unknown if sequencer is standalone', async () => {
-    const mockServices = getMockServices()
-
-    renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerWithoutAgentPrefix} />,
-      mockClients: mockServices.serviceFactoryContext
-    })
-
-    expect(screen.getByText(darkNightSequencer)).to.exist
-    expect(screen.getByText('Unknown')).to.exist
-    expect(screen.getByText(sequenceComponentPrefix)).to.exist
   })
 })

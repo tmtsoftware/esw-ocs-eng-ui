@@ -1,4 +1,4 @@
-import { InputNumber, Table } from 'antd'
+import { InputNumber, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import React from 'react'
 import styles from './provision.module.css'
@@ -18,15 +18,29 @@ const columns = (
   func: (numOfSeqComp: number, record: ProvisionDataType) => void
 ): ColumnsType<ProvisionDataType> => [
   {
-    title: 'Agent',
-    width: 50,
+    // eslint-disable-next-line react/display-name
+    title: () => {
+      return (
+        <Typography.Title level={5} style={{ marginBottom: 0 }}>
+          {'Agent'}
+        </Typography.Title>
+      )
+    },
+    width: 230,
     dataIndex: 'agentPrefix',
     key: 'agentPrefix',
     fixed: 'left'
   },
   {
-    title: 'Number of Sequence Component',
-    width: 140,
+    // eslint-disable-next-line react/display-name
+    title: () => {
+      return (
+        <Typography.Title level={5} style={{ marginBottom: 0 }}>
+          {'Number of Sequence Component'}
+        </Typography.Title>
+      )
+    },
+    // width: 400,
     dataIndex: 'numOfSequenceComps',
     key: 'numOfSequenceComps',
     fixed: 'left',

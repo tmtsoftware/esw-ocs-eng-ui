@@ -11,6 +11,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Drawer, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { useQuery, UseQueryResult } from 'react-query'
 import {
@@ -27,20 +28,21 @@ type StepStatus =
   | 'pending'
   | 'in progress'
   | 'failed'
-  | 'No sequence present'
+  | 'NA'
+  | 'Failed to fetch status'
 
 type Datatype = {
   prefix: string
   status: { stepNumber: number; status: StepStatus }
-  totalSteps: number
-  location: Location | undefined
+  totalSteps: number | 'NA'
+  location?: Location
 }
 
 const columns = (
   onEditHandle: (sequencer?: Location) => void
 ): ColumnsType<Datatype> => [
   {
-    title: 'Sequencers',
+    title: headerTitle('Sequencers'),
     dataIndex: 'prefix',
     key: 'prefix',
     fixed: 'left',
@@ -48,29 +50,61 @@ const columns = (
     render: (value, record) => {
       return (
         <>
-          <EditOutlined onClick={() => onEditHandle(record.location)} />
+          <EditOutlined
+            onClick={() => onEditHandle(record.location)}
+            style={{ marginRight: '0.5rem' }}
+          />
           <Typography.Text>{value}</Typography.Text>
         </>
       )
     }
   },
   {
-    title: 'Current Step',
+    title: headerTitle('Current Step'),
     dataIndex: 'status',
     key: 'status',
     fixed: 'left',
     // eslint-disable-next-line react/display-name
     render: (value) => (
-      <Typography.Text>{`Step${value.stepNumber} ${value.status}`}</Typography.Text>
+      <Typography.Text type={typeStepStatus(value.status)}>
+        {value.stepNumber
+          ? `Step ${value.stepNumber} ${value.status}`
+          : value.status}
+      </Typography.Text>
     )
   },
   {
-    title: 'Total Steps',
+    title: headerTitle('Total Steps'),
     dataIndex: 'totalSteps',
     key: 'totalSteps',
     fixed: 'left'
   }
 ]
+
+// eslint-disable-next-line react/display-name
+const headerTitle = (title: string) => () => (
+  <Typography.Title level={5} style={{ marginBottom: 0 }}>
+    {title}
+  </Typography.Title>
+)
+
+const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
+  switch (stepStatus) {
+    case 'completed':
+      return 'secondary'
+    case 'in progress':
+      return 'success'
+    case 'paused':
+      return 'warning'
+    case 'pending':
+      return 'warning'
+    case 'failed':
+      return 'danger'
+    case 'Failed to fetch status':
+      return 'danger'
+  }
+  return
+}
 
 const calcStatus = (stepList: StepList): Datatype['status'] => {
   const step = stepList.find((x) => x.status._type != 'Success')
@@ -96,26 +130,37 @@ const getData = (
 ): Promise<Datatype[]> =>
   Promise.all(
     sequencers.map(async (prefix) => {
-      const sequencer = await sequencerServiceFactory(
-        new ComponentId(prefix, 'Sequencer')
-      )
-      const location: Location | undefined = await locationService.find(
-        HttpConnection(prefix, 'Sequencer')
-      )
+      try {
+        const sequencer = await sequencerServiceFactory(
+          new ComponentId(prefix, 'Sequencer')
+        )
+        const location: Location | undefined = await locationService.find(
+          HttpConnection(prefix, 'Sequencer')
+        )
 
-      const stepList = await sequencer.getSequence()
-      const status: Datatype['status'] = stepList
-        ? calcStatus(stepList)
-        : {
+        const stepList = await sequencer.getSequence()
+        const status: Datatype['status'] = stepList
+          ? calcStatus(stepList)
+          : {
+              stepNumber: 0,
+              status: 'NA'
+            }
+
+        return {
+          prefix: prefix.toJSON(),
+          status,
+          totalSteps: stepList ? stepList.length : ('NA' as const),
+          location: location
+        }
+      } catch (e) {
+        return Promise.resolve({
+          prefix: prefix.toJSON(),
+          status: {
             stepNumber: 0,
-            status: 'No sequence present'
-          }
-
-      return {
-        prefix: prefix.toJSON(),
-        status,
-        totalSteps: stepList ? stepList.length : 0,
-        location: location
+            status: 'Failed to fetch status' as StepStatus
+          },
+          totalSteps: 'NA' as const
+        })
       }
     })
   )
@@ -174,11 +219,12 @@ export const SequencersTable = ({
       </Drawer>
       <Table
         pagination={false}
-        loading={sequencerStatus.isLoading}
+        loading={sequencerStatus.isLoading || sequencerStatus.isError}
         columns={columns(onEditHandle)}
         dataSource={sequencerStatus.data}
         onHeaderRow={() => ({ className: styles.header })}
         onRow={() => ({ className: styles.cell })}
+        style={{ marginLeft: '0.8rem', marginTop: '0.8rem' }}
       />
     </>
   )

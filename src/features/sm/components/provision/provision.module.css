@@ -1,31 +1,15 @@
-.modalHeader {
-  font-family: Roboto, sans-serif;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 700;
-  text-align: left;
-}
-
-table.some {
-  padding-left: 1.5rem;
-}
-
 tr.header > th {
   padding: 0 1.5rem;
-  height: 1.325rem;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  text-align: left;
+  height: 3rem;
+  margin-bottom: 0;
 }
 
 tr.cell > td {
   padding: 0 1.5rem;
-  height: 1.325rem;
+  height: 3rem;
   font-family: Roboto, sans-serif;
-  font-size: 14px;
+  font-size: 1rem;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   text-align: left;
 }

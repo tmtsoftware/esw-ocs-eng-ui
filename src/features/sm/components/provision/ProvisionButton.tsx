@@ -5,7 +5,7 @@ import {
   ProvisionConfig,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { Button, Modal } from 'antd'
+import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
@@ -124,7 +124,11 @@ export const ProvisionButton = (): JSX.Element => {
         Provision
       </Button>
       <Modal
-        title='Provision Configuration:'
+        title={
+          <Typography.Title level={5} style={{ marginBottom: 0 }}>
+            {'Provision Configuration:'}
+          </Typography.Title>
+        }
         okText='Provision'
         centered
         visible={modalVisibility}

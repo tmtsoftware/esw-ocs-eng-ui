@@ -50,6 +50,7 @@ const columns = (
     render: (value: number, record) => (
       <InputNumber
         min={0}
+        max={5}
         defaultValue={value}
         onChange={(value: string | number | null | undefined) =>
           func(value ? Number(value) : 0, record)

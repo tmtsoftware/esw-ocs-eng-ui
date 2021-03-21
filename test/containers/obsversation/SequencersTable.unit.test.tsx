@@ -51,13 +51,13 @@ const assertTable = async () => {
 
   await assertRow(/edit esw\.darknight_1 step 1 paused 2/i, [
     'edit ESW.DarkNight_1',
-    'Step 1 paused',
+    'Step 1 Paused',
     '2'
   ])
 
   await assertRow(/edit aps\.darknight_1 step 2 failed 3/i, [
     'edit APS.DarkNight_1',
-    'Step 2 failed',
+    'Step 2 Failed',
     '3'
   ])
 }

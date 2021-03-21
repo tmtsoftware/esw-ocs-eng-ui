@@ -9,7 +9,7 @@ import {
   StepList,
   Subsystem
 } from '@tmtsoftware/esw-ts'
-import { Drawer, Table, Typography } from 'antd'
+import { Drawer, message, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
@@ -23,13 +23,12 @@ import { OBS_MODE_SEQUENCERS } from '../../features/queryKeys'
 import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 
 type StepStatus =
-  | 'completed'
-  | 'paused'
-  | 'pending'
-  | 'in progress'
-  | 'failed'
+  | 'All Completed'
+  | 'Paused'
+  | 'In Progress'
+  | 'Failed'
   | 'NA'
-  | 'Failed to fetch status'
+  | 'Failed to Fetch Status'
 
 type Datatype = {
   prefix: string
@@ -91,17 +90,15 @@ const headerTitle = (title: string) => () => (
 
 const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
   switch (stepStatus) {
-    case 'completed':
+    case 'All Completed':
       return 'secondary'
-    case 'in progress':
+    case 'In Progress':
       return 'success'
-    case 'paused':
+    case 'Paused':
       return 'warning'
-    case 'pending':
-      return 'warning'
-    case 'failed':
+    case 'Failed':
       return 'danger'
-    case 'Failed to fetch status':
+    case 'Failed to Fetch Status':
       return 'danger'
   }
   return
@@ -109,18 +106,17 @@ const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
 
 const calcStatus = (stepList: StepList): Datatype['status'] => {
   const step = stepList.find((x) => x.status._type != 'Success')
-  if (!step) return { stepNumber: 0, status: 'completed' }
+  if (!step) return { stepNumber: 0, status: 'All Completed' }
   const stepNumber = stepList.indexOf(step) + 1
   switch (step.status._type) {
     case 'Pending':
-      if (step.hasBreakpoint) return { stepNumber, status: 'paused' }
-      else return { stepNumber, status: 'pending' }
+      return { stepNumber, status: 'Paused' }
     case 'Failure':
-      return { stepNumber, status: 'failed' }
+      return { stepNumber, status: 'Failed' }
     case 'InFlight':
-      return { stepNumber, status: 'in progress' }
+      return { stepNumber, status: 'In Progress' }
     case 'Success':
-      return { stepNumber: 0, status: 'completed' }
+      return { stepNumber: 0, status: 'All Completed' }
   }
 }
 
@@ -140,16 +136,12 @@ const getData = (
         )
 
         const stepList = await sequencer.getSequence()
-        const status: Datatype['status'] = stepList
-          ? calcStatus(stepList)
-          : {
-              stepNumber: 0,
-              status: 'NA'
-            }
 
         return {
           prefix: prefix.toJSON(),
-          status,
+          status: stepList
+            ? calcStatus(stepList)
+            : { stepNumber: 0, status: 'NA' as const },
           totalSteps: stepList ? stepList.length : ('NA' as const),
           location: location
         }
@@ -158,7 +150,7 @@ const getData = (
           prefix: prefix.toJSON(),
           status: {
             stepNumber: 0,
-            status: 'Failed to fetch status' as StepStatus
+            status: 'Failed to Fetch Status' as const
           },
           totalSteps: 'NA' as const
         })
@@ -179,6 +171,8 @@ const useSequencerStatus = (
     OBS_MODE_SEQUENCERS.key,
     () => getData(sequencers, sequencerServiceFactory, locationService),
     {
+      useErrorBoundary: false,
+      onError: (err) => message.error((err as Error).message),
       enabled: !!locationService,
       refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
     }

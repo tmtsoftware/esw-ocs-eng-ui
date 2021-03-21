@@ -23,14 +23,19 @@ describe('sequencer table', () => {
 
   const stepList1: Step[] = [step('Pending', true), step('Pending')]
   const stepList2: Step[] = [step('Success'), step('Failure'), step('Pending')]
+  const stepList3: Step[] = [step('InFlight'), step('Pending')]
+  const stepList4: Step[] = [step('Success'), step('Success')]
 
   it('should be able to render SequencersTable successfully | ESW-451', async () => {
     const obsMode: ObsMode = new ObsMode('DarkNight_1')
-    const sequencers: Subsystem[] = ['ESW', 'APS']
+    const sequencers: Subsystem[] = ['ESW', 'APS', 'DPS', 'CIS', 'AOESW']
 
     when(sequencerService.getSequence())
       .thenResolve(stepList1)
       .thenResolve(stepList2)
+      .thenResolve(stepList3)
+      .thenResolve(stepList4)
+      .thenReject(Error())
 
     renderWithAuth({
       ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
@@ -59,6 +64,24 @@ const assertTable = async () => {
     'edit APS.DarkNight_1',
     'Step 2 Failed',
     '3'
+  ])
+
+  await assertRow(/edit dps\.darknight_1 step 1 in progress 2/i, [
+    'edit DPS.DarkNight_1',
+    'Step 1 In Progress',
+    '2'
+  ])
+
+  await assertRow(/edit cis\.darknight_1 all steps completed 2/i, [
+    'edit CIS.DarkNight_1',
+    'All Steps Completed',
+    '2'
+  ])
+
+  await assertRow(/edit aoesw\.darknight_1 failed to fetch status na/i, [
+    'edit AOESW.DarkNight_1',
+    'Failed to Fetch Status',
+    'NA'
   ])
 }
 

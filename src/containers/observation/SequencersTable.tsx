@@ -23,7 +23,7 @@ import { OBS_MODE_SEQUENCERS } from '../../features/queryKeys'
 import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
 
 type StepStatus =
-  | 'All Completed'
+  | 'All Steps Completed'
   | 'Paused'
   | 'In Progress'
   | 'Failed'
@@ -90,7 +90,7 @@ const headerTitle = (title: string) => () => (
 
 const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
   switch (stepStatus) {
-    case 'All Completed':
+    case 'All Steps Completed':
       return 'secondary'
     case 'In Progress':
       return 'success'
@@ -106,7 +106,7 @@ const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
 
 const calcStatus = (stepList: StepList): Datatype['status'] => {
   const step = stepList.find((x) => x.status._type != 'Success')
-  if (!step) return { stepNumber: 0, status: 'All Completed' }
+  if (!step) return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.indexOf(step) + 1
   switch (step.status._type) {
     case 'Pending':
@@ -116,7 +116,7 @@ const calcStatus = (stepList: StepList): Datatype['status'] => {
     case 'InFlight':
       return { stepNumber, status: 'In Progress' }
     case 'Success':
-      return { stepNumber: 0, status: 'All Completed' }
+      return { stepNumber: 0, status: 'All Steps Completed' }
   }
 }
 

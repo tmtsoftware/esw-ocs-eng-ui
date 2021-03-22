@@ -42,13 +42,13 @@ const agentStatus: AgentStatus = {
 }
 describe('Agents Grid View', () => {
   const mockServices = getMockServices()
-  const smService = mockServices.mock.smService
+  const agentService = mockServices.mock.agentService
   afterEach(() => {
     cleanup()
   })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -70,11 +70,11 @@ describe('Agents Grid View', () => {
     expect(screen.getByRole('unloadScriptIcon')).exist
     // ESW.esw2 is without sequencer hence load icon will appear
     expect(screen.getByRole('loadScriptIcon')).exist
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 
   it('should render multiple agents', async () => {
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus, emptyAgentStatus],
       seqCompsWithoutAgent: []
@@ -83,17 +83,17 @@ describe('Agents Grid View', () => {
       ui: <AgentCards />,
       mockClients: mockServices.serviceFactoryContext
     })
-
+    // await sleep(1000)
     await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('ESW.machine2')).exist
     expect(screen.getAllByRole('deleteSeqCompIcon')).length(2)
     expect(screen.getAllByRole('addSeqCompIcon')).length(2)
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 
   it('should render agents when getAgentStatus returns orphan seqComps | ESW-443', async () => {
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: [
@@ -136,11 +136,11 @@ describe('Agents Grid View', () => {
     expect(screen.getByText('IRIS.comp1')).exist
     expect(screen.getByText('[IRIS.clearskies]')).exist
     expect(screen.getByText('TCS.comp1')).exist
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 
   it('should not render agents when getAgentStatus returns locationServiceError | ESW-443', async () => {
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'LocationServiceError',
       reason: 'Failed to fetch agents location'
     })
@@ -151,11 +151,11 @@ describe('Agents Grid View', () => {
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
     expect(screen.queryByText('unknown')).null
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 
   it('should not render agents when getAgentStatus returns unhandled error | ESW-443', async () => {
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Unhandled',
       msg: 'failed to process getAgentStatus',
       messageType: 'ServiceError',
@@ -168,6 +168,6 @@ describe('Agents Grid View', () => {
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
     expect(screen.queryByText('unknown')).null
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 })

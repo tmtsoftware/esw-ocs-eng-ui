@@ -14,7 +14,7 @@ import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
   const mockServices = getMockServices()
-  const smService = mockServices.mock.smService
+  const agentService = mockServices.mock.agentService
   const sequenceComponentStatus = mock<SequenceComponentStatus>()
 
   const agentStatus: AgentStatus = {
@@ -40,7 +40,7 @@ describe('SM actions', () => {
   ]
   unProvisionRenderTestData.map(([agentStatusResponse, name]) => {
     it(`should render provision button as enabled & configure button as disabled if no seq comps are running ${name} | ESW-442, ESW-445`, async () => {
-      when(smService.getAgentStatus()).thenResolve(agentStatusResponse)
+      when(agentService.getAgentStatus()).thenResolve(agentStatusResponse)
 
       renderWithAuth({
         ui: <SmActions disabled={false} />,
@@ -75,7 +75,7 @@ describe('SM actions', () => {
         ).false
       })
 
-      verify(smService.getAgentStatus()).called()
+      verify(agentService.getAgentStatus()).called()
     })
   })
 })

@@ -1,15 +1,15 @@
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
+import { useAgentService } from '../../agent/hooks/useAgentService'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { useSMService } from './useSMService'
 
 export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
-  const { data: smService } = useSMService(false)
+  const { data: agentService } = useAgentService(false)
 
   return useQuery(
     AGENTS_STATUS.key,
     async () => {
-      const agentStatus = await smService?.getAgentStatus()
+      const agentStatus = await agentService?.getAgentStatus()
       if (agentStatus?._type === 'Success') {
         if (agentStatus.seqCompsWithoutAgent.length === 0) {
           return agentStatus.agentStatus
@@ -23,8 +23,7 @@ export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
       return []
     },
     {
-      // The query will not execute until the smService is resolved
-      enabled: !!smService,
+      enabled: !!agentService,
       refetchInterval: AGENTS_STATUS.refetchInterval
     }
   )

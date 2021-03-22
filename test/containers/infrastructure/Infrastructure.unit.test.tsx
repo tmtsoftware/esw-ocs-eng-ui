@@ -71,12 +71,12 @@ describe('Infrastructure page', () => {
 
   it('should render infrastructure page | ESW-442', async () => {
     const mockServices = getMockServices()
-    const smService = mockServices.mock.smService
+    const agentService = mockServices.mock.agentService
     renderWithAuth({
       ui: <Infrastructure />,
       mockClients: mockServices.serviceFactoryContext
     })
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
       seqCompsWithoutAgent: []
@@ -90,7 +90,7 @@ describe('Infrastructure page', () => {
     expect(header).to.exist
     expect(provision).to.exist
     expect(configure).to.exist
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
@@ -157,6 +157,7 @@ describe('Infrastructure page', () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     const locationService = mockServices.mock.locationService
+    const agentService = mockServices.mock.agentService
 
     when(locationService.find(SM_CONNECTION)).thenResolve(smLocation)
 
@@ -169,7 +170,7 @@ describe('Infrastructure page', () => {
     }
     when(smService.getObsModesDetails()).thenResolve(obsModeDetails)
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
-    when(smService.getAgentStatus()).thenResolve(agentStatusSuccess)
+    when(agentService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
       ui: <Infrastructure />,
       mockClients: mockServices.serviceFactoryContext
@@ -202,7 +203,7 @@ describe('Infrastructure page', () => {
     verify(smService.configure(deepEqual(darkNight))).called()
     expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
       .exist
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
 
@@ -211,6 +212,7 @@ describe('Infrastructure page', () => {
     const smService = mockServices.mock.smService
     const locationService = mockServices.mock.locationService
     const configService = mockServices.mock.configService
+    const agentService = mockServices.mock.agentService
 
     const eswPrefixStr = 'ESW.machine1'
     const tcsPrefixStr = 'TCS.machine1'
@@ -226,7 +228,7 @@ describe('Infrastructure page', () => {
       })
     )
     when(locationService.find(deepEqual(SM_CONNECTION))).thenResolve(smLocation)
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
       seqCompsWithoutAgent: []
@@ -262,6 +264,6 @@ describe('Infrastructure page', () => {
     await screen.findByText('Successfully provisioned')
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
-    verify(smService.getAgentStatus()).called()
+    verify(agentService.getAgentStatus()).called()
   })
 })

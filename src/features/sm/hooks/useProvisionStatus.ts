@@ -1,11 +1,11 @@
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
+import { useAgentService } from '../../agent/hooks/useAgentService'
 import { PROVISION_STATUS } from '../../queryKeys'
-import { useSMService } from './useSMService'
 
 export const useProvisionStatus = (
   useErrorBoundary = true
 ): UseQueryResult<boolean> => {
-  const { data: smService } = useSMService(useErrorBoundary)
+  const { data: smService } = useAgentService(useErrorBoundary)
 
   return useQuery(
     PROVISION_STATUS.key,

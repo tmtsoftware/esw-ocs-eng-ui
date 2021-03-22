@@ -18,6 +18,7 @@ const getObsmodesBy = (key: ObsModeStatus['_type']) =>
   obsModesData.obsModes.filter((x) => x.status._type === key)
 const mockServices = getMockServices()
 const smService = mockServices.mock.smService
+const agentService = mockServices.mock.agentService
 const sequencerService = mockServices.mock.sequencerService
 describe('observation tabs', () => {
   const runningObsModes = getObsmodesBy('Configured')
@@ -124,7 +125,7 @@ describe('observation tabs', () => {
         }
       ]
     }
-    when(smService.getAgentStatus()).thenResolve({
+    when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -165,7 +166,7 @@ describe('observation tabs', () => {
 
     await waitFor(() => {
       verify(smService.configure(deepEqual(darkNight2))).called()
-      verify(smService.getAgentStatus()).called()
+      verify(agentService.getAgentStatus()).called()
     })
   })
 
@@ -191,7 +192,7 @@ describe('observation tabs', () => {
 
     await waitFor(() => {
       verify(smService.configure(new ObsMode('random'))).never()
-      verify(smService.getAgentStatus()).called()
+      verify(agentService.getAgentStatus()).called()
     })
   })
 

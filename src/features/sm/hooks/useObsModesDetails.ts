@@ -2,7 +2,7 @@ import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { errorMessage } from '../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../queryKeys'
-import { useSMService } from '../hooks/useSMService'
+import { useSMService } from './useSMService'
 
 export const useObsModesDetails = (): UseQueryResult<ObsModesDetailsResponseSuccess> => {
   const { data: smService } = useSMService(false)

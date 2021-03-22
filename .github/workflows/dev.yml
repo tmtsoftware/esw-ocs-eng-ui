@@ -30,9 +30,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: npm ci
+        run: npm ci --no-package-lock
 
 
       - name: Build

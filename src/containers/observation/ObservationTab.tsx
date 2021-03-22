@@ -83,7 +83,7 @@ const ObservationTab = ({
   <Layout>
     <Sider
       theme='light'
-      style={{ minHeight: '80vh', paddingTop: '1rem' }}
+      style={{ height: '80vh', paddingTop: '1rem', overflowY: 'scroll' }}
       width={'13rem'}>
       <Menu selectedKeys={data[selected] && [data[selected].obsMode.name]}>
         {data.map((item, index) => (

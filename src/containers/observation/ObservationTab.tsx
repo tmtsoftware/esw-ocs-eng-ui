@@ -69,7 +69,9 @@ const CurrentObsMode = ({
         }
         title={obsMode.name}
       />
-      <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+      {currentTab === 'Running' && (
+        <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+      )}
     </>
   )
 }

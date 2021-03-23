@@ -3,6 +3,7 @@ import { groupBy } from '../../src/utils/groupBy'
 
 type randomType = {
   name: 'A' | 'B' | 'C'
+  value: number
 }
 
 describe('Group by utility', () => {
@@ -14,17 +15,25 @@ describe('Group by utility', () => {
 
   it('returns grouped data by given getter function', () => {
     const arr: randomType[] = [
-      { name: 'A' },
-      { name: 'A' },
-      { name: 'B' },
-      { name: 'B' },
-      { name: 'C' },
-      { name: 'B' }
+      { name: 'A', value: 1 },
+      { name: 'A', value: 2 },
+      { name: 'B', value: 3 },
+      { name: 'B', value: 4 },
+      { name: 'C', value: 5 },
+      { name: 'B', value: 6 }
     ]
     const groupedData = groupBy(arr, (x) => x.name)
 
-    expect(groupedData.get('A')).length(2)
-    expect(groupedData.get('B')).length(3)
-    expect(groupedData.get('C')).length(1)
+    expect(groupedData.size).eq(3)
+    expect(groupedData.get('A')).eqls([
+      { name: 'A', value: 1 },
+      { name: 'A', value: 2 }
+    ])
+    expect(groupedData.get('B')).eqls([
+      { name: 'B', value: 3 },
+      { name: 'B', value: 4 },
+      { name: 'B', value: 6 }
+    ])
+    expect(groupedData.get('C')).eqls([{ name: 'C', value: 5 }])
   })
 })

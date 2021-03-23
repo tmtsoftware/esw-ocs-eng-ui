@@ -1,0 +1,10 @@
+.sider {
+  height: 80vh;
+  overflow-y: scroll;
+  box-shadow: 0 -1px 0 0 var(--shadowColor) inset;
+}
+
+.pageHeader  {
+  font-size: 1.25rem;
+  font-weight: 400 
+}

@@ -1,15 +1,15 @@
 import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
-import { Button, Layout, Menu, Space } from 'antd'
+import { Button, Card, Layout, Menu, Space, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React from 'react'
-import PageHeader from '../../components/PageHeader/PageHeader'
 import PauseButton from '../../features/sequencer/components/actions/PauseButton'
 import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
+import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
+import styles from './observation.module.css'
 import type { ObservationTabProps, TabName } from './ObservationTabs'
-import { SequencersTable } from './SequencersTable'
 
 const { Sider } = Layout
 
@@ -59,19 +59,39 @@ const CurrentObsMode = ({
   obsMode: ObsMode
   sequencers: Subsystem[]
 }): JSX.Element => {
+  const isRunning = () => currentTab === 'Running'
+
+  //TODO use StatusAPI of sequencer for this status
+  const getStatus = () =>
+    isRunning() ? (
+      <Typography.Text type='success' strong>
+        Running
+      </Typography.Text>
+    ) : (
+      <Typography.Text strong> NA </Typography.Text>
+    )
+
   return (
     <>
-      <PageHeader
+      <Card
+        title={
+          <Space direction='vertical'>
+            <Typography.Title level={4}>{obsMode.name}</Typography.Title>
+            <Space>
+              <Typography.Text type='secondary'>Status: </Typography.Text>
+              {getStatus()}
+            </Space>
+          </Space>
+        }
         extra={
           <Space style={{ paddingRight: '2.5rem' }}>
             <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
-        }
-        title={obsMode.name}
-      />
-      {currentTab === 'Running' && (
-        <SequencersTable obsMode={obsMode} sequencers={sequencers} />
-      )}
+        }>
+        {isRunning() && (
+          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+        )}
+      </Card>
     </>
   )
 }
@@ -83,13 +103,8 @@ const ObservationTab = ({
   setObservation
 }: ObservationTabProps): JSX.Element => (
   <Layout>
-    <Sider
-      theme='light'
-      style={{ height: '80vh', overflowY: 'scroll' }}
-      width={'13rem'}>
-      <Menu
-        selectedKeys={data[selected] && [data[selected].obsMode.name]}
-        style={{ paddingTop: '1rem' }}>
+    <Sider theme='light' className={styles.sider} width={'13rem'}>
+      <Menu selectedKeys={data[selected] && [data[selected].obsMode.name]}>
         {data.map((item, index) => (
           <Menu.Item
             onClick={() => setObservation(index)}

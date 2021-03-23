@@ -17,10 +17,10 @@ import { useQuery, UseQueryResult } from 'react-query'
 import {
   ServiceFactoryContextType,
   useServiceFactory
-} from '../../contexts/ServiceFactoryContext'
-import styles from '../../features/agent/components/agentCards.module.css'
-import { OBS_MODE_SEQUENCERS } from '../../features/queryKeys'
-import SequencerDetails from '../../features/sequencer/components/SequencerDetails'
+} from '../../../contexts/ServiceFactoryContext'
+import styles from '../../agent/components/agentCards.module.css'
+import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
+import SequencerDetails from './SequencerDetails'
 
 type StepStatus =
   | 'All Steps Completed'
@@ -216,7 +216,6 @@ export const SequencersTable = ({
         columns={columns(onEditHandle)}
         dataSource={sequencerStatus.data}
         onRow={() => ({ style: { fontSize: '1rem' } })}
-        style={{ marginLeft: '0.8rem', marginTop: '0.8rem' }}
       />
     </>
   )

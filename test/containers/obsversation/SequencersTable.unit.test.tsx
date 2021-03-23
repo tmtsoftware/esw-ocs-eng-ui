@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { ObsMode, Setup, Step, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mock, when } from 'ts-mockito'
-import { SequencersTable } from '../../../src/containers/observation/SequencersTable'
+import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('sequencer table', () => {

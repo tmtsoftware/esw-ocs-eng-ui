@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react'
 import { Location, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { when } from 'ts-mockito'
 import SequencerDetails from '../../../../src/features/sequencer/components/SequencerDetails'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
@@ -24,11 +25,14 @@ describe('sequencer details', () => {
 
   it('Should render the sequencerDetails | ESW-455', async () => {
     const mockServices = getMockServices()
+    const sequencerService = mockServices.mock.sequencerService
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} />,
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
+
+    when(sequencerService.isOnline()).thenResolve(true)
 
     expect(screen.getByText(darkNightSequencer)).to.exist
     expect(screen.getByText(sequenceComponentPrefix)).to.exist
@@ -38,7 +42,7 @@ describe('sequencer details', () => {
     const mockServices = getMockServices()
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} />,
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
 

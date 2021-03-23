@@ -6,6 +6,7 @@ import {
 import type { Location } from '@tmtsoftware/esw-ts'
 import { Badge, Button, PageHeader, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
+import { useSequencerStatus } from '../hooks/useSequencerStatus'
 import styles from './sequencer.module.css'
 
 type DescriptionProps = {
@@ -53,18 +54,36 @@ const SequencerDescription = ({ seqComp }: DescriptionProps): JSX.Element => (
   </Space>
 )
 
+const SequencerTitle = ({
+  title,
+  obsMode
+}: {
+  title: string
+  obsMode: string
+}): JSX.Element => {
+  const { data: isOnline } = useSequencerStatus(obsMode)
+  return (
+    <>
+      <Badge status={isOnline ? 'success' : 'error'} />
+      {title}
+    </>
+  )
+}
+
 const SequencerDetails = ({
-  sequencer
+  sequencer,
+  obsMode
 }: {
   sequencer: Location
+  obsMode: string
 }): JSX.Element => (
   <PageHeader
     ghost={false}
     title={
-      <>
-        <Badge status='success' />
-        {sequencer.connection.prefix.toJSON()}
-      </>
+      <SequencerTitle
+        title={sequencer.connection.prefix.toJSON()}
+        obsMode={obsMode}
+      />
     }
     className={styles.headerBox}
     extra={<Actions />}>

@@ -196,6 +196,7 @@ export const SequencersTable = ({
   const [selectedSequencer, selectSequencer] = useState<Location>()
 
   const onEditHandle = (sequencer?: Location) => {
+    console.log(sequencer)
     selectSequencer(sequencer)
     setVisible(true)
   }
@@ -207,7 +208,10 @@ export const SequencersTable = ({
         width={'80%'}
         onClose={() => setVisible(false)}>
         {selectedSequencer && (
-          <SequencerDetails sequencer={selectedSequencer} />
+          <SequencerDetails
+            sequencer={selectedSequencer}
+            obsMode={obsMode.name}
+          />
         )}
       </Drawer>
       <Table

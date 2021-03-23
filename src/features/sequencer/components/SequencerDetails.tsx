@@ -63,10 +63,10 @@ const SequencerTitle = ({
 }): JSX.Element => {
   const { data: isOnline } = useSequencerStatus(obsMode)
   return (
-    <>
+    <div data-testid={isOnline ? 'status-success' : 'status-error'}>
       <Badge status={isOnline ? 'success' : 'error'} />
       {title}
-    </>
+    </div>
   )
 }
 

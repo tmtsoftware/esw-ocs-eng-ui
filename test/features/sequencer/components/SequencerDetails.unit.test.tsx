@@ -25,14 +25,11 @@ describe('sequencer details', () => {
 
   it('Should render the sequencerDetails | ESW-455', async () => {
     const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
 
     renderWithAuth({
       ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
-
-    when(sequencerService.isOnline()).thenResolve(true)
 
     expect(screen.getByText(darkNightSequencer)).to.exist
     expect(screen.getByText(sequenceComponentPrefix)).to.exist
@@ -57,5 +54,23 @@ describe('sequencer details', () => {
     expect(screen.getByRole('PlaySequencer')).to.exist
     expect(screen.getByRole('StopSequencer')).to.exist
     expect(screen.getByRole('ResetSequencer')).to.exist
+  })
+
+  it('should render badge status as success if sequencer is online | ESW-455', async () => {
+    const mockServices = getMockServices()
+    const sequencerService = mockServices.mock.sequencerService
+
+    renderWithAuth({
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    when(sequencerService.isOnline()).thenResolve(true)
+    await screen.findByTestId('status-error')
+
+    expect(screen.getByText(darkNightSequencer)).to.exist
+    expect(screen.getByText(sequenceComponentPrefix)).to.exist
+
+    await screen.findByTestId('status-success')
   })
 })

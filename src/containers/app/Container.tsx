@@ -1,19 +1,17 @@
 import { Layout } from 'antd'
 import React from 'react'
-import { useAuth } from '../../contexts/useAuthContext'
 import { Sider } from '../Sider/Sider'
 import styles from './app.module.css'
 
 const { Content } = Layout
-interface AppProps {
+type AppProps = {
   children: React.ReactNode
 }
 
 const Container = ({ children }: AppProps): JSX.Element => {
-  const { auth } = useAuth()
   return (
     <Layout>
-      {auth?.isAuthenticated() ? <Sider /> : <></>}
+      <Sider />
       <Layout>
         <Content className={styles.content}>{children}</Content>
       </Layout>

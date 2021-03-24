@@ -12,41 +12,43 @@ import {
 } from '../hooks/useSequencersData'
 import SequencerDetails from './SequencerDetails'
 
+const getPrefixColumn = (
+  record: Datatype,
+  onEditHandle: (sequencer?: Location) => void
+) => (
+  <>
+    <EditOutlined
+      onClick={() => onEditHandle(record.location)}
+      style={{ marginRight: '0.5rem' }}
+      className={styles.commonIcon}
+    />
+    <Typography.Text>{record.prefix}</Typography.Text>
+  </>
+)
+
+const getStepColumn = (value: Datatype['status']) => (
+  <Typography.Text type={typeStepStatus(value.status)}>
+    {value.stepNumber
+      ? `Step ${value.stepNumber} ${value.status}`
+      : value.status}
+  </Typography.Text>
+)
+
 const columns = (
   onEditHandle: (sequencer?: Location) => void
 ): ColumnsType<Datatype> => [
   {
     title: headerTitle('Sequencers'),
     dataIndex: 'prefix',
-    key: 'prefix',
     fixed: 'left',
-    // eslint-disable-next-line react/display-name
-    render: (value, record) => {
-      return (
-        <>
-          <EditOutlined
-            onClick={() => onEditHandle(record.location)}
-            style={{ marginRight: '0.5rem' }}
-            className={styles.commonIcon}
-          />
-          <Typography.Text>{value}</Typography.Text>
-        </>
-      )
-    }
+    render: (_, record) => getPrefixColumn(record, onEditHandle)
   },
   {
     title: headerTitle('Sequence Status'),
     dataIndex: 'status',
     key: 'status',
     fixed: 'left',
-    // eslint-disable-next-line react/display-name
-    render: (value) => (
-      <Typography.Text type={typeStepStatus(value.status)}>
-        {value.stepNumber
-          ? `Step ${value.stepNumber} ${value.status}`
-          : value.status}
-      </Typography.Text>
-    )
+    render: (value) => getStepColumn(value)
   },
   {
     title: headerTitle('Total Steps'),
@@ -56,8 +58,7 @@ const columns = (
   }
 ]
 
-// eslint-disable-next-line react/display-name
-const headerTitle = (title: string) => () => (
+const headerTitle = (title: string) => (
   <Typography.Title level={5} style={{ marginBottom: 0 }}>
     {title}
   </Typography.Title>
@@ -79,6 +80,20 @@ type ObsModeSeqTableProps = {
   sequencers: Subsystem[]
 }
 
+const SequencerDrawer = ({
+  onClose,
+  selectedSequencer,
+  obsMode
+}: {
+  selectedSequencer: Location
+  obsMode: ObsMode
+  onClose: () => void
+}) => (
+  <Drawer visible width={'80%'} onClose={() => onClose()} destroyOnClose>
+    <SequencerDetails sequencer={selectedSequencer} obsMode={obsMode.name} />
+  </Drawer>
+)
+
 export const SequencersTable = ({
   obsMode,
   sequencers
@@ -87,27 +102,23 @@ export const SequencersTable = ({
     sequencers.map((seq) => new Prefix(seq, obsMode.name))
   )
 
-  const [isVisible, setVisible] = useState(false)
+  const [isSeqDrawerVisible, setSeqDrawerVisibility] = useState(false)
   const [selectedSequencer, selectSequencer] = useState<Location>()
 
   const onEditHandle = (sequencer?: Location) => {
     selectSequencer(sequencer)
-    setVisible(true)
+    setSeqDrawerVisibility(true)
   }
 
   return (
     <>
-      <Drawer
-        visible={selectedSequencer && isVisible}
-        width={'80%'}
-        onClose={() => setVisible(false)}>
-        {selectedSequencer && (
-          <SequencerDetails
-            sequencer={selectedSequencer}
-            obsMode={obsMode.name}
-          />
-        )}
-      </Drawer>
+      {isSeqDrawerVisible && selectedSequencer && (
+        <SequencerDrawer
+          obsMode={obsMode}
+          selectedSequencer={selectedSequencer}
+          onClose={() => setSeqDrawerVisibility(false)}
+        />
+      )}
       <Table
         pagination={false}
         loading={sequencerStatus.isLoading || sequencerStatus.isError}

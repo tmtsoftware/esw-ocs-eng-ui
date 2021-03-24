@@ -67,7 +67,9 @@ const CurrentObsMode = ({
         Running
       </Typography.Text>
     ) : (
-      <Typography.Text strong> NA </Typography.Text>
+      <Typography.Text strong type='secondary'>
+        NA
+      </Typography.Text>
     )
 
   return (

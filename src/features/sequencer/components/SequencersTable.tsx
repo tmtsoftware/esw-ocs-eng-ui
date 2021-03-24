@@ -60,7 +60,7 @@ const columns = (
     }
   },
   {
-    title: headerTitle('Current Step'),
+    title: headerTitle('Sequence Status'),
     dataIndex: 'status',
     key: 'status',
     fixed: 'left',

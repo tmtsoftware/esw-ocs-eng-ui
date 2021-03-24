@@ -51,7 +51,7 @@ const assertTable = async () => {
   await screen.findByRole('table')
 
   await assertHeader('Sequencers')
-  await assertHeader('Current Step')
+  await assertHeader('Sequence Status')
   await assertHeader('Total Steps')
 
   await assertRow(/edit esw\.darknight_1 step 1 paused 2/i, [

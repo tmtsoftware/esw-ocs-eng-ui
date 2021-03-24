@@ -105,9 +105,11 @@ const ObservationTab = ({
 }: ObservationTabProps): JSX.Element => {
   const selectedObs = data[selected] ?? data[0]
   return (
-    <Layout>
-      <Sider theme='light' className={styles.sider} width={'13rem'}>
-        <Menu selectedKeys={[selectedObs.obsMode.name]}>
+    <Layout style={{ height: '99%' }}>
+      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
+        <Menu
+          selectedKeys={selectedObs && [selectedObs.obsMode.name]}
+          style={{ paddingTop: '0.4rem' }}>
           {data.map((item, index) => (
             <Menu.Item
               onClick={() => setObservation(index)}

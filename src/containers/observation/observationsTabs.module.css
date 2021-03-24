@@ -1,0 +1,7 @@
+.tabs {
+  flex: 1;
+}
+
+.tabs > div:nth-child(2) > div {
+  height: 100%;
+}

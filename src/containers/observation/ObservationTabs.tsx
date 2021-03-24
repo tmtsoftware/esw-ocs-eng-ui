@@ -3,6 +3,7 @@ import { Empty, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import { groupBy } from '../../utils/groupBy'
+import styles from './observationsTabs.module.css'
 import ObservationTab from './ObservationTab'
 const { TabPane } = Tabs
 
@@ -42,10 +43,7 @@ const ObservationTabs = (): JSX.Element => {
         setObservation={setObservation}
       />
     ) : (
-      <Empty
-        description={`No ${currentTab} ObsModes`}
-        style={{ minHeight: '80vh' }}
-      />
+      <Empty description={`No ${currentTab} ObsModes`} />
     )
 
   return (
@@ -55,6 +53,7 @@ const ObservationTabs = (): JSX.Element => {
         setSelectedTab(key)
         selectedTab != key && setSelectedObservation(0)
       }}
+      className={styles.tabs}
       size={'large'}
       tabBarStyle={{
         backgroundColor: 'white',

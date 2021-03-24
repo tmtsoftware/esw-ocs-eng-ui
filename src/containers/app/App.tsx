@@ -18,7 +18,7 @@ const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <Layout>
+        <Layout className={styles.app}>
           <Header className={styles.tmtHeader}>
             <HeaderBar />
           </Header>

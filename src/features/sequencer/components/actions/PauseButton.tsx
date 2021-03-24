@@ -3,6 +3,7 @@ import { Button } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
+import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const pause = async (sequencerService: SequencerService) => {
@@ -23,7 +24,8 @@ const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const pauseAction = useMutation({
     mutationFn: pause,
     onSuccess: () => successMessage('Successfully paused sequencer.'),
-    onError: (e) => errorMessage('Failed to pause sequencer', e)
+    onError: (e) => errorMessage('Failed to pause sequencer', e),
+    invalidateKeysOnSuccess: [OBS_MODES_DETAILS.key]
   })
 
   return (

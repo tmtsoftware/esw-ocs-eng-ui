@@ -100,31 +100,32 @@ const ObservationTab = ({
   currentTab,
   selected,
   setObservation
-}: ObservationTabProps): JSX.Element => (
-  <Layout style={{ height: '99%' }}>
-    <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
-      <Menu
-        selectedKeys={data[selected] && [data[selected].obsMode.name]}
-        style={{ paddingTop: '0.4rem' }}>
-        {data.map((item, index) => (
-          <Menu.Item
-            onClick={() => setObservation(index)}
-            key={item.obsMode.name}>
-            {item.obsMode.name}
-          </Menu.Item>
-        ))}
-      </Menu>
-    </Sider>
-    <Content>
-      {data[selected] && (
-        <CurrentObsMode
-          obsMode={data[selected].obsMode}
-          sequencers={data[selected].sequencers}
-          currentTab={currentTab}
-        />
-      )}
-    </Content>
-  </Layout>
-)
+}: ObservationTabProps): JSX.Element => {
+  const selectedObs = data[selected] ?? data[0]
+  return (
+    <Layout>
+      <Sider theme='light' className={styles.sider} width={'13rem'}>
+        <Menu selectedKeys={[selectedObs.obsMode.name]}>
+          {data.map((item, index) => (
+            <Menu.Item
+              onClick={() => setObservation(index)}
+              key={item.obsMode.name}>
+              {item.obsMode.name}
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Sider>
+      <Content>
+        {selectedObs && (
+          <CurrentObsMode
+            obsMode={selectedObs.obsMode}
+            sequencers={selectedObs.sequencers}
+            currentTab={currentTab}
+          />
+        )}
+      </Content>
+    </Layout>
+  )
+}
 
 export default ObservationTab

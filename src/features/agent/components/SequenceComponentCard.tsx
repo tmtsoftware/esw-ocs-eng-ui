@@ -8,10 +8,25 @@ import { Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
 
-type SequenceComponentProps = {
-  seqCompId: ComponentId
-  location: Location[]
-}
+const LoadScript = () => (
+  <Tooltip placement='bottom' title='Load script'>
+    <FileAddOutlined
+      className={styles.icon}
+      role='loadScriptIcon'
+      onClick={() => ({})}
+    />
+  </Tooltip>
+)
+
+const UnloadScript = () => (
+  <Tooltip placement='bottom' title='Unload script'>
+    <FileExcelOutlined
+      className={styles.icon}
+      role='unloadScriptIcon'
+      onClick={() => ({})}
+    />
+  </Tooltip>
+)
 
 type TitleProps = {
   seqCompId: string
@@ -19,25 +34,22 @@ type TitleProps = {
 }
 
 const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
+  const Title = () => (
+    <Space direction='vertical' size={1}>
+      <Typography.Text style={{ color: '#237804' }}>
+        [{obsMode}]
+      </Typography.Text>
+      <Typography.Text type='secondary'>{seqCompId}</Typography.Text>
+    </Space>
+  )
+
   return (
     <Row className={styles.sequencerComp}>
       <Col flex='auto' className={styles.seqCompTitle}>
-        <Space direction='vertical' size={1}>
-          <Typography.Text style={{ color: '#237804' }}>
-            [{obsMode}]
-          </Typography.Text>
-          <Typography.Text type='secondary'>{seqCompId}</Typography.Text>
-        </Space>
+        <Title />
       </Col>
-
       <Col className={styles.iconBoxSequencer}>
-        <Tooltip placement='bottom' title={'Unload script'}>
-          <FileExcelOutlined
-            className={styles.icon}
-            role='unloadScriptIcon'
-            onClick={() => ({})}
-          />
-        </Tooltip>
+        <UnloadScript />
       </Col>
     </Row>
   )
@@ -48,26 +60,29 @@ const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
     return <Sequencer seqCompId={seqCompId} obsMode={obsMode} />
   }
 
+  const Title = () => (
+    <Space direction='vertical' size={1}>
+      <Typography.Text style={{ color: 'var(--labelColor)' }}>
+        {seqCompId}
+      </Typography.Text>
+    </Space>
+  )
+
   return (
     <Row className={styles.seqComp}>
       <Col flex='auto' className={styles.seqCompTitle}>
-        <Space direction='vertical' size={1}>
-          <Typography.Text style={{ color: 'var(--labelColor)' }}>
-            {seqCompId}
-          </Typography.Text>
-        </Space>
+        <Title />
       </Col>
       <Col className={styles.iconBoxSeqComp}>
-        <Tooltip placement='bottom' title={'Load script'}>
-          <FileAddOutlined
-            className={styles.icon}
-            role='loadScriptIcon'
-            onClick={() => ({})}
-          />
-        </Tooltip>
+        <LoadScript />
       </Col>
     </Row>
   )
+}
+
+type SequenceComponentProps = {
+  seqCompId: ComponentId
+  location: Location[]
 }
 
 const SequenceComponentCard = ({

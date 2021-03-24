@@ -8,8 +8,8 @@ import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { useAgentService } from '../../agent/hooks/useAgentService'
 import { AGENTS_STATUS } from '../../queryKeys'
 
-const unknownAgent = new ComponentId(
-  Prefix.fromString('ESW.unknown'),
+export const UNKNOWN_AGENT = new ComponentId(
+  new Prefix('ESW', 'Unknown'),
   'Machine'
 )
 
@@ -18,7 +18,7 @@ const assignUnknownAgents = (agentStatus: AgentStatusSuccess) => {
     return agentStatus.agentStatus
   }
   const unknownAgentData: AgentStatus = {
-    agentId: unknownAgent,
+    agentId: UNKNOWN_AGENT,
     seqCompsStatus: agentStatus.seqCompsWithoutAgent
   }
   return [...agentStatus.agentStatus, unknownAgentData]

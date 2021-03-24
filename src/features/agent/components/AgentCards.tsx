@@ -2,11 +2,12 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Tooltip, Typography } from 'antd'
 import React from 'react'
-import { useAgentsStatus } from '../../sm/hooks/useAgentsStatus'
+import { UNKNOWN_AGENT, useAgentsStatus } from '../../sm/hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
 import SequenceComponentCard from './SequenceComponentCard'
 
 const { useBreakpoint } = Grid
+
 type AgentCardProps = {
   agentPrefix: Prefix
   seqCompsStatus: SequenceComponentStatus[]
@@ -17,9 +18,14 @@ const AgentCard = ({
   seqCompsStatus
 }: AgentCardProps): JSX.Element => {
   const bodyStyle =
-    seqCompsStatus.length == 0
+    seqCompsStatus.length === 0
       ? { display: 'none' }
       : { padding: '1.5rem 1rem 1rem' }
+
+  const agentName =
+    agentPrefix === UNKNOWN_AGENT.prefix
+      ? UNKNOWN_AGENT.prefix.componentName
+      : agentPrefix.toJSON()
 
   const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => {
     return (
@@ -31,26 +37,26 @@ const AgentCard = ({
     )
   })
 
+  const AddComponent = () => (
+    <Tooltip placement='bottom' title={'Add sequence component'}>
+      <PlusCircleOutlined
+        className={styles.commonIcon}
+        role='addSeqCompIcon'
+        onClick={() => ({})}
+      />
+    </Tooltip>
+  )
+
   return (
     <Card
       className={styles.agentCard}
       title={
         <Row justify='space-between'>
           <Col>
-            <Typography.Text>
-              {agentPrefix.componentName.toLowerCase() === 'unknown'
-                ? 'Unknown'
-                : agentPrefix.toJSON()}
-            </Typography.Text>
+            <Typography.Text>{agentName}</Typography.Text>
           </Col>
           <Col>
-            <Tooltip placement='bottom' title={'Add sequence component'}>
-              <PlusCircleOutlined
-                className={styles.commonIcon}
-                role='addSeqCompIcon'
-                onClick={() => ({})}
-              />
-            </Tooltip>
+            <AddComponent />
           </Col>
         </Row>
       }

@@ -75,13 +75,13 @@ const CurrentObsMode = ({
     <>
       <Card
         title={
-          <Space direction='vertical'>
+          <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>
             <Space>
               <Typography.Text type='secondary'>Status: </Typography.Text>
               {getStatus()}
             </Space>
-          </Space>
+          </>
         }
         extra={
           <Space style={{ paddingRight: '2.5rem' }}>

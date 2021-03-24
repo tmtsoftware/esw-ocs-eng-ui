@@ -25,7 +25,7 @@ describe('observation tabs', () => {
   const configurable = getObsmodesBy('Configurable')
   const nonConfigurable = getObsmodesBy('NonConfigurable')
 
-  it('should be able to shutdown running observation', async () => {
+  it('should be able to shutdown running observation | ESW-450', async () => {
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'Success',
       obsModes: []
@@ -93,7 +93,7 @@ describe('observation tabs', () => {
     await waitFor(() => verify(sequencerService.pause()).called())
   })
 
-  it('should be able to configure a configurable observation', async () => {
+  it('should be able to configure a configurable observation | ESW-450', async () => {
     // mock setup starts here
     const agentStatus: AgentStatus = {
       agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
@@ -170,7 +170,7 @@ describe('observation tabs', () => {
     })
   })
 
-  it('should not be able to configure on non-configurable observation tab', async () => {
+  it('should not be able to configure on non-configurable observation tab | ESW-450', async () => {
     renderWithAuth({
       ui: (
         <ObservationTab

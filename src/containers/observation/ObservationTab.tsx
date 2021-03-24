@@ -8,7 +8,6 @@ import { SequencersTable } from '../../features/sequencer/components/SequencersT
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
-import styles from './observation.module.css'
 import type { ObservationTabProps, TabName } from './ObservationTabs'
 
 const { Sider } = Layout

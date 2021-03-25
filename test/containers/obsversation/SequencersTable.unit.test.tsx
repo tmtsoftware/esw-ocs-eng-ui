@@ -60,25 +60,25 @@ const assertTable = async () => {
     '2'
   ])
 
-  await assertRow(/edit aps\.darknight_1 step 2 failed 3/i, [
+  await assertRow(/aps\.darknight_1/i, [
     'edit APS.DarkNight_1',
     'Step 2 Failed',
     '3'
   ])
 
-  await assertRow(/edit dps\.darknight_1 step 1 in progress 2/i, [
+  await assertRow(/dps\.darknight_1/i, [
     'edit DPS.DarkNight_1',
     'Step 1 In Progress',
     '2'
   ])
 
-  await assertRow(/edit cis\.darknight_1 all steps completed 2/i, [
+  await assertRow(/cis\.darknight_1/i, [
     'edit CIS.DarkNight_1',
     'All Steps Completed',
     '2'
   ])
 
-  await assertRow(/edit aoesw\.darknight_1 failed to fetch status na/i, [
+  await assertRow(/aoesw\.darknight_1/i, [
     'edit AOESW.DarkNight_1',
     'Failed to Fetch Status',
     'NA'

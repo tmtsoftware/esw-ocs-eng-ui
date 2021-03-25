@@ -1,13 +1,13 @@
 import {
-  StepList,
-  Prefix,
-  LocationService,
   ComponentId,
   HttpConnection,
-  Location
+  Location,
+  LocationService,
+  Prefix,
+  StepList
 } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
-import { UseQueryResult, useQuery } from 'react-query'
+import { useQuery, UseQueryResult } from 'react-query'
 import {
   ServiceFactoryContextType,
   useServiceFactory
@@ -36,9 +36,13 @@ const Status: { [key: string]: StepStatus } = {
   Success: 'All Steps Completed'
 }
 
-const calcStatus = (stepList: StepList): Datatype['status'] => {
+const deriveStatus = (stepList: StepList | undefined): Datatype['status'] => {
+  if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
+
   const step = stepList.find((x) => x.status._type !== 'Success')
-  if (!step) return { stepNumber: 0, status: 'All Steps Completed' }
+  if (step === undefined)
+    return { stepNumber: 0, status: 'All Steps Completed' }
+
   const stepNumber = stepList.indexOf(step) + 1
   return { stepNumber, status: Status[step.status._type] }
 }
@@ -54,7 +58,7 @@ const getData = (
         const sequencer = await sequencerServiceFactory(
           new ComponentId(prefix, 'Sequencer')
         )
-        const location: Location | undefined = await locationService.find(
+        const location = await locationService.find(
           HttpConnection(prefix, 'Sequencer')
         )
 
@@ -62,9 +66,7 @@ const getData = (
 
         return {
           prefix: prefix.toJSON(),
-          status: stepList
-            ? calcStatus(stepList)
-            : { stepNumber: 0, status: 'NA' as const },
+          status: deriveStatus(stepList),
           totalSteps: stepList ? stepList.length : ('NA' as const),
           location: location
         }

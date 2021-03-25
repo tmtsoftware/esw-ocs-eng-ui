@@ -30,11 +30,11 @@ const typeStatus: { [stepStatus: string]: BaseType } = {
   'Failed to Fetch Status': 'danger'
 }
 
-const getStepColumn = (value: Datatype['status']) => (
-  <Typography.Text type={typeStatus[value.status]}>
-    {value.stepNumber
-      ? `Step ${value.stepNumber} ${value.status}`
-      : value.status}
+const getStepColumn = (status: Datatype['status']) => (
+  <Typography.Text type={typeStatus[status.status]}>
+    {status.stepNumber
+      ? `Step ${status.stepNumber} ${status.status}`
+      : status.status}
   </Typography.Text>
 )
 
@@ -44,21 +44,18 @@ const columns = (
   {
     title: headerTitle('Sequencers'),
     dataIndex: 'prefix',
-    fixed: 'left',
     render: (_, record) => getPrefixColumn(record, onEditHandle)
   },
   {
     title: headerTitle('Sequence Status'),
     dataIndex: 'status',
     key: 'status',
-    fixed: 'left',
     render: (value) => getStepColumn(value)
   },
   {
     title: headerTitle('Total Steps'),
     dataIndex: 'totalSteps',
-    key: 'totalSteps',
-    fixed: 'left'
+    key: 'totalSteps'
   }
 ]
 

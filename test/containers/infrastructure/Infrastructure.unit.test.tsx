@@ -207,7 +207,7 @@ describe('Infrastructure page', () => {
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
 
-  it.only('should refetch agent cards after provision success | ESW-443', async () => {
+  it('should refetch agent cards after provision success | ESW-443', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     const locationService = mockServices.mock.locationService

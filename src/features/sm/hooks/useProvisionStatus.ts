@@ -7,7 +7,7 @@ const checkAnySequenceComponentRunning = async (agentService: AgentService) => {
   const agentStatus = await agentService.getAgentStatus()
 
   return (
-    agentStatus._type == 'Success' &&
+    agentStatus._type === 'Success' &&
     (agentStatus.seqCompsWithoutAgent.length > 0 ||
       agentStatus.agentStatus.some((x) => x.seqCompsStatus.length > 0))
   )

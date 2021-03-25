@@ -29,7 +29,7 @@ const getList = (
           <Menu.Item
             className={
               styles.menuItem +
-              ` ${item == selectedItem ? styles.selectedItem : ''}`
+              ` ${item === selectedItem ? styles.selectedItem : ''}`
             }
             style={{ paddingLeft: '1.5rem', marginTop: 0, marginBottom: 0 }}
             key={item}>

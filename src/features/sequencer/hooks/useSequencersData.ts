@@ -37,7 +37,7 @@ const Status: { [key: string]: StepStatus } = {
 }
 
 const calcStatus = (stepList: StepList): Datatype['status'] => {
-  const step = stepList.find((x) => x.status._type != 'Success')
+  const step = stepList.find((x) => x.status._type !== 'Success')
   if (!step) return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.indexOf(step) + 1
   return { stepNumber, status: Status[step.status._type] }

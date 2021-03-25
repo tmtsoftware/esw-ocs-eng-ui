@@ -51,7 +51,7 @@ const ObservationTabs = (): JSX.Element => {
       activeKey={selectedTab}
       onTabClick={(key: string) => {
         setSelectedTab(key)
-        selectedTab != key && setSelectedObservation(0)
+        selectedTab !== key && setSelectedObservation(0)
       }}
       className={styles.tabs}
       size={'large'}

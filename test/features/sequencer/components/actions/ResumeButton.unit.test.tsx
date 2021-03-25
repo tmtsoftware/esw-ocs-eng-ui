@@ -23,11 +23,11 @@ describe('Resume button', () => {
       'Unhandled',
       {
         _type: 'Unhandled',
-        msg: 'Cannot pause sequencer if in Idle state',
+        msg: 'Resume message type is not supported in Processing state',
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to resume sequencer, reason: Cannot pause sequencer if in Idle state'
+      'Failed to resume sequencer, reason: Resume message type is not supported in Processing state'
     ]
   ]
 

@@ -5,11 +5,7 @@ import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import styles from '../../agent/components/agentCards.module.css'
-import {
-  StepStatus,
-  useSequencersData,
-  Datatype
-} from '../hooks/useSequencersData'
+import { Datatype, useSequencersData } from '../hooks/useSequencersData'
 import SequencerDetails from './SequencerDetails'
 
 const getPrefixColumn = (
@@ -26,8 +22,16 @@ const getPrefixColumn = (
   </>
 )
 
+const typeStatus: { [stepStatus: string]: BaseType } = {
+  'All Steps Completed': 'secondary',
+  'In Progress': 'success',
+  Paused: 'warning',
+  Failed: 'danger',
+  'Failed to Fetch Status': 'danger'
+}
+
 const getStepColumn = (value: Datatype['status']) => (
-  <Typography.Text type={typeStepStatus(value.status)}>
+  <Typography.Text type={typeStatus[value.status]}>
     {value.stepNumber
       ? `Step ${value.stepNumber} ${value.status}`
       : value.status}
@@ -63,17 +67,6 @@ const headerTitle = (title: string) => (
     {title}
   </Typography.Title>
 )
-
-const typeStepStatus = (stepStatus: StepStatus): BaseType | undefined => {
-  const typeStatus: { [stepStatus: string]: BaseType } = {
-    'All Steps Completed': 'secondary',
-    'In Progress': 'success',
-    Paused: 'warning',
-    Failed: 'danger',
-    'Failed to Fetch Status': 'danger'
-  }
-  return typeStatus[stepStatus]
-}
 
 type ObsModeSeqTableProps = {
   obsMode: ObsMode

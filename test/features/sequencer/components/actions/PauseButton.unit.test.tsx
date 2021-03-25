@@ -34,7 +34,7 @@ describe('Pause button', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to pause sequencer, reason: Cannot operate on in progress or finished step'
+      'Failed to pause sequencer, reason: Cannot pause sequencer if in Idle state'
     ]
   ]
 

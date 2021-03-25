@@ -31,11 +31,11 @@ describe('Shutdown button', () => {
       'Unhandled',
       {
         _type: 'Unhandled',
-        msg: 'Cannot pause sequencer if in Idle state',
+        msg: 'Shutdown message type is not supported in Processing state',
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to shutdown sequencer, reason: Cannot pause sequencer if in Idle state'
+      'Failed to shutdown sequencer, reason: Shutdown message type is not supported in Processing state'
     ]
   ]
 

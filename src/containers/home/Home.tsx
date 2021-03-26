@@ -29,7 +29,9 @@ const cards: CardDetail[] = [
   },
   {
     title: 'Manage Observations',
-    icon: <TelescopeIcon className={styles.commonIconSize} fill={'#9254DE'} />,
+    icon: (
+      <TelescopeIcon className={styles.commonIconSize} fill={'var(--purple)'} />
+    ),
     link: OBSERVATIONS
   },
   {

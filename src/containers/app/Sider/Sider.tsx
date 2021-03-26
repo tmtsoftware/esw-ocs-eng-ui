@@ -1,13 +1,17 @@
 import { Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { TelescopeIcon, InfraIcon, SettingsIcon } from '../../components/Icons'
+import {
+  TelescopeIcon,
+  InfraIcon,
+  SettingsIcon
+} from '../../../components/Icons'
 import {
   HOME,
   INFRASTRUCTURE,
   OBSERVATIONS,
   RESOURCES
-} from '../../routes/RoutesConfig'
+} from '../../../routes/RoutesConfig'
 import styles from './sider.module.css'
 
 const getMenuLabel = (

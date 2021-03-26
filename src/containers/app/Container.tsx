@@ -1,7 +1,7 @@
 import { Layout } from 'antd'
 import React from 'react'
-import { Sider } from '../Sider/Sider'
 import styles from './app.module.css'
+import { Sider } from './Sider/Sider'
 
 const { Content } = Layout
 type AppProps = {

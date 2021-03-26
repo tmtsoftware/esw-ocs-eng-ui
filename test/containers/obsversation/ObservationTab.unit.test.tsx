@@ -20,6 +20,12 @@ const mockServices = getMockServices()
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 const sequencerService = mockServices.mock.sequencerService
+
+const getHeader = (colName: string) =>
+  screen.queryByRole('columnheader', {
+    name: colName
+  })
+
 describe('observation tabs', () => {
   const runningObsModes = getObsmodesBy('Configured')
   const configurable = getObsmodesBy('Configurable')
@@ -47,6 +53,10 @@ describe('observation tabs', () => {
       ),
       mockClients: mockServices.serviceFactoryContext
     })
+
+    await waitFor(() => expect(getHeader('Sequencers')).to.exist)
+    await waitFor(() => expect(getHeader('Sequence Status')).to.exist)
+    await waitFor(() => expect(getHeader('Total Steps')).to.exist)
 
     const shutdownButton = await screen.findByRole('button', {
       name: 'Shutdown'
@@ -158,6 +168,10 @@ describe('observation tabs', () => {
       name: 'Configure'
     })) as HTMLButtonElement
 
+    await waitFor(() => expect(getHeader('Sequencers')).to.null)
+    await waitFor(() => expect(getHeader('Sequence Status')).to.null)
+    await waitFor(() => expect(getHeader('Total Steps')).to.null)
+
     await waitFor(() => expect(configureButton.disabled).false)
 
     userEvent.click(configureButton)
@@ -187,6 +201,10 @@ describe('observation tabs', () => {
     const configureButton = (await screen.findByRole('button', {
       name: 'Configure'
     })) as HTMLButtonElement
+
+    await waitFor(() => expect(getHeader('Sequencers')).to.null)
+    await waitFor(() => expect(getHeader('Sequence Status')).to.null)
+    await waitFor(() => expect(getHeader('Total Steps')).to.null)
 
     await waitFor(() => expect(configureButton.disabled).true)
 

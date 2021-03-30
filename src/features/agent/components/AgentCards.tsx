@@ -2,7 +2,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Tooltip, Typography } from 'antd'
 import React from 'react'
-import { UNKNOWN_AGENT, useAgentsStatus } from '../../sm/hooks/useAgentsStatus'
+import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
 import SequenceComponentCard from './SequenceComponentCard'
 

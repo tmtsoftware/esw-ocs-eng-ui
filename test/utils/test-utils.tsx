@@ -151,7 +151,7 @@ const getContextWithQueryClientProvider = (
   return provider
 }
 
-interface MockProps {
+type MockProps = {
   ui: ReactElement
   loggedIn?: boolean
   mockClients?: ServiceFactoryContextType

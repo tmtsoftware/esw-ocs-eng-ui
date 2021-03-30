@@ -5,8 +5,8 @@ import {
   Prefix
 } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { useAgentService } from '../../agent/hooks/useAgentService'
 import { AGENTS_STATUS } from '../../queryKeys'
+import { useAgentService } from './useAgentService'
 
 export const UNKNOWN_AGENT = new ComponentId(
   new Prefix('ESW', 'Unknown'),

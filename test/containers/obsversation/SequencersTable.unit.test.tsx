@@ -44,15 +44,37 @@ describe('sequencer table', () => {
 
     await assertTable()
   })
+
+  it('should be able to render status NA if no sequence present | ESW-451', async () => {
+    const obsMode: ObsMode = new ObsMode('darknight')
+    const sequencers: Subsystem[] = ['ESW']
+
+    when(sequencerService.getSequence()).thenResolve(undefined)
+
+    renderWithAuth({
+      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    await assertHeaders()
+    await screen.findByRole('table')
+    await screen.findByRole('row', {
+      name: /edit esw\.darknight na na/i
+    })
+  })
 })
+
+const assertHeaders = async () => {
+  await assertHeader('Sequencers')
+  await assertHeader('Sequence Status')
+  await assertHeader('Total Steps')
+}
 
 //******************utility functions*****************
 const assertTable = async () => {
   await screen.findByRole('table')
 
-  await assertHeader('Sequencers')
-  await assertHeader('Sequence Status')
-  await assertHeader('Total Steps')
+  await assertHeaders()
 
   await assertRow(/edit esw\.darknight_1 step 1 paused 2/i, [
     'edit ESW.DarkNight_1',

@@ -1,15 +1,9 @@
-import type {
-  ObsMode,
-  ObsModeDetails,
-  ObsModesDetailsResponseSuccess,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import type { ObsMode, ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
-import { groupBy } from '../../utils/groupBy'
 import { headerTitle } from '../../utils/headerTitle'
 import styles from './resources.module.css'
 

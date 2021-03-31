@@ -31,7 +31,7 @@ describe('sequencer details', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const sequenerTitle = await screen.findByTestId('status-success')
+    const sequenerTitle = await screen.findByTestId('status-error')
     expect(sequenerTitle.innerText).to.equal(darkNightSequencer)
 
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(

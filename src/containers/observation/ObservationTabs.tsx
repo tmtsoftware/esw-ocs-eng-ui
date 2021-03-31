@@ -1,12 +1,7 @@
-import type {
-  ObsModeDetails,
-  ObsModeStatus,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import type { ObsModeDetails, ObsModeStatus } from '@tmtsoftware/esw-ts'
 import { Empty, Tabs } from 'antd'
 import React, { useState } from 'react'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
-import { groupBy } from '../../utils/groupBy'
 import styles from './observationsTabs.module.css'
 import ObservationTab from './ObservationTab'
 const { TabPane } = Tabs

@@ -1,4 +1,4 @@
-import type { ObsMode, ResourceStatus, Subsystem } from '@tmtsoftware/esw-ts'
+import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
 import { Button, Card, Layout, Menu, Space, Typography } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React from 'react'

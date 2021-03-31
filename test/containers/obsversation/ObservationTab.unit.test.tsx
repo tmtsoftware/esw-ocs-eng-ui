@@ -246,7 +246,7 @@ describe('observation tabs', () => {
     await screen.findByText('Successfully resumed sequencer')
   })
 
-  it('should render sequencer & resources table on running tab | ESW-453', async () => {
+  it('should render sequencer & resources table with all resources as in use on running tab | ESW-453', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -278,40 +278,75 @@ describe('observation tabs', () => {
       })
     )
     expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+    expect(
+      within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
+    ).to.have.length(0)
+    expect(
+      within(ResourcesTable).queryAllByRole('row', { name: /InUse/i })
+    ).to.have.length(2)
   })
 
-  const testData: [TabName, ObsModeDetails[]][] = [
-    ['Configurable', configurable],
-    ['Non-configurable', nonConfigurable]
-  ]
+  it(`should render resources with available status on configurable tab | ESW-453`, async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
-  testData.map(([tabName, rowData]) => {
-    it(`should render only resources table on ${tabName} tab | ESW-453`, async () => {
-      when(smService.getObsModesDetails()).thenResolve(obsModesData)
-
-      renderWithAuth({
-        ui: (
-          <ObservationTab
-            currentTab={tabName}
-            data={rowData}
-            selected={0}
-            setObservation={() => ({})}
-            key={'Running'}
-          />
-        ),
-        mockClients: mockServices.serviceFactoryContext
-      })
-
-      const [ResourcesTable] = await screen.findAllByRole('table')
-
-      expect(
-        within(ResourcesTable).getByRole('columnheader', {
-          name: 'Resources Required'
-        })
-      )
-      expect(
-        within(ResourcesTable).getByRole('columnheader', { name: 'Status' })
-      )
+    renderWithAuth({
+      ui: (
+        <ObservationTab
+          currentTab={'Configurable'}
+          data={configurable}
+          selected={0}
+          setObservation={() => ({})}
+          key={'Running'}
+        />
+      ),
+      mockClients: mockServices.serviceFactoryContext
     })
+
+    const [ResourcesTable] = await screen.findAllByRole('table')
+
+    expect(
+      within(ResourcesTable).getByRole('columnheader', {
+        name: 'Resources Required'
+      })
+    )
+    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+
+    expect(
+      within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
+    ).to.have.length(2)
+    expect(
+      within(ResourcesTable).queryAllByRole('row', { name: /InUse/i })
+    ).to.have.length(0)
+  })
+  it(`should render only resources table with appropriate status on non-configurable tab | ESW-453`, async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+    renderWithAuth({
+      ui: (
+        <ObservationTab
+          currentTab={'Non-configurable'}
+          data={nonConfigurable}
+          selected={0}
+          setObservation={() => ({})}
+          key={'Running'}
+        />
+      ),
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    const [ResourcesTable] = await screen.findAllByRole('table')
+
+    expect(
+      within(ResourcesTable).getByRole('columnheader', {
+        name: 'Resources Required'
+      })
+    )
+    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+    expect(within(ResourcesTable).getByRole('row', { name: 'IRIS Available' }))
+      .to.exist
+    expect(within(ResourcesTable).getByRole('row', { name: 'WFOS Available' }))
+      .to.exist
+    expect(within(ResourcesTable).getByRole('row', { name: 'ESW InUse' })).to
+      .exist
   })
 })

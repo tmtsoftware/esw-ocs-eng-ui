@@ -7,10 +7,10 @@ import type {
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import obsmodes from '../../../test/jsons/obsmodes'
 import PageHeader from '../../components/PageHeader/PageHeader'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import { groupBy } from '../../utils/groupBy'
+import { headerTitle } from '../../utils/headerTitle'
 import styles from './resources.module.css'
 
 type ResourceType = 'InUse' | 'Available'
@@ -21,11 +21,11 @@ type ResourceData = {
 }
 
 const getConflictingResources = (
-  resources1: Subsystem[],
+  resources: Subsystem[],
   obsmodesDetails: ObsModeDetails[]
 ) => {
   const conflictingResources: [Subsystem, ObsMode][] = []
-  resources1.forEach((resource) =>
+  resources.forEach((resource) =>
     obsmodesDetails.forEach((x) => {
       if (x.resources.includes(resource))
         conflictingResources.push([resource, x.obsMode])
@@ -34,24 +34,26 @@ const getConflictingResources = (
   return conflictingResources
 }
 const updateMapWithNewData = (
-  data: ObsModesDetailsResponseSuccess,
+  groupedData: Map<
+    'Configured' | 'Configurable' | 'NonConfigurable',
+    ObsModeDetails[]
+  >,
   map: Map<string, ResourceData>
 ) => {
-  const groupedData = groupBy(data.obsModes, (x) => x.status._type)
   const runningObsModes = groupedData.get('Configured')
   const nonConfigurableObsModes = groupedData.get('NonConfigurable')
   const ConfigurableObsModes = groupedData.get('Configurable')
+  // mark all resources of configurable obsmode to Available
+  ConfigurableObsModes &&
+    ConfigurableObsModes.forEach((obsModeDetail) =>
+      markConfigurableResourcesToAvailable(obsModeDetail, map)
+    )
   // mark all resources of running obsmode to InUse
   runningObsModes && markRunningResources(runningObsModes, map)
   // mark those resources of nonconfigurable obsmode to InUse  which  are conflicting with running, and non  conflciting resources to available
   nonConfigurableObsModes &&
     runningObsModes &&
     markNonConfigurableResources(nonConfigurableObsModes, runningObsModes, map)
-  // mark all resources of configurable obsmode to Available
-  ConfigurableObsModes &&
-    ConfigurableObsModes.forEach((obsModeDetail) =>
-      markConfigurableResourcesToAvailable(obsModeDetail, map)
-    )
 }
 
 const markConfigurableResourcesToAvailable = (
@@ -108,11 +110,13 @@ const mapResourcesToInUse = (
             usedBy: inUseResources[1].name
           })
         } else {
-          map.set(key, {
-            key,
-            resourceStatus: 'Available',
-            usedBy: 'NA'
-          })
+          if (!map.get(key)) {
+            map.set(key, {
+              key,
+              resourceStatus: 'Available',
+              usedBy: 'NA'
+            })
+          }
         }
       })
     } else {
@@ -125,7 +129,7 @@ const mapResourcesToInUse = (
   })
 }
 
-const getStatusColumn = (status: ResourceType) => (
+export const getStatusColumn = (status: ResourceType): JSX.Element => (
   <Typography.Text
     strong
     style={{
@@ -139,16 +143,16 @@ const getStatusColumn = (status: ResourceType) => (
 
 const columns: ColumnsType<ResourceData> = [
   {
-    title: 'Resources',
+    title: headerTitle('Resources'),
     dataIndex: 'key'
   },
   {
-    title: 'Status',
+    title: headerTitle('Status'),
     dataIndex: 'resourceStatus',
     render: (value: ResourceType) => getStatusColumn(value)
   },
   {
-    title: 'Used By',
+    title: headerTitle('Used By'),
     dataIndex: 'usedBy'
   }
 ]
@@ -157,18 +161,18 @@ const sortByResourceStatus = (list: ResourceData[]) =>
   list.sort((a, b) => (b.resourceStatus > a.resourceStatus ? 1 : -1))
 
 const Resources = (): JSX.Element => {
-  const { data, isLoading } = useObsModesDetails()
+  const { data: groupedData, isLoading } = useObsModesDetails()
   const [resourceMap, setResourceMap] = useState<Map<string, ResourceData>>(
     new Map<string, ResourceData>()
   )
 
   useEffect(() => {
     const map = new Map<string, ResourceData>()
-    if (data) {
-      updateMapWithNewData(data, map)
+    if (groupedData) {
+      updateMapWithNewData(groupedData, map)
     }
     setResourceMap(map)
-  }, [data])
+  }, [groupedData])
 
   return (
     <>
@@ -176,7 +180,7 @@ const Resources = (): JSX.Element => {
       <Table
         className={styles.resourcesCard}
         sticky
-        onHeaderRow={() => ({ style: { fontSize: '1rem' } })}
+        onRow={() => ({ style: { fontSize: '1rem' } })}
         columns={columns}
         loading={isLoading}
         pagination={false}

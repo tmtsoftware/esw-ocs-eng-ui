@@ -4,6 +4,7 @@ import { Drawer, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
+import { headerTitle } from '../../../utils/headerTitle'
 import styles from '../../agent/components/agentCards.module.css'
 import { Datatype, useSequencersData } from '../hooks/useSequencersData'
 import SequencerDetails from './SequencerDetails'
@@ -44,6 +45,7 @@ const columns = (
   {
     title: headerTitle('Sequencers'),
     dataIndex: 'prefix',
+    width: '40%',
     render: (_, record) => getPrefixColumn(record, onEditHandle)
   },
   {
@@ -58,12 +60,6 @@ const columns = (
     key: 'totalSteps'
   }
 ]
-
-const headerTitle = (title: string) => (
-  <Typography.Title level={5} style={{ marginBottom: 0 }}>
-    {title}
-  </Typography.Title>
-)
 
 type ObsModeSeqTableProps = {
   obsMode: ObsMode
@@ -110,6 +106,7 @@ export const SequencersTable = ({
         />
       )}
       <Table
+        style={{ paddingBottom: '1.5rem' }}
         pagination={false}
         loading={sequencerStatus.isLoading || sequencerStatus.isError}
         columns={columns(onEditHandle)}

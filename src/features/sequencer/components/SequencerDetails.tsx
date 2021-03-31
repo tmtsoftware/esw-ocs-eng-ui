@@ -47,10 +47,10 @@ const Actions = (): JSX.Element => (
 
 const SequencerDescription = ({ seqComp }: DescriptionProps): JSX.Element => (
   <Space>
-    <Typography.Text type='secondary' strong>
+    <Typography.Text type='secondary' strong aria-label='SeqCompLabel'>
       Sequence Component :
     </Typography.Text>
-    <Typography.Text>{seqComp}</Typography.Text>
+    <Typography.Text aria-label='SeqCompValue'>{seqComp}</Typography.Text>
   </Space>
 )
 

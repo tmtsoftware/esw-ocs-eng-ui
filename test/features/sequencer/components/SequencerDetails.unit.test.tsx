@@ -32,7 +32,12 @@ describe('sequencer details', () => {
     })
 
     expect(screen.getByText(darkNightSequencer)).to.exist
-    expect(screen.getByText(sequenceComponentPrefix)).to.exist
+    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
+      'Sequence Component :'
+    )
+    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
+      sequenceComponentPrefix
+    )
   })
 
   it('should render the sequence and sequencer actions | ESW-455', async () => {
@@ -69,7 +74,12 @@ describe('sequencer details', () => {
     await screen.findByTestId('status-error')
 
     expect(screen.getByText(darkNightSequencer)).to.exist
-    expect(screen.getByText(sequenceComponentPrefix)).to.exist
+    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
+      'Sequence Component :'
+    )
+    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
+      sequenceComponentPrefix
+    )
 
     await screen.findByTestId('status-success')
   })

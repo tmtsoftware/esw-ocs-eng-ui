@@ -48,9 +48,12 @@ describe('Resources page', () => {
         name: 'DarkNight_1'
       })
     )
-    expect(within(conflictingTCSRow).getByRole('cell', { name: 'TCS' }))
-    expect(within(conflictingTCSRow).getByRole('cell', { name: 'InUse' }))
+    expect(within(conflictingTCSRow).getByRole('cell', { name: 'TCS' })).to
+      .exist
+    expect(within(conflictingTCSRow).getByRole('cell', { name: 'InUse' })).to
+      .exist
     expect(within(conflictingTCSRow).getByRole('cell', { name: 'DarkNight_1' }))
+      .to.exist
   })
   it('should display available resources for configurable obsmodes | ESW-453', async () => {
     renderWithAuth({
@@ -67,11 +70,28 @@ describe('Resources page', () => {
         name: /Available/i
       }
     )
-    expect(within(irisRow).getByRole('cell', { name: 'IRIS' }))
-    expect(within(irisRow).getByRole('cell', { name: 'Available' }))
-    expect(within(irisRow).getByRole('cell', { name: 'NA' }))
-    expect(within(wfosRow).getByRole('cell', { name: 'WFOS' }))
-    expect(within(wfosRow).getByRole('cell', { name: 'Available' }))
-    expect(within(wfosRow).getByRole('cell', { name: 'NA' }))
+    expect(within(irisRow).getByRole('cell', { name: 'IRIS' })).to.exist
+    expect(within(irisRow).getByRole('cell', { name: 'Available' })).to.exist
+    expect(within(irisRow).getByRole('cell', { name: 'NA' })).to.exist
+    expect(within(wfosRow).getByRole('cell', { name: 'WFOS' })).to.exist
+    expect(within(wfosRow).getByRole('cell', { name: 'Available' })).to.exist
+    expect(within(wfosRow).getByRole('cell', { name: 'NA' })).to.exist
+  })
+
+  it('should sort InUse resources to top of the table | ESW-453', async () => {
+    renderWithAuth({
+      ui: <Resources />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    expect(screen.getAllByText('Resources')).to.length(2)
+
+    const [, tableBody] = await screen.findAllByRole('table')
+    const rows: HTMLElement[] = within(tableBody).getAllByRole('row')
+
+    expect(within(rows[0]).getByRole('cell', { name: 'InUse' })).to.exist
+    expect(within(rows[1]).getByRole('cell', { name: 'InUse' })).to.exist
+    expect(within(rows[2]).getByRole('cell', { name: 'Available' })).to.exist
+    expect(within(rows[3]).getByRole('cell', { name: 'Available' })).to.exist
   })
 })

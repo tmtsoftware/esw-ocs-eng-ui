@@ -1,4 +1,9 @@
-import type { ObsMode, ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
+import type {
+  ObsMode,
+  ObsModeDetails,
+  ResourceStatus,
+  Subsystem
+} from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
@@ -14,52 +19,62 @@ type ResourceData = {
   usedBy: string | 'NA'
 }
 
+const markResourcesWith = (
+  status: ResourceStatus['_type'],
+  obsModeDetails: ObsModeDetails[],
+  map: Map<string, ResourceData>
+) => {
+  obsModeDetails.forEach((obsModeDetail) =>
+    obsModeDetail.resources.forEach((key) => {
+      const usedBy = status === 'Available' ? 'NA' : obsModeDetail.obsMode.name
+      setStatusToResourceMap(map, key, status, usedBy)
+    })
+  )
+}
+
+const setStatusToResourceMap = (
+  map: Map<string, ResourceData>,
+  key: string,
+  resourceStatus: ResourceStatus['_type'],
+  usedBy: string
+) => {
+  map.set(key, {
+    key,
+    resourceStatus,
+    usedBy
+  })
+}
+
 const getConflictingResources = (
   resources: Subsystem[],
   obsmodesDetails: ObsModeDetails[]
 ) => {
-  const conflictingResources: [Subsystem, ObsMode][] = []
-  resources.forEach((resource) =>
+  return resources.reduce<[Subsystem, ObsMode][]>((list, resource) => {
     obsmodesDetails.forEach((x) => {
-      if (x.resources.includes(resource))
-        conflictingResources.push([resource, x.obsMode])
+      if (x.resources.includes(resource)) list.push([resource, x.obsMode])
     })
-  )
-  return conflictingResources
-}
-const updateMapWithNewData = (
-  groupedData: Map<
-    'Configured' | 'Configurable' | 'NonConfigurable',
-    ObsModeDetails[]
-  >,
-  map: Map<string, ResourceData>
-) => {
-  const runningObsModes = groupedData.get('Configured')
-  const nonConfigurableObsModes = groupedData.get('NonConfigurable')
-  const ConfigurableObsModes = groupedData.get('Configurable')
-  // mark all resources of configurable obsmode to Available
-  ConfigurableObsModes &&
-    ConfigurableObsModes.forEach((obsModeDetail) =>
-      markConfigurableResourcesToAvailable(obsModeDetail, map)
-    )
-  // mark all resources of running obsmode to InUse
-  runningObsModes && markRunningResources(runningObsModes, map)
-  // mark those resources of nonconfigurable obsmode to InUse  which  are conflicting with running, and non  conflciting resources to available
-  nonConfigurableObsModes &&
-    runningObsModes &&
-    markNonConfigurableResources(nonConfigurableObsModes, runningObsModes, map)
+    return list
+  }, [])
 }
 
-const markConfigurableResourcesToAvailable = (
-  obsModeDetails: ObsModeDetails,
+const setResourcesAsAvailableIfNotExists = (
+  inUseResources: [Subsystem, ObsMode][],
+  currentResource: string,
   map: Map<string, ResourceData>
 ) => {
-  obsModeDetails.resources.forEach((key) => {
-    map.set(key, {
-      key,
-      resourceStatus: 'Available',
-      usedBy: 'NA'
-    })
+  inUseResources.forEach((inUseResource) => {
+    if (inUseResource[0] === currentResource) {
+      setStatusToResourceMap(
+        map,
+        currentResource,
+        'InUse',
+        inUseResource[1].name
+      )
+    } else {
+      if (!map.get(currentResource)) {
+        setStatusToResourceMap(map, currentResource, 'Available', 'NA')
+      }
+    }
   })
 }
 
@@ -74,53 +89,39 @@ const markNonConfigurableResources = (
       runningObsModes
     )
     // mark only conflicting resources to in use
-    mapResourcesToInUse(obsModeDetail, map, conflictingResources)
-  })
-}
-
-const markRunningResources = (
-  runningObsModes: ObsModeDetails[],
-  map: Map<string, ResourceData>
-) => {
-  // mark all configured resources to in use
-  runningObsModes.forEach((obsModeDetail) =>
-    mapResourcesToInUse(obsModeDetail, map)
-  )
-  return runningObsModes
-}
-
-const mapResourcesToInUse = (
-  obsModeDetails: ObsModeDetails,
-  map: Map<string, ResourceData>,
-  inUseResources: [Subsystem, ObsMode][] = []
-) => {
-  obsModeDetails.resources.forEach((key) => {
-    if (inUseResources.length) {
-      inUseResources.forEach((inUseResources) => {
-        if (inUseResources[0] === key) {
-          map.set(key, {
-            key,
-            resourceStatus: 'InUse',
-            usedBy: inUseResources[1].name
-          })
-        } else {
-          if (!map.get(key)) {
-            map.set(key, {
-              key,
-              resourceStatus: 'Available',
-              usedBy: 'NA'
-            })
-          }
-        }
-      })
+    if (!conflictingResources.length) {
+      markResourcesWith('InUse', nonConfigurableObsModes, map)
     } else {
-      map.set(key, {
-        key,
-        resourceStatus: 'InUse',
-        usedBy: obsModeDetails.obsMode.name
+      obsModeDetail.resources.forEach((currentResource) => {
+        setResourcesAsAvailableIfNotExists(
+          conflictingResources,
+          currentResource,
+          map
+        )
       })
     }
   })
+}
+
+const updateMapWithNewData = (
+  groupedData: Map<
+    'Configured' | 'Configurable' | 'NonConfigurable',
+    ObsModeDetails[]
+  >,
+  map: Map<string, ResourceData>
+) => {
+  const runningObsModes = groupedData.get('Configured')
+  const nonConfigurableObsModes = groupedData.get('NonConfigurable')
+  const ConfigurableObsModes = groupedData.get('Configurable')
+  // mark all resources of configurable obsmode to Available
+  ConfigurableObsModes &&
+    markResourcesWith('Available', ConfigurableObsModes, map)
+  // mark all resources of running obsmode to InUse
+  runningObsModes && markResourcesWith('InUse', runningObsModes, map)
+  // mark those resources of nonconfigurable obsmode to InUse  which  are conflicting with running, and non conflciting resources to available
+  nonConfigurableObsModes &&
+    runningObsModes &&
+    markNonConfigurableResources(nonConfigurableObsModes, runningObsModes, map)
 }
 
 export const getStatusColumn = (status: ResourceType): JSX.Element => (

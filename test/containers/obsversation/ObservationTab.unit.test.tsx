@@ -1,9 +1,10 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   AgentStatus,
   ComponentId,
   ObsMode,
+  ObsModeDetails,
   ObsModeStatus,
   Prefix
 } from '@tmtsoftware/esw-ts'
@@ -11,6 +12,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import ObservationTab from '../../../src/containers/observation/ObservationTab'
+import type { TabName } from '../../../src/containers/observation/ObservationTabs'
 import obsModesData from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
@@ -215,7 +217,7 @@ describe('observation tabs', () => {
   })
 
   // TODO remove this skip toggle from here after ESW-382 & 383 is played
-  it.skip('should be able to resume a paused observation', async () => {
+  it.skip('should be able to resume a paused observation | ESW-450', async () => {
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'Success',
       obsModes: []
@@ -242,5 +244,74 @@ describe('observation tabs', () => {
     userEvent.click(resumeButton)
 
     await screen.findByText('Successfully resumed sequencer')
+  })
+
+  it('should render sequencer & resources table on running tab | ESW-453', async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+    renderWithAuth({
+      ui: (
+        <ObservationTab
+          currentTab={'Running'}
+          data={runningObsModes}
+          selected={0}
+          setObservation={() => ({})}
+          key={'Running'}
+        />
+      ),
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    const [SequencerTable, ResourcesTable] = await screen.findAllByRole('table')
+
+    expect(
+      within(SequencerTable).getByRole('columnheader', { name: 'Sequencers' })
+    )
+    expect(
+      within(SequencerTable).getByRole('columnheader', {
+        name: 'Sequence Status'
+      })
+    )
+    expect(
+      within(ResourcesTable).getByRole('columnheader', {
+        name: 'Resources Required'
+      })
+    )
+    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+  })
+
+  const testData: [TabName, ObsModeDetails[]][] = [
+    ['Configurable', configurable],
+    ['Non-configurable', nonConfigurable]
+  ]
+
+  testData.map(([tabName, rowData]) => {
+    it(`should render only resources table on ${tabName} tab | ESW-453`, async () => {
+      when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+      renderWithAuth({
+        ui: (
+          <ObservationTab
+            currentTab={tabName}
+            data={rowData}
+            selected={0}
+            setObservation={() => ({})}
+            key={'Running'}
+          />
+        ),
+        mockClients: mockServices.serviceFactoryContext
+      })
+
+      const [ResourcesTable] = await screen.findAllByRole('table')
+
+      expect(
+        within(ResourcesTable).getByRole('columnheader', {
+          name: 'Resources Required'
+        })
+      )
+      expect(
+        within(ResourcesTable).getByRole('columnheader', { name: 'Status' })
+      )
+    })
   })
 })

@@ -12,6 +12,10 @@ import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import ObservationTab from '../../../src/containers/observation/ObservationTab'
 import obsModesData from '../../jsons/obsmodes'
+import {
+  assertTableHeader,
+  assertTableHeaderNotPresent
+} from '../../utils/tableTestUtils'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 const getObsmodesBy = (key: ObsModeStatus['_type']) =>
@@ -20,11 +24,6 @@ const mockServices = getMockServices()
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 const sequencerService = mockServices.mock.sequencerService
-
-const getHeader = (colName: string) =>
-  screen.queryByRole('columnheader', {
-    name: colName
-  })
 
 describe('observation tabs', () => {
   const runningObsModes = getObsmodesBy('Configured')
@@ -53,10 +52,6 @@ describe('observation tabs', () => {
       ),
       mockClients: mockServices.serviceFactoryContext
     })
-
-    await waitFor(() => expect(getHeader('Sequencers')).to.exist)
-    await waitFor(() => expect(getHeader('Sequence Status')).to.exist)
-    await waitFor(() => expect(getHeader('Total Steps')).to.exist)
 
     const shutdownButton = await screen.findByRole('button', {
       name: 'Shutdown'
@@ -168,10 +163,6 @@ describe('observation tabs', () => {
       name: 'Configure'
     })) as HTMLButtonElement
 
-    await waitFor(() => expect(getHeader('Sequencers')).to.null)
-    await waitFor(() => expect(getHeader('Sequence Status')).to.null)
-    await waitFor(() => expect(getHeader('Total Steps')).to.null)
-
     await waitFor(() => expect(configureButton.disabled).false)
 
     userEvent.click(configureButton)
@@ -201,10 +192,6 @@ describe('observation tabs', () => {
     const configureButton = (await screen.findByRole('button', {
       name: 'Configure'
     })) as HTMLButtonElement
-
-    await waitFor(() => expect(getHeader('Sequencers')).to.null)
-    await waitFor(() => expect(getHeader('Sequence Status')).to.null)
-    await waitFor(() => expect(getHeader('Total Steps')).to.null)
 
     await waitFor(() => expect(configureButton.disabled).true)
 
@@ -244,7 +231,7 @@ describe('observation tabs', () => {
     await screen.findByText('Successfully resumed sequencer')
   })
 
-  it('should render sequencer & resources table with all resources as in use on running tab | ESW-453', async () => {
+  it('should render sequencer & resources table with all resources as in use on running tab | ESW-451, ESW-453', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -262,20 +249,13 @@ describe('observation tabs', () => {
 
     const [SequencerTable, ResourcesTable] = await screen.findAllByRole('table')
 
-    expect(
-      within(SequencerTable).getByRole('columnheader', { name: 'Sequencers' })
-    )
-    expect(
-      within(SequencerTable).getByRole('columnheader', {
-        name: 'Sequence Status'
-      })
-    )
-    expect(
-      within(ResourcesTable).getByRole('columnheader', {
-        name: 'Resources Required'
-      })
-    )
-    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+    assertTableHeader(SequencerTable, 'Sequencers')
+    assertTableHeader(SequencerTable, 'Sequence Status')
+    assertTableHeader(SequencerTable, 'Total Steps')
+
+    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Status')
+
     expect(
       within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
     ).to.have.length(0)
@@ -284,7 +264,7 @@ describe('observation tabs', () => {
     ).to.have.length(2)
   })
 
-  it(`should render resources with available status on configurable tab | ESW-453`, async () => {
+  it(`should render only resources with available status on configurable tab| ESW-451, ESW-453`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -302,12 +282,12 @@ describe('observation tabs', () => {
 
     const [ResourcesTable] = await screen.findAllByRole('table')
 
-    expect(
-      within(ResourcesTable).getByRole('columnheader', {
-        name: 'Resources Required'
-      })
-    )
-    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+    assertTableHeaderNotPresent('Sequencers')
+    assertTableHeaderNotPresent('Sequence Status')
+    assertTableHeaderNotPresent('Total Steps')
+
+    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Status')
 
     expect(
       within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
@@ -316,7 +296,7 @@ describe('observation tabs', () => {
       within(ResourcesTable).queryAllByRole('row', { name: /InUse/i })
     ).to.have.length(0)
   })
-  it(`should render only resources table with appropriate status on non-configurable tab | ESW-453`, async () => {
+  it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -334,12 +314,13 @@ describe('observation tabs', () => {
 
     const [ResourcesTable] = await screen.findAllByRole('table')
 
-    expect(
-      within(ResourcesTable).getByRole('columnheader', {
-        name: 'Resources Required'
-      })
-    )
-    expect(within(ResourcesTable).getByRole('columnheader', { name: 'Status' }))
+    assertTableHeaderNotPresent('Sequencers')
+    assertTableHeaderNotPresent('Sequence Status')
+    assertTableHeaderNotPresent('Total Steps')
+
+    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Status')
+
     expect(within(ResourcesTable).getByRole('row', { name: 'IRIS Available' }))
       .to.exist
     expect(within(ResourcesTable).getByRole('row', { name: 'WFOS Available' }))

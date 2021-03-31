@@ -23,6 +23,7 @@ export type StepStatus =
   | 'Failed to Fetch Status'
 
 export type Datatype = {
+  key: string
   prefix: string
   status: { stepNumber: number; status: StepStatus }
   totalSteps: number | 'NA'
@@ -65,6 +66,7 @@ const getData = (
         const stepList = await sequencer.getSequence()
 
         return {
+          key: prefix.toJSON(),
           prefix: prefix.toJSON(),
           status: deriveStatus(stepList),
           totalSteps: stepList ? stepList.length : ('NA' as const),
@@ -72,6 +74,7 @@ const getData = (
         }
       } catch (e) {
         return Promise.resolve({
+          key: prefix.toJSON(),
           prefix: prefix.toJSON(),
           status: {
             stepNumber: 0,

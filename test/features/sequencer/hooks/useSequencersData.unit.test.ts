@@ -63,6 +63,7 @@ describe('useSequencersData', () => {
     expect(result.current.data).to.deep.equal([
       {
         location: null,
+        key: 'ESW.',
         prefix: 'ESW.',
         status: {
           status: 'Paused',
@@ -72,6 +73,7 @@ describe('useSequencersData', () => {
       },
       {
         location: null,
+        key: 'WFOS.Calib',
         prefix: 'WFOS.Calib',
         status: {
           status: 'Failed',
@@ -81,6 +83,7 @@ describe('useSequencersData', () => {
       },
       {
         location: null,
+        key: 'IRIS.FilterWheel',
         prefix: 'IRIS.FilterWheel',
         status: {
           status: 'In Progress',
@@ -90,6 +93,7 @@ describe('useSequencersData', () => {
       },
       {
         location: null,
+        key: 'IRIS.Darknight',
         prefix: 'IRIS.Darknight',
         status: {
           status: 'All Steps Completed',
@@ -125,6 +129,7 @@ describe('useSequencersData', () => {
 
       expect(result.current.data).to.deep.equal([
         {
+          key: 'IRIS.Darknight',
           prefix: 'IRIS.Darknight',
           status: {
             status: 'Failed to Fetch Status',

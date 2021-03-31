@@ -93,7 +93,7 @@ describe('observation tabs', () => {
 
     userEvent.click(pauseButton)
 
-    await screen.findByText('Successfully paused sequencer.')
+    await screen.findByText('Successfully paused sequencer')
 
     await waitFor(() => verify(sequencerService.pause()).called())
   })

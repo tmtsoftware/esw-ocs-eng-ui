@@ -27,18 +27,16 @@ const AgentCard = ({
       ? UNKNOWN_AGENT.prefix.componentName
       : agentPrefix.toJSON()
 
-  const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => {
-    return (
-      <SequenceComponentCard
-        key={index}
-        seqCompId={seqCompStatus.seqCompId}
-        location={seqCompStatus.sequencerLocation}
-      />
-    )
-  })
+  const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => (
+    <SequenceComponentCard
+      key={index}
+      seqCompId={seqCompStatus.seqCompId}
+      location={seqCompStatus.sequencerLocation}
+    />
+  ))
 
   const AddComponent = () => (
-    <Tooltip placement='bottom' title={'Add sequence component'}>
+    <Tooltip placement='bottom' title='Add sequence component'>
       <PlusCircleOutlined
         className={styles.commonIcon}
         role='addSeqCompIcon'
@@ -70,15 +68,13 @@ const AgentCards = (): JSX.Element => {
   const { data } = useAgentsStatus()
   const screen = useBreakpoint()
 
-  const agentCards = data?.map((agentStatus, index) => {
-    return (
-      <AgentCard
-        key={index}
-        agentPrefix={agentStatus.agentId.prefix}
-        seqCompsStatus={agentStatus.seqCompsStatus}
-      />
-    )
-  })
+  const agentCards = data?.map((agentStatus, index) => (
+    <AgentCard
+      key={index}
+      agentPrefix={agentStatus.agentId.prefix}
+      seqCompsStatus={agentStatus.seqCompsStatus}
+    />
+  ))
 
   const [columnCount, span] = screen.xl ? [4, 6] : screen.lg ? [3, 8] : [2, 12]
 

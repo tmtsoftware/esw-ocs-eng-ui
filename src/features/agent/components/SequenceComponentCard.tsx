@@ -88,26 +88,24 @@ type SequenceComponentProps = {
 const SequenceComponentCard = ({
   seqCompId,
   location
-}: SequenceComponentProps): JSX.Element => {
-  return (
-    <Row style={{ paddingBottom: '1rem' }}>
-      <Col flex='auto'>
-        <SequenceComponent
-          seqCompId={seqCompId.prefix.toJSON()}
-          obsMode={location[0]?.connection.prefix.toJSON()}
+}: SequenceComponentProps): JSX.Element => (
+  <Row style={{ paddingBottom: '1rem' }}>
+    <Col flex='auto'>
+      <SequenceComponent
+        seqCompId={seqCompId.prefix.toJSON()}
+        obsMode={location[0]?.connection.prefix.toJSON()}
+      />
+    </Col>
+    <Col className={styles.iconBox}>
+      <Tooltip placement='bottom' title={'Delete sequence component'}>
+        <DeleteOutlined
+          className={styles.deleteIcon}
+          role='deleteSeqCompIcon'
+          onClick={() => ({})}
         />
-      </Col>
-      <Col className={styles.iconBox}>
-        <Tooltip placement='bottom' title={'Delete sequence component'}>
-          <DeleteOutlined
-            className={styles.deleteIcon}
-            role='deleteSeqCompIcon'
-            onClick={() => ({})}
-          />
-        </Tooltip>
-      </Col>
-    </Row>
-  )
-}
+      </Tooltip>
+    </Col>
+  </Row>
+)
 
 export default SequenceComponentCard

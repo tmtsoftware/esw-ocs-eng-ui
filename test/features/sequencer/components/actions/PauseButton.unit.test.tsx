@@ -17,7 +17,7 @@ describe('Pause button', () => {
       {
         _type: 'Ok'
       },
-      'Successfully paused sequencer.'
+      'Successfully paused sequencer'
     ],
     [
       'CannotOperateOnAnInFlightOrFinishedStep',

@@ -1,10 +1,7 @@
 import type { SequencerService } from '@tmtsoftware/esw-ts'
-import { Button } from 'antd'
 import React from 'react'
-import { useMutation } from '../../../../hooks/useMutation'
-import { errorMessage, successMessage } from '../../../../utils/message'
-import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import ActionButton from './ActionButton'
 
 const pause = async (sequencerService: SequencerService) => {
   const res = await sequencerService.pause()
@@ -21,22 +18,12 @@ const pause = async (sequencerService: SequencerService) => {
 const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
   const sequencerService = useSequencerService(obsMode, false)
 
-  const pauseAction = useMutation({
-    mutationFn: pause,
-    onSuccess: () => successMessage('Successfully paused sequencer.'),
-    onError: (e) => errorMessage('Failed to pause sequencer', e),
-    invalidateKeysOnSuccess: [OBS_MODES_DETAILS.key]
-  })
-
   return (
-    <Button
-      disabled={sequencerService.isLoading || sequencerService.isError}
-      loading={pauseAction.isLoading}
-      onClick={() =>
-        sequencerService.data && pauseAction.mutateAsync(sequencerService.data)
-      }>
-      Pause
-    </Button>
+    <ActionButton
+      title='Pause'
+      queryResult={sequencerService}
+      onClick={pause}
+    />
   )
 }
 

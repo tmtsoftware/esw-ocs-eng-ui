@@ -96,7 +96,7 @@ export const useSequencersData = (
 
   const locationService = locationServiceFactory()
   return useQuery(
-    OBS_MODE_SEQUENCERS.key,
+    [OBS_MODE_SEQUENCERS.key, ...sequencers],
     () => getData(sequencers, sequencerServiceFactory, locationService),
     {
       useErrorBoundary: false,

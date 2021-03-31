@@ -6,18 +6,19 @@ import ResourcesTable from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import type { TabName } from './ObservationTabs'
 import ObsModeActions from './ObsModeActions'
+type CurrentObsModeProps = {
+  currentTab: TabName
+  obsMode: ObsMode
+  sequencers: Subsystem[]
+  resources: ResourceTableStatus[]
+}
 
 const CurrentObsMode = ({
   currentTab,
   obsMode,
   sequencers,
   resources
-}: {
-  currentTab: TabName
-  obsMode: ObsMode
-  sequencers: Subsystem[]
-  resources: ResourceTableStatus[]
-}): JSX.Element => {
+}: CurrentObsModeProps): JSX.Element => {
   const isRunning = () => currentTab === 'Running'
 
   //TODO use StatusAPI of sequencer for this status

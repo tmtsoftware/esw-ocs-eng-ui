@@ -106,6 +106,7 @@ export const SequencersTable = ({
         />
       )}
       <Table
+        rowKey={(record) => record.prefix}
         style={{ paddingBottom: '1.5rem' }}
         pagination={false}
         loading={sequencerStatus.isLoading || sequencerStatus.isError}

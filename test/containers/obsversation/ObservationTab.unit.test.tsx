@@ -1,12 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  AgentStatus,
-  ComponentId,
-  ObsMode,
-  ObsModeStatus,
-  Prefix
-} from '@tmtsoftware/esw-ts'
+import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
@@ -18,23 +12,14 @@ import {
 } from '../../utils/tableTestUtils'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
-const getObsmodesBy = (key: ObsModeStatus['_type']) =>
-  obsModesData.obsModes.filter((x) => x.status._type === key)
 const mockServices = getMockServices()
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 const sequencerService = mockServices.mock.sequencerService
 
 describe('observation tabs', () => {
-  const runningObsModes = getObsmodesBy('Configured')
-  const configurable = getObsmodesBy('Configurable')
-  const nonConfigurable = getObsmodesBy('NonConfigurable')
-
   it('should be able to shutdown running observation | ESW-450', async () => {
-    when(smService.getObsModesDetails()).thenResolve({
-      _type: 'Success',
-      obsModes: []
-    })
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'
@@ -43,11 +28,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Running'}
           currentTab={'Running'}
-          data={runningObsModes}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -65,10 +49,7 @@ describe('observation tabs', () => {
   })
 
   it('should be able to pause running observation', async () => {
-    when(smService.getObsModesDetails()).thenResolve({
-      _type: 'Success',
-      obsModes: []
-    })
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerService.pause()).thenResolve({
       _type: 'Ok'
     })
@@ -76,11 +57,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Running'}
           currentTab={'Running'}
-          data={runningObsModes}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -144,16 +124,16 @@ describe('observation tabs', () => {
       _type: 'Success',
       masterSequencerComponentId: sequencerId
     })
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
     // mock setup ends here
 
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Configurable'}
           currentTab={'Configurable'}
-          data={configurable}
           selected={0}
           setObservation={() => ({})}
-          key={'Configurable'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -179,11 +159,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Non-configurable'}
           currentTab={'Non-configurable'}
-          data={nonConfigurable}
           selected={0}
           setObservation={() => ({})}
-          key={'non-configurable'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -214,11 +193,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Running'}
           currentTab={'Running'}
-          data={runningObsModes}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -237,11 +215,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Running'}
           currentTab={'Running'}
-          data={runningObsModes}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -270,11 +247,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Configurable'}
           currentTab={'Configurable'}
-          data={configurable}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -302,11 +278,10 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
+          tabName={'Non-configurable'}
           currentTab={'Non-configurable'}
-          data={nonConfigurable}
           selected={0}
           setObservation={() => ({})}
-          key={'Running'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext

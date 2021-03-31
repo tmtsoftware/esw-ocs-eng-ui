@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
@@ -8,10 +8,6 @@ import obsModesData from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('Observation page', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('should render observation page with three tabs | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
@@ -73,7 +69,7 @@ describe('Observation page', () => {
     // User will click on non-configurable tab
     userEvent.click(nonConfigurableTab)
 
-    await screen.findByText('No Configurable ObsModes')
+    await screen.findByText('No Non-configurable ObsModes')
 
     await waitFor(() => {
       verify(smService.getObsModesDetails()).called()
@@ -111,22 +107,30 @@ describe('Observation page', () => {
     it(`should render ${tabName} obsModes | ESW-450`, async () => {
       const mockServices = getMockServices()
       const smService = mockServices.mock.smService
+      const agentService = mockServices.mock.agentService
+      when(agentService.getAgentStatus()).thenResolve({
+        _type: 'Success',
+        agentStatus: [],
+        seqCompsWithoutAgent: []
+      })
+      when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
       renderWithAuth({
         ui: <Observations />,
         mockClients: mockServices.serviceFactoryContext
       })
 
-      when(smService.getObsModesDetails()).thenResolve(obsModesData)
-
-      const configurableTab = screen.getByRole('tab', {
+      const tab = await screen.findByRole('tab', {
         name: tabName
       })
-      userEvent.click(configurableTab)
+      userEvent.click(tab)
 
-      await screen.findByRole('menuitem', { name: obsModes[0] })
+      const menuItem = await screen.findByRole('menuitem', {
+        name: obsModes[0]
+      })
       await screen.findByRole('menuitem', { name: obsModes[1] })
 
+      userEvent.click(menuItem)
       expect(screen.getAllByText(obsModes[0])).to.have.length(2)
 
       await waitFor(() => {
@@ -138,15 +142,14 @@ describe('Observation page', () => {
   it('should log error if locationServiceError occurs | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
+    when(smService.getObsModesDetails()).thenResolve({
+      _type: 'LocationServiceError',
+      reason: 'Location service failed'
+    })
 
     renderWithAuth({
       ui: <Observations />,
       mockClients: mockServices.serviceFactoryContext
-    })
-
-    when(smService.getObsModesDetails()).thenResolve({
-      _type: 'LocationServiceError',
-      reason: 'Location service failed'
     })
 
     await screen.findByText('Location service failed')
@@ -160,14 +163,14 @@ describe('Observation page', () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 
-    renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
-    })
-
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'Failed',
       msg: 'Failed to fetch obsModes'
+    })
+
+    renderWithAuth({
+      ui: <Observations />,
+      mockClients: mockServices.serviceFactoryContext
     })
 
     await screen.findByText('Failed to fetch obsModes')

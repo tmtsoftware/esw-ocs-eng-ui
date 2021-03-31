@@ -4,7 +4,6 @@ import {
   AgentStatus,
   ComponentId,
   ObsMode,
-  ObsModeDetails,
   ObsModeStatus,
   Prefix
 } from '@tmtsoftware/esw-ts'
@@ -12,7 +11,6 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import ObservationTab from '../../../src/containers/observation/ObservationTab'
-import type { TabName } from '../../../src/containers/observation/ObservationTabs'
 import obsModesData from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 

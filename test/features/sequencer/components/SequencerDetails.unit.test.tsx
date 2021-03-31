@@ -31,7 +31,9 @@ describe('sequencer details', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    expect(screen.getByText(darkNightSequencer)).to.exist
+    const sequenerTitle = await screen.findByTestId('status-success')
+    expect(sequenerTitle.innerText).to.equal(darkNightSequencer)
+
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
       'Sequence Component :'
     )
@@ -72,15 +74,13 @@ describe('sequencer details', () => {
 
     when(sequencerService.isOnline()).thenResolve(true)
     await screen.findByTestId('status-error')
-
-    expect(screen.getByText(darkNightSequencer)).to.exist
+    const sequenerTitle = await screen.findByTestId('status-success')
+    expect(sequenerTitle.innerText).to.equal(darkNightSequencer)
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
       'Sequence Component :'
     )
     expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
       sequenceComponentPrefix
     )
-
-    await screen.findByTestId('status-success')
   })
 })

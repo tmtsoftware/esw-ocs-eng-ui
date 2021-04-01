@@ -9,21 +9,27 @@ import { errorMessage } from '../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
-const getObsModesDetails = async (smService: SequenceManagerService) => {
-  const response = await smService?.getObsModesDetails()
-  if (response?._type === 'Failed') {
-    return errorMessage(response.msg)
-  }
-  if (response?._type === 'LocationServiceError') {
-    return errorMessage(response.reason)
-  }
-  return groupBy(response?.obsModes, (x) => x.status._type)
+export type GroupedObsModeDetails = {
+  Configured: ObsModeDetails[]
+  Configurable: ObsModeDetails[]
+  NonConfigurable: ObsModeDetails[]
 }
 
-export type GroupedObsModeDetails = Map<
-  'Configured' | 'Configurable' | 'NonConfigurable',
-  ObsModeDetails[]
->
+const getObsModesDetails = async (
+  smService: SequenceManagerService
+): Promise<GroupedObsModeDetails> => {
+  const response = await smService?.getObsModesDetails()
+  if (response?._type === 'Failed') return errorMessage(response.msg)
+  if (response?._type === 'LocationServiceError')
+    return errorMessage(response.reason)
+
+  const grouped = groupBy(response?.obsModes, (x) => x.status._type)
+  return {
+    Configured: grouped.get('Configured') || [],
+    Configurable: grouped.get('Configurable') || [],
+    NonConfigurable: grouped.get('NonConfigurable') || []
+  }
+}
 
 export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
   const { data: smService } = useSMService(false)
@@ -41,7 +47,5 @@ export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
 
 export const useRunningResources = (): Subsystem[] => {
   const { data } = useObsModesDetails()
-  return [
-    ...new Set(data && data.get('Configured')?.flatMap((x) => x.resources))
-  ]
+  return [...new Set(data && data.Configured.flatMap((om) => om.resources))]
 }

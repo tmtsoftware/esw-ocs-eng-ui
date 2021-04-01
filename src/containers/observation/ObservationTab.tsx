@@ -58,7 +58,7 @@ const ObservationTab = ({
   const { data: grouped } = useObsModesDetails()
   const runningResources = useRunningResources()
 
-  const data = grouped?.get(tabMap[tabName]) ?? []
+  const data = grouped ? grouped[tabMap[tabName]] : []
   const selectedObs = data[selected] ?? data[0]
 
   if (!data.length) return <Empty description={`No ${tabName} ObsModes`} />

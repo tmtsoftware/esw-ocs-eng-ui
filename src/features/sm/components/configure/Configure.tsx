@@ -32,7 +32,7 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const onConfigureClick = () => {
     if (data) {
-      setObsModesDetails(data.get('Configurable') ?? [])
+      setObsModesDetails(data.Configurable)
     }
     setObsMode(undefined)
     setModalVisibility(true)

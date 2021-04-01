@@ -1,11 +1,13 @@
 import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import ResourcesTable from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import type { TabName } from './ObservationTabs'
 import ObsModeActions from './ObsModeActions'
+
 type CurrentObsModeProps = {
   currentTab: TabName
   obsMode: ObsMode
@@ -19,18 +21,20 @@ const CurrentObsMode = ({
   sequencers,
   resources
 }: CurrentObsModeProps): JSX.Element => {
-  const isRunning = () => currentTab === 'Running'
+  const isRunning = currentTab === 'Running'
+
+  const Text = ({ content, type }: { content: string; type: BaseType }) => (
+    <Typography.Text strong type={type}>
+      {content}
+    </Typography.Text>
+  )
 
   //TODO use StatusAPI of sequencer for this status
-  const getStatus = () =>
-    isRunning() ? (
-      <Typography.Text type='success' strong>
-        Running
-      </Typography.Text>
+  const Status = () =>
+    isRunning ? (
+      <Text content='Running' type='success' />
     ) : (
-      <Typography.Text strong type='secondary'>
-        NA
-      </Typography.Text>
+      <Text content='NA' type='secondary' />
     )
 
   return (
@@ -41,7 +45,7 @@ const CurrentObsMode = ({
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>
             <Space>
               <Typography.Text type='secondary'>Status: </Typography.Text>
-              {getStatus()}
+              <Status />
             </Space>
           </>
         }
@@ -50,7 +54,7 @@ const CurrentObsMode = ({
             <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
         }>
-        {isRunning() && (
+        {isRunning && (
           <SequencersTable obsMode={obsMode} sequencers={sequencers} />
         )}
         <ResourcesTable resources={resources} />

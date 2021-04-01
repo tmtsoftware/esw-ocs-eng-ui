@@ -31,18 +31,14 @@ const getResources = (details: ObsModeDetails[]) => [
 const groupByResourceStatus = (
   groupedObsModes: GroupedObsModeDetails
 ): ResourceData[] => {
-  const runningObsModes = groupedObsModes.get('Configured') || []
-  const nonConfigurableObsModes = groupedObsModes.get('NonConfigurable') || []
-  const configurableObsModes = groupedObsModes.get('Configurable') || []
-
-  const availableResources = getResources(configurableObsModes)
+  const availableResources = getResources(groupedObsModes.Configurable)
   const availableResourceData: ResourceData[] = availableResources.map(
     (resource) => mkResourceData(resource, 'Available', 'NA')
   )
 
   const inUseResources = [
     ...new Set(
-      runningObsModes.flatMap((om) => {
+      groupedObsModes.Configured.flatMap((om) => {
         return om.resources.map<[string, Subsystem]>((resource) => {
           return [om.obsMode.name, resource]
         })
@@ -54,7 +50,7 @@ const groupByResourceStatus = (
     ([obsModeName, resource]) => mkResourceData(resource, 'InUse', obsModeName)
   )
 
-  const nonConfigurableResources = getResources(nonConfigurableObsModes)
+  const nonConfigurableResources = getResources(groupedObsModes.NonConfigurable)
   const nonConfigurableResourceData: ResourceData[] = nonConfigurableResources.flatMap(
     (resource) => {
       const found = inUseResourceData.find((data) => data.key === resource)

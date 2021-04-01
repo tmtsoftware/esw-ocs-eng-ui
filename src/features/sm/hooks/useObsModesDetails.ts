@@ -20,9 +20,12 @@ const getObsModesDetails = async (smService: SequenceManagerService) => {
   return groupBy(response?.obsModes, (x) => x.status._type)
 }
 
-export const useObsModesDetails = (): UseQueryResult<
-  Map<'Configured' | 'Configurable' | 'NonConfigurable', ObsModeDetails[]>
-> => {
+export type GroupedObsModeDetails = Map<
+  'Configured' | 'Configurable' | 'NonConfigurable',
+  ObsModeDetails[]
+>
+
+export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
   const { data: smService } = useSMService(false)
 
   return useQuery(

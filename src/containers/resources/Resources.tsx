@@ -1,127 +1,79 @@
-import type {
-  ObsMode,
-  ObsModeDetails,
-  ResourceStatus,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
-import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
+import {
+  GroupedObsModeDetails,
+  useObsModesDetails
+} from '../../features/sm/hooks/useObsModesDetails'
 import { headerTitle } from '../../utils/headerTitle'
 import styles from './resources.module.css'
 
 type ResourceType = 'InUse' | 'Available'
+
 type ResourceData = {
   key: string
-  resourceStatus: ResourceType
-  usedBy: string | 'NA'
-}
-
-const markResourcesWith = (
-  status: ResourceStatus['_type'],
-  obsModeDetails: ObsModeDetails[],
-  map: Map<string, ResourceData>
-) => {
-  obsModeDetails.forEach((obsModeDetail) =>
-    obsModeDetail.resources.forEach((key) => {
-      const usedBy = status === 'Available' ? 'NA' : obsModeDetail.obsMode.name
-      setStatusToResourceMap(map, key, status, usedBy)
-    })
-  )
-}
-
-const setStatusToResourceMap = (
-  map: Map<string, ResourceData>,
-  key: string,
-  resourceStatus: ResourceStatus['_type'],
+  status: ResourceType
   usedBy: string
-) => {
-  map.set(key, {
-    key,
-    resourceStatus,
-    usedBy
-  })
 }
 
-const getConflictingResources = (
-  resources: Subsystem[],
-  obsmodesDetails: ObsModeDetails[]
-) => {
-  return resources.reduce<[Subsystem, ObsMode][]>((list, resource) => {
-    obsmodesDetails.forEach((x) => {
-      if (x.resources.includes(resource)) list.push([resource, x.obsMode])
-    })
-    return list
-  }, [])
-}
+const mkResourceData = (
+  key: string,
+  status: ResourceType,
+  usedBy: string
+): ResourceData => ({ key, status, usedBy })
 
-const setResourcesAsAvailableIfNotExists = (
-  inUseResources: [Subsystem, ObsMode][],
-  currentResource: string,
-  map: Map<string, ResourceData>
-) => {
-  inUseResources.forEach((inUseResource) => {
-    if (inUseResource[0] === currentResource) {
-      setStatusToResourceMap(
-        map,
-        currentResource,
-        'InUse',
-        inUseResource[1].name
-      )
-    } else {
-      if (!map.get(currentResource)) {
-        setStatusToResourceMap(map, currentResource, 'Available', 'NA')
-      }
-    }
-  })
-}
+const getResources = (details: ObsModeDetails[]) => [
+  ...new Set(details.flatMap((om) => om.resources))
+]
 
-const markNonConfigurableResources = (
-  nonConfigurableObsModes: ObsModeDetails[],
-  runningObsModes: ObsModeDetails[],
-  map: Map<string, ResourceData>
-) => {
-  nonConfigurableObsModes.forEach((obsModeDetail) => {
-    const conflictingResources = getConflictingResources(
-      obsModeDetail.resources,
-      runningObsModes
-    )
-    // mark only conflicting resources to in use
-    if (!conflictingResources.length) {
-      markResourcesWith('InUse', nonConfigurableObsModes, map)
-    } else {
-      obsModeDetail.resources.forEach((currentResource) => {
-        setResourcesAsAvailableIfNotExists(
-          conflictingResources,
-          currentResource,
-          map
-        )
+const groupByResourceStatus = (
+  groupedObsModes: GroupedObsModeDetails
+): ResourceData[] => {
+  const runningObsModes = groupedObsModes.get('Configured') || []
+  const nonConfigurableObsModes = groupedObsModes.get('NonConfigurable') || []
+  const configurableObsModes = groupedObsModes.get('Configurable') || []
+
+  const availableResources = getResources(configurableObsModes)
+  const availableResourceData: ResourceData[] = availableResources.map(
+    (resource) => mkResourceData(resource, 'Available', 'NA')
+  )
+
+  const inUseResources = [
+    ...new Set(
+      runningObsModes.flatMap((om) => {
+        return om.resources.map<[string, Subsystem]>((resource) => {
+          return [om.obsMode.name, resource]
+        })
       })
-    }
-  })
-}
+    )
+  ]
 
-const updateMapWithNewData = (
-  groupedData: Map<
-    'Configured' | 'Configurable' | 'NonConfigurable',
-    ObsModeDetails[]
-  >,
-  map: Map<string, ResourceData>
-) => {
-  const runningObsModes = groupedData.get('Configured')
-  const nonConfigurableObsModes = groupedData.get('NonConfigurable')
-  const ConfigurableObsModes = groupedData.get('Configurable')
-  // mark all resources of configurable obsmode to Available
-  ConfigurableObsModes &&
-    markResourcesWith('Available', ConfigurableObsModes, map)
-  // mark all resources of running obsmode to InUse
-  runningObsModes && markResourcesWith('InUse', runningObsModes, map)
-  // mark those resources of nonconfigurable obsmode to InUse  which  are conflicting with running, and non conflciting resources to available
-  nonConfigurableObsModes &&
-    runningObsModes &&
-    markNonConfigurableResources(nonConfigurableObsModes, runningObsModes, map)
+  const inUseResourceData: ResourceData[] = inUseResources.map(
+    ([obsModeName, resource]) => mkResourceData(resource, 'InUse', obsModeName)
+  )
+
+  const nonConfigurableResources = getResources(nonConfigurableObsModes)
+  const nonConfigurableResourceData: ResourceData[] = nonConfigurableResources.flatMap(
+    (resource) => {
+      const found = inUseResourceData.find((data) => data.key === resource)
+      return found ? [] : [mkResourceData(resource, 'Available', 'NA')]
+    }
+  )
+
+  const byStatus = (fst: ResourceData, snd: ResourceData) =>
+    snd.status > fst.status ? 1 : -1
+
+  return [
+    ...new Set(
+      [
+        ...inUseResourceData,
+        ...availableResourceData,
+        ...nonConfigurableResourceData
+      ].sort(byStatus)
+    )
+  ]
 }
 
 export const getStatusColumn = (status: ResourceType): JSX.Element => (
@@ -143,7 +95,7 @@ const columns: ColumnsType<ResourceData> = [
   },
   {
     title: headerTitle('Status'),
-    dataIndex: 'resourceStatus',
+    dataIndex: 'status',
     render: (value: ResourceType) => getStatusColumn(value)
   },
   {
@@ -152,22 +104,13 @@ const columns: ColumnsType<ResourceData> = [
   }
 ]
 
-const sortByResourceStatus = (list: ResourceData[]) =>
-  list.sort((a, b) => (b.resourceStatus > a.resourceStatus ? 1 : -1))
-
 const Resources = (): JSX.Element => {
-  const { data: groupedData, isLoading } = useObsModesDetails()
-  const [resourceMap, setResourceMap] = useState<Map<string, ResourceData>>(
-    new Map<string, ResourceData>()
-  )
+  const { data: groupedObsModes, isLoading } = useObsModesDetails()
+  const [resourceData, setResourceData] = useState<ResourceData[]>([])
 
   useEffect(() => {
-    const map = new Map<string, ResourceData>()
-    if (groupedData) {
-      updateMapWithNewData(groupedData, map)
-    }
-    setResourceMap(map)
-  }, [groupedData])
+    groupedObsModes && setResourceData(groupByResourceStatus(groupedObsModes))
+  }, [groupedObsModes])
 
   return (
     <>
@@ -179,7 +122,7 @@ const Resources = (): JSX.Element => {
         columns={columns}
         loading={isLoading}
         pagination={false}
-        dataSource={sortByResourceStatus([...resourceMap.values()])}
+        dataSource={resourceData}
       />
     </>
   )

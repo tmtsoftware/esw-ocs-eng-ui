@@ -1,7 +1,24 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
-import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
-import { Card, Col, Grid, Row, Tooltip, Typography } from 'antd'
-import React from 'react'
+import {
+  AgentService,
+  Prefix,
+  SequenceComponentStatus
+} from '@tmtsoftware/esw-ts'
+import {
+  Card,
+  Col,
+  Grid,
+  Input,
+  Popconfirm,
+  Row,
+  Tooltip,
+  Typography
+} from 'antd'
+import React, { useState } from 'react'
+import { useMutation } from '../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../utils/message'
+import { LIST_AGENTS } from '../../queryKeys'
+import { useAgentService } from '../hooks/useAgentService'
 import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
 import SequenceComponentCard from './SequenceComponentCard'
@@ -11,12 +28,85 @@ const { useBreakpoint } = Grid
 type AgentCardProps = {
   agentPrefix: Prefix
   seqCompsStatus: SequenceComponentStatus[]
+  // onAddComponent: () => void
+}
+
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
+  agentService: AgentService
+) =>
+  agentService
+    .spawnSequenceComponent(agentPrefix, componentName)
+    .then((res) => {
+      if (res._type === 'Failed') throw new Error(res.msg)
+      return res
+    })
+
+const requirement = (predicate: boolean, msg: string) =>
+  !predicate && errorMessage(msg)
+
+const validateComponentName = (componentName: string) => {
+  requirement(
+    componentName !== componentName.trim(),
+    'component name has leading and trailing whitespaces'
+  )
+  requirement(componentName.includes('-'), "component name has '-'")
+}
+const AddComponent = ({ agentPrefix }: { agentPrefix: Prefix }) => {
+  const [componentName, setComponentName] = useState('')
+
+  const { data: agentService } = useAgentService()
+  const spawnSequenceComponentAction = useMutation({
+    mutationFn: spawnSequenceComponent(agentPrefix, componentName),
+    onSuccess: () =>
+      successMessage(
+        `Successfully spawned Sequence Component: ${new Prefix(
+          agentPrefix.subsystem,
+          componentName
+        ).toJSON()}`
+      ),
+    onError: (e) =>
+      errorMessage(
+        'Sequence Component could not be spawned. Please try again.',
+        e
+      ),
+    invalidateKeysOnSuccess: [LIST_AGENTS.key],
+    useErrorBoundary: false
+  })
+
+  const onConfirm = () => {
+    validateComponentName(componentName)
+    agentService && spawnSequenceComponentAction.mutateAsync(agentService)
+  }
+  return (
+    <Tooltip placement='bottom' title='Add sequence component'>
+      <Popconfirm
+        title={
+          <>
+            Component name:
+            <Input
+              value={componentName}
+              onChange={(e) => setComponentName(e.target.value)}
+            />
+          </>
+        }
+        icon={<></>}
+        onCancel={() => setComponentName('')}
+        onConfirm={() => onConfirm()}>
+        <PlusCircleOutlined
+          className={styles.commonIcon}
+          role='addSeqCompIcon'
+          // onClick={() => onAddComponent()}
+        />
+      </Popconfirm>
+    </Tooltip>
+  )
 }
 
 const AgentCard = ({
   agentPrefix,
   seqCompsStatus
-}: AgentCardProps): JSX.Element => {
+}: // onAddComponent
+AgentCardProps): JSX.Element => {
   const bodyStyle =
     seqCompsStatus.length === 0
       ? { display: 'none' }
@@ -35,16 +125,6 @@ const AgentCard = ({
     />
   ))
 
-  const AddComponent = () => (
-    <Tooltip placement='bottom' title='Add sequence component'>
-      <PlusCircleOutlined
-        className={styles.commonIcon}
-        role='addSeqCompIcon'
-        onClick={() => ({})}
-      />
-    </Tooltip>
-  )
-
   return (
     <Card
       className={styles.agentCard}
@@ -54,7 +134,7 @@ const AgentCard = ({
             <Typography.Text>{agentName}</Typography.Text>
           </Col>
           <Col>
-            <AddComponent />
+            <AddComponent agentPrefix={agentPrefix} />
           </Col>
         </Row>
       }
@@ -73,6 +153,7 @@ const AgentCards = (): JSX.Element => {
       key={index}
       agentPrefix={agentStatus.agentId.prefix}
       seqCompsStatus={agentStatus.seqCompsStatus}
+      // onAddComponent={() => setModalVisibility(true)}
     />
   ))
 
@@ -87,14 +168,23 @@ const AgentCards = (): JSX.Element => {
     return columns
   }, Array(columnCount))
 
+  // const [modalVisibility, setModalVisibility] = useState(false)
+
   return (
-    <Row justify='start' gutter={[24, 24]} wrap={true} className={styles.grid}>
-      {agents?.map((agent, index) => (
-        <Col key={index} span={span}>
-          {agent}
-        </Col>
-      ))}
-    </Row>
+    <>
+      <Row
+        justify='start'
+        gutter={[24, 24]}
+        wrap={true}
+        className={styles.grid}>
+        {agents?.map((agent, index) => (
+          <Col key={index} span={span}>
+            {agent}
+          </Col>
+        ))}
+      </Row>
+      {/*<Modal title='Sequence Component Name:' visible={modalVisibility} />*/}
+    </>
   )
 }
 

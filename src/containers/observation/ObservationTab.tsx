@@ -17,20 +17,17 @@ const getTabBasedResources = (
   resources: Subsystem[],
   runningResources: Subsystem[]
 ): ResourceTableStatus[] => {
-  switch (currentTab) {
-    case 'Running':
-      return resources.map((resource) => ({ key: resource, status: 'InUse' }))
-    case 'Configurable':
-      return resources.map((resource) => ({
-        key: resource,
-        status: 'Available'
-      }))
-    case 'Non-configurable':
-      return resources.map((resource) => ({
-        key: resource,
-        status: runningResources.includes(resource) ? 'InUse' : 'Available'
-      }))
+  if (currentTab === 'Non-configurable') {
+    return resources.map((resource) => ({
+      key: resource,
+      status: runningResources.includes(resource) ? 'InUse' : 'Available'
+    }))
   }
+
+  return resources.map((resource) => ({
+    key: resource,
+    status: currentTab === 'Configurable' ? 'Available' : 'InUse'
+  }))
 }
 
 const tabMap: Record<
@@ -70,33 +67,31 @@ const ObservationTab = ({
   )
 
   return (
-    !!data && (
-      <Layout style={{ height: '99%' }}>
-        <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
-          <Menu
-            selectedKeys={selectedObs && [selectedObs.obsMode.name]}
-            style={{ paddingTop: '0.4rem' }}>
-            {data.map((item, index) => (
-              <Menu.Item
-                onClick={() => setObservation(index)}
-                key={item.obsMode.name}>
-                {item.obsMode.name}
-              </Menu.Item>
-            ))}
-          </Menu>
-        </Sider>
-        <Content>
-          {selectedObs && (
-            <CurrentObsMode
-              obsMode={selectedObs.obsMode}
-              sequencers={selectedObs.sequencers}
-              resources={resources}
-              currentTab={currentTab}
-            />
-          )}
-        </Content>
-      </Layout>
-    )
+    <Layout style={{ height: '99%' }}>
+      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
+        <Menu
+          selectedKeys={selectedObs && [selectedObs.obsMode.name]}
+          style={{ paddingTop: '0.4rem' }}>
+          {data.map((item, index) => (
+            <Menu.Item
+              onClick={() => setObservation(index)}
+              key={item.obsMode.name}>
+              {item.obsMode.name}
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Sider>
+      <Content>
+        {selectedObs && (
+          <CurrentObsMode
+            obsMode={selectedObs.obsMode}
+            sequencers={selectedObs.sequencers}
+            resources={resources}
+            currentTab={currentTab}
+          />
+        )}
+      </Content>
+    </Layout>
   )
 }
 

@@ -100,7 +100,6 @@ const columns: ColumnsType<ResourceData> = [
 export const Resources = (): JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
   const [resourceData, setResourceData] = useState<ResourceData[]>([])
-  const history = useHistory()
 
   useEffect(() => {
     groupedObsModes && setResourceData(groupByResourceStatus(groupedObsModes))
@@ -108,7 +107,7 @@ export const Resources = (): JSX.Element => {
 
   return (
     <>
-      <PageHeader onBack={() => history.goBack()} title='Resources' />
+      <PageHeader title='Resources' />
       <Table
         className={styles.resourcesCard}
         sticky

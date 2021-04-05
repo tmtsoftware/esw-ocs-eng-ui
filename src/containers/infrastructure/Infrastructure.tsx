@@ -12,20 +12,6 @@ import { SmActions } from './SMActions'
 
 const { Meta } = Card
 
-export const Infrastructure = (): JSX.Element => {
-  const history = useHistory()
-  return (
-    <>
-      <PageHeader
-        onBack={() => history.goBack()}
-        title='Manage Infrastructure'
-      />
-      <SMHeader />
-      <AgentCards />
-    </>
-  )
-}
-
 const SMHeader = (): JSX.Element => {
   const smStatus = useSMStatus()
   return (
@@ -75,5 +61,15 @@ const SmStatusCard = ({
         }
       />
     </Space>
+  )
+}
+
+export const Infrastructure = (): JSX.Element => {
+  return (
+    <>
+      <PageHeader title='Manage Infrastructure' />
+      <SMHeader />
+      <AgentCards />
+    </>
   )
 }

@@ -65,7 +65,7 @@ describe('useSequencersData', () => {
         location: null,
         key: 'ESW.',
         prefix: 'ESW.',
-        status: {
+        stepListStatus: {
           status: 'Paused',
           stepNumber: 1
         },
@@ -75,7 +75,7 @@ describe('useSequencersData', () => {
         location: null,
         key: 'WFOS.Calib',
         prefix: 'WFOS.Calib',
-        status: {
+        stepListStatus: {
           status: 'Failed',
           stepNumber: 2
         },
@@ -85,7 +85,7 @@ describe('useSequencersData', () => {
         location: null,
         key: 'IRIS.FilterWheel',
         prefix: 'IRIS.FilterWheel',
-        status: {
+        stepListStatus: {
           status: 'In Progress',
           stepNumber: 1
         },
@@ -95,48 +95,49 @@ describe('useSequencersData', () => {
         location: null,
         key: 'IRIS.Darknight',
         prefix: 'IRIS.Darknight',
-        status: {
+        stepListStatus: {
           status: 'All Steps Completed',
           stepNumber: 0
         },
         totalSteps: 2
       }
     ])
-  }),
-    it('should return Failed to fetch data if error occurred | ESW-451', async () => {
-      const mockServices = getMockServices()
-      const sequencerService = mockServices.mock.sequencerService
+  })
 
-      when(sequencerService.getSequence()).thenReject(Error())
+  it('should return Failed to fetch data if error occurred | ESW-451', async () => {
+    const mockServices = getMockServices()
+    const sequencerService = mockServices.mock.sequencerService
 
-      const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-        true,
-        mockServices.serviceFactoryContext
-      )
+    when(sequencerService.getSequence()).thenReject(Error())
 
-      const { result, waitFor } = renderHook(
-        () => useSequencersData([Prefix.fromString('IRIS.Darknight')]),
-        {
-          wrapper: ContextAndQueryClientProvider
-        }
-      )
+    const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
+      true,
+      mockServices.serviceFactoryContext
+    )
 
-      await waitFor(() => {
-        return result.current.isSuccess
-      })
+    const { result, waitFor } = renderHook(
+      () => useSequencersData([Prefix.fromString('IRIS.Darknight')]),
+      {
+        wrapper: ContextAndQueryClientProvider
+      }
+    )
 
-      verify(sequencerService.getSequence()).called()
-
-      expect(result.current.data).to.deep.equal([
-        {
-          key: 'IRIS.Darknight',
-          prefix: 'IRIS.Darknight',
-          status: {
-            status: 'Failed to Fetch Status',
-            stepNumber: 0
-          },
-          totalSteps: 'NA'
-        }
-      ])
+    await waitFor(() => {
+      return result.current.isSuccess
     })
+
+    verify(sequencerService.getSequence()).called()
+
+    expect(result.current.data).to.deep.equal([
+      {
+        key: 'IRIS.Darknight',
+        prefix: 'IRIS.Darknight',
+        stepListStatus: {
+          status: 'Failed to Fetch Status',
+          stepNumber: 0
+        },
+        totalSteps: 'NA'
+      }
+    ])
+  })
 })

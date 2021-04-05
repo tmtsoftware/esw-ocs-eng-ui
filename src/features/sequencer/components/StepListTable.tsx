@@ -77,7 +77,7 @@ const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
       }}
       shape={'round'}>
       <Typography.Text type={color[step.status._type]}>
-        Step Number
+        {step.command.commandName}
       </Typography.Text>
     </Button>
     <Dropdown overlay={menu}>

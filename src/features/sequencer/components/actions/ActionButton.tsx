@@ -28,7 +28,7 @@ type ActionButtonProps<QResult, MResult> = {
   onClick: (data: QResult) => Promise<MResult>
 }
 
-const ActionButton = <QRresult, MResult>({
+export const ActionButton = <QRresult, MResult>({
   title,
   queryResult,
   onClick
@@ -49,5 +49,3 @@ const ActionButton = <QRresult, MResult>({
     </Button>
   )
 }
-
-export default ActionButton

@@ -4,11 +4,11 @@ import { expect } from 'chai'
 export const assertTableHeader = (
   tableElement: HTMLElement,
   columnName: string | RegExp
-) => {
+): void => {
   within(tableElement).getByRole('columnheader', { name: columnName })
 }
 
-export const assertTableHeaderNotPresent = (columnName: string) => {
+export const assertTableHeaderNotPresent = (columnName: string): void => {
   expect(getHeader(columnName)).to.null
 }
 

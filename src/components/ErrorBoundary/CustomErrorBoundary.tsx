@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { QueryErrorResetBoundary } from 'react-query'
 import { ErrorFallback } from './ErrorFallback'
 
-const CustomErrorBoundary = ({
+export const CustomErrorBoundary = ({
   children
 }: {
   children: React.ReactNode
@@ -18,5 +18,3 @@ const CustomErrorBoundary = ({
     </QueryErrorResetBoundary>
   )
 }
-
-export default CustomErrorBoundary

@@ -1,7 +1,7 @@
 import { Tabs } from 'antd'
 import React, { useState } from 'react'
 import styles from './observationsTabs.module.css'
-import ObservationTab from './ObservationTab'
+import { ObservationTab } from './ObservationTab'
 const { TabPane } = Tabs
 
 export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
@@ -12,7 +12,7 @@ export const tabNames: TabName[] = [
   'Non-configurable'
 ]
 
-const ObservationTabs = (): JSX.Element => {
+export const ObservationTabs = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<TabName>('Running')
   const [selectedObservation, setSelectedObservation] = useState(0)
 
@@ -48,5 +48,3 @@ const ObservationTabs = (): JSX.Element => {
     </Tabs>
   )
 }
-
-export default ObservationTabs

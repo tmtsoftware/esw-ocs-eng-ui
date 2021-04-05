@@ -4,7 +4,7 @@ import { ObsMode, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import ShutdownButton from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
+import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Shutdown button', () => {
   const obsMode = new ObsMode('ESW.DarkNight')

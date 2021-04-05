@@ -4,17 +4,17 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter as Router } from 'react-router-dom'
-import HeaderBar from '../../components/HeaderBar/HeaderBar'
-import GlobalSpinner from '../../components/spinners/globalSpinner/GlobalSpinner'
-import Routes from '../../routes/index'
+import { HeaderBar } from '../../components/HeaderBar/HeaderBar'
+import { GlobalSpinner } from '../../components/spinners/globalSpinner/GlobalSpinner'
+import { Routes } from '../../routes/index'
 import styles from './app.module.css'
-import Container from './Container'
+import { Container } from './Container'
 
 const { Header } = Layout
 
 const queryClient = new QueryClient()
 
-const App = (): JSX.Element => {
+export const App = (): JSX.Element => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
@@ -32,5 +32,3 @@ const App = (): JSX.Element => {
     </QueryClientProvider>
   )
 }
-
-export default App

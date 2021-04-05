@@ -85,7 +85,7 @@ type SequenceComponentProps = {
   location: Location[]
 }
 
-const SequenceComponentCard = ({
+export const SequenceComponentCard = ({
   seqCompId,
   location
 }: SequenceComponentProps): JSX.Element => (
@@ -107,5 +107,3 @@ const SequenceComponentCard = ({
     </Col>
   </Row>
 )
-
-export default SequenceComponentCard

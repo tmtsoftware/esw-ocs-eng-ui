@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { when } from 'ts-mockito'
-import App from '../../src/containers/app/App'
+import { App } from '../../src/containers/app/App'
 import {
   HOME,
   INFRASTRUCTURE,

@@ -9,7 +9,7 @@ import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { SM_STATUS } from '../../../queryKeys'
 import { SM_COMPONENT_ID } from '../../constants'
 
-function showConfirmModal(onYes: () => void): void {
+const showConfirmModal = (onYes: () => void): void => {
   Modal.confirm({
     title: 'Do you want to shutdown Sequence Manager?',
     icon: <ExclamationCircleOutlined />,

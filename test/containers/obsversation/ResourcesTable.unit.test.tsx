@@ -1,7 +1,8 @@
 import { screen, within } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
-import ResourcesTable, {
+import {
+  ResourcesTable,
   ResourceTableStatus
 } from '../../../src/features/sequencer/components/ResourcesTable'
 import { renderWithAuth } from '../../utils/test-utils'
@@ -22,7 +23,7 @@ describe('Resources table', () => {
     const resourceTable = await screen.findByRole('table')
     expect(
       within(resourceTable).getByRole('columnheader', {
-        name: 'Resources Required'
+        name: 'Resource Required'
       })
     )
     expect(within(resourceTable).getByRole('columnheader', { name: 'Status' }))

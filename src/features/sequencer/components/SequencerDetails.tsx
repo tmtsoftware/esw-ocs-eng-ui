@@ -3,8 +3,7 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import type { Location, Prefix } from '@tmtsoftware/esw-ts'
-
+import type { Location } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Button,
@@ -19,6 +18,7 @@ import { useSequencerStatus } from '../hooks/useSequencerStatus'
 import styles from './sequencer.module.css'
 import type { typeStatus } from './SequencersTable'
 import { StepListTable } from './StepListTable'
+
 
 const { Sider } = Layout
 
@@ -83,7 +83,7 @@ const SequencerTitle = ({
   )
 }
 
-const SequencerDetails = ({
+export const SequencerDetails = ({
   sequencer,
   obsMode,
   stepListStatus
@@ -117,5 +117,3 @@ const SequencerDetails = ({
     </Layout>
   </>
 )
-
-export default SequencerDetails

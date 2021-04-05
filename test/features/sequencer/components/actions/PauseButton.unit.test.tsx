@@ -4,7 +4,7 @@ import type { PauseResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import PauseButton from '../../../../../src/features/sequencer/components/actions/PauseButton'
+import { PauseButton } from '../../../../../src/features/sequencer/components/actions/PauseButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Pause button', () => {
   const obsMode = 'ESW.DarkNight'

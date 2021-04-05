@@ -9,7 +9,7 @@ import {
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
-import SmActions from '../../../src/containers/infrastructure/SMActions'
+import { SmActions } from '../../../src/containers/infrastructure/SMActions'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {

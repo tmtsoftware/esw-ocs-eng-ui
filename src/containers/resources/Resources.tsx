@@ -2,7 +2,8 @@ import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import PageHeader from '../../components/PageHeader/PageHeader'
+import { useHistory } from 'react-router'
+import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { HeaderTitle } from '../../components/Table/HeaderTitle'
 import {
   GroupedObsModeDetails,
@@ -82,7 +83,7 @@ export const getStatusColumn = (status: ResourceType): JSX.Element => (
 
 const columns: ColumnsType<ResourceData> = [
   {
-    title: <HeaderTitle title='Resources' />,
+    title: <HeaderTitle title='Resource' />,
     dataIndex: 'key'
   },
   {
@@ -96,9 +97,10 @@ const columns: ColumnsType<ResourceData> = [
   }
 ]
 
-const Resources = (): JSX.Element => {
+export const Resources = (): JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
   const [resourceData, setResourceData] = useState<ResourceData[]>([])
+  const history = useHistory()
 
   useEffect(() => {
     groupedObsModes && setResourceData(groupByResourceStatus(groupedObsModes))
@@ -106,7 +108,7 @@ const Resources = (): JSX.Element => {
 
   return (
     <>
-      <PageHeader onBack={() => window.history.back()} title='Resources' />
+      <PageHeader onBack={() => history.goBack()} title='Resources' />
       <Table
         className={styles.resourcesCard}
         sticky
@@ -119,5 +121,3 @@ const Resources = (): JSX.Element => {
     </>
   )
 }
-
-export default Resources

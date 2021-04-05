@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
-import Provision from '../../../../../src/features/sm/components/provision/Provision'
+import { Provision } from '../../../../../src/features/sm/components/provision/Provision'
 import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Provision Component', () => {

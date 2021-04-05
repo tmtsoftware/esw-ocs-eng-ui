@@ -4,7 +4,7 @@ import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import SMCard from '../../../../../src/features/sm/components/smcard/SMCard'
+import { SMCard } from '../../../../../src/features/sm/components/smcard/SMCard'
 import { SM_CONNECTION } from '../../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 

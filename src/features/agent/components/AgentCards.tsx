@@ -21,7 +21,7 @@ import { LIST_AGENTS } from '../../queryKeys'
 import { useAgentService } from '../hooks/useAgentService'
 import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
-import SequenceComponentCard from './SequenceComponentCard'
+import { SequenceComponentCard } from './SequenceComponentCard'
 
 const { useBreakpoint } = Grid
 
@@ -144,7 +144,7 @@ AgentCardProps): JSX.Element => {
   )
 }
 
-const AgentCards = (): JSX.Element => {
+export const AgentCards = (): JSX.Element => {
   const { data } = useAgentsStatus()
   const screen = useBreakpoint()
 
@@ -153,7 +153,6 @@ const AgentCards = (): JSX.Element => {
       key={index}
       agentPrefix={agentStatus.agentId.prefix}
       seqCompsStatus={agentStatus.seqCompsStatus}
-      // onAddComponent={() => setModalVisibility(true)}
     />
   ))
 
@@ -168,24 +167,13 @@ const AgentCards = (): JSX.Element => {
     return columns
   }, Array(columnCount))
 
-  // const [modalVisibility, setModalVisibility] = useState(false)
-
   return (
-    <>
-      <Row
-        justify='start'
-        gutter={[24, 24]}
-        wrap={true}
-        className={styles.grid}>
-        {agents?.map((agent, index) => (
-          <Col key={index} span={span}>
-            {agent}
-          </Col>
-        ))}
-      </Row>
-      {/*<Modal title='Sequence Component Name:' visible={modalVisibility} />*/}
-    </>
+    <Row justify='start' gutter={[24, 24]} wrap={true} className={styles.grid}>
+      {agents?.map((agent, index) => (
+        <Col key={index} span={span}>
+          {agent}
+        </Col>
+      ))}
+    </Row>
   )
 }
-
-export default AgentCards

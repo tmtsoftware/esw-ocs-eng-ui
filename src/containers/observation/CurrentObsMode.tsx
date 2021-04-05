@@ -3,10 +3,10 @@ import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
-import ResourcesTable from '../../features/sequencer/components/ResourcesTable'
+import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import type { TabName } from './ObservationTabs'
-import ObsModeActions from './ObsModeActions'
+import { ObsModeActions } from './ObsModeActions'
 
 type CurrentObsModeProps = {
   currentTab: TabName
@@ -15,19 +15,19 @@ type CurrentObsModeProps = {
   resources: ResourceTableStatus[]
 }
 
-const CurrentObsMode = ({
+const Text = ({ content, type }: { content: string; type: BaseType }) => (
+  <Typography.Text strong type={type}>
+    {content}
+  </Typography.Text>
+)
+
+export const CurrentObsMode = ({
   currentTab,
   obsMode,
   sequencers,
   resources
 }: CurrentObsModeProps): JSX.Element => {
   const isRunning = currentTab === 'Running'
-
-  const Text = ({ content, type }: { content: string; type: BaseType }) => (
-    <Typography.Text strong type={type}>
-      {content}
-    </Typography.Text>
-  )
 
   //TODO use StatusAPI of sequencer for this status
   const Status = () =>
@@ -63,5 +63,3 @@ const CurrentObsMode = ({
     </>
   )
 }
-
-export default CurrentObsMode

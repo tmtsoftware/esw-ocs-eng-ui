@@ -16,7 +16,7 @@ import {
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import Infrastructure from '../../../src/containers/infrastructure/Infrastructure'
+import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
 import {
   PROVISION_CONF_PATH,
   SM_CONNECTION

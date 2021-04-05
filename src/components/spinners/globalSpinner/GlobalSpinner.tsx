@@ -3,7 +3,7 @@ import React from 'react'
 import { useIsFetching } from 'react-query'
 import styles from './globalSpinner.module.css'
 
-export default function GlobalSpinner(): JSX.Element {
+export const GlobalSpinner = (): JSX.Element => {
   const isFetching = useIsFetching()
 
   return (

@@ -4,7 +4,7 @@ import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import ObservationTab from '../../../src/containers/observation/ObservationTab'
+import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import obsModesData from '../../jsons/obsmodes'
 import {
   assertTableHeader,
@@ -230,7 +230,7 @@ describe('observation tabs', () => {
     assertTableHeader(SequencerTable, 'Sequence Status')
     assertTableHeader(SequencerTable, 'Total Steps')
 
-    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Resource Required')
     assertTableHeader(ResourcesTable, 'Status')
 
     expect(
@@ -262,7 +262,7 @@ describe('observation tabs', () => {
     assertTableHeaderNotPresent('Sequence Status')
     assertTableHeaderNotPresent('Total Steps')
 
-    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Resource Required')
     assertTableHeader(ResourcesTable, 'Status')
 
     expect(
@@ -293,7 +293,7 @@ describe('observation tabs', () => {
     assertTableHeaderNotPresent('Sequence Status')
     assertTableHeaderNotPresent('Total Steps')
 
-    assertTableHeader(ResourcesTable, 'Resources Required')
+    assertTableHeader(ResourcesTable, 'Resource Required')
     assertTableHeader(ResourcesTable, 'Status')
 
     expect(within(ResourcesTable).getByRole('row', { name: 'IRIS Available' }))

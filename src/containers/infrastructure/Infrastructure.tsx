@@ -3,19 +3,21 @@ import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import type { UseQueryResult } from 'react-query'
-import PageHeader from '../../components/PageHeader/PageHeader'
+import { useHistory } from 'react-router'
+import { PageHeader } from '../../components/PageHeader/PageHeader'
 import styles from '../../components/PageHeader/pageHeader.module.css'
-import AgentCards from '../../features/agent/components/AgentCards'
+import { AgentCards } from '../../features/agent/components/AgentCards'
 import { useSMStatus } from '../../features/sm/hooks/useSMStatus'
-import SmActions from './SMActions'
+import { SmActions } from './SMActions'
 
 const { Meta } = Card
 
-const Infrastructure = (): JSX.Element => {
+export const Infrastructure = (): JSX.Element => {
+  const history = useHistory()
   return (
     <>
       <PageHeader
-        onBack={() => window.history.back()}
+        onBack={() => history.goBack()}
         title='Manage Infrastructure'
       />
       <SMHeader />
@@ -75,5 +77,3 @@ const SmStatusCard = ({
     </Space>
   )
 }
-
-export default Infrastructure

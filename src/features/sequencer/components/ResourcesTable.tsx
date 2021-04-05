@@ -15,7 +15,7 @@ type ResourcesTableProps = {
 
 const columns = [
   {
-    title: <HeaderTitle title='Resources Required' />,
+    title: <HeaderTitle title='Resource Required' />,
     dataIndex: 'key',
     width: '40%'
   },
@@ -26,7 +26,9 @@ const columns = [
   }
 ]
 
-const ResourcesTable = ({ resources }: ResourcesTableProps): JSX.Element => {
+export const ResourcesTable = ({
+  resources
+}: ResourcesTableProps): JSX.Element => {
   return (
     <Table
       onRow={() => ({ style: { fontSize: '1rem' } })}
@@ -36,5 +38,3 @@ const ResourcesTable = ({ resources }: ResourcesTableProps): JSX.Element => {
     />
   )
 }
-
-export default ResourcesTable

@@ -7,7 +7,7 @@ import { useAuth } from '../../contexts/useAuthContext'
 import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 
-const HeaderBar = (): JSX.Element => {
+export const HeaderBar = (): JSX.Element => {
   const { auth, logout } = useAuth()
   const [username, setUsername] = useState<string | undefined>(undefined)
 
@@ -45,5 +45,3 @@ const HeaderBar = (): JSX.Element => {
     </>
   )
 }
-
-export default HeaderBar

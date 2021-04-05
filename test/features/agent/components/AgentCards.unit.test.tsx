@@ -3,7 +3,7 @@ import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import AgentCards from '../../../../src/features/agent/components/AgentCards'
+import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {

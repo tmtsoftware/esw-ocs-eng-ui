@@ -4,7 +4,7 @@ import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import ResumeButton from '../../../../../src/features/sequencer/components/actions/ResumeButton'
+import { ResumeButton } from '../../../../../src/features/sequencer/components/actions/ResumeButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Resume button', () => {
   const obsMode = 'ESW.DarkNight'

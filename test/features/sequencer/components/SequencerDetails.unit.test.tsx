@@ -3,7 +3,7 @@ import { Location, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
-import SequencerDetails from '../../../../src/features/sequencer/components/SequencerDetails'
+import { SequencerDetails } from '../../../../src/features/sequencer/components/SequencerDetails'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('sequencer details', () => {

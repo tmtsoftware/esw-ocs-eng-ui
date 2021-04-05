@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import { HeaderTitle } from '../../../components/Table/HeaderTitle'
 import styles from '../../agent/components/agentCards.module.css'
 import { Datatype, useSequencersData } from '../hooks/useSequencersData'
-import SequencerDetails from './SequencerDetails'
+import { SequencerDetails } from './SequencerDetails'
 
 const getPrefixColumn = (
   record: Datatype,

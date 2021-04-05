@@ -2,12 +2,12 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { Result } from 'antd'
 import React, { useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Home from '../containers/home/Home'
-import Infrastructure from '../containers/infrastructure/Infrastructure'
-import Observations from '../containers/observation/Observations'
-import Resources from '../containers/resources/Resources'
+import { Home } from '../containers/home/Home'
+import { Infrastructure } from '../containers/infrastructure/Infrastructure'
+import { Observations } from '../containers/observation/Observations'
+import { Resources } from '../containers/resources/Resources'
 import { useAuth } from '../contexts/useAuthContext'
-import NoMatch from './NoMatch'
+import { NoMatch } from './NoMatch'
 import {
   HOME,
   INFRASTRUCTURE,
@@ -24,7 +24,7 @@ const RedirectToLogin = ({ login }: { login: () => void }) => {
   return <Result icon={<LoadingOutlined />} />
 }
 
-const Routes = (): JSX.Element => {
+export const Routes = (): JSX.Element => {
   const { login, auth } = useAuth()
 
   if (auth === null) return <Result icon={<LoadingOutlined />} />
@@ -41,5 +41,3 @@ const Routes = (): JSX.Element => {
     <RedirectToLogin login={login} />
   )
 }
-
-export default Routes

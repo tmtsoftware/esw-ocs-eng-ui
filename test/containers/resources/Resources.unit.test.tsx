@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
-import Resources from '../../../src/containers/resources/Resources'
+import { Resources } from '../../../src/containers/resources/Resources'
 import obsModesData from '../../jsons/mockResourcesData'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
@@ -15,8 +15,8 @@ describe('Resources page', () => {
     renderWithAuth({ ui: <Resources /> })
 
     const [tableHead] = await screen.findAllByRole('table')
-    expect(within(tableHead).getByRole('columnheader', { name: 'Resources' }))
-      .to.exist
+    expect(within(tableHead).getByRole('columnheader', { name: 'Resource' })).to
+      .exist
     expect(within(tableHead).getByRole('columnheader', { name: 'Status' })).to
       .exist
     expect(within(tableHead).getByRole('columnheader', { name: 'Used By' })).to
@@ -29,12 +29,15 @@ describe('Resources page', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    expect(screen.getAllByText('Resources')).to.length(2)
+    expect(screen.getAllByText('Resource')).to.length(1)
     //Find resources table
     const [, tableBody] = await screen.findAllByRole('table')
-    const inUseResourcesRows: HTMLElement[] = within(tableBody).getAllByRole('row', {
-      name: /InUse/i
-    })
+    const inUseResourcesRows: HTMLElement[] = within(tableBody).getAllByRole(
+      'row',
+      {
+        name: /InUse/i
+      }
+    )
 
     inUseResourcesRows.forEach((row) => {
       within(row).getByRole('cell', { name: /(NFARIOS|TCS)/ })
@@ -50,7 +53,7 @@ describe('Resources page', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    expect(screen.getAllByText('Resources')).to.length(2)
+    expect(screen.getAllByText('Resource')).to.length(1)
     //Find resources table
     const [, tableBody] = await screen.findAllByRole('table')
     const availableResourcesRows: HTMLElement[] = within(
@@ -72,7 +75,7 @@ describe('Resources page', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    expect(screen.getAllByText('Resources')).to.length(2)
+    expect(screen.getAllByText('Resource')).to.length(1)
 
     const [, tableBody] = await screen.findAllByRole('table')
     const rows: HTMLElement[] = within(tableBody).getAllByRole('row')

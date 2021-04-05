@@ -1,7 +1,7 @@
 import { cleanup, screen } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
-import App from '../../../src/containers/app/App' // fixed to absolute path
+import { App } from '../../../src/containers/app/App' // fixed to absolute path
 import { renderWithAuth } from '../../utils/test-utils'
 
 describe('App page', () => {

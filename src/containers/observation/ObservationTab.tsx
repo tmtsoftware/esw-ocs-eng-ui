@@ -7,7 +7,7 @@ import {
   useObsModesDetails,
   useRunningResources
 } from '../../features/sm/hooks/useObsModesDetails'
-import CurrentObsMode from './CurrentObsMode'
+import { CurrentObsMode } from './CurrentObsMode'
 import type { TabName } from './ObservationTabs'
 
 const { Sider } = Layout
@@ -46,7 +46,7 @@ export type ObservationTabProps = {
   setObservation: (_: number) => void
 }
 
-const ObservationTab = ({
+export const ObservationTab = ({
   tabName,
   currentTab,
   selected,
@@ -94,5 +94,3 @@ const ObservationTab = ({
     </Layout>
   )
 }
-
-export default ObservationTab

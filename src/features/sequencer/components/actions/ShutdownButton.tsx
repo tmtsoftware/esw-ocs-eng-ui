@@ -1,7 +1,7 @@
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { useSMService } from '../../../sm/hooks/useSMService'
-import ActionButton from './ActionButton'
+import { ActionButton } from './ActionButton'
 
 const shutdown = (obsMode: ObsMode) => async (
   smService: SequenceManagerService
@@ -17,7 +17,11 @@ const shutdown = (obsMode: ObsMode) => async (
   }
 }
 
-const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
+export const ShutdownButton = ({
+  obsMode
+}: {
+  obsMode: ObsMode
+}): JSX.Element => {
   const smService = useSMService(false)
   return (
     <ActionButton
@@ -27,5 +31,3 @@ const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
     />
   )
 }
-
-export default ShutdownButton

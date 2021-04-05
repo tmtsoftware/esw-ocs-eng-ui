@@ -1,8 +1,8 @@
 import type { ObsMode } from '@tmtsoftware/esw-ts'
 import { Space, Button } from 'antd'
 import React from 'react'
-import PauseButton from '../../features/sequencer/components/actions/PauseButton'
-import ShutdownButton from '../../features/sequencer/components/actions/ShutdownButton'
+import { PauseButton } from '../../features/sequencer/components/actions/PauseButton'
+import { ShutdownButton } from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import { useSMService } from '../../features/sm/hooks/useSMService'
@@ -12,6 +12,7 @@ type ObsModeActionsProps = {
   tabName: TabName
   obsMode: ObsMode
 }
+
 const RunningActions = ({ obsMode }: { obsMode: ObsMode }) => (
   <Space>
     <PauseButton obsMode={obsMode.name} />
@@ -34,7 +35,7 @@ const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
 }
 
 // TODO: memoise these components  to avoid unnecessary renders
-const ObsModeActions = ({
+export const ObsModeActions = ({
   tabName,
   obsMode
 }: ObsModeActionsProps): JSX.Element =>
@@ -43,5 +44,3 @@ const ObsModeActions = ({
   ) : (
     <NonRunningActions tabName={tabName} obsMode={obsMode} />
   )
-
-export default ObsModeActions

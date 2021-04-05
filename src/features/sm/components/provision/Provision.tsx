@@ -2,7 +2,7 @@ import React from 'react'
 import { ProvisionButton } from './ProvisionButton'
 import { UnProvisionButton } from './UnProvisionButton'
 
-const Provision = ({
+export const Provision = ({
   provisionStatus,
   disabled = false
 }: {
@@ -15,5 +15,3 @@ const Provision = ({
     <ProvisionButton disabled={disabled} />
   )
 }
-
-export default Provision

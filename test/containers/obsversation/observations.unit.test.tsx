@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import Observations from '../../../src/containers/observation/Observations'
+import { Observations } from '../../../src/containers/observation/Observations'
 import obsModesData from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('Observation page', () => {
-  it('should render observation page with three tabs | ESW-450', async () => {
+  it.only('should render observation page with three tabs | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 

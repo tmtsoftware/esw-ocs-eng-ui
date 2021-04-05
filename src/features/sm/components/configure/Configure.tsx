@@ -10,7 +10,7 @@ import { useSMService } from '../../hooks/useSMService'
 type ConfigureProps = {
   disabled: boolean | undefined
 }
-const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
+export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
@@ -65,4 +65,3 @@ const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
     </>
   )
 }
-export default Configure

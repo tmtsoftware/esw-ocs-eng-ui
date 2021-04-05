@@ -19,6 +19,6 @@
 
 tr.cell > td,
 tr.cell > th {
-  background: transparent;
+  background: white;
   border-bottom: transparent;
 }

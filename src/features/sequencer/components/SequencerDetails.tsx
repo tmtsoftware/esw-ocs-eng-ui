@@ -19,7 +19,6 @@ import styles from './sequencer.module.css'
 import type { typeStatus } from './SequencersTable'
 import { StepListTable } from './StepListTable'
 
-
 const { Sider } = Layout
 
 type DescriptionProps = {
@@ -107,8 +106,8 @@ export const SequencerDetails = ({
         seqComp={sequencer.metadata.sequenceComponentPrefix}
       />
     </PageHeader>
-    <Layout style={{ height: '99%' }}>
-      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'16rem'}>
+    <Layout style={{ height: '90%' }}>
+      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'17rem'}>
         <StepListTable
           sequencerPrefix={sequencer.connection.prefix}
           stepListStatus={stepListStatus}

@@ -67,8 +67,10 @@ const baseTypeColorCode = {
 }
 
 const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
-  <Space>
-    <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
+  <Space style={{ textAlign: 'right'}}>
+    <div style={{ width: '1.5rem' }}>
+      <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
+    </div>
     <Button
       key={step.command.commandName}
       style={{
@@ -80,7 +82,7 @@ const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
         {step.command.commandName}
       </Typography.Text>
     </Button>
-    <Dropdown overlay={menu}>
+    <Dropdown overlay={menu} trigger={['click']}>
       <MoreOutlined />
     </Dropdown>
   </Space>
@@ -123,9 +125,9 @@ export const StepListTable = ({
       pagination={false}
       dataSource={stepList.data}
       columns={columns(stepListStatus)}
-      scroll={{ y: '100%' }}
       onRow={() => ({ className: styles.cell })}
       onHeaderRow={() => ({ className: styles.cell })}
+      sticky
     />
   )
 }

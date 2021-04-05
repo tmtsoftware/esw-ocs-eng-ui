@@ -4,7 +4,7 @@ import { Drawer, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
-import { headerTitle } from '../../../utils/headerTitle'
+import { HeaderTitle } from '../../../components/Table/HeaderTitle'
 import styles from '../../agent/components/agentCards.module.css'
 import { Datatype, useSequencersData } from '../hooks/useSequencersData'
 import SequencerDetails from './SequencerDetails'
@@ -43,19 +43,19 @@ const columns = (
   onEditHandle: (sequencer?: Location) => void
 ): ColumnsType<Datatype> => [
   {
-    title: headerTitle('Sequencers'),
+    title: <HeaderTitle title='Sequencers' />,
     dataIndex: 'prefix',
     width: '40%',
     render: (_, record) => getPrefixColumn(record, onEditHandle)
   },
   {
-    title: headerTitle('Sequence Status'),
+    title: <HeaderTitle title='Sequence Status' />,
     dataIndex: 'stepListStatus',
-    key: 'stepListStatus',
+    key: 'status',
     render: (value) => getStepColumn(value)
   },
   {
-    title: headerTitle('Total Steps'),
+    title: <HeaderTitle title='Total Steps' />,
     dataIndex: 'totalSteps',
     key: 'totalSteps'
   }

@@ -40,6 +40,7 @@ const CurrentObsMode = ({
   return (
     <>
       <Card
+        style={{ height: '100%' }}
         title={
           <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>

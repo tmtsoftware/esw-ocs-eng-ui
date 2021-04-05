@@ -3,11 +3,11 @@ import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader/PageHeader'
+import { HeaderTitle } from '../../components/Table/HeaderTitle'
 import {
   GroupedObsModeDetails,
   useObsModesDetails
 } from '../../features/sm/hooks/useObsModesDetails'
-import { headerTitle } from '../../utils/headerTitle'
 import styles from './resources.module.css'
 
 type ResourceType = 'InUse' | 'Available'
@@ -17,6 +17,9 @@ type ResourceData = {
   status: ResourceType
   usedBy: string
 }
+
+const byStatus = (fst: ResourceData, snd: ResourceData) =>
+  snd.status > fst.status ? 1 : -1
 
 const mkResourceData = (
   key: string,
@@ -58,18 +61,11 @@ const groupByResourceStatus = (
     }
   )
 
-  const byStatus = (fst: ResourceData, snd: ResourceData) =>
-    snd.status > fst.status ? 1 : -1
-
   return [
-    ...new Set(
-      [
-        ...inUseResourceData,
-        ...availableResourceData,
-        ...nonConfigurableResourceData
-      ].sort(byStatus)
-    )
-  ]
+    ...inUseResourceData,
+    ...availableResourceData,
+    ...nonConfigurableResourceData
+  ].sort(byStatus)
 }
 
 export const getStatusColumn = (status: ResourceType): JSX.Element => (
@@ -86,16 +82,16 @@ export const getStatusColumn = (status: ResourceType): JSX.Element => (
 
 const columns: ColumnsType<ResourceData> = [
   {
-    title: headerTitle('Resources'),
+    title: <HeaderTitle title='Resources' />,
     dataIndex: 'key'
   },
   {
-    title: headerTitle('Status'),
+    title: <HeaderTitle title='Status' />,
     dataIndex: 'status',
     render: (value: ResourceType) => getStatusColumn(value)
   },
   {
-    title: headerTitle('Used By'),
+    title: <HeaderTitle title='Used By' />,
     dataIndex: 'usedBy'
   }
 ]

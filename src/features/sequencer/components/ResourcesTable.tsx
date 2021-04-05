@@ -1,8 +1,8 @@
 import type { ResourceStatus } from '@tmtsoftware/esw-ts'
 import { Table } from 'antd'
 import React from 'react'
+import { HeaderTitle } from '../../../components/Table/HeaderTitle'
 import { getStatusColumn } from '../../../containers/resources/Resources'
-import { headerTitle } from '../../../utils/headerTitle'
 
 export type ResourceTableStatus = {
   key: string
@@ -15,12 +15,12 @@ type ResourcesTableProps = {
 
 const columns = [
   {
-    title: headerTitle('Resources Required'),
+    title: <HeaderTitle title='Resources Required' />,
     dataIndex: 'key',
     width: '40%'
   },
   {
-    title: headerTitle('Status'),
+    title: <HeaderTitle title='Status' />,
     dataIndex: 'status',
     render: (status: ResourceStatus['_type']) => getStatusColumn(status)
   }

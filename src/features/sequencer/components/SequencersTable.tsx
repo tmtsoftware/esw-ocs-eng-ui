@@ -23,7 +23,7 @@ const getPrefixColumn = (
   </>
 )
 
-const typeStatus: { [stepStatus: string]: BaseType } = {
+export const typeStatus: { [stepStatus: string]: BaseType } = {
   'All Steps Completed': 'secondary',
   'In Progress': 'success',
   Paused: 'warning',
@@ -31,7 +31,7 @@ const typeStatus: { [stepStatus: string]: BaseType } = {
   'Failed to Fetch Status': 'danger'
 }
 
-const getStepColumn = (status: Datatype['status']) => (
+const getStepColumn = (status: Datatype['stepListStatus']) => (
   <Typography.Text type={typeStatus[status.status]}>
     {status.stepNumber
       ? `Step ${status.stepNumber} ${status.status}`
@@ -50,8 +50,8 @@ const columns = (
   },
   {
     title: headerTitle('Sequence Status'),
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'stepListStatus',
+    key: 'stepListStatus',
     render: (value) => getStepColumn(value)
   },
   {
@@ -69,14 +69,20 @@ type ObsModeSeqTableProps = {
 const SequencerDrawer = ({
   onClose,
   selectedSequencer,
-  obsMode
+  obsMode,
+  sequencerStatus
 }: {
   selectedSequencer: Location
   obsMode: ObsMode
+  sequencerStatus: Datatype
   onClose: () => void
 }) => (
   <Drawer visible width={'80%'} onClose={() => onClose()} destroyOnClose>
-    <SequencerDetails sequencer={selectedSequencer} obsMode={obsMode.name} />
+    <SequencerDetails
+      stepListStatus={sequencerStatus.stepListStatus.status}
+      sequencer={selectedSequencer}
+      obsMode={obsMode.name}
+    />
   </Drawer>
 )
 
@@ -90,18 +96,25 @@ export const SequencersTable = ({
 
   const [isSeqDrawerVisible, setSeqDrawerVisibility] = useState(false)
   const [selectedSequencer, selectSequencer] = useState<Location>()
+  const [selectedSequencerStatus, selectSequencerStatus] = useState<Datatype>()
 
   const onEditHandle = (sequencer?: Location) => {
     selectSequencer(sequencer)
     setSeqDrawerVisibility(true)
+    selectSequencerStatus(
+      sequencerStatus.data?.find(
+        (x) => selectedSequencer?.connection.prefix.toJSON() === x.prefix
+      )
+    )
   }
 
   return (
     <>
-      {isSeqDrawerVisible && selectedSequencer && (
+      {isSeqDrawerVisible && selectedSequencer && selectedSequencerStatus && (
         <SequencerDrawer
           obsMode={obsMode}
           selectedSequencer={selectedSequencer}
+          sequencerStatus={selectedSequencerStatus}
           onClose={() => setSeqDrawerVisibility(false)}
         />
       )}

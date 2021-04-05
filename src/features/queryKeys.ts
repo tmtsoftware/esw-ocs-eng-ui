@@ -47,6 +47,11 @@ export const OBS_MODE_SEQUENCERS: Query = {
   refetchInterval: 1000
 }
 
+export const SEQUENCER_STEP_LIST: Query = {
+  key: 'SequencerStepList',
+  refetchInterval: 1000
+}
+
 export const SEQUENCER_STATUS: Query = {
   key: 'SequencerStatus'
 }

@@ -25,7 +25,7 @@ export type StepStatus =
 export type Datatype = {
   key: string
   prefix: string
-  status: { stepNumber: number; status: StepStatus }
+  stepListStatus: { stepNumber: number; status: StepStatus }
   totalSteps: number | 'NA'
   location?: Location
 }
@@ -37,7 +37,9 @@ const Status: { [key: string]: StepStatus } = {
   Success: 'All Steps Completed'
 }
 
-const deriveStatus = (stepList: StepList | undefined): Datatype['status'] => {
+const deriveStatus = (
+  stepList: StepList | undefined
+): Datatype['stepListStatus'] => {
   if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
 
   const step = stepList.find((x) => x.status._type !== 'Success')
@@ -68,7 +70,7 @@ const getData = (
         return {
           key: prefix.toJSON(),
           prefix: prefix.toJSON(),
-          status: deriveStatus(stepList),
+          stepListStatus: deriveStatus(stepList),
           totalSteps: stepList ? stepList.length : ('NA' as const),
           location: location
         }
@@ -76,7 +78,7 @@ const getData = (
         return Promise.resolve({
           key: prefix.toJSON(),
           prefix: prefix.toJSON(),
-          status: {
+          stepListStatus: {
             stepNumber: 0,
             status: 'Failed to Fetch Status' as const
           },

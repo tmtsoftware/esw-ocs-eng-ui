@@ -3,11 +3,24 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import type { Location } from '@tmtsoftware/esw-ts'
-import { Badge, Button, PageHeader, Space, Tooltip, Typography } from 'antd'
+import type { Location, Prefix } from '@tmtsoftware/esw-ts'
+
+import {
+  Badge,
+  Button,
+  Layout,
+  PageHeader,
+  Space,
+  Tooltip,
+  Typography
+} from 'antd'
 import React from 'react'
 import { useSequencerStatus } from '../hooks/useSequencerStatus'
 import styles from './sequencer.module.css'
+import type { typeStatus } from './SequencersTable'
+import { StepListTable } from './StepListTable'
+
+const { Sider } = Layout
 
 type DescriptionProps = {
   seqComp: string
@@ -72,25 +85,37 @@ const SequencerTitle = ({
 
 const SequencerDetails = ({
   sequencer,
-  obsMode
+  obsMode,
+  stepListStatus
 }: {
   sequencer: Location
   obsMode: string
+  stepListStatus: keyof typeof typeStatus
 }): JSX.Element => (
-  <PageHeader
-    ghost={false}
-    title={
-      <SequencerTitle
-        title={sequencer.connection.prefix.toJSON()}
-        obsMode={obsMode}
+  <>
+    <PageHeader
+      ghost={false}
+      title={
+        <SequencerTitle
+          title={sequencer.connection.prefix.toJSON()}
+          obsMode={obsMode}
+        />
+      }
+      className={styles.headerBox}
+      extra={<Actions />}>
+      <SequencerDescription
+        seqComp={sequencer.metadata.sequenceComponentPrefix}
       />
-    }
-    className={styles.headerBox}
-    extra={<Actions />}>
-    <SequencerDescription
-      seqComp={sequencer.metadata.sequenceComponentPrefix}
-    />
-  </PageHeader>
+    </PageHeader>
+    <Layout style={{ height: '99%' }}>
+      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'16rem'}>
+        <StepListTable
+          sequencerPrefix={sequencer.connection.prefix}
+          stepListStatus={stepListStatus}
+        />
+      </Sider>
+    </Layout>
+  </>
 )
 
 export default SequencerDetails

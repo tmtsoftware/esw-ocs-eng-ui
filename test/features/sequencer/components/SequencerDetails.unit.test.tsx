@@ -27,7 +27,13 @@ describe('sequencer details', () => {
     const mockServices = getMockServices()
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          stepListStatus={'Paused'}
+          sequencer={sequencerLoc}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -46,7 +52,13 @@ describe('sequencer details', () => {
     const mockServices = getMockServices()
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          stepListStatus={'Paused'}
+          sequencer={sequencerLoc}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -68,7 +80,13 @@ describe('sequencer details', () => {
     const sequencerService = mockServices.mock.sequencerService
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          stepListStatus={'Paused'}
+          sequencer={sequencerLoc}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 

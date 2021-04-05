@@ -16,3 +16,9 @@
   padding: 1.25rem;
   box-shadow: inset 0 -1px 0 var(--shadowColor);
 }
+
+tr.cell > td,
+tr.cell > th {
+  background: transparent;
+  border-bottom: transparent;
+}

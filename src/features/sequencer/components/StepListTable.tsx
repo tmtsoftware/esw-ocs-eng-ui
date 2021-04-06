@@ -124,6 +124,7 @@ export const StepListTable = ({
   return (
     <Table
       pagination={false}
+      loading={stepList.isLoading}
       dataSource={stepList.data}
       columns={columns(stepListStatus)}
       onRow={() => ({ className: styles.cell })}

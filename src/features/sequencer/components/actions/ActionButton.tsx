@@ -1,6 +1,6 @@
 import { Button } from 'antd'
 import React from 'react'
-import { useMutation } from '../../../../hooks/useMutation'
+import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import type { UseQueryResult } from '../../../../hooks/useQuery'
 import { successMessage, errorMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
@@ -28,17 +28,23 @@ type ActionButtonProps<QResult, MResult> = {
   onClick: (data: QResult) => Promise<MResult>
 }
 
-export const ActionButton = <QRresult, MResult>({
-  title,
-  queryResult,
-  onClick
-}: ActionButtonProps<QRresult, MResult>): JSX.Element => {
-  const action = useMutation({
+export const useAction = <QResult, MResult>(
+  title: Title,
+  onClick: (data: QResult) => Promise<MResult>
+): UseMutationResult<MResult, unknown, QResult> =>
+  useMutation({
     mutationFn: onClick,
     onSuccess: () => successMessage(btnMsgs[title].success),
     onError: (e) => errorMessage(btnMsgs[title].error, e),
     invalidateKeysOnSuccess: [OBS_MODES_DETAILS.key]
   })
+
+export const ActionButton = <QRresult, MResult>({
+  title,
+  queryResult,
+  onClick
+}: ActionButtonProps<QRresult, MResult>): JSX.Element => {
+  const action = useAction(title, onClick)
 
   return (
     <Button

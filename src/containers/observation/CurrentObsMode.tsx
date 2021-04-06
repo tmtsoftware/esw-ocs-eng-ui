@@ -30,12 +30,19 @@ export const CurrentObsMode = ({
   const isRunning = currentTab === 'Running'
 
   //TODO use StatusAPI of sequencer for this status
-  const Status = () =>
-    isRunning ? (
+  const Status = () => {
+    const status = isRunning ? (
       <Text content='Running' type='success' />
     ) : (
       <Text content='NA' type='secondary' />
     )
+    return (
+      <Space>
+        <Text type='secondary' content='Status: ' />
+        {status}
+      </Space>
+    )
+  }
 
   return (
     <>
@@ -44,10 +51,7 @@ export const CurrentObsMode = ({
         title={
           <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-            <Space>
-              <Typography.Text type='secondary'>Status: </Typography.Text>
-              <Status />
-            </Space>
+            <Status />
           </>
         }
         extra={

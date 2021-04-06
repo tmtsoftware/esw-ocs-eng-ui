@@ -42,6 +42,13 @@ describe('observation tabs', () => {
     })
     userEvent.click(shutdownButton)
 
+    const modalDocument = await screen.findByRole('document')
+    const modalShutdownButton = within(modalDocument).getByRole('button', {
+      name: 'Shutdown'
+    })
+
+    userEvent.click(modalShutdownButton)
+
     await screen.findByText('Successfully shutdown sequencer')
     await waitFor(() =>
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()

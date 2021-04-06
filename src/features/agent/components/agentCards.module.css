@@ -25,7 +25,8 @@
   align-items: center;
 }
 
-.commonIcon, .disabledIcon {
+.commonIcon,
+.disabledIcon {
   font-size: 1.35rem;
 }
 

@@ -83,7 +83,7 @@ const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
       </Typography.Text>
     </Button>
     <Dropdown overlay={menu} trigger={['click']}>
-      <MoreOutlined />
+      <MoreOutlined style={{ fontSize: '1.5rem' }} />
     </Dropdown>
   </Space>
 )

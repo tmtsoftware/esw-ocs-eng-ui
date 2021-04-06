@@ -4,13 +4,9 @@ import styles from './observationsTabs.module.css'
 import { ObservationTab } from './ObservationTab'
 const { TabPane } = Tabs
 
-export type TabName = 'Running' | 'Configurable' | 'Non-configurable'
+export const tabNames = ['Running', 'Configurable', 'Non-configurable'] as const
 
-export const tabNames: TabName[] = [
-  'Running',
-  'Configurable',
-  'Non-configurable'
-]
+export type TabName = typeof tabNames[number]
 
 export const ObservationTabs = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<TabName>('Running')

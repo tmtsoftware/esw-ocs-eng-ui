@@ -3,6 +3,7 @@ import type {
   SequenceManagerService,
   Subsystem
 } from '@tmtsoftware/esw-ts'
+import type { TabName } from '../../../containers/observation/ObservationTabs'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { groupBy } from '../../../utils/groupBy'
 import { errorMessage } from '../../../utils/message'
@@ -10,9 +11,7 @@ import { OBS_MODES_DETAILS } from '../../queryKeys'
 import { useSMService } from './useSMService'
 
 export type GroupedObsModeDetails = {
-  Configured: ObsModeDetails[]
-  Configurable: ObsModeDetails[]
-  NonConfigurable: ObsModeDetails[]
+  [key in TabName]: ObsModeDetails[]
 }
 
 const getObsModesDetails = async (
@@ -25,9 +24,9 @@ const getObsModesDetails = async (
 
   const grouped = groupBy(response?.obsModes, (x) => x.status._type)
   return {
-    Configured: grouped.get('Configured') || [],
+    Running: grouped.get('Configured') || [],
     Configurable: grouped.get('Configurable') || [],
-    NonConfigurable: grouped.get('NonConfigurable') || []
+    'Non-configurable': grouped.get('NonConfigurable') || []
   }
 }
 
@@ -47,5 +46,5 @@ export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
 
 export const useRunningResources = (): Subsystem[] => {
   const { data } = useObsModesDetails()
-  return [...new Set(data && data.Configured.flatMap((om) => om.resources))]
+  return [...new Set(data && data.Running.flatMap((om) => om.resources))]
 }

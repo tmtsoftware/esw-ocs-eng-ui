@@ -30,15 +30,6 @@ const getTabBasedResources = (
   }))
 }
 
-const tabMap: Record<
-  TabName,
-  'Configured' | 'Configurable' | 'NonConfigurable'
-> = {
-  Running: 'Configured',
-  Configurable: 'Configurable',
-  'Non-configurable': 'NonConfigurable'
-}
-
 export type ObservationTabProps = {
   tabName: TabName
   currentTab: TabName
@@ -55,7 +46,7 @@ export const ObservationTab = ({
   const { data: grouped } = useObsModesDetails()
   const runningResources = useRunningResources()
 
-  const data = grouped ? grouped[tabMap[tabName]] : []
+  const data = grouped ? grouped[tabName] : []
   const selectedObs = data[selected] ?? data[0]
 
   if (!data.length) return <Empty description={`No ${tabName} ObsModes`} />

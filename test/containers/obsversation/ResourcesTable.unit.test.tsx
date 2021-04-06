@@ -19,15 +19,21 @@ describe('Resources table', () => {
       }
     ]
     renderWithAuth({ ui: <ResourcesTable resources={resources} /> })
-
-    const resourceTable = await screen.findByRole('table')
+    await screen.findByRole('table')
+    const [resourceHeaderTable, resourceBodyTable] = screen.queryAllByRole(
+      'table'
+    )
     expect(
-      within(resourceTable).getByRole('columnheader', {
+      within(resourceHeaderTable).getByRole('columnheader', {
         name: 'Resource Required'
       })
     )
-    expect(within(resourceTable).getByRole('columnheader', { name: 'Status' }))
-    expect(within(resourceTable).getByRole('row', { name: 'ESW Available' }))
-    expect(within(resourceTable).getByRole('row', { name: 'IRIS InUse' }))
+    expect(
+      within(resourceHeaderTable).getByRole('columnheader', { name: 'Status' })
+    )
+    expect(
+      within(resourceBodyTable).getByRole('row', { name: 'ESW Available' })
+    )
+    expect(within(resourceBodyTable).getByRole('row', { name: 'IRIS InUse' }))
   })
 })

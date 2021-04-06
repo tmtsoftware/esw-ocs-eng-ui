@@ -12,7 +12,7 @@ import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { SEQUENCER_STEP_LIST } from '../../queryKeys'
+import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
 import styles from './sequencer.module.css'
 import { typeStatus } from './SequencersTable'
 
@@ -25,9 +25,10 @@ const useStepList = (
     const sequencerService = await sequencerServiceFactory(compId)
     return await sequencerService.getSequence()
   }
-  return useQuery(SEQUENCER_STEP_LIST.key, getStepList, {
+
+  return useQuery(sequencerPrefix.toJSON(), getStepList, {
     useErrorBoundary: false,
-    refetchInterval: SEQUENCER_STEP_LIST.refetchInterval
+    refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
   })
 }
 

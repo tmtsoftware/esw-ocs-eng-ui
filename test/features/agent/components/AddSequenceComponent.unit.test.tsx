@@ -4,7 +4,7 @@ import { Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, when } from 'ts-mockito'
-import { AddSequenceComponent } from '../../../../src/features/agent/components/AddSequenceComponent'
+import { SpawnSequenceComponent } from '../../../../src/features/agent/components/SpawnSequenceComponent'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('Add sequence component icon', () => {
@@ -15,7 +15,7 @@ describe('Add sequence component icon', () => {
 
   it('should open pop-up to add component name', async function () {
     renderWithAuth({
-      ui: <AddSequenceComponent agentPrefix={agentPrefix} />,
+      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
     })
     await assertPopup()
@@ -23,7 +23,7 @@ describe('Add sequence component icon', () => {
 
   it('should show validation error on invalid component name', async function () {
     renderWithAuth({
-      ui: <AddSequenceComponent agentPrefix={agentPrefix} />,
+      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
     })
     await assertPopup()
@@ -43,7 +43,7 @@ describe('Add sequence component icon', () => {
     ).thenResolve({ _type: 'Spawned' })
 
     renderWithAuth({
-      ui: <AddSequenceComponent agentPrefix={agentPrefix} />,
+      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
     })
     await assertPopup()
@@ -67,7 +67,7 @@ describe('Add sequence component icon', () => {
     })
 
     renderWithAuth({
-      ui: <AddSequenceComponent agentPrefix={agentPrefix} />,
+      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
     })
 

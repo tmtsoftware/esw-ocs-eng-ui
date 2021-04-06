@@ -17,11 +17,11 @@ const killComponent = (componentId: ComponentId) => (
     return res
   })
 
-export const DeleteComponent = ({
+export const KillSequenceComponent = ({
   componentId
 }: {
   componentId: ComponentId
-}) => {
+}): JSX.Element => {
   const { data: agentService } = useAgentService()
 
   const killSequenceComponentAction = useMutation({

@@ -2,9 +2,9 @@ import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Typography } from 'antd'
 import React from 'react'
 import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
-import { AddSequenceComponent } from './AddSequenceComponent'
 import styles from './agentCards.module.css'
 import { SequenceComponentCard } from './SequenceComponentCard'
+import { SpawnSequenceComponent } from './SpawnSequenceComponent'
 
 const { useBreakpoint } = Grid
 
@@ -44,7 +44,7 @@ const AgentCard = ({
             <Typography.Text>{agentName}</Typography.Text>
           </Col>
           <Col>
-            <AddSequenceComponent agentPrefix={agentPrefix} />
+            <SpawnSequenceComponent agentPrefix={agentPrefix} />
           </Col>
         </Row>
       }

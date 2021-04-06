@@ -29,11 +29,11 @@ const validateComponentName = (componentName: string) => {
   requirement(componentName.includes('-'), "component name has '-'")
 }
 
-export const AddSequenceComponent = ({
+export const SpawnSequenceComponent = ({
   agentPrefix
 }: {
   agentPrefix: Prefix
-}) => {
+}): JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
   const { data: agentService } = useAgentService()

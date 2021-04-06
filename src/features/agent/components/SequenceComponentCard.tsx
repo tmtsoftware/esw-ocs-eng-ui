@@ -3,7 +3,7 @@ import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
-import { DeleteComponent } from './DeleteComponent'
+import { KillSequenceComponent } from './KillSequenceComponent'
 
 const LoadScript = () => (
   <Tooltip placement='bottom' title='Load script'>
@@ -94,7 +94,7 @@ export const SequenceComponentCard = ({
       />
     </Col>
     <Col className={styles.iconBox}>
-      <DeleteComponent componentId={seqCompId} />
+      <KillSequenceComponent componentId={seqCompId} />
     </Col>
   </Row>
 )

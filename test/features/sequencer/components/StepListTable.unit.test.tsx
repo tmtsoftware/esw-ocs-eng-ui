@@ -55,14 +55,14 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'In Progress'}
+          stepListStatus={'NA'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
     })
 
     screen.getByRole('columnheader', {
-      name: /sequence steps status: in progress/i
+      name: /sequence steps status: na/i
     })
 
     await findCell('No Data')
@@ -76,14 +76,14 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'In Progress'}
+          stepListStatus={'NA'}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
     })
 
     screen.getByRole('columnheader', {
-      name: /sequence steps status: in progress/i
+      name: /sequence steps status: na/i
     })
 
     await findCell('No Data')

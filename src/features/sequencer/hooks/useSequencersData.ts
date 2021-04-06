@@ -1,11 +1,10 @@
-import {
-  ComponentId,
-  HttpConnection,
+import type {
   Location,
   LocationService,
   Prefix,
   StepList
 } from '@tmtsoftware/esw-ts'
+import { ComponentId } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
 import {
@@ -50,43 +49,55 @@ const deriveStatus = (
   return { stepNumber, status: Status[step.status._type] }
 }
 
-const getData = (
+const getStepList = async (
+  sequencer: Prefix,
+  sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory']
+): Promise<{ stepList?: StepList; isError?: boolean }> => {
+  try {
+    const sequencerService = await sequencerServiceFactory(
+      new ComponentId(sequencer, 'Sequencer')
+    )
+    const sequence = await sequencerService.getSequence()
+    return { stepList: sequence }
+  } catch (e) {
+    return { isError: true }
+  }
+}
+
+const getData = async (
   sequencers: Prefix[],
   sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory'],
   locationService: LocationService
-): Promise<Datatype[]> =>
-  Promise.all(
+): Promise<Datatype[]> => {
+  const allSequencers = (
+    await locationService.listByComponentType('Sequencer')
+  ).filter((x) => x.connection.connectionType === 'http')
+
+  return await Promise.all(
     sequencers.map(async (prefix) => {
-      try {
-        const sequencer = await sequencerServiceFactory(
-          new ComponentId(prefix, 'Sequencer')
-        )
-        const location = await locationService.find(
-          HttpConnection(prefix, 'Sequencer')
-        )
+      const location = allSequencers.find(
+        (x) => x.connection.prefix.toJSON() === prefix.toJSON()
+      )
+      const { stepList, isError } = await getStepList(
+        prefix,
+        sequencerServiceFactory
+      )
 
-        const stepList = await sequencer.getSequence()
-
-        return {
-          key: prefix.toJSON(),
-          prefix: prefix.toJSON(),
-          stepListStatus: deriveStatus(stepList),
-          totalSteps: stepList ? stepList.length : ('NA' as const),
-          location: location
-        }
-      } catch (e) {
-        return Promise.resolve({
-          key: prefix.toJSON(),
-          prefix: prefix.toJSON(),
-          stepListStatus: {
-            stepNumber: 0,
-            status: 'Failed to Fetch Status' as const
-          },
-          totalSteps: 'NA' as const
-        })
+      return {
+        key: prefix.toJSON(),
+        prefix: prefix.toJSON(),
+        stepListStatus: isError
+          ? {
+              stepNumber: 0,
+              status: 'Failed to Fetch Status' as const
+            }
+          : deriveStatus(stepList),
+        totalSteps: stepList ? stepList.length : ('NA' as const),
+        location: location
       }
     })
   )
+}
 
 export const useSequencersData = (
   sequencers: Prefix[]

@@ -8,6 +8,9 @@ import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 describe('sequencer table', () => {
   const mockServices = getMockServices()
   const sequencerService = mockServices.mock.sequencerService
+  const locationService = mockServices.mock.locationService
+
+  when(locationService.listByComponentType('Sequencer')).thenResolve([])
 
   const step = (
     stepStatus: 'Pending' | 'Success' | 'Failure' | 'InFlight',

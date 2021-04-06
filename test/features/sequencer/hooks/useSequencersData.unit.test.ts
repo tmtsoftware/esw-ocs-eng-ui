@@ -29,7 +29,9 @@ describe('useSequencersData', () => {
   it('should return sequencers data with their steps and status | ESW-451', async () => {
     const mockServices = getMockServices()
     const sequencerService = mockServices.mock.sequencerService
+    const locationService = mockServices.mock.locationService
 
+    when(locationService.listByComponentType('Sequencer')).thenResolve([])
     when(sequencerService.getSequence())
       .thenResolve(stepList1)
       .thenResolve(stepList2)
@@ -62,7 +64,7 @@ describe('useSequencersData', () => {
 
     expect(result.current.data).to.deep.equal([
       {
-        location: null,
+        location: undefined,
         key: 'ESW.',
         prefix: 'ESW.',
         stepListStatus: {
@@ -72,7 +74,7 @@ describe('useSequencersData', () => {
         totalSteps: 2
       },
       {
-        location: null,
+        location: undefined,
         key: 'WFOS.Calib',
         prefix: 'WFOS.Calib',
         stepListStatus: {
@@ -82,7 +84,7 @@ describe('useSequencersData', () => {
         totalSteps: 3
       },
       {
-        location: null,
+        location: undefined,
         key: 'IRIS.FilterWheel',
         prefix: 'IRIS.FilterWheel',
         stepListStatus: {
@@ -92,7 +94,7 @@ describe('useSequencersData', () => {
         totalSteps: 2
       },
       {
-        location: null,
+        location: undefined,
         key: 'IRIS.Darknight',
         prefix: 'IRIS.Darknight',
         stepListStatus: {
@@ -107,6 +109,9 @@ describe('useSequencersData', () => {
   it('should return Failed to fetch data if error occurred | ESW-451', async () => {
     const mockServices = getMockServices()
     const sequencerService = mockServices.mock.sequencerService
+    const locationService = mockServices.mock.locationService
+
+    when(locationService.listByComponentType('Sequencer')).thenResolve([])
 
     when(sequencerService.getSequence()).thenReject(Error())
 
@@ -136,7 +141,8 @@ describe('useSequencersData', () => {
           status: 'Failed to Fetch Status',
           stepNumber: 0
         },
-        totalSteps: 'NA'
+        totalSteps: 'NA',
+        location: undefined
       }
     ])
   })

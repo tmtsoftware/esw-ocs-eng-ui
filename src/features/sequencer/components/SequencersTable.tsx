@@ -90,10 +90,16 @@ export const SequencersTable = ({
   obsMode,
   sequencers
 }: ObsModeSeqTableProps): JSX.Element => {
-  const sequencerStatus = useSequencersData(
-    sequencers.map((seq) => new Prefix(seq, obsMode.name))
+  const sortedSequencers: Prefix[] = sequencers.reduce(
+    (acc: Prefix[], elem) => {
+      const sequencer = new Prefix(elem, obsMode.name)
+      if (elem === 'ESW') return [sequencer].concat(acc)
+      return acc.concat(sequencer)
+    },
+    []
   )
 
+  const sequencerStatus = useSequencersData(sortedSequencers)
   const [isSeqDrawerVisible, setSeqDrawerVisibility] = useState(false)
   const [selectedSequencer, selectSequencer] = useState<Location>()
   const [selectedSequencerStatus, selectSequencerStatus] = useState<Datatype>()

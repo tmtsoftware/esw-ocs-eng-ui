@@ -10,14 +10,14 @@ export type TabName = typeof tabNames[number]
 
 export const ObservationTabs = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<TabName>('Running')
-  const [selectedObservation, setSelectedObservation] = useState(0)
+  const [selectedObservation, setSelectedObservation] = useState<string>('')
 
   return (
     <Tabs
       activeKey={selectedTab}
       onTabClick={(key: string) => {
         setSelectedTab(key as TabName)
-        selectedTab !== key && setSelectedObservation(0)
+        selectedTab !== key && setSelectedObservation('')
       }}
       className={styles.tabs}
       size={'large'}

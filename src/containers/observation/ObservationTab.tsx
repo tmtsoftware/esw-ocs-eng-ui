@@ -33,21 +33,21 @@ const getTabBasedResources = (
 export type ObservationTabProps = {
   tabName: TabName
   currentTab: TabName
-  selected: number
-  setObservation: (_: number) => void
+  selected?: string
+  setObservation: (_: string) => void
 }
 
 export const ObservationTab = ({
   tabName,
   currentTab,
-  selected,
+  selected = '',
   setObservation
 }: ObservationTabProps): JSX.Element => {
   const { data: grouped } = useObsModesDetails()
   const runningResources = useRunningResources()
 
   const data = grouped ? grouped[tabName] : []
-  const selectedObs = data[selected] ?? data[0]
+  const selectedObs = data.find((x) => x.obsMode.name === selected) ?? data[0]
 
   if (!data.length) return <Empty description={`No ${tabName} ObsModes`} />
 
@@ -63,9 +63,9 @@ export const ObservationTab = ({
         <Menu
           selectedKeys={selectedObs && [selectedObs.obsMode.name]}
           style={{ paddingTop: '0.4rem' }}>
-          {data.map((item, index) => (
+          {data.map((item) => (
             <Menu.Item
-              onClick={() => setObservation(index)}
+              onClick={() => setObservation(item.obsMode.name)}
               key={item.obsMode.name}>
               {item.obsMode.name}
             </Menu.Item>

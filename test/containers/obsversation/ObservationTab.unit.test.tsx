@@ -30,7 +30,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Running'}
           currentTab={'Running'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -66,7 +65,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Running'}
           currentTab={'Running'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -139,7 +137,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Configurable'}
           currentTab={'Configurable'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -168,7 +165,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Non-configurable'}
           currentTab={'Non-configurable'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -202,7 +198,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Running'}
           currentTab={'Running'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -224,7 +219,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Running'}
           currentTab={'Running'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -260,7 +254,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Configurable'}
           currentTab={'Configurable'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),
@@ -292,7 +285,6 @@ describe('observation tabs', () => {
         <ObservationTab
           tabName={'Non-configurable'}
           currentTab={'Non-configurable'}
-          selected={0}
           setObservation={() => ({})}
         />
       ),

@@ -79,7 +79,11 @@ const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
         width: '10.9rem'
       }}
       shape={'round'}>
-      <Typography.Text type={color[step.status._type]}>
+      <Typography.Text
+        type={color[step.status._type]}
+        ellipsis
+        style={{ width: '100%' }}
+        strong>
         {step.command.commandName}
       </Typography.Text>
     </Button>

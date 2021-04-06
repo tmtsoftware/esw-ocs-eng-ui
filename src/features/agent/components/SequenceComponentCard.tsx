@@ -1,12 +1,9 @@
-import {
-  DeleteOutlined,
-  FileAddOutlined,
-  FileExcelOutlined
-} from '@ant-design/icons'
+import { FileAddOutlined, FileExcelOutlined } from '@ant-design/icons'
 import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
+import { DeleteComponent } from './DeleteComponent'
 
 const LoadScript = () => (
   <Tooltip placement='bottom' title='Load script'>
@@ -97,13 +94,7 @@ export const SequenceComponentCard = ({
       />
     </Col>
     <Col className={styles.iconBox}>
-      <Tooltip placement='bottom' title={'Delete sequence component'}>
-        <DeleteOutlined
-          className={styles.deleteIcon}
-          role='deleteSeqCompIcon'
-          onClick={() => ({})}
-        />
-      </Tooltip>
+      <DeleteComponent componentId={seqCompId} />
     </Col>
   </Row>
 )

@@ -1,9 +1,10 @@
 import { cleanup, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { verify, when } from 'ts-mockito'
-import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
+import { AgentCards } from 'src/features/agent/components/AgentCards'
+import { deepEqual, verify, when } from 'ts-mockito'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
@@ -168,6 +169,39 @@ describe('Agents Grid View', () => {
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
     expect(screen.queryByText('unknown')).null
+    verify(agentService.getAgentStatus()).called()
+  })
+
+  it('should add sequence components on agent| ESW-446', async () => {
+    when(
+      agentService.spawnSequenceComponent(
+        deepEqual(Prefix.fromString('ESW.machine1')),
+        deepEqual('ESW_1')
+      )
+    ).thenResolve({ _type: 'Spawned' })
+
+    when(agentService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [agentStatus],
+      seqCompsWithoutAgent: []
+    })
+
+    renderWithAuth({
+      ui: <AgentCards />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+    const icon = await screen.findByRole('addSeqCompIcon')
+
+    userEvent.click(icon)
+    const inputBox = await screen.findByText('Component name:')
+    expect(inputBox).to.exist
+    userEvent.type(screen.getByRole('textbox'), 'ESW_1')
+    userEvent.click(screen.getByRole('button', { name: 'OK' }))
+
+    await screen.findByText(
+      'Successfully spawned Sequence Component: ESW.ESW_1'
+    )
+
     verify(agentService.getAgentStatus()).called()
   })
 })

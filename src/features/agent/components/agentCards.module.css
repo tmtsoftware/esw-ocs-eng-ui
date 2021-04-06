@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-.commonIcon {
+.commonIcon, .disabledIcon {
   font-size: 1.35rem;
 }
 
@@ -57,4 +57,8 @@
 .sequencerComp {
   background-color: #f6ffed;
   border-color: #b7eb8f;
+}
+
+.disabledIcon {
+  color: var(--disabledColor);
 }

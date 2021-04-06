@@ -8,7 +8,7 @@ import obsModesData from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('Observation page', () => {
-  it.only('should render observation page with three tabs | ESW-450', async () => {
+  it('should render observation page with three tabs | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 

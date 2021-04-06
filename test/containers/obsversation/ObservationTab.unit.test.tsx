@@ -230,21 +230,25 @@ describe('observation tabs', () => {
       ),
       mockClients: mockServices.serviceFactoryContext
     })
+    await screen.findAllByRole('table')
+    const [
+      sequencerTable,
+      resourcesTable,
+      resourcesBodyTable
+    ] = screen.queryAllByRole('table')
 
-    const [SequencerTable, ResourcesTable] = await screen.findAllByRole('table')
+    assertTableHeader(sequencerTable, 'Sequencers')
+    assertTableHeader(sequencerTable, 'Sequence Status')
+    assertTableHeader(sequencerTable, 'Total Steps')
 
-    assertTableHeader(SequencerTable, 'Sequencers')
-    assertTableHeader(SequencerTable, 'Sequence Status')
-    assertTableHeader(SequencerTable, 'Total Steps')
-
-    assertTableHeader(ResourcesTable, 'Resource Required')
-    assertTableHeader(ResourcesTable, 'Status')
+    assertTableHeader(resourcesTable, 'Resource Required')
+    assertTableHeader(resourcesTable, 'Status')
 
     expect(
-      within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
+      within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })
     ).to.have.length(0)
     expect(
-      within(ResourcesTable).queryAllByRole('row', { name: /InUse/i })
+      within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })
     ).to.have.length(2)
   })
 
@@ -263,20 +267,21 @@ describe('observation tabs', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const [ResourcesTable] = await screen.findAllByRole('table')
+    await screen.findAllByRole('table')
+    const [resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
 
     assertTableHeaderNotPresent('Sequencers')
     assertTableHeaderNotPresent('Sequence Status')
     assertTableHeaderNotPresent('Total Steps')
 
-    assertTableHeader(ResourcesTable, 'Resource Required')
-    assertTableHeader(ResourcesTable, 'Status')
+    assertTableHeader(resourcesTable, 'Resource Required')
+    assertTableHeader(resourcesTable, 'Status')
 
     expect(
-      within(ResourcesTable).queryAllByRole('row', { name: /Available/i })
+      within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })
     ).to.have.length(2)
     expect(
-      within(ResourcesTable).queryAllByRole('row', { name: /InUse/i })
+      within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })
     ).to.have.length(0)
   })
   it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453`, async () => {
@@ -294,20 +299,23 @@ describe('observation tabs', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const [ResourcesTable] = await screen.findAllByRole('table')
+    await screen.findAllByRole('table')
+    const [resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
 
     assertTableHeaderNotPresent('Sequencers')
     assertTableHeaderNotPresent('Sequence Status')
     assertTableHeaderNotPresent('Total Steps')
 
-    assertTableHeader(ResourcesTable, 'Resource Required')
-    assertTableHeader(ResourcesTable, 'Status')
+    assertTableHeader(resourcesTable, 'Resource Required')
+    assertTableHeader(resourcesTable, 'Status')
 
-    expect(within(ResourcesTable).getByRole('row', { name: 'IRIS Available' }))
+    expect(
+      within(resourcesBodyTable).getByRole('row', { name: 'IRIS Available' })
+    ).to.exist
+    expect(
+      within(resourcesBodyTable).getByRole('row', { name: 'WFOS Available' })
+    ).to.exist
+    expect(within(resourcesBodyTable).getByRole('row', { name: 'ESW InUse' }))
       .to.exist
-    expect(within(ResourcesTable).getByRole('row', { name: 'WFOS Available' }))
-      .to.exist
-    expect(within(ResourcesTable).getByRole('row', { name: 'ESW InUse' })).to
-      .exist
   })
 })

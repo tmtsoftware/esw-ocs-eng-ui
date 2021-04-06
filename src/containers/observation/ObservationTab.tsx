@@ -81,7 +81,7 @@ export const ObservationTab = ({
           ))}
         </Menu>
       </Sider>
-      <Content>
+      <Content style={{ marginRight: '2rem' }}>
         {selectedObs && (
           <CurrentObsMode
             obsMode={selectedObs.obsMode}

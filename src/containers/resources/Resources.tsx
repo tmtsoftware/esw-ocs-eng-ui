@@ -1,8 +1,7 @@
 import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
-import { Table, Typography } from 'antd'
+import { Card, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { HeaderTitle } from '../../components/Table/HeaderTitle'
 import {
@@ -108,15 +107,16 @@ export const Resources = (): JSX.Element => {
   return (
     <>
       <PageHeader title='Resources' />
-      <Table
-        className={styles.resourcesCard}
-        sticky
-        onRow={() => ({ style: { fontSize: '1rem' } })}
-        columns={columns}
-        loading={isLoading}
-        pagination={false}
-        dataSource={resourceData}
-      />
+      <Card className={styles.resourcesCard}>
+        <Table
+          sticky
+          onRow={() => ({ style: { fontSize: '1rem' } })}
+          columns={columns}
+          loading={isLoading}
+          pagination={false}
+          dataSource={resourceData}
+        />
+      </Card>
     </>
   )
 }

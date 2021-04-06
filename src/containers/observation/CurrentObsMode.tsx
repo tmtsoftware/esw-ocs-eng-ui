@@ -47,7 +47,9 @@ export const CurrentObsMode = ({
   return (
     <>
       <Card
-        style={{ height: '100%' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+        headStyle={{ paddingBottom: '0.75rem' }}
+        bodyStyle={{ overflowY: 'scroll', height: '100%' }}
         title={
           <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>

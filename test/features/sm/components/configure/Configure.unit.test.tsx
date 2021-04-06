@@ -182,7 +182,7 @@ describe('Configure button', () => {
   ]
 
   testcases.map(([response, message]) => {
-    it.only(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
+    it(`configure action should throw ${response._type.toLocaleLowerCase()} | ESW-445`, async () => {
       when(smService.configure(deepEqual(darkNight))).thenResolve(response)
 
       renderWithAuth({

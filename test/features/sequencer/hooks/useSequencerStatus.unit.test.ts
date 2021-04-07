@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
+import { Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import { verify, when } from 'ts-mockito'
 import { useSequencerStatus } from '../../../../src/features/sequencer/hooks/useSequencerStatus'
@@ -18,9 +19,12 @@ describe('useSequencer', () => {
       mockServices.serviceFactoryContext
     )
 
-    const { result, waitFor } = renderHook(() => useSequencerStatus(''), {
-      wrapper: ContextAndQueryClientProvider
-    })
+    const { result, waitFor } = renderHook(
+      () => useSequencerStatus(Prefix.fromString('ESW.irisDarkNight')),
+      {
+        wrapper: ContextAndQueryClientProvider
+      }
+    )
 
     await waitFor(() => {
       return result.current.isSuccess

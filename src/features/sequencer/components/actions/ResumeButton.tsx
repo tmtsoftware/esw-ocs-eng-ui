@@ -1,4 +1,4 @@
-import type { SequencerService } from '@tmtsoftware/esw-ts'
+import { Prefix, SequencerService } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { ActionButton } from './ActionButton'
@@ -14,7 +14,8 @@ const resume = async (sequencerService: SequencerService) => {
 }
 
 export const ResumeButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
-  const sequencerService = useSequencerService(obsMode, false)
+  const masterSequencer = new Prefix('ESW', obsMode)
+  const sequencerService = useSequencerService(masterSequencer, false)
   return (
     <ActionButton
       title='Resume'

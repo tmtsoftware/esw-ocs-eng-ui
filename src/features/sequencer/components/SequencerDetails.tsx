@@ -3,7 +3,7 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import type { Location } from '@tmtsoftware/esw-ts'
+import { Location, Prefix } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Button,
@@ -73,7 +73,8 @@ const SequencerTitle = ({
   title: string
   obsMode: string
 }): JSX.Element => {
-  const { data: isOnline } = useSequencerStatus(obsMode)
+  const masterSequencer = new Prefix('ESW', obsMode)
+  const { data: isOnline } = useSequencerStatus(masterSequencer)
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
       <Badge status={isOnline ? 'success' : 'error'} />

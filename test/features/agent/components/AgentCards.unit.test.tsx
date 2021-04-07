@@ -4,7 +4,7 @@ import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import { AgentCards } from '../../../../src/features/agent//components/AgentCards'
+import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
@@ -201,6 +201,32 @@ describe('Agents Grid View', () => {
     await screen.findByText(
       'Successfully spawned Sequence Component: ESW.ESW_1'
     )
+
+    verify(agentService.getAgentStatus()).called()
+  })
+
+  it('should kill sequence components on agent| ESW-446', async () => {
+    const seqCompPrefix = new Prefix('ESW', 'ESW1')
+    when(
+      agentService.killComponent(
+        deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent'))
+      )
+    ).thenResolve({ _type: 'Killed' })
+
+    when(agentService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [agentStatus],
+      seqCompsWithoutAgent: []
+    })
+
+    renderWithAuth({
+      ui: <AgentCards />,
+      mockClients: mockServices.serviceFactoryContext
+    })
+    const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
+    userEvent.click(deleteIcon)
+
+    await screen.findByText(/Successfully killed Sequence Component/)
 
     verify(agentService.getAgentStatus()).called()
   })

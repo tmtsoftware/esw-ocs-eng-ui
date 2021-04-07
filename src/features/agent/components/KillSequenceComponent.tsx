@@ -1,6 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons'
-import type { ComponentId } from '@tmtsoftware/esw-ts'
-import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
+import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../hooks/useMutation'
@@ -28,16 +27,9 @@ export const KillSequenceComponent = ({
     mutationFn: killComponent(componentId),
     onSuccess: () =>
       successMessage(
-        `Successfully killed Sequence Component: ${new Prefix(
-          componentId.prefix.subsystem,
-          componentId.prefix.componentName
-        ).toJSON()}`
+        `Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`
       ),
-    onError: (e) =>
-      errorMessage(
-        'Sequence Component could not be killed. Please try again.',
-        e
-      ),
+    onError: (e) => errorMessage('Sequence Component could not be killed', e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key],
     useErrorBoundary: false
   })

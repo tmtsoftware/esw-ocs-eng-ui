@@ -7,13 +7,13 @@ import { deepEqual, when } from 'ts-mockito'
 import { SpawnSequenceComponent } from '../../../../src/features/agent/components/SpawnSequenceComponent'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
 
-describe('Add sequence component icon', () => {
+describe('Spawn sequence component icon', () => {
   const agentPrefix = new Prefix('ESW', 'primary')
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const seqCompName = 'ESW_1'
 
-  it('should open pop-up to add component name', async function () {
+  it('should open pop-up to add component name | ESW-446', async function () {
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
@@ -21,7 +21,7 @@ describe('Add sequence component icon', () => {
     await assertPopup()
   })
 
-  it('should show validation error on invalid component name', async function () {
+  it('should show validation error on invalid component name | ESW-446', async function () {
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
       mockClients: mockServices.serviceFactoryContext
@@ -34,7 +34,7 @@ describe('Add sequence component icon', () => {
     )
   })
 
-  it('should spawn sequence component on a agent', async function () {
+  it('should spawn sequence component on a agent | ESW-446', async function () {
     when(
       agentService.spawnSequenceComponent(
         deepEqual(agentPrefix),
@@ -47,15 +47,15 @@ describe('Add sequence component icon', () => {
       mockClients: mockServices.serviceFactoryContext
     })
     await assertPopup()
-    userEvent.type(screen.getByRole('textbox'), 'ESW_1')
+    userEvent.type(screen.getByRole('textbox'), seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
 
     await screen.findByText(
-      'Successfully spawned Sequence Component: ESW.ESW_1'
+      `Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`
     )
   })
 
-  it('should spawn sequence component on a agent', async function () {
+  it('should fail to spawn sequence component on a agent | ESW-446', async function () {
     when(
       agentService.spawnSequenceComponent(
         deepEqual(agentPrefix),
@@ -72,7 +72,7 @@ describe('Add sequence component icon', () => {
     })
 
     await assertPopup()
-    userEvent.type(screen.getByRole('textbox'), 'ESW_1')
+    userEvent.type(screen.getByRole('textbox'), seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
 
     await screen.findByText(

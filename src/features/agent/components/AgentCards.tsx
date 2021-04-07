@@ -1,4 +1,7 @@
-import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
+import type {
+  Prefix,
+  SequenceComponentStatus
+} from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Typography } from 'antd'
 import React from 'react'
 import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'

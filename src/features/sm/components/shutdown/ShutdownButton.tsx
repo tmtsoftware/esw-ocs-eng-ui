@@ -42,8 +42,6 @@ const shutdownSM = (agent: AgentService) =>
 export const ShutdownSMButton = (): JSX.Element => {
   const agentQuery = useAgentService()
 
-  useAgentServiceTrack(callback)
-
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
     onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),

@@ -1,11 +1,11 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { Input, Popconfirm, Tooltip } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { useAgentService, useAgentServiceTrack } from '../hooks/useAgentService'
+import { useAgentService, useAgentServiceTrack, useSequenceStream } from '../hooks/useAgentService'
 import styles from './agentCards.module.css'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
@@ -29,10 +29,6 @@ const validateComponentName = (componentName: string) => {
   requirement(componentName.includes('-'), "component name has '-'")
 }
 
-const callback = (event: TrackingEvent) => {
-  console.log('inside spawn seq-comp card ', event)
-}
-
 export const SpawnSequenceComponent = ({
   agentPrefix
 }: {
@@ -42,7 +38,7 @@ export const SpawnSequenceComponent = ({
 
   const { data: agentService } = useAgentService()
 
-  useAgentServiceTrack(callback)
+  useSequenceStream()
 
   const spawnSequenceComponentAction = useMutation({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),

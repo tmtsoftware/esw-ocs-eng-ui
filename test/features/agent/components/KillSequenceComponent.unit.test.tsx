@@ -11,7 +11,7 @@ describe('Kill sequence component button | ESW-446', () => {
   const sequenceComponentID = new ComponentId(prefix, 'SequenceComponent')
   const mockServices = getMockServices()
 
-  it('should remove sequence component from agent', async function () {
+  it('should remove sequence component from agent | ESW-446', async function () {
     const agentService = mockServices.mock.agentService
     when(
       agentService.killComponent(deepEqual(sequenceComponentID))
@@ -23,7 +23,9 @@ describe('Kill sequence component button | ESW-446', () => {
     })
     const killIcon = await screen.findByRole('deleteSeqCompIcon')
     userEvent.click(killIcon)
-    await screen.findByText(`Successfully killed Sequence Component: ${prefix}`)
+    await screen.findByText(
+      `Successfully killed Sequence Component: ${prefix.toJSON()}`
+    )
   })
 
   it('should give error when kill sequence component fails | ESW-446', async function () {

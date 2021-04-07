@@ -2,7 +2,6 @@
 
 type Query = {
   key: string
-  // refetchIntervalInBackground?: boolean // refetchInterval will continue to refetch while their tab/window is in the background if enabled
   refetchInterval?: number // Refetch the data every defined milliseconds
   retry?: number // only failing queries will retry given number of times
 }

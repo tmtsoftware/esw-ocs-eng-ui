@@ -1,11 +1,14 @@
-import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
+import { AgentService, Prefix, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../../components/Modal/SelectionModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useAgentService } from '../../../agent/hooks/useAgentService'
+import {
+  useAgentService,
+  useAgentServiceTrack
+} from '../../../agent/hooks/useAgentService'
 import { useAgentsList } from '../../../agent/hooks/useAgentsList'
 import { SM_SERVICE, SM_STATUS } from '../../../queryKeys'
 import { OBS_MODE_CONFIG } from '../../constants'
@@ -21,7 +24,9 @@ const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
       if (res._type === 'Failed') throw new Error(res.msg)
       return res
     })
-
+const callback = (event: TrackingEvent) => {
+  console.log('inside shutdown sm button ', event)
+} 
 export const SpawnSMButton = (): JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [agentPrefix, setAgentPrefix] = useState('')
@@ -29,6 +34,7 @@ export const SpawnSMButton = (): JSX.Element => {
   const allAgentsQuery = useAgentsList()
   const agentServiceQuery = useAgentService()
 
+  useAgentServiceTrack(callback)
   const spawnSmAction = useMutation({
     mutationFn: spawnSM(agentPrefix),
     onSuccess: () => successMessage('Successfully spawned Sequence Manager'),

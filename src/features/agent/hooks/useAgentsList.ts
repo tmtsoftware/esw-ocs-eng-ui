@@ -6,7 +6,6 @@ import { LIST_AGENTS } from '../../queryKeys'
 export const useAgentsList = (): UseQueryResult<Prefix[]> => {
   const { locationServiceFactory } = useServiceFactory()
   const getAllAgentPrefix = async () => {
-    console.log('**************** In here')
     const agents = await locationServiceFactory().listByComponentType('Machine')
     return agents.map((l) => l.connection.prefix)
   }

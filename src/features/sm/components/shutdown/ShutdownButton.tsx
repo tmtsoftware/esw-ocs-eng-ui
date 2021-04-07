@@ -1,11 +1,14 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import type { AgentService } from '@tmtsoftware/esw-ts'
+import type { AgentService, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useAgentService } from '../../../agent/hooks/useAgentService'
+import {
+  useAgentService,
+  useAgentServiceTrack
+} from '../../../agent/hooks/useAgentService'
 import { SM_STATUS } from '../../../queryKeys'
 import { SM_COMPONENT_ID } from '../../constants'
 
@@ -26,6 +29,10 @@ const showConfirmModal = (onYes: () => void): void => {
   })
 }
 
+const callback = (event: TrackingEvent) => {
+  console.log('inside shutdown sm button ', event)
+}
+
 const shutdownSM = (agent: AgentService) =>
   agent.killComponent(SM_COMPONENT_ID).then((res) => {
     if (res._type === 'Failed') throw new Error(res.msg)
@@ -34,6 +41,8 @@ const shutdownSM = (agent: AgentService) =>
 
 export const ShutdownSMButton = (): JSX.Element => {
   const agentQuery = useAgentService()
+
+  useAgentServiceTrack(callback)
 
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,

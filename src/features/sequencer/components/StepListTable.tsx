@@ -1,57 +1,13 @@
-import {
-  CopyOutlined,
-  DeleteOutlined,
-  MoreOutlined,
-  PlusCircleOutlined,
-  VerticalAlignMiddleOutlined
-} from '@ant-design/icons'
-import { ComponentId, Prefix, Step, StepList } from '@tmtsoftware/esw-ts'
-import { Button, Dropdown, Menu, Space, Table, Typography } from 'antd'
+import { MoreOutlined } from '@ant-design/icons'
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
+import { Button, Dropdown, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
-import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
-import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
+import { useStepList } from '../hooks/useStepList'
 import styles from './sequencer.module.css'
 import { typeStatus } from './SequencersTable'
-
-const useStepList = (
-  sequencerPrefix: Prefix
-): UseQueryResult<StepList | undefined> => {
-  const { sequencerServiceFactory } = useServiceFactory()
-  const getStepList = async () => {
-    const compId = new ComponentId(sequencerPrefix, 'Sequencer')
-    const sequencerService = await sequencerServiceFactory(compId)
-    return await sequencerService.getSequence()
-  }
-
-  return useQuery(sequencerPrefix.toJSON(), getStepList, {
-    useErrorBoundary: false,
-    refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
-  })
-}
-
-const menu = (
-  <Menu>
-    <Menu.Item key='1'>
-      <VerticalAlignMiddleOutlined />
-      Insert Breakpoint
-    </Menu.Item>
-    <Menu.Item key='2'>
-      <PlusCircleOutlined />
-      Add a Step
-    </Menu.Item>
-    <Menu.Item key='3'>
-      <CopyOutlined />
-      Duplicate
-    </Menu.Item>
-    <Menu.Item key='4'>
-      <DeleteOutlined style={{ color: 'red' }} />
-      <Typography.Text type={'danger'}>Delete</Typography.Text>
-    </Menu.Item>
-  </Menu>
-)
+import { StepActions } from './StepActions'
 
 const color: { [stepStatus: string]: BaseType } = {
   Success: 'secondary',
@@ -87,7 +43,7 @@ const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
         {step.command.commandName}
       </Typography.Text>
     </Button>
-    <Dropdown overlay={menu} trigger={['click']}>
+    <Dropdown overlay={<StepActions />} trigger={['click']}>
       <MoreOutlined style={{ fontSize: '1.5rem' }} />
     </Dropdown>
   </Space>

@@ -23,34 +23,47 @@ const baseTypeColorCode = {
   success: '#52c41a'
 }
 
-const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
-  <Space style={{ textAlign: 'right' }}>
-    <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
-      <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
-    </div>
-    <Button
-      key={step.command.commandName}
-      style={{
-        borderColor: baseTypeColorCode[color[step.status._type]],
-        width: '10.9rem'
-      }}
-      shape={'round'}>
-      <Typography.Text
-        type={color[step.status._type]}
-        ellipsis
-        style={{ width: '100%' }}
-        strong>
-        {step.command.commandName}
-      </Typography.Text>
-    </Button>
-    <Dropdown overlay={<StepActions />} trigger={['click']}>
-      <MoreOutlined style={{ fontSize: '1.5rem' }} />
-    </Dropdown>
-  </Space>
-)
+const StepComponent = (
+  step: Step,
+  stepNumber: number,
+  sequencerPrefix: Prefix
+): JSX.Element => {
+  const stepsStyle = {
+    borderColor: baseTypeColorCode[color[step.status._type]],
+    width: '10.9rem',
+    borderLeft: `${
+      step.hasBreakpoint
+        ? '1rem red solid'
+        : `1px solid ${baseTypeColorCode[color[step.status._type]]}`
+    }`
+  }
+
+  return (
+    <Space style={{ textAlign: 'right' }}>
+      <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
+        <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
+      </div>
+      <Button key={step.command.commandName} style={stepsStyle} shape={'round'}>
+        <Typography.Text
+          type={color[step.status._type]}
+          ellipsis
+          style={{ width: '100%' }}
+          strong>
+          {step.command.commandName}
+        </Typography.Text>
+      </Button>
+      <Dropdown
+        overlay={<StepActions sequencerPrefix={sequencerPrefix} step={step} />}
+        trigger={['click']}>
+        <MoreOutlined style={{ fontSize: '1.5rem' }} />
+      </Dropdown>
+    </Space>
+  )
+}
 
 const columns = (
-  stepListStatus: keyof typeof typeStatus
+  stepListStatus: keyof typeof typeStatus,
+  sequencerPrefix: Prefix
 ): ColumnsType<Step> => [
   {
     title: (
@@ -68,7 +81,8 @@ const columns = (
     ),
     key: 'id',
     dataIndex: 'status',
-    render: (_, record, index) => StepComponent(record, index + 1)
+    render: (_, record, index) =>
+      StepComponent(record, index + 1, sequencerPrefix)
   }
 ]
 
@@ -80,13 +94,14 @@ export const StepListTable = ({
   stepListStatus: keyof typeof typeStatus
 }): JSX.Element => {
   const stepList = useStepList(sequencerPrefix)
+  console.log(stepList)
 
   return (
     <Table
       pagination={false}
       loading={stepList.isLoading}
       dataSource={stepList.data}
-      columns={columns(stepListStatus)}
+      columns={columns(stepListStatus, sequencerPrefix)}
       onRow={() => ({ className: styles.cell })}
       onHeaderRow={() => ({ className: styles.cell })}
       sticky

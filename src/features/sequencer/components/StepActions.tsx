@@ -4,14 +4,22 @@ import {
   PlusCircleOutlined,
   VerticalAlignMiddleOutlined
 } from '@ant-design/icons'
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Menu, Typography } from 'antd'
 import React from 'react'
+import { useBreakpointAction } from '../hooks/useBreakpointAction'
 
-export const StepActions = (): JSX.Element => (
+export const StepActions = ({
+  step,
+  sequencerPrefix
+}: {
+  step: Step
+  sequencerPrefix: Prefix
+}): JSX.Element => (
   <Menu>
-    <Menu.Item key='1'>
+    <Menu.Item key='1' onClick={useBreakpointAction({ sequencerPrefix, step })}>
       <VerticalAlignMiddleOutlined />
-      Insert Breakpoint
+      {step.hasBreakpoint ? 'Remove Breakpoint' : 'Insert Breakpoint'}
     </Menu.Item>
     <Menu.Item key='2'>
       <PlusCircleOutlined />

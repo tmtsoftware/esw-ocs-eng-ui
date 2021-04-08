@@ -1,14 +1,11 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { AgentService, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import {
-  useAgentService,
-  useAgentServiceTrack
-} from '../../../agent/hooks/useAgentService'
+import { useAgentService } from '../../../agent/hooks/useAgentService'
 import { SM_STATUS } from '../../../queryKeys'
 import { SM_COMPONENT_ID } from '../../constants'
 
@@ -27,10 +24,6 @@ const showConfirmModal = (onYes: () => void): void => {
     cancelText: 'Cancel',
     onOk: () => onYes()
   })
-}
-
-const callback = (event: TrackingEvent) => {
-  console.log('inside shutdown sm button ', event)
 }
 
 const shutdownSM = (agent: AgentService) =>

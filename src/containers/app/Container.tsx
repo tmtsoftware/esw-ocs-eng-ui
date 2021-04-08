@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import React from 'react'
+import { useSMTrack } from '../../features/sm/hooks/useSMStatus'
 import styles from './app.module.css'
 import { Sider } from './Sider/Sider'
 
@@ -9,6 +10,7 @@ type AppProps = {
 }
 
 export const Container = ({ children }: AppProps): JSX.Element => {
+  useSMTrack()
   return (
     <Layout>
       <Sider />

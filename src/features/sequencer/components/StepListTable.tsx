@@ -25,7 +25,7 @@ const baseTypeColorCode = {
 
 const StepComponent = (step: Step, stepNumber: number): JSX.Element => (
   <Space style={{ textAlign: 'right' }}>
-    <div style={{ width: '1.5rem' }}>
+    <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
       <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
     </div>
     <Button

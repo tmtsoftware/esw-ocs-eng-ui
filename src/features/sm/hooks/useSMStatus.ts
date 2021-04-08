@@ -1,6 +1,6 @@
 import type { Location, Option, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { useEffect, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueries, useQueryClient } from 'react-query'
 import { useServiceFactory } from '../../../contexts/ServiceFactoryContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { SM_STATUS } from '../../queryKeys'
@@ -8,8 +8,8 @@ import { SM_CONNECTION } from '../constants'
 
 export const useSMStatus = (): UseQueryResult<Option<Location>, unknown> => {
   const qc = useQueryClient()
-  const cache = qc.getQueryCache().find(SM_STATUS.key)
-  return useQuery(SM_STATUS.key, () => cache?.state.data)
+  const data = qc.getQueryData<Option<Location>>(SM_STATUS.key)
+  return useQuery(SM_STATUS.key, () => data)
 }
 
 export const useSMTrack = (): void => {
@@ -18,7 +18,6 @@ export const useSMTrack = (): void => {
 
   useEffect(() => {
     const callback = async (trackingEvent: TrackingEvent) => {
-      console.log('inside callback', trackingEvent)
       if (trackingEvent._type === 'LocationRemoved') {
         qc.setQueryData(SM_STATUS.key, undefined)
       } else {

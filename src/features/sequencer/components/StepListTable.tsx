@@ -100,7 +100,7 @@ export const StepListTable = ({
       pagination={false}
       loading={isLoading}
       dataSource={stepList?.steps}
-      columns={columns(stepListStatus,sequencerPrefix)}
+      columns={columns(stepListStatus, sequencerPrefix)}
       onRow={() => ({ className: styles.cell })}
       onHeaderRow={() => ({ className: styles.cell })}
       sticky

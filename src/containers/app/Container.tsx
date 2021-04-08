@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import React from 'react'
+import { SMContextProvider } from '../../features/sm/hooks/useSMContext'
 import { useSMTrack } from '../../features/sm/hooks/useSMStatus'
 import styles from './app.module.css'
 import { Sider } from './Sider/Sider'
@@ -10,12 +11,13 @@ type AppProps = {
 }
 
 export const Container = ({ children }: AppProps): JSX.Element => {
-  useSMTrack()
   return (
     <Layout>
       <Sider />
       <Layout>
-        <Content className={styles.content}>{children}</Content>
+        <SMContextProvider>
+          <Content className={styles.content}>{children}</Content>
+        </SMContextProvider>
       </Layout>
     </Layout>
   )

@@ -43,7 +43,7 @@ describe('SM actions', () => {
       when(agentService.getAgentStatus()).thenResolve(agentStatusResponse)
 
       renderWithAuth({
-        ui: <SmActions disabled={false} />,
+        ui: <SmActions />,
         loggedIn: true,
         mockClients: mockServices.serviceFactoryContext
       })

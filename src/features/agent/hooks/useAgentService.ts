@@ -68,7 +68,7 @@ export const useSequenceStream = () => {
   const qc = useQueryClient()
   useEffect(() => {
     const callback = (stepList: StepList) => {
-      console.log('streaming...', stepList[0].id)
+      // console.log('streaming...', stepList[0].id)
       /**
        * qc.invalidateQueries or qc.setQueryData can be done here
        */

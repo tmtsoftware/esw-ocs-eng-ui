@@ -1,5 +1,5 @@
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import type { AgentService, TrackingEvent } from '@tmtsoftware/esw-ts'
+import type { AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'

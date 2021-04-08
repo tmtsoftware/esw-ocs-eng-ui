@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react'
-import { ObsMode, Setup, Step, Subsystem } from '@tmtsoftware/esw-ts'
+import { ObsMode, Setup, Step, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mock, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
@@ -24,10 +24,17 @@ describe('sequencer table', () => {
     }
   }
 
-  const stepList1: Step[] = [step('Pending', true), step('Pending')]
-  const stepList2: Step[] = [step('Success'), step('Failure'), step('Pending')]
-  const stepList3: Step[] = [step('InFlight'), step('Pending')]
-  const stepList4: Step[] = [step('Success'), step('Success')]
+  const stepList1: StepList = new StepList([
+    step('Pending', true),
+    step('Pending')
+  ])
+  const stepList2: StepList = new StepList([
+    step('Success'),
+    step('Failure'),
+    step('Pending')
+  ])
+  const stepList3: StepList = new StepList([step('InFlight'), step('Pending')])
+  const stepList4: StepList = new StepList([step('Success'), step('Success')])
 
   it('should be able to render SequencersTable successfully | ESW-451', async () => {
     const obsMode: ObsMode = new ObsMode('DarkNight_1')

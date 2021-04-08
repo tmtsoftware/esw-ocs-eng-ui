@@ -93,15 +93,14 @@ export const StepListTable = ({
   sequencerPrefix: Prefix
   stepListStatus: keyof typeof typeStatus
 }): JSX.Element => {
-  const stepList = useStepList(sequencerPrefix)
-  console.log(stepList)
+  const { isLoading, data: stepList } = useStepList(sequencerPrefix)
 
   return (
     <Table
       pagination={false}
-      loading={stepList.isLoading}
-      dataSource={stepList.data}
-      columns={columns(stepListStatus, sequencerPrefix)}
+      loading={isLoading}
+      dataSource={stepList?.steps}
+      columns={columns(stepListStatus,sequencerPrefix)}
       onRow={() => ({ className: styles.cell })}
       onHeaderRow={() => ({ className: styles.cell })}
       sticky

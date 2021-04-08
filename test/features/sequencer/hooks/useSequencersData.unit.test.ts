@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
-import { Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import { mock, verify, when } from 'ts-mockito'
 import { useSequencersData } from '../../../../src/features/sequencer/hooks/useSequencersData'
@@ -21,10 +21,17 @@ describe('useSequencersData', () => {
     }
   }
 
-  const stepList1: Step[] = [step('Pending', true), step('Pending')]
-  const stepList2: Step[] = [step('Success'), step('Failure'), step('Pending')]
-  const stepList3: Step[] = [step('InFlight'), step('Pending')]
-  const stepList4: Step[] = [step('Success'), step('Success')]
+  const stepList1: StepList = new StepList([
+    step('Pending', true),
+    step('Pending')
+  ])
+  const stepList2: StepList = new StepList([
+    step('Success'),
+    step('Failure'),
+    step('Pending')
+  ])
+  const stepList3: StepList = new StepList([step('InFlight'), step('Pending')])
+  const stepList4: StepList = new StepList([step('Success'), step('Success')])
 
   it('should return sequencers data with their steps and status | ESW-451', async () => {
     const mockServices = getMockServices()

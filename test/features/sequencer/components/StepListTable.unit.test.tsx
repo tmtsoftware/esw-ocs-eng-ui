@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react'
-import { Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../src/features/sequencer/components/StepListTable'
@@ -11,7 +11,7 @@ describe('stepList table', () => {
 
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
-  const stepList: Step[] = [
+  const stepList: StepList = new StepList([
     {
       hasBreakpoint: false,
       status: { _type: 'Success' },
@@ -24,7 +24,7 @@ describe('stepList table', () => {
       command: new Setup(Prefix.fromString('ESW.test'), 'Command-2'),
       id: ''
     }
-  ]
+  ])
 
   it('should show all the steps within a column | ESW-456', async () => {
     when(sequencerService.getSequence()).thenResolve(stepList)

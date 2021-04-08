@@ -41,11 +41,10 @@ const deriveStatus = (
 ): Datatype['stepListStatus'] => {
   if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
 
-  const step = stepList.find((x) => x.status._type !== 'Success')
+  const step = stepList.steps.find((x) => x.status._type !== 'Success')
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }
-
-  const stepNumber = stepList.indexOf(step) + 1
+  const stepNumber = stepList.steps.indexOf(step) + 1
   return { stepNumber, status: Status[step.status._type] }
 }
 
@@ -92,7 +91,7 @@ const getData = async (
               status: 'Failed to Fetch Status' as const
             }
           : deriveStatus(stepList),
-        totalSteps: stepList ? stepList.length : ('NA' as const),
+        totalSteps: stepList ? stepList.steps.length : ('NA' as const),
         location: location
       }
     })

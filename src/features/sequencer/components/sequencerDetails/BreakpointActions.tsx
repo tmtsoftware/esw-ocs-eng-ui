@@ -70,7 +70,7 @@ export const BreakpointAction = ({
           sequencerService && removeBreakpointAction.mutate(sequencerService)
         }>
         <VerticalAlignMiddleOutlined />
-        Remove Breakpoint
+        Remove breakpoint
       </div>
     )
   }
@@ -81,7 +81,7 @@ export const BreakpointAction = ({
         sequencerService && insertBreakpointAction.mutate(sequencerService)
       }>
       <VerticalAlignMiddleOutlined />
-      Insert Breakpoint
+      Insert breakpoint
     </div>
   )
 }

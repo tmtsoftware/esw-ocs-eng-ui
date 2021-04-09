@@ -8,7 +8,7 @@ import type { ServiceFactoryContextType } from '../../../../../src/contexts/Serv
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
-describe('', () => {
+describe('UnProvision button', () => {
   const modalTitle = 'Do you want to shutdown all the Sequence Components?'
 
   afterEach(() => {

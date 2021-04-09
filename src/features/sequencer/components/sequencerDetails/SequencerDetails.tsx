@@ -14,7 +14,10 @@ import {
   Typography
 } from 'antd'
 import React from 'react'
+import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
+import { LoadSequence } from '../actions/LoadSequence'
+import type { SequencerProps } from '../Props'
 import type { typeStatus } from '../SequencersTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
@@ -42,20 +45,25 @@ const SequencerActions = (): JSX.Element => (
   </Space>
 )
 
-const SequenceActions = (): JSX.Element => (
+const SequenceActions = ({
+  prefix,
+  sequencerState
+}: SequencerProps): JSX.Element => (
   <Space>
-    <Button type='primary'>Load Sequence</Button>
+    <LoadSequence prefix={prefix} sequencerState={sequencerState} />
     <Button> Go offline</Button>
     <Button danger> Abort sequence</Button>
   </Space>
 )
 
-const Actions = (): JSX.Element => (
-  <Space size={20}>
-    <SequencerActions />
-    <SequenceActions />
-  </Space>
-)
+const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+  return (
+    <Space size={20}>
+      <SequencerActions />
+      <SequenceActions prefix={prefix} sequencerState={sequencerState} />
+    </Space>
+  )
+}
 
 const SequencerDescription = ({ seqComp }: DescriptionProps): JSX.Element => (
   <Space>
@@ -91,29 +99,37 @@ export const SequencerDetails = ({
   sequencer: Location
   obsMode: string
   stepListStatus: keyof typeof typeStatus
-}): JSX.Element => (
-  <>
-    <PageHeader
-      ghost={false}
-      title={
-        <SequencerTitle
-          title={sequencer.connection.prefix.toJSON()}
-          obsMode={obsMode}
+}): JSX.Element => {
+  const sequencerState = useSequencerState(sequencer.connection.prefix)
+  return (
+    <>
+      <PageHeader
+        ghost={false}
+        title={
+          <SequencerTitle
+            title={sequencer.connection.prefix.toJSON()}
+            obsMode={obsMode}
+          />
+        }
+        className={styles.headerBox}
+        extra={
+          <Actions
+            prefix={sequencer.connection.prefix}
+            sequencerState={sequencerState.data?._type}
+          />
+        }>
+        <SequencerDescription
+          seqComp={sequencer.metadata.sequenceComponentPrefix}
         />
-      }
-      className={styles.headerBox}
-      extra={<Actions />}>
-      <SequencerDescription
-        seqComp={sequencer.metadata.sequenceComponentPrefix}
-      />
-    </PageHeader>
-    <Layout style={{ height: '90%' }}>
-      <Sider theme='light' style={{ overflowY: 'scroll' }} width={'17rem'}>
-        <StepListTable
-          sequencerPrefix={sequencer.connection.prefix}
-          stepListStatus={stepListStatus}
-        />
-      </Sider>
-    </Layout>
-  </>
-)
+      </PageHeader>
+      <Layout style={{ height: '90%' }}>
+        <Sider theme='light' style={{ overflowY: 'scroll' }} width={'17rem'}>
+          <StepListTable
+            sequencerPrefix={sequencer.connection.prefix}
+            stepListStatus={stepListStatus}
+          />
+        </Sider>
+      </Layout>
+    </>
+  )
+}

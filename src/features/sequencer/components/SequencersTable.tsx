@@ -1,6 +1,6 @@
 import { EditOutlined } from '@ant-design/icons'
 import { Location, ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
-import { Drawer, Table, Typography } from 'antd'
+import { Drawer, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
@@ -13,14 +13,13 @@ const getPrefixColumn = (
   record: Datatype,
   onEditHandle: (sequencer?: Location) => void
 ) => (
-  <>
+  <Space>
     <EditOutlined
       onClick={() => onEditHandle(record.location)}
-      style={{ marginRight: '0.5rem' }}
       className={styles.commonIcon}
     />
     <Typography.Text>{record.prefix}</Typography.Text>
-  </>
+  </Space>
 )
 
 export const typeStatus: { [stepStatus: string]: BaseType } = {
@@ -109,7 +108,7 @@ export const SequencersTable = ({
     setSeqDrawerVisibility(true)
     selectSequencerStatus(
       sequencerStatus.data?.find(
-        (x) => selectedSequencer?.connection.prefix.toJSON() === x.prefix
+        (x) => sequencer?.connection.prefix.toJSON() === x.prefix
       )
     )
   }

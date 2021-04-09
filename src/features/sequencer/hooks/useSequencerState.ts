@@ -12,7 +12,7 @@ export const useSequencerState = <E>(
     useErrorBoundary
   )
   return useQuery(
-    sequencerPrefix.toJSON() + 'state',
+    sequencerPrefix.toJSON() + '-state',
     () => sequencerService?.getSequencerState(),
     {
       onError,

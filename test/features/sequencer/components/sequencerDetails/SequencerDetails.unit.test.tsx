@@ -67,11 +67,13 @@ describe('sequencer details', () => {
       mockClients: mockServices.serviceFactoryContext
     })
 
-    const loadButton = screen.getByRole('button', { name: 'Load Sequence' })
+    const loadAndUploadButton = screen.getAllByRole('button', {
+      name: 'Load Sequence'
+    })
     const abortButton = screen.getByRole('button', { name: 'Abort sequence' })
     const goOffline = screen.getByRole('button', { name: 'Go offline' })
 
-    expect(loadButton).to.exist
+    expect(loadAndUploadButton.length).to.equal(2)
     expect(goOffline).to.exist
     expect(abortButton).to.exist
 

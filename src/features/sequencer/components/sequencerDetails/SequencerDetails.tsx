@@ -123,7 +123,7 @@ export const SequencerDetails = ({
         />
       </PageHeader>
       <Layout style={{ height: '90%' }}>
-        <Sider theme='light' style={{ overflowY: 'scroll' }} width={'17rem'}>
+        <Sider theme='light' style={{ overflowY: 'scroll' }} width={'18rem'}>
           <StepListTable
             sequencerPrefix={sequencer.connection.prefix}
             stepListStatus={stepListStatus}

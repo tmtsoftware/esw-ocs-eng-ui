@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react'
 import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import { StepListTable } from '../../../../src/features/sequencer/components/StepListTable'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
+import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('stepList table', () => {
   const mockServices = getMockServices()

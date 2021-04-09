@@ -4,9 +4,9 @@ import { Button, Dropdown, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
-import { useStepList } from '../hooks/useStepList'
-import styles from './sequencer.module.css'
-import { typeStatus } from './SequencersTable'
+import { useStepList } from '../../hooks/useStepList'
+import { typeStatus } from '../SequencersTable'
+import styles from './sequencerDetails.module.css'
 import { StepActions } from './StepActions'
 
 const color: { [stepStatus: string]: BaseType } = {

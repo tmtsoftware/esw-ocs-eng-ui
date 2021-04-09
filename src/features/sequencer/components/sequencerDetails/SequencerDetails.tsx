@@ -14,9 +14,9 @@ import {
   Typography
 } from 'antd'
 import React from 'react'
-import { useSequencerStatus } from '../hooks/useSequencerStatus'
-import styles from './sequencer.module.css'
-import type { typeStatus } from './SequencersTable'
+import { useSequencerStatus } from '../../hooks/useSequencerStatus'
+import type { typeStatus } from '../SequencersTable'
+import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
 
 const { Sider } = Layout

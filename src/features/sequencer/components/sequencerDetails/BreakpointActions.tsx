@@ -7,10 +7,10 @@ import type {
   Step
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { useMutation } from '../../../hooks/useMutation'
-import { errorMessage, successMessage } from '../../../utils/message'
-import { SEQUENCER_STEPS } from '../../queryKeys'
-import { useSequencerService } from '../hooks/useSequencerService'
+import { useMutation } from '../../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../../utils/message'
+import { SEQUENCER_STEPS } from '../../../queryKeys'
+import { useSequencerService } from '../../hooks/useSequencerService'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse

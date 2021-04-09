@@ -47,6 +47,7 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
     <>
       <Button
         disabled={disabled || smService.isLoading || smService.isError}
+        loading={configureAction.isLoading}
         onClick={onConfigureClick}>
         Configure
       </Button>

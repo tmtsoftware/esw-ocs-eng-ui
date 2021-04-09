@@ -10,8 +10,10 @@ export const useSequencerService = <E>(
 ): UseQueryResult<SequencerService> => {
   const { sequencerServiceFactory } = useServiceFactory()
   const masterSequencerCompId = new ComponentId(sequencerPrefix, 'Sequencer')
+  const query = SEQUENCER_SERVICE(sequencerPrefix)
+
   return useQuery(
-    SEQUENCER_SERVICE.key,
+    query.key,
     () => sequencerServiceFactory(masterSequencerCompId),
     {
       useErrorBoundary,

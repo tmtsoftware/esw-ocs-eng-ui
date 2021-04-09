@@ -1,3 +1,4 @@
+import { VerticalAlignMiddleOutlined } from '@ant-design/icons'
 import type {
   GenericResponse,
   Prefix,
@@ -5,9 +6,11 @@ import type {
   SequencerService,
   Step
 } from '@tmtsoftware/esw-ts'
+import React from 'react'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { useSequencerService } from './useSequencerService'
+import { SEQUENCER_STEPS } from '../../queryKeys'
+import { useSequencerService } from '../hooks/useSequencerService'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse
@@ -35,20 +38,20 @@ const removeAction = (id: string) => (sequencerService: SequencerService) => {
   return sequencerService.removeBreakpoint(id).then(handleActionResponse)
 }
 
-export const useBreakpointAction = ({
+export const BreakpointAction = ({
   sequencerPrefix,
   step
 }: {
   sequencerPrefix: Prefix
   step: Step
-}): (() => void) => {
+}): JSX.Element => {
   const { data: sequencerService } = useSequencerService(sequencerPrefix)
 
   const insertBreakpointAction = useMutation({
     mutationFn: insertAction(step.id),
     onSuccess: () => successMessage('Successfully inserted breakpoint'),
     onError: (e) => errorMessage('Failed to insert breakpoint', e),
-    invalidateKeysOnSuccess: [sequencerPrefix.toJSON()],
+    invalidateKeysOnSuccess: [SEQUENCER_STEPS(sequencerPrefix).key],
     useErrorBoundary: false
   })
 
@@ -56,14 +59,29 @@ export const useBreakpointAction = ({
     mutationFn: removeAction(step.id),
     onSuccess: () => successMessage('Successfully removed breakpoint'),
     onError: (e) => errorMessage('Failed to remove breakpoint', e),
-    invalidateKeysOnSuccess: [sequencerPrefix.toJSON()],
+    invalidateKeysOnSuccess: [SEQUENCER_STEPS(sequencerPrefix).key],
     useErrorBoundary: false
   })
 
   if (step.hasBreakpoint) {
-    return () =>
-      sequencerService && removeBreakpointAction.mutate(sequencerService)
+    return (
+      <div
+        onClick={() =>
+          sequencerService && removeBreakpointAction.mutate(sequencerService)
+        }>
+        <VerticalAlignMiddleOutlined />
+        Remove Breakpoint
+      </div>
+    )
   }
-  return () =>
-    sequencerService && insertBreakpointAction.mutate(sequencerService)
+
+  return (
+    <div
+      onClick={() =>
+        sequencerService && insertBreakpointAction.mutate(sequencerService)
+      }>
+      <VerticalAlignMiddleOutlined />
+      Insert Breakpoint
+    </div>
+  )
 }

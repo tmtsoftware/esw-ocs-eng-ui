@@ -1,7 +1,7 @@
 import type { ResourceStatus } from '@tmtsoftware/esw-ts'
 import { Table } from 'antd'
 import React from 'react'
-import { HeaderTitle } from '../../../components/Table/HeaderTitle'
+import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getStatusColumn } from '../../../containers/resources/Resources'
 
 export type ResourceTableStatus = {

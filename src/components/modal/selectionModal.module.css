@@ -1,0 +1,14 @@
+.menuItem:hover {
+  background: #f5f5f5;
+  color: var(--fontColor);
+}
+
+.selectedItem {
+  font-weight: 500;
+  color: var(--fontColor);
+}
+
+.menu {
+  overflow-y: scroll;
+  max-height: 25rem;
+}

@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { instance, mock, verify } from 'ts-mockito'
-import { HeaderBar } from '../../../src/components/HeaderBar/HeaderBar'
+import { HeaderBar } from '../../../src/components/headerBar/HeaderBar'
 import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
 

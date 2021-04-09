@@ -17,7 +17,7 @@ import {
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import { Configure } from '../../../../../src/features/sm/components/configure/Configure'
+import { Configure } from '../../../../../src/features/sm/components/Configure'
 import {
   getMockServices,
   MockServices,

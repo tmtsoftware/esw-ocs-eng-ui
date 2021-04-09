@@ -1,9 +1,9 @@
 import { Card, Typography } from 'antd'
 import React from 'react'
-import { CustomErrorBoundary } from '../../../../components/ErrorBoundary/CustomErrorBoundary'
+import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
 import { useSMStatus } from '../../hooks/useSMStatus'
-import { ShutdownSMButton } from '../shutdown/ShutdownButton'
-import { SpawnSMButton } from '../spawn/SpawnButton'
+import { ShutdownSMButton } from '../ShutdownButton'
+import { SpawnSMButton } from '../SpawnButton'
 import styles from './smcard.module.css'
 
 export const SMCard = (): JSX.Element => {

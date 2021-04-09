@@ -1,7 +1,7 @@
 import { Card, Col, Row, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { InfraIcon, SettingsIcon, TelescopeIcon } from '../../components/Icons'
+import { InfraIcon, SettingsIcon, TelescopeIcon } from '../../components/icons'
 import { SMCard } from '../../features/sm/components/smcard/SMCard'
 import {
   INFRASTRUCTURE,

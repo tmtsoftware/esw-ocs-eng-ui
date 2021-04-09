@@ -1,11 +1,11 @@
 import { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
-import { SelectionModal } from '../../../../components/Modal/SelectionModal'
-import { errorMessage } from '../../../../utils/message'
-import { useConfigureAction } from '../../hooks/useConfigureAction'
-import { useObsModesDetails } from '../../hooks/useObsModesDetails'
-import { useSMService } from '../../hooks/useSMService'
+import { SelectionModal } from '../../../components/modal/SelectionModal'
+import { errorMessage } from '../../../utils/message'
+import { useConfigureAction } from '../hooks/useConfigureAction'
+import { useObsModesDetails } from '../hooks/useObsModesDetails'
+import { useSMService } from '../hooks/useSMService'
 
 type ConfigureProps = {
   disabled: boolean | undefined

@@ -2,8 +2,8 @@ import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Card, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import { PageHeader } from '../../components/PageHeader/PageHeader'
-import { HeaderTitle } from '../../components/Table/HeaderTitle'
+import { PageHeader } from '../../components/pageHeader/PageHeader'
+import { HeaderTitle } from '../../components/table/HeaderTitle'
 import {
   GroupedObsModeDetails,
   useObsModesDetails

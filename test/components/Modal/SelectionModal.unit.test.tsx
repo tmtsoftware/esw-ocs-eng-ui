@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
-import { SelectionModal } from '../../../src/components/Modal/SelectionModal'
+import { SelectionModal } from '../../../src/components/modal/SelectionModal'
 
 describe('SelectionModal', () => {
   it('should render modal with title and given list of data | ESW-441', async () => {

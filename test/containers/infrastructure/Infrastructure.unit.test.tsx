@@ -17,6 +17,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
+import { SMContextProvider } from '../../../src/contexts/SMContext'
 import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
@@ -68,10 +69,13 @@ describe('Infrastructure page', () => {
   afterEach(() => {
     cleanup()
   })
-
+  const mockServices = getMockServices()
+  const agentService = mockServices.mock.agentService
+  const locationService = mockServices.mock.locationService
+  when(locationService.track(SM_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
   it('should render infrastructure page | ESW-442', async () => {
-    const mockServices = getMockServices()
-    const agentService = mockServices.mock.agentService
     renderWithAuth({
       ui: <Infrastructure />,
       mockClients: mockServices.serviceFactoryContext
@@ -94,24 +98,21 @@ describe('Infrastructure page', () => {
   })
 
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
-    const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
-
-    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(undefined)
     renderWithAuth({
-      ui: <Infrastructure />,
+      ui: (
+        <SMContextProvider defaultValue={[undefined, false]}>
+          <Infrastructure />
+        </SMContextProvider>
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 
-    expect(screen.getByText('Loading...')).to.exist
+    expect(screen.queryByText('Loading...')).to.not.exist
 
     await screen.findByText('Service down')
   })
 
   it('should render running status with agent machine if sequence manager is running on an agent | ESW-442', async () => {
-    const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
-
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
       connection: SM_CONNECTION,
@@ -119,22 +120,19 @@ describe('Infrastructure page', () => {
       metadata: { agentPrefix: 'ESW.primary' }
     }
 
-    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(smLocation)
-
     renderWithAuth({
-      ui: <Infrastructure />,
-      loggedIn: true,
+      ui: (
+        <SMContextProvider defaultValue={[smLocation, false]}>
+          <Infrastructure />
+        </SMContextProvider>
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
-    expect(screen.getByText('Loading...')).to.exist
 
     await screen.findByText('Running on ESW.primary')
   })
 
   it('should render running on unknown status if sequence manager is running standalone(not on agent) | ESW-442', async () => {
-    const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
-
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
       connection: SM_CONNECTION,
@@ -142,24 +140,21 @@ describe('Infrastructure page', () => {
       metadata: {}
     }
 
-    when(locationServiceMock.find(SM_CONNECTION)).thenResolve(smLocation)
-
     renderWithAuth({
-      ui: <Infrastructure />,
+      ui: (
+        <SMContextProvider defaultValue={[smLocation, false]}>
+          <Infrastructure />
+        </SMContextProvider>
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
-    expect(screen.getByText('Loading...')).to.exist
 
     await screen.findByText('Running on unknown')
   })
 
   it('should refetch agent cards after configure success | ESW-443', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
-    const locationService = mockServices.mock.locationService
     const agentService = mockServices.mock.agentService
-
-    when(locationService.find(SM_CONNECTION)).thenResolve(smLocation)
 
     const darkNight = new ObsMode('ESW_DARKNIGHT')
 
@@ -172,7 +167,11 @@ describe('Infrastructure page', () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
     when(agentService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
-      ui: <Infrastructure />,
+      ui: (
+        <SMContextProvider defaultValue={[smLocation, false]}>
+          <Infrastructure />
+        </SMContextProvider>
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
     const button = await screen.findByRole('button', { name: 'Configure' })
@@ -208,9 +207,7 @@ describe('Infrastructure page', () => {
   })
 
   it('should refetch agent cards after provision success | ESW-443', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
-    const locationService = mockServices.mock.locationService
     const configService = mockServices.mock.configService
     const agentService = mockServices.mock.agentService
 
@@ -227,7 +224,6 @@ describe('Infrastructure page', () => {
         return new AgentProvisionConfig(Prefix.fromString(pStr), num)
       })
     )
-    when(locationService.find(deepEqual(SM_CONNECTION))).thenResolve(smLocation)
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
@@ -241,7 +237,11 @@ describe('Infrastructure page', () => {
       _type: 'Success'
     })
     renderWithAuth({
-      ui: <Infrastructure />,
+      ui: (
+        <SMContextProvider defaultValue={[smLocation, false]}>
+          <Infrastructure />
+        </SMContextProvider>
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 

@@ -8,6 +8,7 @@ import {
   ServiceFactoryProvider
 } from './contexts/ServiceFactoryContext'
 import './index.module.css'
+import { SMContextProvider } from './contexts/SMContext'
 import { useAuth } from './contexts/useAuthContext'
 
 const Main = () => {
@@ -17,7 +18,9 @@ const Main = () => {
 
   return (
     <ServiceFactoryProvider value={serviceFactories}>
-      <App />
+      <SMContextProvider>
+        <App />
+      </SMContextProvider>
     </ServiceFactoryProvider>
   )
 }

@@ -3,6 +3,7 @@ import {
   AgentStatus,
   AgentStatusResponse,
   ComponentId,
+  HttpLocation,
   Prefix,
   SequenceComponentStatus
 } from '@tmtsoftware/esw-ts'
@@ -10,13 +11,18 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
+import { SMContextProvider } from '../../../src/contexts/SMContext'
+import { SM_CONNECTION } from '../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
+  const locationService = mockServices.mock.locationService
   const sequenceComponentStatus = mock<SequenceComponentStatus>()
-
+  when(locationService.track(SM_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
   const agentStatus: AgentStatus = {
     agentId: new ComponentId(new Prefix('APS', 'jdks'), 'Machine'),
     seqCompsStatus: [sequenceComponentStatus]
@@ -41,10 +47,18 @@ describe('SM actions', () => {
   unProvisionRenderTestData.map(([agentStatusResponse, name]) => {
     it(`should render provision button as enabled & configure button as disabled if no seq comps are running ${name} | ESW-442, ESW-445`, async () => {
       when(agentService.getAgentStatus()).thenResolve(agentStatusResponse)
-
+      const smLocation: HttpLocation = {
+        _type: 'HttpLocation',
+        connection: SM_CONNECTION,
+        uri: 'url',
+        metadata: { agentPrefix: 'ESW.primary' }
+      }
       renderWithAuth({
-        ui: <SmActions disabled={false} />,
-        loggedIn: true,
+        ui: (
+          <SMContextProvider defaultValue={[smLocation, false]}>
+            <SmActions />
+          </SMContextProvider>
+        ),
         mockClients: mockServices.serviceFactoryContext
       })
 

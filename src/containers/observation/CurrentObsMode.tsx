@@ -1,10 +1,15 @@
 import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
+import { Prefix } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { memo } from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
+import {
+  RunningObsModeStatus,
+  useObsModeState
+} from '../../features/sequencer/hooks/useObsModeStatus'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
 
@@ -27,12 +32,14 @@ const CObsMode = ({
   sequencers,
   resources
 }: CurrentObsModeProps): JSX.Element => {
-  const isRunning = currentTab === 'Running'
-
+  const isRunningTab = currentTab === 'Running' //TODO what about non running tabs
+  const { data: eswSequencerState } = useObsModeState(
+    new Prefix('ESW', obsMode.name)
+  )
   //TODO use StatusAPI of sequencer for this status
   const Status = () => {
-    const status = isRunning ? (
-      <Text content='Running' type='success' />
+    const status = eswSequencerState ? (
+      <Text content={eswSequencerState} type={getTextType(eswSequencerState)} />
     ) : (
       <Text content='NA' type='secondary' />
     )
@@ -61,13 +68,20 @@ const CObsMode = ({
             <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
         }>
-        {isRunning && (
+        {isRunningTab && (
           <SequencersTable obsMode={obsMode} sequencers={sequencers} />
         )}
         <ResourcesTable resources={resources} />
       </Card>
     </>
   )
+}
+
+const getTextType = (runningObsModeStatus: RunningObsModeStatus): BaseType => {
+  if (runningObsModeStatus === 'Offline') return 'secondary'
+  if (runningObsModeStatus === 'StepPaused') return 'warning'
+  if (runningObsModeStatus === 'StepFailed') return 'danger'
+  return 'success'
 }
 
 export const CurrentObsMode = memo(

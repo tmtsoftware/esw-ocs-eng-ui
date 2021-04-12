@@ -58,3 +58,11 @@ export const OBS_MODE_SEQUENCERS: Query = {
 export const SEQUENCER_STATUS: Query = {
   key: 'SequencerStatus'
 }
+
+export const SEQUENCER_STATE: Query = {
+  key: 'SequencerState'
+}
+
+export const OBS_MODE_STATE: Query = {
+  key: 'ObsModeState'
+}

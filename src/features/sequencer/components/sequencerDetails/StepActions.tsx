@@ -21,7 +21,7 @@ export const StepActions = ({
     </Menu.Item>
     <Menu.Item key='2'>
       <PlusCircleOutlined />
-      Add a Step
+      Add a step
     </Menu.Item>
     <Menu.Item key='3'>
       <CopyOutlined />

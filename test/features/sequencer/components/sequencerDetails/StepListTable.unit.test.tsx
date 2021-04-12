@@ -1,5 +1,7 @@
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
+import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
@@ -40,7 +42,7 @@ describe('stepList table', () => {
     })
 
     screen.getByRole('columnheader', {
-      name: /sequence steps status: in progress/i
+      name: 'Sequence Steps Status: In Progress'
     })
 
     await findCell('1 Command-1 more')
@@ -62,7 +64,7 @@ describe('stepList table', () => {
     })
 
     screen.getByRole('columnheader', {
-      name: /sequence steps status: na/i
+      name: 'Sequence Steps Status: NA'
     })
 
     await findCell('No Data')
@@ -83,11 +85,37 @@ describe('stepList table', () => {
     })
 
     screen.getByRole('columnheader', {
-      name: /sequence steps status: na/i
+      name: 'Sequence Steps Status: NA'
     })
 
     await findCell('No Data')
     verify(sequencerService.getSequence()).called()
+  })
+
+  it('should show stepActions menu', async () => {
+    when(sequencerService.getSequence()).thenResolve(stepList)
+
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={sequencerPrefix}
+          stepListStatus={'In Progress'}
+        />
+      ),
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    const actions = await screen.findAllByRole('stepActions')
+
+    userEvent.click(actions[0], { button: 0 })
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    await screen.findByText('Insert breakpoint')
+    await screen.findByText('Add a step')
+    await screen.findByText('Delete')
+    await screen.findByText('Duplicate')
   })
 })
 

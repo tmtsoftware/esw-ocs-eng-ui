@@ -55,7 +55,7 @@ const StepComponent = (
       <Dropdown
         overlay={<StepActions sequencerPrefix={sequencerPrefix} step={step} />}
         trigger={['click']}>
-        <MoreOutlined style={{ fontSize: '1.5rem' }} />
+        <MoreOutlined style={{ fontSize: '1.5rem' }} role={`stepActions`} />
       </Dropdown>
     </Space>
   )

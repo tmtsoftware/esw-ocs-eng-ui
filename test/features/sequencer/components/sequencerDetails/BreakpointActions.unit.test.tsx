@@ -122,8 +122,8 @@ describe('stepList table', () => {
         mockClients: mockServices.serviceFactoryContext
       })
 
-      const insertBreakpoint = await screen.findByText('Remove breakpoint')
-      userEvent.click(insertBreakpoint, { button: 0 })
+      const removeBreakpoint = await screen.findByText('Remove breakpoint')
+      userEvent.click(removeBreakpoint, { button: 0 })
 
       await screen.findByText(message)
 

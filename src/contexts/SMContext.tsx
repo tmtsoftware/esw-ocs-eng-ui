@@ -1,9 +1,7 @@
 import type {
   Location,
-  LocationService,
   SequenceManagerService,
-  TokenFactory,
-  TrackingEvent
+  TokenFactory
 } from '@tmtsoftware/esw-ts'
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import { HttpTransport } from '@tmtsoftware/esw-ts/lib/dist/src/utils/HttpTransport'
@@ -11,50 +9,28 @@ import {
   extractHostPort,
   getPostEndPoint
 } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
-import { useCallback, useEffect, useState } from 'react'
 import { SM_CONNECTION } from '../features/sm/constants'
-import { useStream } from '../hooks/useStream'
-import { createCtx } from './createCtx'
-import { locationService, useServiceFactory } from './ServiceFactoryContext'
-import { useAuth } from './useAuthContext'
+import { createServiceCtx } from './createServiceCtx'
 
 export type SMContextType = [Location | undefined, boolean]
 
 type SMContext = { smService: SequenceManagerService; smLocation: Location }
 
-const mkSequenceManagerService = (
-  tokenFactory: TokenFactory,
-  location: Location
+const mkSMService = (
+  loc: Location,
+  tf: TokenFactory
 ): SequenceManagerService => {
-  const { host, port } = extractHostPort(location.uri)
+  const { host, port } = extractHostPort(loc.uri)
   const postEndpoint = getPostEndPoint({ host, port })
 
-  return new SequenceManagerImpl(new HttpTransport(postEndpoint, tokenFactory))
+  return new SequenceManagerImpl(new HttpTransport(postEndpoint, tf))
 }
+const mkSMContext = (loc: Location, tf: TokenFactory): SMContext => ({
+  smService: mkSMService(loc, tf),
+  smLocation: loc
+})
 
-const trackSM = locationService.track(SM_CONNECTION)
-
-const useSMService0 = (): [SMContext | undefined, boolean] => {
-  const { auth } = useAuth()
-
-  const memoisedSmCallback = useCallback(
-    (event: TrackingEvent) => {
-      const tokenFactory = auth !== null ? auth.token : () => undefined
-
-      return event._type === 'LocationUpdated'
-        ? {
-            smService: mkSequenceManagerService(tokenFactory, event.location),
-            smLocation: event.location
-          }
-        : undefined
-    },
-    [auth]
-  )
-
-  return useStream({
-    mapper: memoisedSmCallback,
-    run: trackSM
-  })
-}
-
-export const [useSMService, SMServiceProvider] = createCtx(useSMService0)
+export const [useSMService, SMServiceProvider] = createServiceCtx(
+  SM_CONNECTION,
+  mkSMContext
+)

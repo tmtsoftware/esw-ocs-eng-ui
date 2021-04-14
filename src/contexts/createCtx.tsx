@@ -4,8 +4,16 @@ export type CreateContextProps<Value> = {
   useHook: () => Value
 }
 
-export function createCtx<ContextType>(useHook: () => ContextType) {
-  const ctx = createContext<ContextType | undefined>(undefined)
+export type Hook<T> = () => T
+export type Provider = ({
+  children
+}: {
+  children: React.ReactNode
+}) => JSX.Element
+export type CtxType<T> = readonly [Hook<T>, Provider]
+
+export function createCtx<Value>(useHook: () => Value): CtxType<Value> {
+  const ctx = createContext<Value | undefined>(undefined)
 
   const useCtx = () => {
     const c = useContext(ctx)

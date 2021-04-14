@@ -1,10 +1,6 @@
 import {
-  AgentService,
   ComponentId,
-  ConfigService,
-  Location,
   LocationService,
-  SequenceManagerService,
   SequencerService,
   TokenFactory
 } from '@tmtsoftware/esw-ts'

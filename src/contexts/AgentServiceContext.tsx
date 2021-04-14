@@ -10,6 +10,7 @@ import {
   extractHostPort,
   getPostEndPoint
 } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
+import { useCallback } from 'react'
 import { AGENT_SERVICE_CONNECTION } from '../features/sm/constants'
 import { useStream } from '../hooks/useStream'
 import { createCtx } from './createCtx'
@@ -26,26 +27,27 @@ const mkAgentService = (
   return new AgentServiceImpl(new HttpTransport(postEndpoint, tokenFactory))
 }
 
-const _useAgentService = (): [AgentService | undefined, boolean] => {
+const trackAgent = locationService.track(AGENT_SERVICE_CONNECTION)
+
+const useAgentService0 = (): [AgentService | undefined, boolean] => {
   const { auth } = useAuth()
-  const tokenFactory = auth !== null ? auth.token : () => undefined
+
+  const memoisedAgentCb = useCallback(
+    (event: TrackingEvent) => {
+      const tokenFactory = auth !== null ? auth.token : () => undefined
+      return event._type === 'LocationUpdated'
+        ? mkAgentService(tokenFactory, event.location)
+        : undefined
+    },
+    [auth]
+  )
 
   return useStream({
-    mapper: trackAgentCb(tokenFactory),
-    run: trackAgent()
+    mapper: memoisedAgentCb,
+    run: trackAgent
   })
 }
 
 export const [useAgentService, AgentServiceProvider] = createCtx(
-  _useAgentService
+  useAgentService0
 )
-
-const trackAgentCb = (tokenFactory: TokenFactory) => (event: TrackingEvent) =>
-  event._type === 'LocationUpdated'
-    ? mkAgentService(tokenFactory, event.location)
-    : undefined
-
-const trackAgent = () => {
-  console.log('inside trackagent')
-  return locationService.track(AGENT_SERVICE_CONNECTION)
-}

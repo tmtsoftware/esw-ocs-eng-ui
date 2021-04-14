@@ -6,6 +6,7 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
 import { extractHostPort } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
+import { useCallback } from 'react'
 import { CONFIG_SERVICE_CONNECTION } from '../features/sm/constants'
 import { useStream } from '../hooks/useStream'
 import { createCtx } from './createCtx'
@@ -21,24 +22,27 @@ const mkConfigService = (
   return new ConfigServiceImpl(host, port, tokenFactory)
 }
 
-const trackConfigCallback = (tokenFactory: TokenFactory) => (
-  event: TrackingEvent
-) =>
-  event._type === 'LocationUpdated'
-    ? mkConfigService(tokenFactory, event.location)
-    : undefined
-
 const trackConfigService = locationService.track(CONFIG_SERVICE_CONNECTION)
 
-const _useConfigService = (): [ConfigService | undefined, boolean] => {
+const useConfigService0 = (): [ConfigService | undefined, boolean] => {
   const { auth } = useAuth()
-  const tokenFactory = auth !== null ? auth.token : () => undefined
+
+  const memoisedConfigCallback = useCallback(
+    (event: TrackingEvent) => {
+      const tokenFactory = auth !== null ? auth.token : () => undefined
+      return event._type === 'LocationUpdated'
+        ? mkConfigService(tokenFactory, event.location)
+        : undefined
+    },
+    [auth]
+  )
+
   return useStream({
-    mapper: trackConfigCallback(tokenFactory),
+    mapper: memoisedConfigCallback,
     run: trackConfigService
   })
 }
 
 export const [useConfigService, ConfigServiceProvider] = createCtx(
-  _useConfigService
+  useConfigService0
 )

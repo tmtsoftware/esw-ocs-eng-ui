@@ -26,7 +26,7 @@ export const useStream = <I, O>({
     setLoading(false)
 
     return sub.cancel
-  }, [])
+  }, [mapper, run])
 
   return [value, loading]
 }

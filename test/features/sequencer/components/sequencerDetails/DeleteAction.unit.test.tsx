@@ -48,7 +48,7 @@ describe('Delete action', () => {
   ]
 
   deleteActionTests.forEach(([testName, res, message]) => {
-    it(`should return ${testName} when delete is clicked | ESW-459`, async () => {
+    it(`should return ${testName} when delete is clicked | ESW-490`, async () => {
       const step: Step = {
         hasBreakpoint: false,
         status: { _type: 'Success' },

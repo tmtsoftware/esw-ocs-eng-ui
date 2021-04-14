@@ -92,7 +92,7 @@ describe('stepList table', () => {
     verify(sequencerService.getSequence()).called()
   })
 
-  it('should show stepActions menu | ESW-459', async () => {
+  it('should show stepActions menu | ESW-459, ESW-490', async () => {
     when(sequencerService.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
@@ -112,9 +112,12 @@ describe('stepList table', () => {
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)
 
+    // ESW-459
     await screen.findByText('Insert breakpoint')
-    await screen.findByText('Add a step')
+    //ESW-490
     await screen.findByText('Delete')
+
+    await screen.findByText('Add a step')
     await screen.findByText('Duplicate')
   })
 })

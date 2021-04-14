@@ -12,7 +12,7 @@ import { verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 
-describe('stepList table', () => {
+describe('Breakpoint actions', () => {
   const mockServices = getMockServices()
   const sequencerService = mockServices.mock.sequencerService
 

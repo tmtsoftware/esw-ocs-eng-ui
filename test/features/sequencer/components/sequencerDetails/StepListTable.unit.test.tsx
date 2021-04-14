@@ -92,7 +92,7 @@ describe('stepList table', () => {
     verify(sequencerService.getSequence()).called()
   })
 
-  it('should show stepActions menu', async () => {
+  it('should show stepActions menu | ESW-459', async () => {
     when(sequencerService.getSequence()).thenResolve(stepList)
 
     renderWithAuth({

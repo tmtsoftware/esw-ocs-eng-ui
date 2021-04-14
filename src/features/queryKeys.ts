@@ -64,5 +64,6 @@ export const SEQUENCER_STATE: Query = {
 }
 
 export const OBS_MODE_STATE: Query = {
-  key: 'ObsModeState'
+  key: 'ObsModeState',
+  refetchInterval: 1000
 }

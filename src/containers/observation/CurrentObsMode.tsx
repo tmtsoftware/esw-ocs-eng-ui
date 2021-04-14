@@ -1,5 +1,4 @@
 import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
-import { Prefix } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { memo } from 'react'
@@ -8,7 +7,7 @@ import { ResourcesTable } from '../../features/sequencer/components/ResourcesTab
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import {
   RunningObsModeStatus,
-  useObsModeState
+  useObsModeStatus
 } from '../../features/sequencer/hooks/useObsModeStatus'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
@@ -33,13 +32,11 @@ const CObsMode = ({
   resources
 }: CurrentObsModeProps): JSX.Element => {
   const isRunningTab = currentTab === 'Running' //TODO what about non running tabs
-  const { data: eswSequencerState } = useObsModeState(
-    new Prefix('ESW', obsMode.name)
-  )
+  const { data: obsModeStatus } = useObsModeStatus(obsMode)
   //TODO use StatusAPI of sequencer for this status
   const Status = () => {
-    const status = eswSequencerState ? (
-      <Text content={eswSequencerState} type={getTextType(eswSequencerState)} />
+    const status = obsModeStatus ? (
+      <Text content={obsModeStatus} type={getTextType(obsModeStatus)} />
     ) : (
       <Text content='NA' type='secondary' />
     )
@@ -79,8 +76,8 @@ const CObsMode = ({
 
 const getTextType = (runningObsModeStatus: RunningObsModeStatus): BaseType => {
   if (runningObsModeStatus === 'Offline') return 'secondary'
-  if (runningObsModeStatus === 'StepPaused') return 'warning'
-  if (runningObsModeStatus === 'StepFailed') return 'danger'
+  if (runningObsModeStatus === 'Paused') return 'warning'
+  if (runningObsModeStatus === 'Failed') return 'danger'
   return 'success'
 }
 

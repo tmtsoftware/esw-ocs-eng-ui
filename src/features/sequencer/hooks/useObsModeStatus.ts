@@ -1,35 +1,42 @@
-import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
+import type { SequencerStateResponse } from '@tmtsoftware/esw-ts'
+import { Prefix, ObsMode } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { OBS_MODE_STATE } from '../../queryKeys'
 import { useSequencerState } from './useSequencerState'
 import { useStepList } from './useStepList'
 
-export const useObsModeState = <E>(
-  sequencerPrefix: Prefix,
+export const useObsModeStatus = <E>(
+  obsMode: ObsMode,
   useErrorBoundary = true,
   onError?: (err: E) => void
 ): UseQueryResult<RunningObsModeStatus> => {
+  const sequencerPrefix = new Prefix('ESW', obsMode.name)
   const { data: sequencerState } = useSequencerState(
     sequencerPrefix,
     useErrorBoundary
   )
-  const { data: stepList } = useStepList(sequencerPrefix)
-  const stepState = stepList?.isFailed()
-    ? 'StepFailed'
-    : stepList?.isPaused()
-    ? 'StepPaused'
-    : sequencerState?._type
+  const { data: stepList, isFetched: isStepListFetched } = useStepList(
+    sequencerPrefix
+  )
+
   return useQuery(
-    OBS_MODE_STATE.key + sequencerPrefix.toJSON(),
-    () => stepState,
+    `${obsMode.name}-${OBS_MODE_STATE.key}`,
+    () => {
+      return stepList?.isFailed()
+        ? 'Failed'
+        : stepList?.isPaused()
+        ? 'Paused'
+        : sequencerState?._type
+    },
     {
       onError,
-      enabled: !!sequencerState
+      enabled: !!sequencerState && isStepListFetched,
+      refetchInterval: OBS_MODE_STATE.refetchInterval
     }
   )
 }
 
 export type RunningObsModeStatus =
   | SequencerStateResponse['_type']
-  | 'StepPaused'
-  | 'StepFailed'
+  | 'Paused'
+  | 'Failed'

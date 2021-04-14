@@ -79,10 +79,6 @@ const getMockServices: () => MockServices = () => {
   )
 
   const serviceFactoryContext: ServiceFactoryContextType = {
-    agentServiceFactory: () => Promise.resolve(agentServiceInstance),
-    locationServiceFactory: () => locationServiceInstance,
-    configServiceFactory: () => Promise.resolve(configServiceInstance),
-    smServiceFactory: () => Promise.resolve(smServiceInstance),
     sequencerServiceFactory: () => Promise.resolve(sequencerServiceInstance)
   }
 

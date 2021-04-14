@@ -1,27 +1,26 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import { AuthContextProvider } from '@tmtsoftware/esw-ts'
+import { Result } from 'antd'
 import React from 'react'
 import { render } from 'react-dom'
 import { AppConfig } from './config/AppConfig'
 import { App } from './containers/app/App'
-import {
-  createServiceFactories,
-  ServiceFactoryProvider
-} from './contexts/ServiceFactoryContext'
-import './index.module.css'
-import { SMContextProvider } from './contexts/SMContext'
+import { AgentServiceProvider } from './contexts/AgentServiceContext'
+import { SMServiceProvider } from './contexts/SMContext'
 import { useAuth } from './contexts/useAuthContext'
+import './index.module.css'
 
 const Main = () => {
   const { auth } = useAuth()
-  const tokenFactory = auth ? auth.token : () => undefined
-  const serviceFactories = createServiceFactories(tokenFactory)
+
+  if (auth === null) return <Result icon={<LoadingOutlined />} />
 
   return (
-    <ServiceFactoryProvider value={serviceFactories}>
-      <SMContextProvider>
+    <AgentServiceProvider>
+      <SMServiceProvider>
         <App />
-      </SMContextProvider>
-    </ServiceFactoryProvider>
+      </SMServiceProvider>
+    </AgentServiceProvider>
   )
 }
 

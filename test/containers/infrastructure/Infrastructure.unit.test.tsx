@@ -17,7 +17,6 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
-import { SMContextProvider } from '../../../src/contexts/SMContext'
 import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
@@ -100,9 +99,9 @@ describe('Infrastructure page', () => {
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[undefined, false]}>
-          <Infrastructure />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[undefined, false]}>
+        <Infrastructure />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })
@@ -122,9 +121,9 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[smLocation, false]}>
-          <Infrastructure />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[smLocation, false]}>
+        <Infrastructure />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })
@@ -142,9 +141,9 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[smLocation, false]}>
-          <Infrastructure />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[smLocation, false]}>
+        <Infrastructure />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })
@@ -168,9 +167,9 @@ describe('Infrastructure page', () => {
     when(agentService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[smLocation, false]}>
-          <Infrastructure />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[smLocation, false]}>
+        <Infrastructure />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })
@@ -238,9 +237,9 @@ describe('Infrastructure page', () => {
     })
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[smLocation, false]}>
-          <Infrastructure />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[smLocation, false]}>
+        <Infrastructure />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })

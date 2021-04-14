@@ -2,8 +2,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
-import { OBS_MODES_DETAILS } from '../../../queryKeys'
-import { useSMService } from '../../../sm/hooks/useSMService'
+import { useSMService } from '../../../../contexts/SMContext'
 import { useAction } from './ActionButton'
 
 const showConfirmModal = (onYes: () => void): void => {
@@ -42,19 +41,18 @@ export const ShutdownButton = ({
 }: {
   obsMode: ObsMode
 }): JSX.Element => {
-  const smService = useSMService(false)
-  const shutdownAction = useAction('Shutdown', shutdown(obsMode), [
-    OBS_MODES_DETAILS.key
-  ])
+  const [smContext, loading] = useSMService()
+  const smService = smContext?.smService
+  const shutdownAction = useAction('Shutdown', shutdown(obsMode))
 
   return (
     <Button
-      disabled={smService.isLoading || smService.isError}
+      disabled={loading || !smService}
       loading={shutdownAction.isLoading}
       onClick={() =>
-        smService.data &&
+        smService &&
         showConfirmModal(() => {
-          shutdownAction.mutateAsync(smService.data)
+          shutdownAction.mutateAsync(smService)
         })
       }
       danger>

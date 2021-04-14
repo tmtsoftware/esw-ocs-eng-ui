@@ -2,10 +2,10 @@ import { DeleteOutlined } from '@ant-design/icons'
 import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
+import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { useAgentService } from '../hooks/useAgentService'
 import styles from './agentCards.module.css'
 
 const killComponent = (componentId: ComponentId) => (
@@ -21,7 +21,7 @@ export const KillSequenceComponent = ({
 }: {
   componentId: ComponentId
 }): JSX.Element => {
-  const { data: agentService } = useAgentService()
+  const [agentService] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),

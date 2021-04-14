@@ -3,10 +3,9 @@ import type { AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../components/spinners/Spinner'
+import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { useAgentService } from '../../agent/hooks/useAgentService'
-import { SM_STATUS } from '../../queryKeys'
 import { SM_COMPONENT_ID } from '../constants'
 
 const showConfirmModal = (onYes: () => void): void => {
@@ -33,26 +32,25 @@ const shutdownSM = (agent: AgentService) =>
   })
 
 export const ShutdownSMButton = (): JSX.Element => {
-  const agentQuery = useAgentService()
+  const [agentService, loading] = useAgentService()
 
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
     onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
     onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),
-    invalidateKeysOnSuccess: [SM_STATUS.key],
     useErrorBoundary: true
   })
 
-  if (agentQuery.isLoading) return <Spinner />
+  if (loading) return <Spinner />
 
   return (
     <Button
       danger
       loading={shutdownSmAction.isLoading}
       onClick={() =>
-        agentQuery.data &&
+        agentService &&
         showConfirmModal(() => {
-          shutdownSmAction.mutateAsync(agentQuery.data)
+          shutdownSmAction.mutateAsync(agentService)
         })
       }>
       Shutdown

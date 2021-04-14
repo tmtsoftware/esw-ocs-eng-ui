@@ -1,4 +1,5 @@
 import React from 'react'
+import { ConfigServiceProvider } from '../../../../contexts/ConfigServiceContext'
 import { ProvisionButton } from './ProvisionButton'
 import { UnProvisionButton } from './UnProvisionButton'
 
@@ -12,6 +13,8 @@ export const Provision = ({
   return provisionStatus ? (
     <UnProvisionButton disabled={disabled} />
   ) : (
-    <ProvisionButton disabled={disabled} />
+    <ConfigServiceProvider>
+      <ProvisionButton disabled={disabled} />
+    </ConfigServiceProvider>
   )
 }

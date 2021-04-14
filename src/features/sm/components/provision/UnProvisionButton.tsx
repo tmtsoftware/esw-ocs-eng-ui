@@ -3,8 +3,8 @@ import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
+import { useSMService } from '../../../../contexts/SMContext'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-import { useSMService } from '../../hooks/useSMService'
 
 function showConfirmModal(onYes: () => void): void {
   Modal.confirm({
@@ -41,7 +41,8 @@ export const UnProvisionButton = ({
   disabled?: boolean
 }): JSX.Element => {
   const useErrorBoundary = false
-  const smService = useSMService(useErrorBoundary)
+  const [smContext, isLoading] = useSMService()
+  const smService = smContext?.smService
 
   const unProvisionAction = useProvisionAction(
     shutdownAllSequenceComps,
@@ -50,7 +51,7 @@ export const UnProvisionButton = ({
     useErrorBoundary
   )
 
-  if (smService.isLoading) return <Spinner />
+  if (isLoading) return <Spinner />
 
   return (
     <Button
@@ -58,9 +59,9 @@ export const UnProvisionButton = ({
       disabled={disabled}
       loading={unProvisionAction.isLoading}
       onClick={() =>
-        smService.data &&
+        smService &&
         showConfirmModal(() => {
-          unProvisionAction.mutateAsync(smService.data)
+          unProvisionAction.mutateAsync(smService)
         })
       }>
       Unprovision

@@ -3,11 +3,10 @@ import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../components/modal/SelectionModal'
 import { Spinner } from '../../../components/spinners/Spinner'
+import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { useAgentService } from '../../agent/hooks/useAgentService'
 import { useAgentsList } from '../../agent/hooks/useAgentsList'
-import { SM_SERVICE, SM_STATUS } from '../../queryKeys'
 import { OBS_MODE_CONFIG } from '../constants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
@@ -27,7 +26,7 @@ export const SpawnSMButton = (): JSX.Element => {
   const [agentPrefix, setAgentPrefix] = useState('')
 
   const allAgentsQuery = useAgentsList()
-  const agentServiceQuery = useAgentService()
+  const [agentService, loading] = useAgentService()
 
   const spawnSmAction = useMutation({
     mutationFn: spawnSM(agentPrefix),
@@ -37,14 +36,12 @@ export const SpawnSMButton = (): JSX.Element => {
         'Sequence Manager could not be spawned. Please try again.',
         e
       ),
-    invalidateKeysOnSuccess: [SM_STATUS.key, SM_SERVICE.key],
     useErrorBoundary: true
   })
 
   const handleModalOk = () => {
     if (agentPrefix && agentPrefix !== '') {
-      agentServiceQuery.data &&
-        spawnSmAction.mutateAsync(agentServiceQuery.data)
+      agentService && spawnSmAction.mutateAsync(agentService)
       setModalVisibility(false)
     } else {
       errorMessage(`Please select agent!`)
@@ -60,9 +57,8 @@ export const SpawnSMButton = (): JSX.Element => {
   }
   const handleModalCancel = () => setModalVisibility(false)
   const handleModalAgentSelection = (value: string) => setAgentPrefix(value)
-
-  if (agentServiceQuery.isLoading || allAgentsQuery.isLoading)
-    return <Spinner />
+  console.log('loading', loading, allAgentsQuery.isLoading)
+  if (loading || allAgentsQuery.isLoading) return <Spinner />
 
   return (
     <>

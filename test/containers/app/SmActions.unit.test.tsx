@@ -11,7 +11,6 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
-import { SMContextProvider } from '../../../src/contexts/SMContext'
 import { SM_CONNECTION } from '../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
@@ -54,11 +53,7 @@ describe('SM actions', () => {
         metadata: { agentPrefix: 'ESW.primary' }
       }
       renderWithAuth({
-        ui: (
-          <SMContextProvider defaultValue={[smLocation, false]}>
-            <SmActions />
-          </SMContextProvider>
-        ),
+        ui: <SmActions />,
         mockClients: mockServices.serviceFactoryContext
       })
 

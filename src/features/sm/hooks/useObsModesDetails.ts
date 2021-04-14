@@ -4,11 +4,11 @@ import type {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import type { TabName } from '../../../containers/observation/ObservationTabs'
+import { useSMService } from '../../../contexts/SMContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { groupBy } from '../../../utils/groupBy'
 import { errorMessage } from '../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../queryKeys'
-import { useSMService } from './useSMService'
 
 export type GroupedObsModeDetails = {
   [key in TabName]: ObsModeDetails[]
@@ -31,8 +31,8 @@ const getObsModesDetails = async (
 }
 
 export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
-  const { data: smService } = useSMService(false)
-
+  const [smContext] = useSMService()
+  const smService = smContext?.smService
   return useQuery(
     OBS_MODES_DETAILS.key,
     () => smService && getObsModesDetails(smService),

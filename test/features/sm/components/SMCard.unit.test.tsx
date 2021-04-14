@@ -4,7 +4,7 @@ import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import { SMContextProvider } from '../../../../src/contexts/SMContext'
+// import { SMContextProvider } from '../../../../src/contexts/SMContext'
 import { SMCard } from '../../../../src/features/sm/components/smcard/SMCard'
 import { SM_CONNECTION } from '../../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
@@ -30,9 +30,9 @@ describe('SMCard', () => {
   it('should show Spawn button if Sequence Manager is not spawned | ESW-441', async () => {
     renderWithAuth({
       ui: (
-        <SMContextProvider>
-          <SMCard />
-        </SMContextProvider>
+        // <SMContextProvider>
+        <SMCard />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })
@@ -56,9 +56,9 @@ describe('SMCard', () => {
 
     renderWithAuth({
       ui: (
-        <SMContextProvider defaultValue={[smLocation, false]}>
-          <SMCard />
-        </SMContextProvider>
+        // <SMContextProvider defaultValue={[smLocation, false]}>
+        <SMCard />
+        // </SMContextProvider>
       ),
       mockClients: mockServices.serviceFactoryContext
     })

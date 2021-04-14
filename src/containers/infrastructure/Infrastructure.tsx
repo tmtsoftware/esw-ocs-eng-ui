@@ -3,7 +3,7 @@ import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import styles from '../../components/pageHeader/pageHeader.module.css'
-import { useSMContext } from '../../contexts/SMContext'
+import { useSMService } from '../../contexts/SMContext'
 import { AgentCards } from '../../features/agent/components/AgentCards'
 import { SmActions } from './SMActions'
 
@@ -20,12 +20,13 @@ const SMHeader = (): JSX.Element => {
 }
 
 const SMStatus = (): JSX.Element => {
-  const [data, isLoading] = useSMContext()
+  const [smContext, loading] = useSMService()
+  const smLocation = smContext?.smLocation
 
-  const [txtType, text]: [BaseType, string] = isLoading
+  const [txtType, text]: [BaseType, string] = loading
     ? ['warning', 'Loading...']
-    : data?.metadata
-    ? ['success', `Running on ${data.metadata.agentPrefix || 'unknown'}`]
+    : smLocation?.metadata
+    ? ['success', `Running on ${smLocation.metadata.agentPrefix || 'unknown'}`]
     : ['danger', 'Service down']
 
   return <Typography.Text type={txtType}>{text}</Typography.Text>

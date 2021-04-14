@@ -8,26 +8,9 @@ type Query = {
 }
 // Agent
 export const LIST_AGENTS: Query = { key: 'ListAgents' }
-export const AGENT_SERVICE: Query = {
-  key: 'AgentService'
-}
-
-// Config
-export const CONFIG_SERVICE: Query = {
-  key: 'ConfigService'
-}
 
 // SM
 export const PROVISION_STATUS: Query = { key: 'ProvisionStatus' }
-
-export const SM_STATUS: Query = {
-  key: 'SMStatus',
-  refetchInterval: 3000
-}
-export const SM_SERVICE: Query = {
-  key: 'SMService',
-  refetchInterval: 3000
-}
 
 export const AGENTS_STATUS: Query = {
   key: 'AgentsStatus',

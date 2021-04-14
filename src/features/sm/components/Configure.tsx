@@ -2,10 +2,10 @@ import { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../components/modal/SelectionModal'
+import { useSMService } from '../../../contexts/SMContext'
 import { errorMessage } from '../../../utils/message'
 import { useConfigureAction } from '../hooks/useConfigureAction'
 import { useObsModesDetails } from '../hooks/useObsModesDetails'
-import { useSMService } from '../hooks/useSMService'
 
 type ConfigureProps = {
   disabled: boolean | undefined
@@ -15,14 +15,15 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])
 
-  const smService = useSMService(false)
+  const [smContext, loading] = useSMService()
+  const smService = smContext?.smService
   const { data } = useObsModesDetails()
 
   const configureAction = useConfigureAction(obsMode)
   const handleModalOk = () => {
     if (obsMode) {
-      if (smService.data) {
-        configureAction.mutate(smService.data)
+      if (smService) {
+        configureAction.mutate(smService)
       }
       setModalVisibility(false)
     } else {
@@ -46,7 +47,7 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
   return (
     <>
       <Button
-        disabled={disabled || smService.isLoading || smService.isError}
+        disabled={disabled || loading || !smService}
         loading={configureAction.isLoading}
         onClick={onConfigureClick}>
         Configure

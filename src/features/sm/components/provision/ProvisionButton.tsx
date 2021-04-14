@@ -7,12 +7,15 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
+import {
+  ConfigServiceProvider,
+  useConfigService
+} from '../../../../contexts/ConfigServiceContext'
+import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
-import { useConfigService } from '../../../config/hooks/useConfigService'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-import { useSMService } from '../../hooks/useSMService'
 import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
@@ -84,9 +87,9 @@ export const ProvisionButton = ({
 
   const handleModalCancel = () => setModalVisibility(false)
 
-  const configService = useConfigService(useErrorBoundary)
-  const smService = useSMService(useErrorBoundary)
-
+  const [configService] = useConfigService()
+  const [smContext] = useSMService()
+  const smService = smContext?.smService
   const fetchProvisionConfAction = useMutation({
     mutationFn: fetchProvisionConf,
     onSuccess: async (data) => {
@@ -109,11 +112,11 @@ export const ProvisionButton = ({
   )
 
   const onProvisionClick = () => {
-    if (configService.data) fetchProvisionConfAction.mutate(configService.data)
+    if (configService) fetchProvisionConfAction.mutateAsync(configService)
   }
 
   const handleModalOk = () => {
-    if (smService.data) provisionAction.mutate(smService.data)
+    if (smService) provisionAction.mutateAsync(smService)
     setModalVisibility(false)
   }
 

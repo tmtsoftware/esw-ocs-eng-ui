@@ -4,9 +4,9 @@ import {
   ComponentId,
   Prefix
 } from '@tmtsoftware/esw-ts'
+import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { useAgentService } from './useAgentService'
 
 export const UNKNOWN_AGENT = new ComponentId(
   new Prefix('ESW', 'Unknown'),
@@ -25,7 +25,7 @@ const assignUnknownAgents = (agentStatus: AgentStatusSuccess) => {
 }
 
 export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
-  const { data: agentService } = useAgentService(false)
+  const [agentService] = useAgentService()
 
   return useQuery(
     AGENTS_STATUS.key,

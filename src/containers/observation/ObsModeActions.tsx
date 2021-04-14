@@ -1,10 +1,10 @@
 import type { ObsMode } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
+import { useSMService } from '../../contexts/SMContext'
 import { ShutdownButton } from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
-import { useSMService } from '../../features/sm/hooks/useSMService'
 import type { TabName } from './ObservationTabs'
 
 type ObsModeActionsProps = {
@@ -18,12 +18,13 @@ const RunningActions = ({ obsMode }: ObsModeActionsProps) => (
 
 const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
   const configureAction = useConfigureAction(obsMode)
-  const smService = useSMService(false)
+  const [smContext] = useSMService()
+  const smService = smContext?.smService
   const provisionStatus = useProvisionStatus(false)
 
   return (
     <Button
-      onClick={() => smService.data && configureAction.mutate(smService.data)}
+      onClick={() => smService && configureAction.mutate(smService)}
       loading={configureAction.isLoading}
       disabled={tabName === 'Non-configurable' || !provisionStatus.data}>
       Configure

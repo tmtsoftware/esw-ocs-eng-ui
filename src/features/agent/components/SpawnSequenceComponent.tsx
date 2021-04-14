@@ -2,10 +2,10 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
 import { Input, Popconfirm, Tooltip } from 'antd'
 import React, { useState } from 'react'
+import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { useAgentService } from '../hooks/useAgentService'
 import styles from './agentCards.module.css'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
@@ -36,7 +36,7 @@ export const SpawnSequenceComponent = ({
 }): JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
-  const { data: agentService } = useAgentService()
+  const [agentService] = useAgentService()
   const spawnSequenceComponentAction = useMutation({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
     onSuccess: () =>

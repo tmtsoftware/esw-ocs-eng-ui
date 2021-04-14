@@ -1,16 +1,15 @@
 import { VerticalAlignMiddleOutlined } from '@ant-design/icons'
 import type {
   GenericResponse,
-  Prefix,
   RemoveBreakpointResponse,
-  SequencerService,
-  Step
+  SequencerService
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { SEQUENCER_STEPS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import type { SequencerStepProps } from './StepActions'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse
@@ -41,10 +40,7 @@ const removeAction = (id: string) => (sequencerService: SequencerService) => {
 export const BreakpointAction = ({
   sequencerPrefix,
   step
-}: {
-  sequencerPrefix: Prefix
-  step: Step
-}): JSX.Element => {
+}: SequencerStepProps): JSX.Element => {
   const { data: sequencerService } = useSequencerService(sequencerPrefix)
 
   const insertBreakpointAction = useMutation({

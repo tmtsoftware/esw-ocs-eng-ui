@@ -18,7 +18,13 @@ describe('StepActions', () => {
     }
 
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={step} />,
+      ui: (
+        <StepActions
+          sequencerPrefix={sequencerPrefix}
+          step={step}
+          handleMenuClick={() => ({})}
+        />
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -34,7 +40,13 @@ describe('StepActions', () => {
     }
 
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={step} />,
+      ui: (
+        <StepActions
+          sequencerPrefix={sequencerPrefix}
+          step={step}
+          handleMenuClick={() => ({})}
+        />
+      ),
       mockClients: mockServices.serviceFactoryContext
     })
 

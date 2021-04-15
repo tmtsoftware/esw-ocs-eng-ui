@@ -3,11 +3,16 @@ import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Button, Dropdown, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useStepList } from '../../hooks/useStepList'
 import { typeStatus } from '../SequencersTable'
 import styles from './sequencerDetails.module.css'
 import { StepActions } from './StepActions'
+
+export type SequencerStepProps = {
+  step: Step
+  sequencerPrefix: Prefix
+}
 
 const color: { [stepStatus: string]: BaseType } = {
   Success: 'secondary',
@@ -21,6 +26,29 @@ const baseTypeColorCode = {
   danger: '#ff4d4f',
   warning: '#FFC53D',
   success: '#52c41a'
+}
+
+const StepDropdown = ({
+  sequencerPrefix,
+  step
+}: SequencerStepProps): JSX.Element => {
+  const [isOverlayVisible, toggleOverlayVisibility] = useState<boolean>(false)
+
+  return (
+    <Dropdown
+      overlay={
+        <StepActions
+          sequencerPrefix={sequencerPrefix}
+          step={step}
+          handleMenuClick={() => toggleOverlayVisibility(!isOverlayVisible)}
+        />
+      }
+      trigger={['click']}
+      onVisibleChange={toggleOverlayVisibility}
+      visible={isOverlayVisible}>
+      <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
+    </Dropdown>
+  )
 }
 
 const StepComponent = (
@@ -59,11 +87,7 @@ const StepComponent = (
           {step.command.commandName}
         </Typography.Text>
       </Button>
-      <Dropdown
-        overlay={<StepActions sequencerPrefix={sequencerPrefix} step={step} />}
-        trigger={['click']}>
-        <MoreOutlined style={{ fontSize: '1.5rem' }} role={`stepActions`} />
-      </Dropdown>
+      <StepDropdown step={step} sequencerPrefix={sequencerPrefix} />
     </Space>
   )
 }

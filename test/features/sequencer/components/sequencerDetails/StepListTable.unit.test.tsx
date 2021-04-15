@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -18,13 +18,13 @@ describe('stepList table', () => {
       hasBreakpoint: false,
       status: { _type: 'Success' },
       command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-      id: ''
+      id: 'step1'
     },
     {
       hasBreakpoint: false,
       status: { _type: 'InFlight' },
       command: new Setup(Prefix.fromString('ESW.test'), 'Command-2'),
-      id: ''
+      id: 'step2'
     }
   ])
 
@@ -123,6 +123,38 @@ describe('stepList table', () => {
 
     await screen.findByText('Add a step')
     await screen.findByText('Duplicate')
+  })
+
+  it('should hide stepActions menu after clicking menu | ESW-490', async () => {
+    when(sequencerService.getSequence()).thenResolve(stepList)
+    when(sequencerService.addBreakpoint('step1')).thenResolve({ _type: 'Ok' })
+
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={sequencerPrefix}
+          stepListStatus={'In Progress'}
+          setSelectedStep={() => ({})}
+        />
+      ),
+      mockClients: mockServices.serviceFactoryContext
+    })
+
+    const actions = await screen.findAllByRole('stepActions')
+    userEvent.click(actions[0], { button: 0 })
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    // ESW-459
+    const insertBreakpoint = await screen.findByText('Insert breakpoint')
+
+    userEvent.click(insertBreakpoint, { button: 0 })
+
+    await waitFor(() => {
+      const menuItems = screen.queryAllByRole('menuitem')
+      expect(menuItems.length).to.equal(0)
+    })
   })
 })
 

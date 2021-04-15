@@ -5,16 +5,16 @@ import React from 'react'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 
-export type SequencerStepProps = {
-  step: Step
-  sequencerPrefix: Prefix
-}
-
 export const StepActions = ({
   step,
-  sequencerPrefix
-}: SequencerStepProps): JSX.Element => (
-  <Menu>
+  sequencerPrefix,
+  handleMenuClick
+}: {
+  step: Step
+  sequencerPrefix: Prefix
+  handleMenuClick: () => void
+}): JSX.Element => (
+  <Menu onClick={handleMenuClick}>
     <Menu.Item key='1'>
       <BreakpointAction step={step} sequencerPrefix={sequencerPrefix} />
     </Menu.Item>

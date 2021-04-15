@@ -3,7 +3,6 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import type { UseQueryResult } from '../../../../hooks/useQuery'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { OBS_MODES_DETAILS } from '../../../queryKeys'
 
 const btnMsgs = {
   Pause: {

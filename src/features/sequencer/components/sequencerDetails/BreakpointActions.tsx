@@ -9,7 +9,7 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { SEQUENCER_STEPS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerStepProps } from './StepActions'
+import type { SequencerStepProps } from './StepListTable'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse

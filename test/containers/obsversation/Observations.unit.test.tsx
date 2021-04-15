@@ -92,10 +92,8 @@ describe('Observation page', () => {
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     await screen.findByRole('menuitem', { name: 'DarkNight_8' })
 
-    const pauseButton = screen.getByRole('button', { name: 'Pause' })
     const shutdownButton = screen.getByRole('button', { name: 'Shutdown' })
 
-    expect(pauseButton).to.exist
     expect(shutdownButton).to.exist
     expect(screen.getAllByText('DarkNight_1')).to.have.length(2)
     await screen.findByText('Loaded')

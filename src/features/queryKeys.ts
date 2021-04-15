@@ -1,4 +1,4 @@
-import type { Prefix, ObsMode } from '@tmtsoftware/esw-ts'
+import type { Prefix } from '@tmtsoftware/esw-ts'
 
 type Query = {
   key: string
@@ -58,10 +58,6 @@ export const SEQUENCER_STATUS: Query = {
 }
 
 export const SEQUENCER_STATE = (prefix: Prefix): Query => ({
-  key: `${prefix.toJSON()}-SequencerState`
-})
-
-export const OBS_MODE_STATUS = (obsMode: ObsMode): Query => ({
-  key: `${obsMode}-ObsModeState`,
+  key: `${prefix.toJSON()}-SequencerState`,
   refetchInterval: 1000
 })

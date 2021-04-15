@@ -17,7 +17,8 @@ export const useSequencerState = <E>(
     () => sequencerService?.getSequencerState(),
     {
       onError,
-      enabled: !!sequencerService
+      enabled: !!sequencerService,
+      refetchInterval: SEQUENCER_STATE(sequencerPrefix).refetchInterval
     }
   )
 }

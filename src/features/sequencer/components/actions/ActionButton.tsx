@@ -5,14 +5,6 @@ import type { UseQueryResult } from '../../../../hooks/useQuery'
 import { errorMessage, successMessage } from '../../../../utils/message'
 
 const btnMsgs = {
-  Pause: {
-    success: 'Successfully paused sequencer',
-    error: 'Failed to pause sequencer'
-  },
-  Resume: {
-    success: 'Successfully resumed sequencer',
-    error: 'Failed to resume sequencer'
-  },
   Shutdown: {
     success: 'Successfully shutdown sequencer',
     error: 'Failed to shutdown sequencer'

@@ -1,18 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  AgentStatus,
-  ComponentId,
-  ObsMode,
-  Prefix,
-  StepList
-} from '@tmtsoftware/esw-ts'
+import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import obsModesData from '../../jsons/obsmodes'
-import { step } from '../../utils/sequence-utils'
 import {
   assertTableHeader,
   assertTableHeaderNotPresent
@@ -64,50 +57,6 @@ describe('observation tabs', () => {
     await waitFor(() =>
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
     )
-  })
-
-  it('should be able to pause running observation| ESW-454', async () => {
-    when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerService.pause()).thenResolve({
-      _type: 'Ok'
-    })
-    when(sequencerService.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
-    when(sequencerService.getSequence())
-      .thenResolve(new StepList([step('Pending', false)]))
-      .thenResolve(new StepList([step('Pending', true)]))
-    when(sequencerService.resume()).thenResolve({
-      _type: 'Ok'
-    })
-
-    renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Running'}
-          currentTab={'Running'}
-          setObservation={() => ({})}
-        />
-      ),
-      mockClients: mockServices.serviceFactoryContext
-    })
-
-    const pauseButton = (await screen.findByRole('button', {
-      name: 'Pause'
-    })) as HTMLButtonElement
-
-    await waitFor(() => expect(pauseButton.disabled).false)
-
-    userEvent.click(pauseButton)
-
-    await screen.findByText('Successfully paused sequencer')
-
-    verify(sequencerService.pause()).called()
-
-    //Pause button should get replaced with resume button
-    await screen.findByRole('button', {
-      name: 'Resume'
-    })
   })
 
   it('should be able to configure a configurable observation | ESW-450', async () => {
@@ -208,43 +157,6 @@ describe('observation tabs', () => {
     await waitFor(() => {
       verify(smService.configure(new ObsMode('random'))).never()
       verify(agentService.getAgentStatus()).called()
-    })
-  })
-
-  it('should be able to resume a paused observation | ESW-454', async () => {
-    when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerService.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
-    when(sequencerService.getSequence())
-      .thenResolve(new StepList([step('Pending', true)]))
-      .thenResolve(new StepList([step('Pending', false)]))
-    when(sequencerService.resume()).thenResolve({
-      _type: 'Ok'
-    })
-
-    renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Running'}
-          currentTab={'Running'}
-          setObservation={() => ({})}
-        />
-      ),
-      mockClients: mockServices.serviceFactoryContext
-    })
-
-    const resumeButton = await screen.findByRole('button', {
-      name: 'Resume'
-    })
-    userEvent.click(resumeButton)
-
-    await screen.findByText('Successfully resumed sequencer')
-    verify(sequencerService.resume()).called()
-
-    //Pause button should get replaced with resume button
-    await screen.findByRole('button', {
-      name: 'Pause'
     })
   })
 

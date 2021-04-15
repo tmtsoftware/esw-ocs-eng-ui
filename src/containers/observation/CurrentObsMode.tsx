@@ -1,14 +1,16 @@
-import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
+import {
+  ObsMode,
+  Prefix,
+  SequencerStateResponse,
+  Subsystem
+} from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { memo } from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
-import {
-  RunningObsModeStatus,
-  useObsModeStatus
-} from '../../features/sequencer/hooks/useObsModeStatus'
+import { useSequencerState } from '../../features/sequencer/hooks/useSequencerState'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
 
@@ -32,11 +34,13 @@ const CObsMode = ({
   resources
 }: CurrentObsModeProps): JSX.Element => {
   const isRunningTab = currentTab === 'Running' //TODO what about non running tabs
-  const { data: obsModeStatus } = useObsModeStatus(obsMode)
+  const { data: obsModeStatus } = useSequencerState(
+    new Prefix('ESW', obsMode.name)
+  )
   //TODO use StatusAPI of sequencer for this status
   const Status = () => {
     const status = obsModeStatus ? (
-      <Text content={obsModeStatus} type={getTextType(obsModeStatus)} />
+      <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
     ) : (
       <Text content='NA' type='secondary' />
     )
@@ -62,11 +66,7 @@ const CObsMode = ({
         }
         extra={
           <Space style={{ paddingRight: '2.5rem' }}>
-            <ObsModeActions
-              tabName={currentTab}
-              obsMode={obsMode}
-              obsModeStatus={obsModeStatus}
-            />
+            <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
         }>
         {isRunningTab && (
@@ -78,11 +78,10 @@ const CObsMode = ({
   )
 }
 
-const getTextType = (runningObsModeStatus: RunningObsModeStatus): BaseType => {
-  if (runningObsModeStatus === 'Offline') return 'secondary'
-  if (runningObsModeStatus === 'Paused') return 'warning'
-  if (runningObsModeStatus === 'Failed') return 'danger'
-  return 'success'
+const getTextType = (
+  runningObsModeStatus: SequencerStateResponse
+): BaseType => {
+  return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
 
 export const CurrentObsMode = memo(

@@ -6,6 +6,7 @@ import { SEQUENCER_SERVICE } from '../../queryKeys'
 export const useSequencerService = <E>(
   sequencerPrefix: Prefix,
   useErrorBoundary = true,
+  enabled = true,
   onError?: (err: E) => void
 ): UseQueryResult<SequencerService> => {
   const { sequencerServiceFactory } = useServiceFactory()
@@ -17,7 +18,8 @@ export const useSequencerService = <E>(
     () => sequencerServiceFactory(masterSequencerCompId),
     {
       useErrorBoundary,
-      onError
+      onError,
+      enabled: enabled
     }
   )
 }

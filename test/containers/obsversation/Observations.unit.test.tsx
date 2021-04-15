@@ -1,10 +1,15 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
-import obsModesData from '../../jsons/obsmodes'
+import {
+  obsModesData,
+  configurableObsModesData,
+  nonConfigurableObsModesData
+} from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('Observation page', () => {
@@ -99,12 +104,16 @@ describe('Observation page', () => {
     await screen.findByText('Loaded')
   })
 
-  const tabTests: [string, string[]][] = [
-    ['Non-configurable', ['DarkNight_3', 'DarkNight_5']],
-    ['Configurable', ['DarkNight_2', 'DarkNight_6']]
+  const tabTests: [string, string[], ObsModesDetailsResponseSuccess][] = [
+    [
+      'Non-configurable',
+      ['DarkNight_3', 'DarkNight_5'],
+      nonConfigurableObsModesData
+    ],
+    ['Configurable', ['DarkNight_2', 'DarkNight_6'], configurableObsModesData]
   ]
 
-  tabTests.forEach(([tabName, obsModes]) => {
+  tabTests.forEach(([tabName, obsModes, data]) => {
     it(`should render ${tabName} obsModes | ESW-450`, async () => {
       const mockServices = getMockServices()
       const smService = mockServices.mock.smService
@@ -116,7 +125,7 @@ describe('Observation page', () => {
         agentStatus: [],
         seqCompsWithoutAgent: []
       })
-      when(smService.getObsModesDetails()).thenResolve(obsModesData)
+      when(smService.getObsModesDetails()).thenResolve(data)
       when(sequencerService.getSequencerState()).thenReject(
         new Error('No sequencer present')
       )
@@ -134,18 +143,17 @@ describe('Observation page', () => {
       const menuItem = await screen.findByRole('menuitem', {
         name: obsModes[0]
       })
-      await screen.findByRole('menuitem', { name: obsModes[1] })
+      await screen.findByRole('menuitem', { name: new RegExp(obsModes[0]) })
 
       userEvent.click(menuItem)
       expect(screen.getAllByText(obsModes[0])).to.have.length(2)
 
       //Checking that obsMode status is NA
-      expect(screen.getAllByText('NA')).to.have.length(2)
-      verify(sequencerService.getSequencerState()).atLeast(2)
+      const tabPanel = await screen.findByRole('tabpanel')
+      expect(within(tabPanel).getByText('NA')).to.exist
+      verify(sequencerService.getSequencerState()).never()
 
-      await waitFor(() => {
-        verify(smService.getObsModesDetails()).called()
-      })
+      verify(smService.getObsModesDetails()).called()
     })
   })
 

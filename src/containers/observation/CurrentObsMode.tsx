@@ -33,9 +33,11 @@ const CObsMode = ({
   sequencers,
   resources
 }: CurrentObsModeProps): JSX.Element => {
-  const isRunningTab = currentTab === 'Running' //TODO what about non running tabs
+  const isRunningTab = currentTab === 'Running'
   const { data: obsModeStatus } = useSequencerState(
-    new Prefix('ESW', obsMode.name)
+    new Prefix('ESW', obsMode.name),
+    false,
+    isRunningTab
   )
   //TODO use StatusAPI of sequencer for this status
   const Status = () => {

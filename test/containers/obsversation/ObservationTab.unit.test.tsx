@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
-import obsModesData from '../../jsons/obsmodes'
+import { obsModesData } from '../../jsons/obsmodes'
 import {
   assertTableHeader,
   assertTableHeaderNotPresent

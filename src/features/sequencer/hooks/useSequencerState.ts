@@ -6,18 +6,20 @@ import { useSequencerService } from './useSequencerService'
 export const useSequencerState = <E>(
   sequencerPrefix: Prefix,
   useErrorBoundary = false,
+  enabled = true,
   onError?: (err: E) => void
 ): UseQueryResult<SequencerStateResponse> => {
   const { data: sequencerService } = useSequencerService(
     sequencerPrefix,
-    useErrorBoundary
+    useErrorBoundary,
+    enabled
   )
   return useQuery(
     SEQUENCER_STATE(sequencerPrefix).key,
     () => sequencerService?.getSequencerState(),
     {
       onError,
-      enabled: !!sequencerService,
+      enabled: !!sequencerService && enabled,
       refetchInterval: SEQUENCER_STATE(sequencerPrefix).refetchInterval
     }
   )

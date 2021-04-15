@@ -79,6 +79,7 @@ describe('Observation page', () => {
   it('should render running obsModes | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
+    const sequencerService = mockServices.mock.sequencerService
 
     renderWithAuth({
       ui: <Observations />,
@@ -86,6 +87,7 @@ describe('Observation page', () => {
     })
 
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
+    when(sequencerService.getSequencerState()).thenResolve({ _type: 'Loaded' })
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     await screen.findByRole('menuitem', { name: 'DarkNight_8' })
@@ -96,6 +98,7 @@ describe('Observation page', () => {
     expect(pauseButton).to.exist
     expect(shutdownButton).to.exist
     expect(screen.getAllByText('DarkNight_1')).to.have.length(2)
+    await screen.findByText('Loaded')
   })
 
   const tabTests: [string, string[]][] = [
@@ -108,12 +111,17 @@ describe('Observation page', () => {
       const mockServices = getMockServices()
       const smService = mockServices.mock.smService
       const agentService = mockServices.mock.agentService
+      const sequencerService = mockServices.mock.sequencerService
+
       when(agentService.getAgentStatus()).thenResolve({
         _type: 'Success',
         agentStatus: [],
         seqCompsWithoutAgent: []
       })
       when(smService.getObsModesDetails()).thenResolve(obsModesData)
+      when(sequencerService.getSequencerState()).thenReject(
+        new Error('No sequencer present')
+      )
 
       renderWithAuth({
         ui: <Observations />,
@@ -132,6 +140,10 @@ describe('Observation page', () => {
 
       userEvent.click(menuItem)
       expect(screen.getAllByText(obsModes[0])).to.have.length(2)
+
+      //Checking that obsMode status is NA
+      expect(screen.getAllByText('NA')).to.have.length(2)
+      verify(sequencerService.getSequencerState()).atLeast(2)
 
       await waitFor(() => {
         verify(smService.getObsModesDetails()).called()

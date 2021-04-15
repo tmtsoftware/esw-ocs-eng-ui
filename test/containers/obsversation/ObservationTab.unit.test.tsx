@@ -314,6 +314,7 @@ describe('observation tabs', () => {
       within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })
     ).to.have.length(0)
   })
+
   it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 

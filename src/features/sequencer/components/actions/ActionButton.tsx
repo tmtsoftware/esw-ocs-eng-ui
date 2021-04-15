@@ -23,7 +23,7 @@ type ActionButtonProps<QResult, MResult> = {
 export const useAction = <QResult, MResult>(
   title: Title,
   onClick: (data: QResult) => Promise<MResult>,
-  invalidateKeysOnSuccess: string[]
+  invalidateKeysOnSuccess?: string[]
 ): UseMutationResult<MResult, unknown, QResult> =>
   useMutation({
     mutationFn: onClick,

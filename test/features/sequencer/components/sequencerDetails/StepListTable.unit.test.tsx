@@ -140,7 +140,7 @@ describe('stepList table', () => {
           setSelectedStep={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const actions = await screen.findAllByRole('stepActions')

@@ -2,6 +2,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
+import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useSMService } from '../../../sm/hooks/useSMService'
 import { useAction } from './ActionButton'
 
@@ -42,7 +43,9 @@ export const ShutdownButton = ({
   obsMode: ObsMode
 }): JSX.Element => {
   const smService = useSMService(false)
-  const shutdownAction = useAction('Shutdown', shutdown(obsMode))
+  const shutdownAction = useAction('Shutdown', shutdown(obsMode), [
+    OBS_MODES_DETAILS.key
+  ])
 
   return (
     <Button

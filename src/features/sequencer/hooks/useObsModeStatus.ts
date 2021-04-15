@@ -1,7 +1,7 @@
 import type { SequencerStateResponse } from '@tmtsoftware/esw-ts'
 import { Prefix, ObsMode } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
-import { OBS_MODE_STATE } from '../../queryKeys'
+import { OBS_MODE_STATUS } from '../../queryKeys'
 import { useSequencerState } from './useSequencerState'
 import { useStepList } from './useStepList'
 
@@ -20,7 +20,7 @@ export const useObsModeStatus = <E>(
   )
 
   return useQuery(
-    `${obsMode.name}-${OBS_MODE_STATE.key}`,
+    `${obsMode.name}-${OBS_MODE_STATUS(obsMode).key}`,
     () => {
       return stepList?.isFailed()
         ? 'Failed'
@@ -31,7 +31,7 @@ export const useObsModeStatus = <E>(
     {
       onError,
       enabled: !!sequencerState && isStepListFetched,
-      refetchInterval: OBS_MODE_STATE.refetchInterval
+      refetchInterval: OBS_MODE_STATUS(obsMode).refetchInterval
     }
   )
 }

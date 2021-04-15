@@ -1,34 +1,17 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
-import {
-  ObsMode,
-  SequencerStateResponse,
-  Setup,
-  Step,
-  StepList
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, SequencerStateResponse, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import { mock, when } from 'ts-mockito'
+import { when } from 'ts-mockito'
 
 import {
   RunningObsModeStatus,
   useObsModeStatus
 } from '../../../../src/features/sequencer/hooks/useObsModeStatus'
+import { step } from '../../../utils/sequence-utils'
 import {
   getContextWithQueryClientProvider,
   getMockServices
 } from '../../../utils/test-utils'
-
-const step = (
-  stepStatus: 'Pending' | 'Success' | 'Failure' | 'InFlight',
-  hasBreakpoint = false
-): Step => {
-  return {
-    hasBreakpoint: hasBreakpoint,
-    status: { _type: stepStatus, message: '' },
-    command: mock(Setup),
-    id: ''
-  }
-}
 
 describe('useObsModeState', () => {
   const tests: [

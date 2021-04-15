@@ -40,7 +40,7 @@ describe('Shutdown button for Sequencer ', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname} | ESW-450`, async () => {
+    it(`should return ${testname} | ESW-454`, async () => {
       when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve(
         response
       )

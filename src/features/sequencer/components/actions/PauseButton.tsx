@@ -1,5 +1,6 @@
-import { Prefix, SequencerService } from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix, SequencerService } from '@tmtsoftware/esw-ts'
 import React from 'react'
+import { OBS_MODE_STATUS, OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { ActionButton } from './ActionButton'
 
@@ -15,8 +16,8 @@ const pause = async (sequencerService: SequencerService) => {
   }
 }
 
-export const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
-  const masterSequencer = new Prefix('ESW', obsMode)
+export const PauseButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
+  const masterSequencer = new Prefix('ESW', obsMode.name)
   const sequencerService = useSequencerService(masterSequencer, false)
 
   return (
@@ -24,6 +25,10 @@ export const PauseButton = ({ obsMode }: { obsMode: string }): JSX.Element => {
       title='Pause'
       queryResult={sequencerService}
       onClick={pause}
+      invalidateKeysOnSuccess={[
+        OBS_MODES_DETAILS.key,
+        OBS_MODE_STATUS(obsMode).key
+      ]}
     />
   )
 }

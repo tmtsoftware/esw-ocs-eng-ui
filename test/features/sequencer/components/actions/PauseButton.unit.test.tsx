@@ -1,13 +1,14 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { PauseResponse } from '@tmtsoftware/esw-ts'
+import { ObsMode } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { PauseButton } from '../../../../../src/features/sequencer/components/actions/PauseButton'
 import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Pause button', () => {
-  const obsMode = 'ESW.DarkNight'
+  const obsMode = new ObsMode('ESW.DarkNight')
   const mockServices = getMockServices()
   const sequencerService = mockServices.mock.sequencerService
 
@@ -39,7 +40,7 @@ describe('Pause button', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname} | ESW-450`, async () => {
+    it(`should return ${testname} | ESW-454`, async () => {
       when(sequencerService.pause()).thenResolve(response)
 
       renderWithAuth({

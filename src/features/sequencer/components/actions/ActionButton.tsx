@@ -26,25 +26,28 @@ type ActionButtonProps<QResult, MResult> = {
   title: Title
   queryResult: UseQueryResult<QResult>
   onClick: (data: QResult) => Promise<MResult>
+  invalidateKeysOnSuccess: string[]
 }
 
 export const useAction = <QResult, MResult>(
   title: Title,
-  onClick: (data: QResult) => Promise<MResult>
+  onClick: (data: QResult) => Promise<MResult>,
+  invalidateKeysOnSuccess: string[]
 ): UseMutationResult<MResult, unknown, QResult> =>
   useMutation({
     mutationFn: onClick,
     onSuccess: () => successMessage(btnMsgs[title].success),
     onError: (e) => errorMessage(btnMsgs[title].error, e),
-    invalidateKeysOnSuccess: [OBS_MODES_DETAILS.key]
+    invalidateKeysOnSuccess: invalidateKeysOnSuccess
   })
 
 export const ActionButton = <QRresult, MResult>({
   title,
   queryResult,
-  onClick
+  onClick,
+  invalidateKeysOnSuccess
 }: ActionButtonProps<QRresult, MResult>): JSX.Element => {
-  const action = useAction(title, onClick)
+  const action = useAction(title, onClick, invalidateKeysOnSuccess)
 
   return (
     <Button

@@ -62,7 +62,11 @@ const CObsMode = ({
         }
         extra={
           <Space style={{ paddingRight: '2.5rem' }}>
-            <ObsModeActions tabName={currentTab} obsMode={obsMode} />
+            <ObsModeActions
+              tabName={currentTab}
+              obsMode={obsMode}
+              obsModeStatus={obsModeStatus}
+            />
           </Space>
         }>
         {isRunningTab && (

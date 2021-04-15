@@ -27,9 +27,11 @@ export const createServiceCtx = <T>(
       [auth]
     )
 
+    const track = useCallback(locationService.track(connection), [connection])
+    
     return useStream({
       mapper: onEventCallback,
-      run: locationService.track(connection)
+      run: track
     })
   }
 

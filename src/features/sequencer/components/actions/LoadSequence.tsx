@@ -1,15 +1,9 @@
-import type {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequenceCommand,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
+import type { SequenceCommand } from '@tmtsoftware/esw-ts'
 import { SequenceCommandD } from '@tmtsoftware/esw-ts/lib/dist/src/decoders/CommandDecoders'
 import { getOrThrow } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
-import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
-import { errorMessage, successMessage } from '../../../../utils/message'
+import { useLoadAction } from '../../hooks/useLoadAction'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
@@ -20,26 +14,6 @@ const validateSequence = (sequenceObj: unknown): SequenceCommand[] => {
   return sequenceObj.map((x) => getOrThrow(SequenceCommandD.decode(x)))
 }
 
-const useLoadAction = (
-  prefix: Prefix,
-  sequence?: SequenceCommand[]
-): UseMutationResult<
-  OkOrUnhandledResponse | undefined,
-  unknown,
-  SequencerService
-> => {
-  const mutationFn = async (sequencerService: SequencerService) =>
-    sequence && (await sequencerService.loadSequence(sequence))
-
-  return useMutation({
-    mutationFn,
-    onSuccess: () => successMessage(''),
-    onError: (e) => errorMessage('errorMsg', e),
-    invalidateKeysOnSuccess: [prefix.toJSON() + 'state'],
-    useErrorBoundary: false
-  })
-}
-
 export const LoadSequence = ({
   prefix,
   sequencerState
@@ -48,8 +22,8 @@ export const LoadSequence = ({
   const [sequence, setSequence] = useState<SequenceCommand[]>()
   const loadSequenceAction = useLoadAction(prefix, sequence)
 
-  const beforeUpload = async (file: File): Promise<void> => {
-    return await new Promise((resolve) => {
+  const beforeUpload = (file: File): Promise<void> => {
+    return new Promise((resolve) => {
       const reader = new FileReader()
       reader.readAsText(file)
       reader.onload = () => {

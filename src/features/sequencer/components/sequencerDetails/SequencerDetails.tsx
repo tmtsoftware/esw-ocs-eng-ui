@@ -19,6 +19,7 @@ import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
+import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
 import type { typeStatus } from '../SequencersTable'
@@ -55,7 +56,7 @@ const SequenceActions = ({
 }: SequencerProps): JSX.Element => (
   <Space>
     <LoadSequence prefix={prefix} sequencerState={sequencerState} />
-    <Button> Go offline</Button>
+    <LifecycleState prefix={prefix} />
     <Button danger> Abort sequence</Button>
   </Space>
 )

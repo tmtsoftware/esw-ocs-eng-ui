@@ -126,6 +126,14 @@ describe('stepList table', () => {
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
+    const stepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
     when(sequencerService.getSequence()).thenResolve(stepList)
     when(sequencerService.addBreakpoint('step1')).thenResolve({ _type: 'Ok' })
 
@@ -150,6 +158,8 @@ describe('stepList table', () => {
     const insertBreakpoint = await screen.findByText('Insert breakpoint')
 
     userEvent.click(insertBreakpoint, { button: 0 })
+
+    await screen.findByText('Successfully inserted breakpoint')
 
     await waitFor(() => {
       const menuItems = screen.queryAllByRole('menuitem')

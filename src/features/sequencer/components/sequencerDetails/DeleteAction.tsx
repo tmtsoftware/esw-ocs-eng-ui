@@ -1,6 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons'
 import type { GenericResponse, SequencerService } from '@tmtsoftware/esw-ts'
-import { Typography } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -45,8 +44,8 @@ export const DeleteAction = ({
       onClick={() =>
         sequencerService && deleteAction.mutateAsync(sequencerService)
       }>
-      <DeleteOutlined style={{ color: 'red' }} />
-      <Typography.Text type={'danger'}>Delete</Typography.Text>
+      <DeleteOutlined />
+      Delete
     </div>
   )
 }

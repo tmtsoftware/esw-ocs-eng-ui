@@ -6,6 +6,7 @@ import { render } from 'react-dom'
 import { AppConfig } from './config/AppConfig'
 import { App } from './containers/app/App'
 import { AgentServiceProvider } from './contexts/AgentServiceContext'
+import { ConfigServiceProvider } from './contexts/ConfigServiceContext'
 import { SMServiceProvider } from './contexts/SMContext'
 import { useAuth } from './contexts/useAuthContext'
 import './index.module.css'
@@ -18,7 +19,9 @@ const Main = () => {
   return (
     <AgentServiceProvider>
       <SMServiceProvider>
-        <App />
+        <ConfigServiceProvider>
+          <App />
+        </ConfigServiceProvider>
       </SMServiceProvider>
     </AgentServiceProvider>
   )

@@ -38,7 +38,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const shutdownButton = await screen.findByRole('button', {
@@ -57,6 +57,34 @@ describe('observation tabs', () => {
     await waitFor(() =>
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
     )
+  })
+  it('should be able to pause running observation', async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+    when(sequencerService.pause()).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <ObservationTab
+          tabName={'Running'}
+          currentTab={'Running'}
+          setObservation={() => ({})}
+        />
+      ),
+      mockClients: mockServices
+    })
+    const pauseButton = (await screen.findByRole('button', {
+      name: 'Pause'
+    })) as HTMLButtonElement
+
+    await waitFor(() => expect(pauseButton.disabled).false)
+
+    userEvent.click(pauseButton)
+
+    await screen.findByText('Successfully paused sequencer')
+
+    await waitFor(() => verify(sequencerService.pause()).called())
   })
 
   it('should be able to configure a configurable observation | ESW-450', async () => {
@@ -116,7 +144,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -146,7 +174,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -160,6 +188,34 @@ describe('observation tabs', () => {
     })
   })
 
+  // TODO remove this skip toggle from here after ESW-382 & 383 is played
+  it.skip('should be able to resume a paused observation | ESW-450', async () => {
+    when(smService.getObsModesDetails()).thenResolve({
+      _type: 'Success',
+      obsModes: []
+    })
+    when(sequencerService.resume()).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <ObservationTab
+          tabName={'Running'}
+          currentTab={'Running'}
+          setObservation={() => ({})}
+        />
+      ),
+      mockClients: mockServices
+    })
+    const resumeButton = await screen.findByRole('button', {
+      name: 'Resume'
+    })
+    userEvent.click(resumeButton)
+
+    await screen.findByText('Successfully resumed sequencer')
+  })
+
   it('should render sequencer & resources table with all resources as in use on running tab | ESW-451, ESW-453', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
@@ -171,7 +227,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     await screen.findAllByRole('table')
     const [
@@ -206,7 +262,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findAllByRole('table')
@@ -238,7 +294,7 @@ describe('observation tabs', () => {
           setObservation={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findAllByRole('table')

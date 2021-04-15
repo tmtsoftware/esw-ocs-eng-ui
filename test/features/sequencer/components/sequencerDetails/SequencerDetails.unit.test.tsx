@@ -60,7 +60,7 @@ describe('sequencer details', () => {
 
     renderWithAuth({
       ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const sequencerTitle = await screen.findByTestId('status-error')
@@ -87,7 +87,7 @@ describe('sequencer details', () => {
 
     renderWithAuth({
       ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const loadAndUploadButton = screen.getAllByRole('button', {
@@ -119,7 +119,7 @@ describe('sequencer details', () => {
 
     renderWithAuth({
       ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     when(sequencerService.isOnline()).thenResolve(true)
@@ -184,7 +184,7 @@ describe('sequencer details', () => {
 
     renderWithAuth({
       ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findAllByRole('table')

@@ -20,7 +20,7 @@ export const useProvisionStatus = (
 
   return useQuery(
     PROVISION_STATUS.key,
-    async () => agentService && checkAnySequenceComponentRunning(agentService),
+    () => agentService && checkAnySequenceComponentRunning(agentService),
     { useErrorBoundary, enabled: !!agentService }
   )
 }

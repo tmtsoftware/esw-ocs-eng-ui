@@ -19,7 +19,7 @@ describe('Kill sequence component button | ESW-446', () => {
 
     renderWithAuth({
       ui: <KillSequenceComponent componentId={sequenceComponentID} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     const killIcon = await screen.findByRole('deleteSeqCompIcon')
     userEvent.click(killIcon)
@@ -36,7 +36,7 @@ describe('Kill sequence component button | ESW-446', () => {
 
     renderWithAuth({
       ui: <KillSequenceComponent componentId={sequenceComponentID} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     const killIcon = await screen.findByRole('deleteSeqCompIcon')
     userEvent.click(killIcon)

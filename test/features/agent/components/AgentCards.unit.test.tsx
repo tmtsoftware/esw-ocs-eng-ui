@@ -56,7 +56,7 @@ describe('Agents Grid View', () => {
     })
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('ESW.machine1')
@@ -82,7 +82,7 @@ describe('Agents Grid View', () => {
     })
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     // await sleep(1000)
     await screen.findByText('ESW.machine1')
@@ -127,7 +127,7 @@ describe('Agents Grid View', () => {
     })
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('ESW.machine1')
@@ -147,7 +147,7 @@ describe('Agents Grid View', () => {
     })
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -164,7 +164,7 @@ describe('Agents Grid View', () => {
     })
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -188,7 +188,7 @@ describe('Agents Grid View', () => {
 
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     const icon = await screen.findByRole('addSeqCompIcon')
 
@@ -221,7 +221,7 @@ describe('Agents Grid View', () => {
 
     renderWithAuth({
       ui: <AgentCards />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
     userEvent.click(deleteIcon)

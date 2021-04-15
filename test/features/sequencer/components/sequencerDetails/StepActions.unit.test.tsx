@@ -36,7 +36,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Insert breakpoint')
@@ -51,7 +51,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Remove breakpoint')
@@ -74,7 +74,7 @@ describe('StepActions', () => {
           handleMenuClick={handleMenuClick}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const removeAction = await screen.findByText('Remove breakpoint')
@@ -92,7 +92,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -116,7 +116,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -145,7 +145,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -174,7 +174,7 @@ describe('StepActions', () => {
           handleMenuClick={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {

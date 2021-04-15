@@ -26,7 +26,7 @@ describe('Resources page', () => {
   it('should display resources in use for configured obsmode & for conflicting non-configurable resources | ESW-453', async () => {
     renderWithAuth({
       ui: <Resources />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     expect(screen.getAllByText('Resource')).to.length(1)
@@ -50,7 +50,7 @@ describe('Resources page', () => {
   it('should display available resources for configurable obsmodes | ESW-453', async () => {
     renderWithAuth({
       ui: <Resources />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     expect(screen.getAllByText('Resource')).to.length(1)
@@ -72,7 +72,7 @@ describe('Resources page', () => {
   it('should sort InUse resources to top of the table | ESW-453', async () => {
     renderWithAuth({
       ui: <Resources />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     expect(screen.getAllByText('Resource')).to.length(1)

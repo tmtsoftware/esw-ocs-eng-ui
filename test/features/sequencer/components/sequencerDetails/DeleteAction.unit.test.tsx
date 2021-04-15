@@ -60,7 +60,7 @@ describe('Delete action', () => {
 
       renderWithAuth({
         ui: <DeleteAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const insertBreakpoint = await screen.findByText('Delete')

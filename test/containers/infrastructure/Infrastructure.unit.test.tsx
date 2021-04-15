@@ -17,11 +17,15 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
+import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
+import { SMServiceProvider } from '../../../src/contexts/SMContext'
+import { ProvisionButton } from '../../../src/features/sm/components/provision/ProvisionButton'
 import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',
   obsModes: [
@@ -70,40 +74,40 @@ describe('Infrastructure page', () => {
   })
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
+  const smService = mockServices.mock.smService
   const locationService = mockServices.mock.locationService
   when(locationService.track(SM_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
   it('should render infrastructure page | ESW-442', async () => {
-    renderWithAuth({
-      ui: <Infrastructure />,
-      mockClients: mockServices.serviceFactoryContext
-    })
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
       seqCompsWithoutAgent: []
     })
-    const subtitle = screen.getByText('Sequence Manager')
-    const header = screen.getByText('Manage Infrastructure')
-    const provision = await screen.findByRole('button', { name: 'Provision' })
-    const configure = await screen.findByRole('button', { name: 'Configure' })
+    renderWithAuth({
+      ui: <Infrastructure />,
+      mockClients: mockServices
+    })
 
-    expect(subtitle).to.exist
-    expect(header).to.exist
-    expect(provision).to.exist
-    expect(configure).to.exist
-    verify(agentService.getAgentStatus()).called()
+    screen.getByText('Sequence Manager')
+    screen.getByText('Manage Infrastructure')
+    await screen.findByRole('button', { name: 'Provision' })
+    await screen.findByRole('button', { name: 'Configure' })
+
+    await waitFor(() => verify(agentService.getAgentStatus()).called())
   })
 
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
     renderWithAuth({
       ui: (
-        // <SMContextProvider defaultValue={[undefined, false]}>
-        <Infrastructure />
-        // </SMContextProvider>
+        <AgentServiceProvider initialValue={[agentService, false]}>
+          <SMServiceProvider initialValue={[undefined, false]}>
+            <Infrastructure />
+          </SMServiceProvider>
+        </AgentServiceProvider>
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     expect(screen.queryByText('Loading...')).to.not.exist
@@ -121,11 +125,13 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        // <SMContextProvider defaultValue={[smLocation, false]}>
-        <Infrastructure />
-        // </SMContextProvider>
+        <AgentServiceProvider initialValue={[agentService, false]}>
+          <SMServiceProvider initialValue={[{ smService, smLocation }, false]}>
+            <Infrastructure />
+          </SMServiceProvider>
+        </AgentServiceProvider>
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Running on ESW.primary')
@@ -141,11 +147,15 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        // <SMContextProvider defaultValue={[smLocation, false]}>
-        <Infrastructure />
-        // </SMContextProvider>
+        <SMServiceProvider
+          initialValue={[
+            { smService: mockServices.instance.smService, smLocation },
+            false
+          ]}>
+          <Infrastructure />
+        </SMServiceProvider>
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Running on unknown')
@@ -166,12 +176,8 @@ describe('Infrastructure page', () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
     when(agentService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
-      ui: (
-        // <SMContextProvider defaultValue={[smLocation, false]}>
-        <Infrastructure />
-        // </SMContextProvider>
-      ),
-      mockClients: mockServices.serviceFactoryContext
+      ui: <Infrastructure />,
+      mockClients: mockServices
     })
     const button = await screen.findByRole('button', { name: 'Configure' })
     userEvent.click(button, { button: 1 })
@@ -236,12 +242,8 @@ describe('Infrastructure page', () => {
       _type: 'Success'
     })
     renderWithAuth({
-      ui: (
-        // <SMContextProvider defaultValue={[smLocation, false]}>
-        <Infrastructure />
-        // </SMContextProvider>
-      ),
-      mockClients: mockServices.serviceFactoryContext
+      ui: <ProvisionButton disabled={false} />,
+      mockClients: mockServices
     })
 
     const provisionButton = (await screen.findByRole('button', {
@@ -263,6 +265,5 @@ describe('Infrastructure page', () => {
     await screen.findByText('Successfully provisioned')
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
-    verify(agentService.getAgentStatus()).called()
   })
 })

@@ -3,7 +3,7 @@ import {
   AgentStatus,
   AgentStatusResponse,
   ComponentId,
-  HttpLocation,
+  ObsMode,
   Prefix,
   SequenceComponentStatus
 } from '@tmtsoftware/esw-ts'
@@ -11,17 +11,40 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
-import { SM_CONNECTION } from '../../../src/features/sm/constants'
+import {
+  AGENT_SERVICE_CONNECTION,
+  CONFIG_SERVICE_CONNECTION,
+  SM_CONNECTION
+} from '../../../src/features/sm/constants'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
+  const smService = mockServices.mock.smService
   const locationService = mockServices.mock.locationService
   const sequenceComponentStatus = mock<SequenceComponentStatus>()
+  when(smService.getObsModesDetails()).thenResolve({
+    _type: 'Success',
+    obsModes: [
+      {
+        obsMode: new ObsMode('ESW.darkNight'),
+        resources: [],
+        sequencers: [],
+        status: { _type: 'Configurable' }
+      }
+    ]
+  })
   when(locationService.track(SM_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
+  when(locationService.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
+  when(locationService.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
+
   const agentStatus: AgentStatus = {
     agentId: new ComponentId(new Prefix('APS', 'jdks'), 'Machine'),
     seqCompsStatus: [sequenceComponentStatus]
@@ -46,15 +69,10 @@ describe('SM actions', () => {
   unProvisionRenderTestData.map(([agentStatusResponse, name]) => {
     it(`should render provision button as enabled & configure button as disabled if no seq comps are running ${name} | ESW-442, ESW-445`, async () => {
       when(agentService.getAgentStatus()).thenResolve(agentStatusResponse)
-      const smLocation: HttpLocation = {
-        _type: 'HttpLocation',
-        connection: SM_CONNECTION,
-        uri: 'url',
-        metadata: { agentPrefix: 'ESW.primary' }
-      }
+
       renderWithAuth({
         ui: <SmActions />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const configureButton = screen.getByRole('button', {

@@ -6,9 +6,9 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
 import {
-  obsModesData,
   configurableObsModesData,
-  nonConfigurableObsModesData
+  nonConfigurableObsModesData,
+  obsModesData
 } from '../../jsons/obsmodes'
 import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
@@ -19,7 +19,7 @@ describe('Observation page', () => {
 
     renderWithAuth({
       ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     when(smService.getObsModesDetails()).thenResolve({
@@ -50,7 +50,7 @@ describe('Observation page', () => {
 
     renderWithAuth({
       ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     when(smService.getObsModesDetails()).thenResolve({
@@ -85,14 +85,13 @@ describe('Observation page', () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     const sequencerService = mockServices.mock.sequencerService
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+    when(sequencerService.getSequencerState()).thenResolve({ _type: 'Loaded' })
 
     renderWithAuth({
       ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
-
-    when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerService.getSequencerState()).thenResolve({ _type: 'Loaded' })
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     await screen.findByRole('menuitem', { name: 'DarkNight_8' })
@@ -132,7 +131,7 @@ describe('Observation page', () => {
 
       renderWithAuth({
         ui: <Observations />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const tab = await screen.findByRole('tab', {
@@ -167,7 +166,7 @@ describe('Observation page', () => {
 
     renderWithAuth({
       ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Location service failed')
@@ -188,7 +187,7 @@ describe('Observation page', () => {
 
     renderWithAuth({
       ui: <Observations />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByText('Failed to fetch obsModes')

@@ -4,9 +4,12 @@ import type { ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts/lib/
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import type { ServiceFactoryContextType } from '../../../../../src/contexts/ServiceFactoryContext'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  MockServices,
+  renderWithAuth
+} from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
   const modalTitle = 'Do you want to shutdown all the Sequence Components?'
@@ -66,7 +69,7 @@ describe('UnProvision button', () => {
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)
 
       const { unProvisionButton } = await renderAndFindProvisionButton(
-        mockServices.serviceFactoryContext
+        mockServices
       )
 
       //User clicks unprovision button
@@ -93,9 +96,7 @@ describe('UnProvision button', () => {
     })
   })
 
-  const renderAndFindProvisionButton = async (
-    serviceFactory: ServiceFactoryContextType
-  ) => {
+  const renderAndFindProvisionButton = async (serviceFactory: MockServices) => {
     renderWithAuth({
       ui: <UnProvisionButton />,
       loggedIn: true,

@@ -7,10 +7,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
-import {
-  ConfigServiceProvider,
-  useConfigService
-} from '../../../../contexts/ConfigServiceContext'
+import { useConfigService } from '../../../../contexts/ConfigServiceContext'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'

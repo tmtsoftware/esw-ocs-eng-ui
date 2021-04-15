@@ -111,7 +111,7 @@ describe('Configure button', () => {
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({
       ui: <Configure disabled={true} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const button = await screen.findByRole('button', {
@@ -131,7 +131,7 @@ describe('Configure button', () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
     renderWithAuth({
       ui: <Configure disabled={false} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     await openConfigureModalAndClickConfigureButton()
     //verify only configurable obsmodes are shown in the list
@@ -187,7 +187,7 @@ describe('Configure button', () => {
 
       renderWithAuth({
         ui: <Configure disabled={false} />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
       await openConfigureModalAndClickConfigureButton()
 

@@ -17,6 +17,7 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
 
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
+
   const { data } = useObsModesDetails()
 
   const configureAction = useConfigureAction(obsMode)

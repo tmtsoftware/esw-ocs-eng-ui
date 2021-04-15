@@ -32,7 +32,7 @@ describe('SpawnSMButton', () => {
 
     renderWithAuth({
       ui: <SpawnSMButton />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     //User clicks spawn button
@@ -75,7 +75,7 @@ describe('SpawnSMButton', () => {
 
     renderWithAuth({
       ui: <SpawnSMButton />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     //User clicks spawn button
@@ -116,7 +116,7 @@ describe('SpawnSMButton', () => {
 
     renderWithAuth({
       ui: <SpawnSMButton />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     //User clicks spawn button

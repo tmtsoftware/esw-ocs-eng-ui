@@ -16,7 +16,7 @@ describe('Spawn sequence component icon', () => {
   it('should open pop-up to add component name | ESW-446', async function () {
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     await assertPopup()
   })
@@ -24,7 +24,7 @@ describe('Spawn sequence component icon', () => {
   it('should show validation error on invalid component name | ESW-446', async function () {
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     await assertPopup()
     userEvent.type(screen.getByRole('textbox'), ' primary21 ')
@@ -44,7 +44,7 @@ describe('Spawn sequence component icon', () => {
 
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
     await assertPopup()
     userEvent.type(screen.getByRole('textbox'), seqCompName)
@@ -68,7 +68,7 @@ describe('Spawn sequence component icon', () => {
 
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await assertPopup()

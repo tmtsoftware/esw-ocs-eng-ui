@@ -57,7 +57,7 @@ export const SpawnSMButton = (): JSX.Element => {
   }
   const handleModalCancel = () => setModalVisibility(false)
   const handleModalAgentSelection = (value: string) => setAgentPrefix(value)
-  console.log('loading', loading, allAgentsQuery.isLoading)
+
   if (loading || allAgentsQuery.isLoading) return <Spinner />
 
   return (

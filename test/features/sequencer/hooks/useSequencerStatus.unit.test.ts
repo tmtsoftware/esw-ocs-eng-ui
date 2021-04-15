@@ -16,7 +16,7 @@ describe('useSequencer', () => {
     when(locationService.isOnline()).thenResolve(true)
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
       true,
-      mockServices.serviceFactoryContext
+      mockServices
     )
 
     const { result, waitFor } = renderHook(

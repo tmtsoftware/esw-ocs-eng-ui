@@ -109,11 +109,15 @@ const getData = async (
 export const useSequencersData = (
   sequencers: Prefix[]
 ): UseQueryResult<Datatype[]> => {
-  const { sequencerServiceFactory } = useServiceFactory()
+  const {
+    sequencerServiceFactory,
+    locationServiceFactory
+  } = useServiceFactory()
 
   return useQuery(
     [OBS_MODE_SEQUENCERS.key, ...sequencers],
-    () => getData(sequencers, sequencerServiceFactory, locationService),
+    () =>
+      getData(sequencers, sequencerServiceFactory, locationServiceFactory()),
     {
       useErrorBoundary: false,
       onError: (err) => message.error((err as Error).message),

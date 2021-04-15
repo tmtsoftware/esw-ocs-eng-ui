@@ -47,7 +47,7 @@ describe('Shutdown button for Sequencer ', () => {
 
       renderWithAuth({
         ui: <ShutdownButton obsMode={obsMode} />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const shutdownButton = screen.getByRole('button', {

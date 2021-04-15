@@ -49,7 +49,7 @@ describe('sequencer table', () => {
 
     renderWithAuth({
       ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await assertTable()
@@ -63,7 +63,7 @@ describe('sequencer table', () => {
 
     renderWithAuth({
       ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await assertHeaders()

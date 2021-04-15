@@ -3,6 +3,7 @@ import {
   AgentService,
   AuthContext,
   ConfigService,
+  HttpLocation,
   LocationService,
   SequenceManagerService,
   SequencerService
@@ -11,6 +12,7 @@ import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
+import 'antd/dist/antd.css'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -21,11 +23,14 @@ import type {
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { instance, mock } from 'ts-mockito'
+import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
+import { ConfigServiceProvider } from '../../src/contexts/ConfigServiceContext'
 import {
   ServiceFactoryContextType,
   ServiceFactoryProvider
 } from '../../src/contexts/ServiceFactoryContext'
-import 'antd/dist/antd.css'
+import { SMServiceProvider } from '../../src/contexts/SMContext'
+import { SM_CONNECTION } from '../../src/features/sm/constants'
 
 const getMockAuth = (loggedIn: boolean) => {
   let loggedInValue = loggedIn
@@ -79,6 +84,7 @@ const getMockServices: () => MockServices = () => {
   )
 
   const serviceFactoryContext: ServiceFactoryContextType = {
+    locationServiceFactory: () => locationServiceInstance,
     sequencerServiceFactory: () => Promise.resolve(sequencerServiceInstance)
   }
 
@@ -101,14 +107,21 @@ const getMockServices: () => MockServices = () => {
   }
 }
 
+const mockServices = getMockServices()
+
 const getContextProvider = (
   loggedIn: boolean,
-  mockClients: ServiceFactoryContextType,
+  mockClients: MockServices,
   loginFunc: () => void,
   logoutFunc: () => void
 ) => {
   const auth = getMockAuth(loggedIn)
-
+  const smLocation: HttpLocation = {
+    _type: 'HttpLocation',
+    connection: SM_CONNECTION,
+    uri: 'url',
+    metadata: { agentPrefix: 'ESW.primary' }
+  }
   const contextProvider = ({ children }: { children: React.ReactNode }) => (
     <AuthContext.Provider
       value={{
@@ -116,8 +129,20 @@ const getContextProvider = (
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <ServiceFactoryProvider value={mockClients}>
-        {children}
+      <ServiceFactoryProvider value={mockClients.serviceFactoryContext}>
+        <AgentServiceProvider
+          initialValue={[mockClients.instance.agentService, false]}>
+          <SMServiceProvider
+            initialValue={[
+              { smService: mockClients.instance.smService, smLocation },
+              false
+            ]}>
+            <ConfigServiceProvider
+              initialValue={[mockClients.instance.configService, false]}>
+              {children}
+            </ConfigServiceProvider>
+          </SMServiceProvider>
+        </AgentServiceProvider>
       </ServiceFactoryProvider>
     </AuthContext.Provider>
   )
@@ -127,7 +152,7 @@ const getContextProvider = (
 
 const getContextWithQueryClientProvider = (
   loggedIn: boolean,
-  mockClients: ServiceFactoryContextType,
+  mockClients: MockServices,
   loginFunc: () => void = () => ({}),
   logoutFunc: () => void = () => ({})
 ): React.FC<{ children: React.ReactNode }> => {
@@ -150,7 +175,7 @@ const getContextWithQueryClientProvider = (
 type MockProps = {
   ui: ReactElement
   loggedIn?: boolean
-  mockClients?: ServiceFactoryContextType
+  mockClients?: MockServices
   loginFunc?: () => void
   logoutFunc?: () => void
 }
@@ -159,7 +184,7 @@ const renderWithAuth = (
   {
     ui,
     loggedIn = true,
-    mockClients = getMockServices().serviceFactoryContext,
+    mockClients = mockServices,
     loginFunc,
     logoutFunc
   }: MockProps,

@@ -1,9 +1,4 @@
-import {
-  AkkaConnection,
-  ComponentId,
-  HttpConnection,
-  Prefix
-} from '@tmtsoftware/esw-ts'
+import { ComponentId, HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 
 const smPrefix = new Prefix('ESW', 'sequence_manager')
 const agentPrefix = new Prefix('ESW', 'agent_service')

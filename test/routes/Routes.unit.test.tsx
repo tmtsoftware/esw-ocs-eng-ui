@@ -24,7 +24,7 @@ const renderWithRouter = (ui: React.ReactElement) => {
 
   return renderWithAuth({
     ui: <BrowserRouter>{ui}</BrowserRouter>,
-    mockClients: mockServices.serviceFactoryContext
+    mockClients: mockServices
   })
 }
 

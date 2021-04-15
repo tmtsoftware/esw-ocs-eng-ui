@@ -14,7 +14,11 @@ import { anything, deepEqual, verify, when } from 'ts-mockito'
 import type { ServiceFactoryContextType } from '../../../../../src/contexts/ServiceFactoryContext'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  MockServices,
+  renderWithAuth
+} from '../../../../utils/test-utils'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {
@@ -48,9 +52,7 @@ describe('ProvisionButton component', () => {
       provisionRes
     )
 
-    const { provisionButton } = await renderAndFindProvision(
-      mockServices.serviceFactoryContext
-    )
+    const { provisionButton } = await renderAndFindProvision(mockServices)
 
     //User clicks provision button
     userEvent.click(provisionButton)
@@ -82,9 +84,7 @@ describe('ProvisionButton component', () => {
       Error('error occurred')
     )
 
-    const { provisionButton } = await renderAndFindProvision(
-      mockServices.serviceFactoryContext
-    )
+    const { provisionButton } = await renderAndFindProvision(mockServices)
 
     //User clicks provision button
     userEvent.click(provisionButton)
@@ -139,9 +139,7 @@ describe('ProvisionButton component', () => {
         )
       )
 
-      const { provisionButton } = await renderAndFindProvision(
-        mockServices.serviceFactoryContext
-      )
+      const { provisionButton } = await renderAndFindProvision(mockServices)
 
       //User clicks provision button
       userEvent.click(provisionButton)
@@ -232,9 +230,7 @@ describe('ProvisionButton component', () => {
         provisionRes
       )
 
-      const { provisionButton } = await renderAndFindProvision(
-        mockServices.serviceFactoryContext
-      )
+      const { provisionButton } = await renderAndFindProvision(mockServices)
 
       //User clicks provision button
       userEvent.click(provisionButton)
@@ -259,7 +255,7 @@ describe('ProvisionButton component', () => {
   })
 
   const renderAndFindProvision = async (
-    serviceFactoryContext: ServiceFactoryContextType
+    serviceFactoryContext: MockServices
   ) => {
     renderWithAuth({
       ui: <ProvisionButton />,

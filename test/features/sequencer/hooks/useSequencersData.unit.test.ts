@@ -47,7 +47,7 @@ describe('useSequencersData', () => {
 
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
       true,
-      mockServices.serviceFactoryContext
+      mockServices
     )
 
     const { result, waitFor } = renderHook(
@@ -124,7 +124,7 @@ describe('useSequencersData', () => {
 
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
       true,
-      mockServices.serviceFactoryContext
+      mockServices
     )
 
     const { result, waitFor } = renderHook(

@@ -38,7 +38,7 @@ describe('stepList table', () => {
           setSelectedStep={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     await screen.findByRole('columnheader', {
@@ -60,7 +60,7 @@ describe('stepList table', () => {
           setSelectedStep={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     screen.getByRole('columnheader', {
@@ -81,7 +81,7 @@ describe('stepList table', () => {
           setSelectedStep={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     screen.getByRole('columnheader', {
@@ -102,7 +102,7 @@ describe('stepList table', () => {
           setSelectedStep={() => ({})}
         />
       ),
-      mockClients: mockServices.serviceFactoryContext
+      mockClients: mockServices
     })
 
     const actions = await screen.findAllByRole('stepActions')

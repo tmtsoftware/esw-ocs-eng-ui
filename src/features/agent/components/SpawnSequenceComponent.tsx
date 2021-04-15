@@ -37,6 +37,7 @@ export const SpawnSequenceComponent = ({
   const [componentName, setComponentName] = useState('')
 
   const [agentService] = useAgentService()
+
   const spawnSequenceComponentAction = useMutation({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
     onSuccess: () =>
@@ -55,7 +56,6 @@ export const SpawnSequenceComponent = ({
 
   const onConfirm = () => {
     validateComponentName(componentName)
-    console.log(agentService)
     agentService && spawnSequenceComponentAction.mutateAsync(agentService)
     resetComponentName()
   }

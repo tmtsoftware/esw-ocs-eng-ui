@@ -66,7 +66,7 @@ describe('Breakpoint actions', () => {
 
       renderWithAuth({
         ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const insertBreakpoint = await screen.findByText('Insert breakpoint')
@@ -119,7 +119,7 @@ describe('Breakpoint actions', () => {
 
       renderWithAuth({
         ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices.serviceFactoryContext
+        mockClients: mockServices
       })
 
       const removeBreakpoint = await screen.findByText('Remove breakpoint')

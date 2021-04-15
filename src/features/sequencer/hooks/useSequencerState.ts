@@ -1,5 +1,6 @@
 import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
+import { SEQUENCER_STATE } from '../../queryKeys'
 import { useSequencerService } from './useSequencerService'
 
 export const useSequencerState = <E>(
@@ -12,7 +13,7 @@ export const useSequencerState = <E>(
     useErrorBoundary
   )
   return useQuery(
-    sequencerPrefix.toJSON() + '-state',
+    SEQUENCER_STATE(sequencerPrefix).key,
     () => sequencerService?.getSequencerState(),
     {
       onError,

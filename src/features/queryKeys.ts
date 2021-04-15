@@ -57,9 +57,9 @@ export const SEQUENCER_STATUS: Query = {
   key: 'SequencerStatus'
 }
 
-export const SEQUENCER_STATE: Query = {
-  key: 'SequencerState'
-}
+export const SEQUENCER_STATE = (prefix: Prefix): Query => ({
+  key: `${prefix.toJSON()}-SequencerState`
+})
 
 export const OBS_MODE_STATUS = (obsMode: ObsMode): Query => ({
   key: `${obsMode}-ObsModeState`,

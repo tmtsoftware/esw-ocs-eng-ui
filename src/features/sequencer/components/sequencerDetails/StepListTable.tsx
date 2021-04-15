@@ -3,7 +3,7 @@ import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Button, Dropdown, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStepList } from '../../hooks/useStepList'
 import { typeStatus } from '../SequencersTable'
 import styles from './sequencerDetails.module.css'
@@ -26,7 +26,8 @@ const baseTypeColorCode = {
 const StepComponent = (
   step: Step,
   stepNumber: number,
-  sequencerPrefix: Prefix
+  sequencerPrefix: Prefix,
+  setSelectedStep: (_: Step) => void
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
@@ -43,7 +44,13 @@ const StepComponent = (
       <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
       </div>
-      <Button key={step.command.commandName} style={stepsStyle} shape={'round'}>
+      <Button
+        key={step.command.commandName}
+        style={stepsStyle}
+        shape={'round'}
+        onClick={() => {
+          setSelectedStep(step)
+        }}>
         <Typography.Text
           type={color[step.status._type]}
           ellipsis
@@ -63,7 +70,8 @@ const StepComponent = (
 
 const columns = (
   stepListStatus: keyof typeof typeStatus,
-  sequencerPrefix: Prefix
+  sequencerPrefix: Prefix,
+  setSelectedStep: (_: Step) => void
 ): ColumnsType<Step> => [
   {
     title: (
@@ -81,26 +89,34 @@ const columns = (
     ),
     key: 'id',
     dataIndex: 'status',
-    render: (_, record, index) =>
-      StepComponent(record, index + 1, sequencerPrefix)
+    render: (_, record, index) => {
+      return StepComponent(record, index + 1, sequencerPrefix, setSelectedStep)
+    }
   }
 ]
 
 export const StepListTable = ({
   sequencerPrefix,
-  stepListStatus
+  stepListStatus,
+  selectedStep,
+  setSelectedStep
 }: {
   sequencerPrefix: Prefix
   stepListStatus: keyof typeof typeStatus
+  selectedStep?: Step
+  setSelectedStep: (_: Step) => void
 }): JSX.Element => {
   const { isLoading, data: stepList } = useStepList(sequencerPrefix)
-
+  useEffect(() => {
+    !selectedStep && stepList && setSelectedStep(stepList.steps[0])
+  })
   return (
     <Table
+      rowKey={(step) => step.id}
       pagination={false}
       loading={isLoading}
       dataSource={stepList?.steps}
-      columns={columns(stepListStatus, sequencerPrefix)}
+      columns={columns(stepListStatus, sequencerPrefix, setSelectedStep)}
       onRow={() => ({ className: styles.cell })}
       onHeaderRow={() => ({ className: styles.cell })}
       sticky

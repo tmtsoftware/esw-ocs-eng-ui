@@ -36,6 +36,7 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           stepListStatus={'In Progress'}
+          setSelectedStep={() => ({})}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -58,6 +59,7 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           stepListStatus={'NA'}
+          setSelectedStep={() => ({})}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -79,6 +81,7 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           stepListStatus={'NA'}
+          setSelectedStep={() => ({})}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
@@ -100,6 +103,7 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           stepListStatus={'In Progress'}
+          setSelectedStep={() => ({})}
         />
       ),
       mockClients: mockServices.serviceFactoryContext

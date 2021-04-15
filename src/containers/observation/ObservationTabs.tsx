@@ -36,7 +36,9 @@ export const ObservationTabs = (): JSX.Element => {
               tabName={tabName}
               currentTab={selectedTab}
               selected={selectedObservation}
-              setObservation={(number) => setSelectedObservation(number)}
+              setObservation={(observationMode) =>
+                setSelectedObservation(observationMode)
+              }
             />
           </TabPane>
         )

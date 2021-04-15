@@ -3,22 +3,26 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import { Location, Prefix } from '@tmtsoftware/esw-ts'
+import { Location, Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Button,
+  Card,
+  Descriptions,
   Layout,
   PageHeader,
   Space,
   Tooltip,
   Typography
 } from 'antd'
-import React from 'react'
+import { Content } from 'antd/es/layout/layout'
+import React, { useState } from 'react'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
 import type { typeStatus } from '../SequencersTable'
+import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
 
@@ -90,7 +94,18 @@ const SequencerTitle = ({
     </div>
   )
 }
-
+const DescriptionItem = (label: string, item: string) => {
+  return (
+    <Descriptions.Item
+      label={
+        <Typography.Title type={'secondary'} level={5}>
+          {label}
+        </Typography.Title>
+      }>
+      {<Typography.Title level={5}>{item}</Typography.Title>}
+    </Descriptions.Item>
+  )
+}
 export const SequencerDetails = ({
   sequencer,
   obsMode,
@@ -101,6 +116,7 @@ export const SequencerDetails = ({
   stepListStatus: keyof typeof typeStatus
 }): JSX.Element => {
   const sequencerState = useSequencerState(sequencer.connection.prefix)
+  const [selectedStep, setSelectedStep] = useState<Step>()
   return (
     <>
       <PageHeader
@@ -127,8 +143,39 @@ export const SequencerDetails = ({
           <StepListTable
             sequencerPrefix={sequencer.connection.prefix}
             stepListStatus={stepListStatus}
+            selectedStep={selectedStep}
+            setSelectedStep={setSelectedStep}
           />
         </Sider>
+        {selectedStep && (
+          <Content>
+            <Card
+              title={
+                <Space>
+                  <Descriptions column={4}>
+                    {DescriptionItem(
+                      'Type',
+                      selectedStep.command._type.toString()
+                    )}
+                    {DescriptionItem(
+                      'Command',
+                      selectedStep.command.commandName
+                    )}
+                    {DescriptionItem(
+                      'Source',
+                      selectedStep.command.source.toJSON()
+                    )}
+                    {DescriptionItem(
+                      'Obs-Id',
+                      selectedStep.command.maybeObsId ?? 'NA'
+                    )}
+                  </Descriptions>
+                </Space>
+              }
+            />
+            {<ParameterTable paramSet={selectedStep.command.paramSet} />}
+          </Content>
+        )}
       </Layout>
     </>
   )

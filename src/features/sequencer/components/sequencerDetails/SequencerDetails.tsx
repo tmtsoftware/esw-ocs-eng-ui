@@ -150,6 +150,13 @@ export const SequencerDetails = ({
         {selectedStep && (
           <Content>
             <Card
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
+              }}
+              headStyle={{ paddingBottom: '0.75rem' }}
+              bodyStyle={{ height: '100%' }}
               title={
                 <Space>
                   <Descriptions column={4}>
@@ -171,9 +178,9 @@ export const SequencerDetails = ({
                     )}
                   </Descriptions>
                 </Space>
-              }
-            />
-            {<ParameterTable paramSet={selectedStep.command.paramSet} />}
+              }>
+              {<ParameterTable paramSet={selectedStep.command.paramSet} />}
+            </Card>
           </Content>
         )}
       </Layout>

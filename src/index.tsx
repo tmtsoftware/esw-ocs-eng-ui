@@ -5,9 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { AppConfig } from './config/AppConfig'
 import { App } from './containers/app/App'
-import { AgentServiceProvider } from './contexts/AgentServiceContext'
-import { ConfigServiceProvider } from './contexts/ConfigServiceContext'
-import { SMServiceProvider } from './contexts/SMContext'
+import { CombinedServiceContext } from './contexts/CombinedServiceContext'
 import { useAuth } from './contexts/useAuthContext'
 import './index.module.css'
 
@@ -17,13 +15,9 @@ const Main = () => {
   if (auth === null) return <Result icon={<LoadingOutlined />} />
 
   return (
-    <AgentServiceProvider>
-      <SMServiceProvider>
-        <ConfigServiceProvider>
-          <App />
-        </ConfigServiceProvider>
-      </SMServiceProvider>
-    </AgentServiceProvider>
+    <CombinedServiceContext>
+      <App />
+    </CombinedServiceContext>
   )
 }
 

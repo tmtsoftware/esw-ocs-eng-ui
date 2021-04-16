@@ -26,7 +26,11 @@ import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import {
+  getMockServices,
+  locServiceMock,
+  renderWithAuth
+} from '../../utils/test-utils'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',
@@ -70,15 +74,14 @@ describe('Infrastructure page', () => {
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
-  const locationService = mockServices.mock.locationService
 
-  when(locationService.track(SM_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(SM_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
-  when(locationService.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
-  when(locationService.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
   it('should render infrastructure page | ESW-442', async () => {

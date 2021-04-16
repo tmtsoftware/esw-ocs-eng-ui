@@ -6,13 +6,16 @@ import { when } from 'ts-mockito'
 import { SMServiceProvider } from '../../../../src/contexts/SMContext'
 import { SMCard } from '../../../../src/features/sm/components/smcard/SMCard'
 import { SM_CONNECTION } from '../../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import {
+  getMockServices,
+  locServiceMock,
+  renderWithAuth
+} from '../../../utils/test-utils'
 
 describe('SMCard', () => {
   const mockServices = getMockServices()
-  const locationServiceMock = mockServices.mock.locationService
 
-  when(locationServiceMock.track(SM_CONNECTION)).thenReturn(() => ({
+  when(locServiceMock.track(SM_CONNECTION)).thenReturn(() => ({
     cancel: () => ({})
   }))
 

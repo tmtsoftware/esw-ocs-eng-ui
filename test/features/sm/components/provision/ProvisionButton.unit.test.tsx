@@ -17,10 +17,11 @@ import {
   PROVISION_CONF_PATH
 } from '../../../../../src/features/sm/constants'
 import {
+  locServiceMock,
   getMockServices,
   MockServices,
   renderWithAuth
-} from '../../../../utils/test-utils'
+} from '../../../../../test/utils/test-utils'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {
@@ -44,10 +45,9 @@ describe('ProvisionButton component', () => {
   it('should be able to successfully provision | ESW-444', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
-    const locationService = mockServices.mock.locationService
     const configService = mockServices.mock.configService
 
-    when(locationService.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+    when(locServiceMock.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
       return { cancel: () => ({}) }
     })
 

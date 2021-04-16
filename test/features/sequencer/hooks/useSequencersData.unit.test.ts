@@ -4,9 +4,11 @@ import { expect } from 'chai'
 import { mock, verify, when } from 'ts-mockito'
 import { useSequencersData } from '../../../../src/features/sequencer/hooks/useSequencersData'
 import {
+  locServiceInstance,
+  locServiceMock,
   getContextWithQueryClientProvider,
   getMockServices
-} from '../../../utils/test-utils'
+} from '../../../../test/utils/test-utils'
 
 describe('useSequencersData', () => {
   const step = (
@@ -36,9 +38,8 @@ describe('useSequencersData', () => {
   it('should return sequencers data with their steps and status | ESW-451', async () => {
     const mockServices = getMockServices()
     const sequencerService = mockServices.mock.sequencerService
-    const locationService = mockServices.mock.locationService
 
-    when(locationService.listByComponentType('Sequencer')).thenResolve([])
+    when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
     when(sequencerService.getSequence())
       .thenResolve(stepList1)
       .thenResolve(stepList2)
@@ -116,9 +117,8 @@ describe('useSequencersData', () => {
   it('should return Failed to fetch data if error occurred | ESW-451', async () => {
     const mockServices = getMockServices()
     const sequencerService = mockServices.mock.sequencerService
-    const locationService = mockServices.mock.locationService
 
-    when(locationService.listByComponentType('Sequencer')).thenResolve([])
+    when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
 
     when(sequencerService.getSequence()).thenReject(Error())
 

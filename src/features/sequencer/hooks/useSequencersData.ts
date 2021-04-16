@@ -7,8 +7,8 @@ import type {
 import { ComponentId } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
+import { useLocationService } from '../../../contexts/LocationServiceContext'
 import {
-  locationService,
   ServiceFactoryContextType,
   useServiceFactory
 } from '../../../contexts/ServiceFactoryContext'
@@ -109,15 +109,12 @@ const getData = async (
 export const useSequencersData = (
   sequencers: Prefix[]
 ): UseQueryResult<Datatype[]> => {
-  const {
-    sequencerServiceFactory,
-    locationServiceFactory
-  } = useServiceFactory()
+  const { sequencerServiceFactory } = useServiceFactory()
+  const locationService = useLocationService()
 
   return useQuery(
     [OBS_MODE_SEQUENCERS.key, ...sequencers],
-    () =>
-      getData(sequencers, sequencerServiceFactory, locationServiceFactory()),
+    () => getData(sequencers, sequencerServiceFactory, locationService),
     {
       useErrorBoundary: false,
       onError: (err) => message.error((err as Error).message),

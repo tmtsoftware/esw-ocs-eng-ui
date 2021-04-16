@@ -22,9 +22,10 @@ import type {
 } from 'keycloak-js'
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { instance, mock } from 'ts-mockito'
+import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { ConfigServiceProvider } from '../../src/contexts/ConfigServiceContext'
+import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import {
   ServiceFactoryContextType,
   ServiceFactoryProvider
@@ -65,7 +66,13 @@ type MockServices = {
   instance: Services
   mock: Services
 }
-
+export const locServiceMock = mock<LocationService>()
+export const locServiceInstance = instance(locServiceMock)
+when(locServiceMock.track(anything())).thenReturn(() => {
+  return {
+    cancel: () => ({})
+  }
+})
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
@@ -84,7 +91,6 @@ const getMockServices: () => MockServices = () => {
   )
 
   const serviceFactoryContext: ServiceFactoryContextType = {
-    locationServiceFactory: () => locationServiceInstance,
     sequencerServiceFactory: () => Promise.resolve(sequencerServiceInstance)
   }
 
@@ -130,19 +136,21 @@ const getContextProvider = (
         logout: logoutFunc
       }}>
       <ServiceFactoryProvider value={mockClients.serviceFactoryContext}>
-        <AgentServiceProvider
-          initialValue={[mockClients.instance.agentService, false]}>
-          <SMServiceProvider
-            initialValue={[
-              { smService: mockClients.instance.smService, smLocation },
-              false
-            ]}>
-            <ConfigServiceProvider
-              initialValue={[mockClients.instance.configService, false]}>
-              {children}
-            </ConfigServiceProvider>
-          </SMServiceProvider>
-        </AgentServiceProvider>
+        <LocationServiceProvider initialValue={locServiceInstance}>
+          <AgentServiceProvider
+            initialValue={[mockClients.instance.agentService, false]}>
+            <SMServiceProvider
+              initialValue={[
+                { smService: mockClients.instance.smService, smLocation },
+                false
+              ]}>
+              <ConfigServiceProvider
+                initialValue={[mockClients.instance.configService, false]}>
+                {children}
+              </ConfigServiceProvider>
+            </SMServiceProvider>
+          </AgentServiceProvider>
+        </LocationServiceProvider>
       </ServiceFactoryProvider>
     </AuthContext.Provider>
   )

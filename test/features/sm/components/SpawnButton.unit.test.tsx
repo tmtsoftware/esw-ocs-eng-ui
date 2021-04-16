@@ -7,12 +7,15 @@ import React from 'react'
 import { anything, capture, when } from 'ts-mockito'
 import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButton'
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import {
+  getMockServices,
+  locServiceMock,
+  renderWithAuth
+} from '../../../utils/test-utils'
 
 describe('SpawnSMButton', () => {
   it('should spawn the sequence manager | ESW-441', async () => {
     const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
     const agentServiceMock = mockServices.mock.agentService
     const agentPrefix = new Prefix('ESW', 'ESW.Machine1')
     const agentLocation: HttpLocation = {
@@ -22,7 +25,7 @@ describe('SpawnSMButton', () => {
       metadata: {}
     }
 
-    when(locationServiceMock.listByComponentType('Machine')).thenResolve([
+    when(locServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
 
@@ -70,8 +73,7 @@ describe('SpawnSMButton', () => {
 
   it('should show error message if no agents are present and user tries spawning machine | ESW-441', async () => {
     const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
-    when(locationServiceMock.listByComponentType('Machine')).thenResolve([])
+    when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
     renderWithAuth({
       ui: <SpawnSMButton />,
@@ -96,7 +98,6 @@ describe('SpawnSMButton', () => {
 
   it('should show notification if spawning sequence manager fails | ESW-441', async () => {
     const mockServices = getMockServices()
-    const locationServiceMock = mockServices.mock.locationService
     const agentServiceMock = mockServices.mock.agentService
     const agentPrefix = new Prefix('ESW', 'ESW.Machine1')
     const agentLocation: HttpLocation = {
@@ -106,7 +107,7 @@ describe('SpawnSMButton', () => {
       metadata: {}
     }
 
-    when(locationServiceMock.listByComponentType('Machine')).thenResolve([
+    when(locServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
 

@@ -3,14 +3,17 @@ import { ObsMode, Setup, Step, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mock, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import {
+  getMockServices,
+  locServiceMock,
+  renderWithAuth
+} from '../../utils/test-utils'
 
 describe('sequencer table', () => {
   const mockServices = getMockServices()
   const sequencerService = mockServices.mock.sequencerService
-  const locationService = mockServices.mock.locationService
 
-  when(locationService.listByComponentType('Sequencer')).thenResolve([])
+  when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
 
   const step = (
     stepStatus: 'Pending' | 'Success' | 'Failure' | 'InFlight',

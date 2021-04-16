@@ -23,7 +23,13 @@ export function createCtx<Value>(useHook: () => Value): CtxType<Value> {
     return c
   }
 
-  const Provider: Provider<Value> = ({ initialValue, children }) => {
+  const Provider: Provider<Value> = ({
+    initialValue,
+    children
+  }: {
+    children: React.ReactNode
+    initialValue?: Value | undefined
+  }) => {
     const value = useHook()
 
     return <ctx.Provider value={initialValue ?? value}>{children}</ctx.Provider>

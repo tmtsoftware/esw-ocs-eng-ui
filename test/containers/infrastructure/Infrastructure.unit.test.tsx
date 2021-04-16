@@ -21,6 +21,8 @@ import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
 import { SMServiceProvider } from '../../../src/contexts/SMContext'
 import { ProvisionButton } from '../../../src/features/sm/components/provision/ProvisionButton'
 import {
+  AGENT_SERVICE_CONNECTION,
+  CONFIG_SERVICE_CONNECTION,
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
@@ -53,13 +55,6 @@ const agentStatus: AgentStatus = {
   ]
 }
 
-const smLocation: HttpLocation = {
-  _type: 'HttpLocation',
-  connection: SM_CONNECTION,
-  uri: 'url',
-  metadata: { prefix: 'ESW.primary' }
-}
-
 const successResponse: ConfigureResponse = {
   _type: 'Success',
   masterSequencerComponentId: new ComponentId(
@@ -76,7 +71,14 @@ describe('Infrastructure page', () => {
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locationService = mockServices.mock.locationService
+
   when(locationService.track(SM_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
+  when(locationService.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
+  when(locationService.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
   it('should render infrastructure page | ESW-442', async () => {

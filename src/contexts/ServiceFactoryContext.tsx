@@ -9,7 +9,7 @@ import { createContext, useContext } from 'react'
 export const locationService = LocationService()
 
 export type ServiceFactoryContextType = {
-  locationServiceFactory: () => LocationService
+  locationServiceFactory: LocationService
   sequencerServiceFactory: (
     componentId: ComponentId
   ) => Promise<SequencerService>
@@ -18,7 +18,7 @@ export type ServiceFactoryContextType = {
 export const createServiceFactories = (
   tokenFactory: TokenFactory
 ): ServiceFactoryContextType => ({
-  locationServiceFactory: () => LocationService(),
+  locationServiceFactory: LocationService(),
   sequencerServiceFactory: (componentId) =>
     SequencerService(componentId, tokenFactory)
 })

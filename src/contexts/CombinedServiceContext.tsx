@@ -7,12 +7,10 @@ export const CombinedServiceContext = ({
   children
 }: {
   children: React.ReactNode
-}) => (
+}): JSX.Element => (
   <AgentServiceProvider>
     <SMServiceProvider>
-      <ConfigServiceProvider>
-      {children}
-      </ConfigServiceProvider>
+      <ConfigServiceProvider>{children}</ConfigServiceProvider>
     </SMServiceProvider>
   </AgentServiceProvider>
 )

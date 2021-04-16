@@ -11,9 +11,11 @@ import type { ProvisionResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, verify, when } from 'ts-mockito'
-import type { ServiceFactoryContextType } from '../../../../../src/contexts/ServiceFactoryContext'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
-import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
+import {
+  CONFIG_SERVICE_CONNECTION,
+  PROVISION_CONF_PATH
+} from '../../../../../src/features/sm/constants'
 import {
   getMockServices,
   MockServices,
@@ -42,7 +44,12 @@ describe('ProvisionButton component', () => {
   it('should be able to successfully provision | ESW-444', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
+    const locationService = mockServices.mock.locationService
     const configService = mockServices.mock.configService
+
+    when(locationService.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+      return { cancel: () => ({}) }
+    })
 
     when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
       ConfigData.fromString(JSON.stringify(confData))

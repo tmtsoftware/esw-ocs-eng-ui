@@ -25,6 +25,7 @@ const mkSMService = (
 
   return new SequenceManagerImpl(new HttpTransport(postEndpoint, tf))
 }
+
 const mkSMContext = (loc: Location, tf: TokenFactory): SMContext => ({
   smService: mkSMService(loc, tf),
   smLocation: loc

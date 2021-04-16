@@ -17,6 +17,11 @@
   box-shadow: inset 0 -1px 0 var(--shadowColor);
 }
 
+tr.selectedCell > td {
+  background: #E6F7FF;
+  border-bottom: transparent;
+}
+
 tr.cell > td,
 tr.cell > th {
   background: white;

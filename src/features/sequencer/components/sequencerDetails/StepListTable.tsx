@@ -56,7 +56,11 @@ export const StepListTable = ({
       loading={isLoading}
       dataSource={stepList?.steps}
       columns={columns(stepListStatus, sequencerPrefix, setSelectedStep)}
-      onRow={() => ({ className: styles.cell })}
+      onRow={(step) =>
+        selectedStep && step.id === selectedStep.id
+          ? { className: styles.selectedCell }
+          : { className: styles.cell }
+      }
       onHeaderRow={() => ({ className: styles.cell })}
       sticky
     />

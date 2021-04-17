@@ -15,6 +15,7 @@ import { ProvisionButton } from '../../../../../src/features/sm/components/provi
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import {
   getMockServices,
+  mockServices,
   MockServices,
   renderWithAuth
 } from '../../../../../test/utils/test-utils'
@@ -38,7 +39,6 @@ describe('ProvisionButton component', () => {
     })
   )
 
-  const mockServices = getMockServices()
   const locServiceMock = mockServices.mock.locationService
 
   beforeEach(() => resetCalls(mockServices.mock.smService))

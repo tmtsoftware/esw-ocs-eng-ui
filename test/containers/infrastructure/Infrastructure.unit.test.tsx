@@ -26,7 +26,7 @@ import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import { getMockServices, mockServices, renderWithAuth } from '../../utils/test-utils'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',
@@ -67,7 +67,6 @@ describe('Infrastructure page', () => {
   afterEach(() => {
     cleanup()
   })
-  const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService

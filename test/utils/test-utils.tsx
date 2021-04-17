@@ -107,7 +107,7 @@ const getMockServices: () => MockServices = () => {
   }
 }
 
-const mockServices = getMockServices()
+export const mockServices = getMockServices()
 
 const getContextProvider = (
   loggedIn: boolean,
@@ -147,10 +147,7 @@ const getContextProvider = (
                 { smService: mockClients.instance.smService, smLocation },
                 false
               ]}>
-              <ConfigServiceProvider
-                initialValue={[mockClients.instance.configService, false]}>
-                {children}
-              </ConfigServiceProvider>
+              {children}
             </SMServiceProvider>
           </AgentServiceProvider>
         </GatewayLocationProvider>

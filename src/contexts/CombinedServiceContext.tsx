@@ -1,6 +1,5 @@
 import React from 'react'
 import { AgentServiceProvider } from './AgentServiceContext'
-import { ConfigServiceProvider } from './ConfigServiceContext'
 import { GatewayLocationProvider } from './GatewayServiceContext'
 import { LocationServiceProvider } from './LocationServiceContext'
 import { SMServiceProvider } from './SMContext'
@@ -13,9 +12,7 @@ export const CombinedServiceContext = ({
   <LocationServiceProvider>
     <GatewayLocationProvider>
       <AgentServiceProvider>
-        <SMServiceProvider>
-          <ConfigServiceProvider>{children}</ConfigServiceProvider>
-        </SMServiceProvider>
+        <SMServiceProvider>{children}</SMServiceProvider>
       </AgentServiceProvider>
     </GatewayLocationProvider>
   </LocationServiceProvider>

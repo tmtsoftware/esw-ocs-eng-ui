@@ -20,7 +20,9 @@ export default {
         importMap: {
           imports: {
             './_dist_/features/sequencer/hooks/useSequencerService.js':
-              './dist_test/mocks/useSequencerService.js'
+              './dist_test/mocks/useSequencerService.js',
+            './_dist_/contexts/ConfigServiceContext.js':
+              './dist_test/mocks/ConfigServiceContext.js'
           }
         }
       }

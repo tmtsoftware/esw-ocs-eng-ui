@@ -1,8 +1,9 @@
 import { screen, waitFor } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
+import { reset } from 'ts-mockito'
 import { Provision } from '../../../../../src/features/sm/components/provision/Provision'
-import { renderWithAuth } from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Provision Component', () => {
   it(`should render Unprovision button if there is no sequence component running | ESW-444`, async () => {

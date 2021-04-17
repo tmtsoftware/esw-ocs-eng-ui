@@ -5,12 +5,12 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { ShutdownSMButton } from '../../../../src/features/sm/components/ShutdownButton'
 import { SM_COMPONENT_ID } from '../../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('ShutdownSMButton', () => {
   it('should shutdown the sequence manager | ESW-441', async () => {
     const modalTitle = 'Do you want to shutdown Sequence Manager?'
-    const mockServices = getMockServices()
+
     const agentServiceMock = mockServices.mock.agentService
 
     when(agentServiceMock.killComponent(SM_COMPONENT_ID)).thenResolve({
@@ -47,7 +47,6 @@ describe('ShutdownSMButton', () => {
   })
 
   it('should show notification if sequence manager shutdown fails | ESW-441', async () => {
-    const mockServices = getMockServices()
     const agentServiceMock = mockServices.mock.agentService
 
     when(agentServiceMock.killComponent(SM_COMPONENT_ID)).thenResolve({

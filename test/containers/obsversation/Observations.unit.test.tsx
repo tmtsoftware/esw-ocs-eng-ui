@@ -11,7 +11,7 @@ import {
   obsModesData
 } from '../../jsons/obsmodes'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../utils/test-utils'
@@ -19,7 +19,6 @@ import {
 describe('Observation page', () => {
   beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 
     renderWithAuth({
@@ -50,7 +49,6 @@ describe('Observation page', () => {
   })
 
   it('should render no obsModes if no obsModes are available in tab | ESW-450', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 
     renderWithAuth({
@@ -87,7 +85,6 @@ describe('Observation page', () => {
   })
 
   it('should render running obsModes | ESW-450', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerServiceMock.getSequencerState()).thenResolve({
@@ -120,7 +117,6 @@ describe('Observation page', () => {
 
   tabTests.forEach(([tabName, obsModes, data]) => {
     it(`should render ${tabName} obsModes | ESW-450`, async () => {
-      const mockServices = getMockServices()
       const smService = mockServices.mock.smService
       const agentService = mockServices.mock.agentService
 
@@ -162,7 +158,6 @@ describe('Observation page', () => {
   })
 
   it('should log error if locationServiceError occurs | ESW-450', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'LocationServiceError',
@@ -182,7 +177,6 @@ describe('Observation page', () => {
   })
 
   it('should log error if useObsModesDetails() Fails | ESW-450', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
 
     when(smService.getObsModesDetails()).thenResolve({

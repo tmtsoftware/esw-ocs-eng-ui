@@ -6,7 +6,7 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
 import {
-  getMockServices,
+  mockServices,
   MockServices,
   renderWithAuth
 } from '../../../../utils/test-utils'
@@ -63,7 +63,6 @@ describe('UnProvision button', () => {
 
   unProvisionTestData.forEach(([type, name, shutdownRes, errMsg]) => {
     it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name} | ESW-444`, async () => {
-      const mockServices = getMockServices()
       const smService = mockServices.mock.smService
 
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)

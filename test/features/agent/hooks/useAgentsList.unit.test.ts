@@ -5,12 +5,11 @@ import { verify, when } from 'ts-mockito'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
 import {
   getContextWithQueryClientProvider,
-  getMockServices
+  mockServices
 } from '../../../utils/test-utils'
 
 describe('useAgents', () => {
   it('should return list of agents up and running | ESW-441', async () => {
-    const mockServices = getMockServices()
     const locServiceMock = mockServices.mock.locationService
     const agentPrefix = new Prefix('ESW', 'ESW.Machine1')
     const agentLocation: HttpLocation = {

@@ -1,15 +1,14 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
-import { Location, Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import { anything, mock, verify, when } from 'ts-mockito'
 import { useSequencersData } from '../../../../src/features/sequencer/hooks/useSequencersData'
 import {
   getContextWithQueryClientProvider,
-  getMockServices,
+  mockServices,
   sequencerServiceMock
 } from '../../../../test/utils/test-utils'
 describe('useSequencersData', () => {
-  const mockServices = getMockServices()
   const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.track(anything())).thenReturn(() => {
     return {

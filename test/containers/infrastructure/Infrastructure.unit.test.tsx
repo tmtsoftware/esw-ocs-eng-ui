@@ -26,7 +26,7 @@ import {
   PROVISION_CONF_PATH,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import { getMockServices, mockServices, renderWithAuth } from '../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',

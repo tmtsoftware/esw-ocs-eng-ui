@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
@@ -42,7 +42,6 @@ const agentStatus: AgentStatus = {
   ]
 }
 describe('Agents Grid View', () => {
-  const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   afterEach(() => {
     cleanup()

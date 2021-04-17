@@ -11,13 +11,12 @@ import {
   OBSERVATIONS,
   RESOURCES
 } from '../../src/routes/RoutesConfig'
-import { getMockServices, renderWithAuth } from '../utils/test-utils'
+import { mockServices, renderWithAuth } from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
   // Mocking locationService.listByComponentType,
   // because on Home page a call happens on render to get list of agents
-  const mockServices = getMockServices()
   const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.track(anything())).thenReturn(() => {
     return { cancel: () => ({}) }

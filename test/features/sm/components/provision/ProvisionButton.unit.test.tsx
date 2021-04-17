@@ -14,7 +14,6 @@ import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import {
-  getMockServices,
   mockServices,
   MockServices,
   renderWithAuth

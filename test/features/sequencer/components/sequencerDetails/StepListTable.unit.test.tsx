@@ -6,14 +6,12 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
 
 describe('stepList table', () => {
-  const mockServices = getMockServices()
-
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const stepList: StepList = new StepList([

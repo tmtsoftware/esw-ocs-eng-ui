@@ -4,10 +4,9 @@ import React from 'react'
 import { when } from 'ts-mockito'
 import { Resources } from '../../../src/containers/resources/Resources'
 import obsModesData from '../../jsons/mockResourcesData'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('Resources page', () => {
-  const mockServices = getMockServices()
   const smService = mockServices.mock.smService
   when(smService.getObsModesDetails()).thenResolve(obsModesData)
 

@@ -16,10 +16,9 @@ import {
   CONFIG_SERVICE_CONNECTION,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
-  const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService

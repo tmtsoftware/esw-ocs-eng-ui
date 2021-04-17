@@ -5,14 +5,12 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/sequencerDetails/DeleteAction'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
-  const mockServices = getMockServices()
-
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const deleteActionTests: [string, GenericResponse, string][] = [

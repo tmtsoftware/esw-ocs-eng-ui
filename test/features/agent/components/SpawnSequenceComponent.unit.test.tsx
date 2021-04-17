@@ -5,11 +5,10 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, when } from 'ts-mockito'
 import { SpawnSequenceComponent } from '../../../../src/features/agent/components/SpawnSequenceComponent'
-import { getMockServices, renderWithAuth } from '../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('Spawn sequence component icon', () => {
   const agentPrefix = new Prefix('ESW', 'primary')
-  const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const seqCompName = 'ESW_1'
 

@@ -22,7 +22,7 @@ import { anything, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { assertTableHeader } from '../../../../utils/tableTestUtils'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
@@ -43,7 +43,6 @@ describe('sequencer details', () => {
     },
     uri: ''
   }
-  const mockServices = getMockServices()
   const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.find(anything())).thenResolve(sequencerLoc)
   when(locServiceMock.track(anything())).thenReturn(() => {

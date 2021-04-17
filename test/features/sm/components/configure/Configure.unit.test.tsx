@@ -18,11 +18,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { Configure } from '../../../../../src/features/sm/components/Configure'
-import {
-  getMockServices,
-  MockServices,
-  renderWithAuth
-} from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 const obsModesDetails: ObsModesDetailsResponse = {
   _type: 'Success',
@@ -57,7 +53,6 @@ afterEach(() => {
   cleanup()
 })
 
-let mockServices: MockServices
 let smService: SequenceManagerService
 
 const darkNight = new ObsMode('ESW_DARKNIGHT')
@@ -101,7 +96,6 @@ const unhandled: ConfigureResponse = {
 }
 describe('Configure button', () => {
   beforeEach(() => {
-    mockServices = getMockServices()
     smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
   })

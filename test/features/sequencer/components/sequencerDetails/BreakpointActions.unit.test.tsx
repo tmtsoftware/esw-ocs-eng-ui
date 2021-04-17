@@ -11,14 +11,12 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
 
 describe('Breakpoint actions', () => {
-  const mockServices = getMockServices()
-
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const insertBreakpointTests: [string, GenericResponse, string][] = [

@@ -11,12 +11,11 @@ import {
   assertTableHeaderNotPresent
 } from '../../utils/tableTestUtils'
 import {
-  getMockServices,
+  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../utils/test-utils'
 
-const mockServices = getMockServices()
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 

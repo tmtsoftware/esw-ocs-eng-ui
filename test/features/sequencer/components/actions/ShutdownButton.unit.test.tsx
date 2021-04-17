@@ -5,10 +5,9 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Shutdown button for Sequencer ', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
-  const mockServices = getMockServices()
   const smService = mockServices.mock.smService
 
   const tests: [string, ShutdownSequencersResponse, string][] = [

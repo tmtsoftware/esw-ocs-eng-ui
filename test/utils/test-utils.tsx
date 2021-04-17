@@ -24,7 +24,6 @@ import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
-import { ConfigServiceProvider } from '../../src/contexts/ConfigServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
@@ -210,5 +209,5 @@ const renderWithAuth = (
 }
 
 // eslint-disable-next-line import/export
-export { renderWithAuth, getMockServices, getContextWithQueryClientProvider }
+export { renderWithAuth, getContextWithQueryClientProvider }
 export type { MockServices }

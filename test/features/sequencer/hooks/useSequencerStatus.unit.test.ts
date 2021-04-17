@@ -5,15 +5,15 @@ import { verify, when } from 'ts-mockito'
 import { useSequencerStatus } from '../../../../src/features/sequencer/hooks/useSequencerStatus'
 import {
   getContextWithQueryClientProvider,
-  getMockServices
+  getMockServices,
+  sequencerServiceMock
 } from '../../../utils/test-utils'
 
 describe('useSequencer', () => {
   it('should return status of sequencer | ESW-455', async () => {
     const mockServices = getMockServices()
-    const locationService = mockServices.mock.sequencerService
 
-    when(locationService.isOnline()).thenResolve(true)
+    when(sequencerServiceMock.isOnline()).thenResolve(true)
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
       true,
       mockServices
@@ -30,7 +30,7 @@ describe('useSequencer', () => {
       return result.current.isSuccess
     })
 
-    verify(locationService.isOnline()).called()
+    verify(sequencerServiceMock.isOnline()).called()
 
     expect(result.current.data).to.true
   })

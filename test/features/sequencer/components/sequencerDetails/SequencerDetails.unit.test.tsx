@@ -18,10 +18,14 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { when } from 'ts-mockito'
+import { anything, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { assertTableHeader } from '../../../../utils/tableTestUtils'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../../../utils/test-utils'
 
 describe('sequencer details', () => {
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
@@ -39,27 +43,22 @@ describe('sequencer details', () => {
     },
     uri: ''
   }
-
-  const getStepList = (
-    status: Step['status']['_type'],
-    hasBreakpoint = false
-  ) =>
-    new StepList([
-      {
-        hasBreakpoint: hasBreakpoint,
-        status: { _type: status, message: '' },
-        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-        id: 'step1'
-      }
-    ])
-
+  const mockServices = getMockServices()
+  const locServiceMock = mockServices.mock.locationService
+  when(locServiceMock.find(anything())).thenResolve(sequencerLoc)
+  when(locServiceMock.track(anything())).thenReturn(() => {
+    return {
+      cancel: () => ({})
+    }
+  })
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
-    const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
-    when(sequencerService.getSequence()).thenResolve(getStepList('Failure'))
-
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          prefix={sequencerLoc.connection.prefix}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices
     })
 
@@ -80,13 +79,13 @@ describe('sequencer details', () => {
   })
 
   it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
-    const mockServices = getMockServices()
-
-    const sequencerService = mockServices.mock.sequencerService
-    when(sequencerService.getSequence()).thenResolve(getStepList('InFlight'))
-
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          prefix={sequencerLoc.connection.prefix}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices
     })
 
@@ -111,18 +110,18 @@ describe('sequencer details', () => {
   })
 
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
-    const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
-    when(sequencerService.getSequence()).thenResolve(
-      getStepList('Pending', true)
-    )
+    when(sequencerServiceMock.isOnline()).thenResolve(true)
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          prefix={sequencerLoc.connection.prefix}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices
     })
 
-    when(sequencerService.isOnline()).thenResolve(true)
     await screen.findByTestId('status-error')
     const sequencerTitle = await screen.findByTestId('status-success')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
@@ -178,12 +177,15 @@ describe('sequencer details', () => {
       }
     ])
 
-    const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
-    when(sequencerService.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
-      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
+      ui: (
+        <SequencerDetails
+          prefix={sequencerLoc.connection.prefix}
+          obsMode={''}
+        />
+      ),
       mockClients: mockServices
     })
 

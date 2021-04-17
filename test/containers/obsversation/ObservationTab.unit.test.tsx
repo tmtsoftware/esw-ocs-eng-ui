@@ -10,18 +10,21 @@ import {
   assertTableHeader,
   assertTableHeaderNotPresent
 } from '../../utils/tableTestUtils'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../utils/test-utils'
 
 const mockServices = getMockServices()
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
-const sequencerService = mockServices.mock.sequencerService
 
 describe('observation tabs', () => {
   beforeEach(() => {
     reset(smService)
     reset(agentService)
-    reset(sequencerService)
+    reset(sequencerServiceMock)
   })
   it('should be able to shutdown running observation | ESW-450', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)

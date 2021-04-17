@@ -10,11 +10,14 @@ import {
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../../../utils/test-utils'
 
 describe('Breakpoint actions', () => {
   const mockServices = getMockServices()
-  const sequencerService = mockServices.mock.sequencerService
 
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
@@ -62,7 +65,7 @@ describe('Breakpoint actions', () => {
         id: 'step1'
       }
 
-      when(sequencerService.addBreakpoint(step.id)).thenResolve(res)
+      when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
         ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
@@ -74,7 +77,7 @@ describe('Breakpoint actions', () => {
 
       await screen.findByText(message)
 
-      verify(sequencerService.addBreakpoint(step.id)).called()
+      verify(sequencerServiceMock.addBreakpoint(step.id)).called()
     })
   })
 
@@ -115,7 +118,7 @@ describe('Breakpoint actions', () => {
         id: 'step1'
       }
 
-      when(sequencerService.removeBreakpoint(step.id)).thenResolve(res)
+      when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
         ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
@@ -127,7 +130,7 @@ describe('Breakpoint actions', () => {
 
       await screen.findByText(message)
 
-      verify(sequencerService.removeBreakpoint(step.id)).called()
+      verify(sequencerServiceMock.removeBreakpoint(step.id)).called()
     })
   })
 })

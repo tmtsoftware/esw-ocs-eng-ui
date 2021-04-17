@@ -5,11 +5,14 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../../../utils/test-utils'
 
 describe('stepList table', () => {
   const mockServices = getMockServices()
-  const sequencerService = mockServices.mock.sequencerService
 
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
@@ -29,7 +32,7 @@ describe('stepList table', () => {
   ])
 
   it('should show all the steps within a column | ESW-456', async () => {
-    when(sequencerService.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
       ui: (
@@ -47,11 +50,11 @@ describe('stepList table', () => {
 
     await findCell('1 Command-1 more')
     await findCell('2 Command-2 more')
-    verify(sequencerService.getSequence()).called()
+    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should not show any step data if no sequence is running | ESW-456', async () => {
-    when(sequencerService.getSequence()).thenResolve(undefined)
+    when(sequencerServiceMock.getSequence()).thenResolve(undefined)
 
     renderWithAuth({
       ui: (
@@ -68,11 +71,11 @@ describe('stepList table', () => {
     })
 
     await findCell('No Data')
-    verify(sequencerService.getSequence()).called()
+    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should not show any step data if there is an error while api call | ESW-456', async () => {
-    when(sequencerService.getSequence()).thenReject(Error())
+    when(sequencerServiceMock.getSequence()).thenReject(Error())
 
     renderWithAuth({
       ui: (
@@ -89,11 +92,11 @@ describe('stepList table', () => {
     })
 
     await findCell('No Data')
-    verify(sequencerService.getSequence()).called()
+    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should show stepActions menu | ESW-459, ESW-490', async () => {
-    when(sequencerService.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
       ui: (
@@ -130,8 +133,10 @@ describe('stepList table', () => {
         id: 'step1'
       }
     ])
-    when(sequencerService.getSequence()).thenResolve(stepList)
-    when(sequencerService.addBreakpoint('step1')).thenResolve({ _type: 'Ok' })
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
+      _type: 'Ok'
+    })
 
     renderWithAuth({
       ui: (

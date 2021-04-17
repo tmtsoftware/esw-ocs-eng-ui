@@ -16,16 +16,13 @@ import {
   CONFIG_SERVICE_CONNECTION,
   SM_CONNECTION
 } from '../../../src/features/sm/constants'
-import {
-  getMockServices,
-  locServiceMock,
-  renderWithAuth
-} from '../../utils/test-utils'
+import { getMockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
   const mockServices = getMockServices()
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
+  const locServiceMock = mockServices.mock.locationService
   const sequenceComponentStatus = mock<SequenceComponentStatus>()
   when(smService.getObsModesDetails()).thenResolve({
     _type: 'Success',

@@ -1,4 +1,5 @@
 import plugin from '@snowpack/web-test-runner-plugin'
+import { importMapsPlugin } from '@web/dev-server-import-maps'
 import { defaultReporter } from '@web/test-runner'
 // eslint-disable-next-line import/no-unresolved
 import ConsoleReporter from './ConsoleReporter.js'
@@ -12,7 +13,19 @@ export default {
       timeout: '3000'
     }
   },
-  plugins: [plugin()],
+  plugins: [
+    plugin(),
+    importMapsPlugin({
+      inject: {
+        importMap: {
+          imports: {
+            './_dist_/features/sequencer/hooks/useSequencerService.js':
+              './dist_test/mocks/useSequencerService.js'
+          }
+        }
+      }
+    })
+  ],
   reporters: [
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
     ConsoleReporter()

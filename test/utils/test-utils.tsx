@@ -25,14 +25,13 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { ConfigServiceProvider } from '../../src/contexts/ConfigServiceContext'
+import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
-import {
-  ServiceFactoryContextType,
-  ServiceFactoryProvider
-} from '../../src/contexts/ServiceFactoryContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
-import { SM_CONNECTION } from '../../src/features/sm/constants'
-
+import {
+  GATEWAY_CONNECTION,
+  SM_CONNECTION
+} from '../../src/features/sm/constants'
 const getMockAuth = (loggedIn: boolean) => {
   let loggedInValue = loggedIn
   return {
@@ -62,46 +61,41 @@ type Services = {
 }
 
 type MockServices = {
-  serviceFactoryContext: ServiceFactoryContextType
   instance: Services
   mock: Services
 }
-export const locServiceMock = mock<LocationService>()
-export const locServiceInstance = instance(locServiceMock)
-when(locServiceMock.track(anything())).thenReturn(() => {
-  return {
-    cancel: () => ({})
-  }
-})
+
+export const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
+export const sequencerServiceInstance = instance<SequencerService>(
+  sequencerServiceMock
+)
+
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
-
+  when(locationServiceMock.track(anything())).thenReturn(() => {
+    return {
+      cancel: () => ({})
+    }
+  })
   const smServiceMock = mock<SequenceManagerService>(SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
-
-  const configServiceMock = mock<ConfigService>(ConfigServiceImpl)
-  const configServiceInstance = instance<ConfigService>(configServiceMock)
-
-  const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
+  const sequencerService = mock<SequencerService>(SequencerServiceImpl)
   const sequencerServiceInstance = instance<SequencerService>(
     sequencerServiceMock
   )
 
-  const serviceFactoryContext: ServiceFactoryContextType = {
-    sequencerServiceFactory: () => Promise.resolve(sequencerServiceInstance)
-  }
-
+  const configServiceMock = mock<ConfigService>(ConfigServiceImpl)
+  const configServiceInstance = instance<ConfigService>(configServiceMock)
   return {
-    serviceFactoryContext,
     mock: {
       agentService: agentServiceMock,
       locationService: locationServiceMock,
       configService: configServiceMock,
       smService: smServiceMock,
-      sequencerService: sequencerServiceMock
+      sequencerService: sequencerService
     },
     instance: {
       agentService: agentServiceInstance,
@@ -125,7 +119,15 @@ const getContextProvider = (
   const smLocation: HttpLocation = {
     _type: 'HttpLocation',
     connection: SM_CONNECTION,
-    uri: 'url',
+    uri: 'http://localhost:5000/',
+    metadata: {
+      agentPrefix: 'ESW.primary'
+    }
+  }
+  const gatewayLocation: HttpLocation = {
+    _type: 'HttpLocation',
+    connection: GATEWAY_CONNECTION,
+    uri: 'http://localhost:5000/',
     metadata: { agentPrefix: 'ESW.primary' }
   }
   const contextProvider = ({ children }: { children: React.ReactNode }) => (
@@ -135,8 +137,9 @@ const getContextProvider = (
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <ServiceFactoryProvider value={mockClients.serviceFactoryContext}>
-        <LocationServiceProvider initialValue={locServiceInstance}>
+      <LocationServiceProvider
+        initialValue={mockClients.instance.locationService}>
+        <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider
             initialValue={[mockClients.instance.agentService, false]}>
             <SMServiceProvider
@@ -150,8 +153,8 @@ const getContextProvider = (
               </ConfigServiceProvider>
             </SMServiceProvider>
           </AgentServiceProvider>
-        </LocationServiceProvider>
-      </ServiceFactoryProvider>
+        </GatewayLocationProvider>
+      </LocationServiceProvider>
     </AuthContext.Provider>
   )
 

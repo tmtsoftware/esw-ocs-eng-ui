@@ -1,16 +1,21 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
-import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
+import { Location, Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import { mock, verify, when } from 'ts-mockito'
+import { anything, mock, verify, when } from 'ts-mockito'
 import { useSequencersData } from '../../../../src/features/sequencer/hooks/useSequencersData'
 import {
-  locServiceInstance,
-  locServiceMock,
   getContextWithQueryClientProvider,
-  getMockServices
+  getMockServices,
+  sequencerServiceMock
 } from '../../../../test/utils/test-utils'
-
 describe('useSequencersData', () => {
+  const mockServices = getMockServices()
+  const locServiceMock = mockServices.mock.locationService
+  when(locServiceMock.track(anything())).thenReturn(() => {
+    return {
+      cancel: () => ({})
+    }
+  })
   const step = (
     stepStatus: 'Pending' | 'Success' | 'Failure' | 'InFlight',
     hasBreakpoint = false
@@ -36,11 +41,8 @@ describe('useSequencersData', () => {
   const stepList4: StepList = new StepList([step('Success'), step('Success')])
 
   it('should return sequencers data with their steps and status | ESW-451', async () => {
-    const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
-
     when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
-    when(sequencerService.getSequence())
+    when(sequencerServiceMock.getSequence())
       .thenResolve(stepList1)
       .thenResolve(stepList2)
       .thenResolve(stepList3)
@@ -68,11 +70,10 @@ describe('useSequencersData', () => {
       return result.current.isSuccess
     })
 
-    verify(sequencerService.getSequence()).called()
+    verify(sequencerServiceMock.getSequence()).called()
 
     expect(result.current.data).to.deep.equal([
       {
-        location: undefined,
         key: 'ESW.',
         prefix: 'ESW.',
         stepListStatus: {
@@ -82,7 +83,6 @@ describe('useSequencersData', () => {
         totalSteps: 2
       },
       {
-        location: undefined,
         key: 'WFOS.Calib',
         prefix: 'WFOS.Calib',
         stepListStatus: {
@@ -92,7 +92,6 @@ describe('useSequencersData', () => {
         totalSteps: 3
       },
       {
-        location: undefined,
         key: 'IRIS.FilterWheel',
         prefix: 'IRIS.FilterWheel',
         stepListStatus: {
@@ -102,7 +101,6 @@ describe('useSequencersData', () => {
         totalSteps: 2
       },
       {
-        location: undefined,
         key: 'IRIS.Darknight',
         prefix: 'IRIS.Darknight',
         stepListStatus: {
@@ -115,12 +113,9 @@ describe('useSequencersData', () => {
   })
 
   it('should return Failed to fetch data if error occurred | ESW-451', async () => {
-    const mockServices = getMockServices()
-    const sequencerService = mockServices.mock.sequencerService
-
     when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
 
-    when(sequencerService.getSequence()).thenReject(Error())
+    when(sequencerServiceMock.getSequence()).thenReject(Error())
 
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
       true,
@@ -138,7 +133,7 @@ describe('useSequencersData', () => {
       return result.current.isSuccess
     })
 
-    verify(sequencerService.getSequence()).called()
+    verify(sequencerServiceMock.getSequence()).called()
 
     expect(result.current.data).to.deep.equal([
       {
@@ -148,8 +143,7 @@ describe('useSequencersData', () => {
           status: 'Failed to Fetch Status',
           stepNumber: 0
         },
-        totalSteps: 'NA',
-        location: undefined
+        totalSteps: 'NA'
       }
     ])
   })

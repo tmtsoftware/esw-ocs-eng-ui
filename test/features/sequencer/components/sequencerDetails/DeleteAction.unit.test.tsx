@@ -4,11 +4,14 @@ import { GenericResponse, Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/sequencerDetails/DeleteAction'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
   const mockServices = getMockServices()
-  const sequencerService = mockServices.mock.sequencerService
 
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
@@ -56,7 +59,7 @@ describe('Delete action', () => {
         id: 'step1'
       }
 
-      when(sequencerService.delete(step.id)).thenResolve(res)
+      when(sequencerServiceMock.delete(step.id)).thenResolve(res)
 
       renderWithAuth({
         ui: <DeleteAction sequencerPrefix={sequencerPrefix} step={step} />,
@@ -68,7 +71,7 @@ describe('Delete action', () => {
 
       await screen.findByText(message)
 
-      verify(sequencerService.delete(step.id)).called()
+      verify(sequencerServiceMock.delete(step.id)).called()
     })
   })
 })

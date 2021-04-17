@@ -10,14 +10,21 @@ import {
 import type { ProvisionResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/models/SequenceManagerRes'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, verify, when } from 'ts-mockito'
+import {
+  anything,
+  deepEqual,
+  mock,
+  reset,
+  resetCalls,
+  verify,
+  when
+} from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import {
   CONFIG_SERVICE_CONNECTION,
   PROVISION_CONF_PATH
 } from '../../../../../src/features/sm/constants'
 import {
-  locServiceMock,
   getMockServices,
   MockServices,
   renderWithAuth
@@ -42,14 +49,17 @@ describe('ProvisionButton component', () => {
     })
   )
 
+  const mockServices = getMockServices()
+  const locServiceMock = mockServices.mock.locationService
+
+  beforeEach(() => resetCalls(mockServices.mock.smService))
+
+  when(locServiceMock.track(anything())).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
   it('should be able to successfully provision | ESW-444', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     const configService = mockServices.mock.configService
-
-    when(locServiceMock.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
-      return { cancel: () => ({}) }
-    })
 
     when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
       ConfigData.fromString(JSON.stringify(confData))
@@ -83,7 +93,6 @@ describe('ProvisionButton component', () => {
   })
 
   it('should log if fetching provision config call failed | ESW-444', async () => {
-    const mockServices = getMockServices()
     const smService = mockServices.mock.smService
     const configService = mockServices.mock.configService
 
@@ -134,8 +143,8 @@ describe('ProvisionButton component', () => {
 
   provisionConfTestData.forEach(([agentPrefix, errMsg, statement]) => {
     it(`should log error if provision config agent field is not a valid ${statement} | ESW-444`, async () => {
-      const mockServices = getMockServices()
       const smService = mockServices.mock.smService
+
       const configService = mockServices.mock.configService
 
       when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
@@ -144,6 +153,9 @@ describe('ProvisionButton component', () => {
             [agentPrefix]: 2
           })
         )
+      )
+      when(smService.provision(deepEqual(provisionConfig))).thenResolve(
+        provisionRes
       )
 
       const { provisionButton } = await renderAndFindProvision(mockServices)
@@ -224,8 +236,6 @@ describe('ProvisionButton component', () => {
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
     it(`should be able to show error log if provision return ${name} | ESW-444`, async () => {
-      const mockServices = getMockServices()
-
       const smService = mockServices.mock.smService
       const configService = mockServices.mock.configService
 
@@ -266,7 +276,6 @@ describe('ProvisionButton component', () => {
   ) => {
     renderWithAuth({
       ui: <ProvisionButton />,
-      loggedIn: true,
       mockClients: serviceFactoryContext
     })
 

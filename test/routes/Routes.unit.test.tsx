@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { when } from 'ts-mockito'
+import { anything, when } from 'ts-mockito'
 import { App } from '../../src/containers/app/App'
 import {
   HOME,
@@ -11,17 +11,17 @@ import {
   OBSERVATIONS,
   RESOURCES
 } from '../../src/routes/RoutesConfig'
-import {
-  getMockServices,
-  locServiceMock,
-  renderWithAuth
-} from '../utils/test-utils'
+import { getMockServices, renderWithAuth } from '../utils/test-utils'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
   // Mocking locationService.listByComponentType,
   // because on Home page a call happens on render to get list of agents
   const mockServices = getMockServices()
+  const locServiceMock = mockServices.mock.locationService
+  when(locServiceMock.track(anything())).thenReturn(() => {
+    return { cancel: () => ({}) }
+  })
   when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
   return renderWithAuth({

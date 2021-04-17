@@ -3,16 +3,22 @@ import userEvent from '@testing-library/user-event'
 import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { verify, when } from 'ts-mockito'
+import { resetCalls, verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
 import {
   configurableObsModesData,
   nonConfigurableObsModesData,
   obsModesData
 } from '../../jsons/obsmodes'
-import { getMockServices, renderWithAuth } from '../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../utils/test-utils'
 
 describe('Observation page', () => {
+
+  beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
@@ -84,9 +90,10 @@ describe('Observation page', () => {
   it('should render running obsModes | ESW-450', async () => {
     const mockServices = getMockServices()
     const smService = mockServices.mock.smService
-    const sequencerService = mockServices.mock.sequencerService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerService.getSequencerState()).thenResolve({ _type: 'Loaded' })
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Loaded'
+    })
 
     renderWithAuth({
       ui: <Observations />,
@@ -117,7 +124,6 @@ describe('Observation page', () => {
       const mockServices = getMockServices()
       const smService = mockServices.mock.smService
       const agentService = mockServices.mock.agentService
-      const sequencerService = mockServices.mock.sequencerService
 
       when(agentService.getAgentStatus()).thenResolve({
         _type: 'Success',
@@ -125,7 +131,7 @@ describe('Observation page', () => {
         seqCompsWithoutAgent: []
       })
       when(smService.getObsModesDetails()).thenResolve(data)
-      when(sequencerService.getSequencerState()).thenReject(
+      when(sequencerServiceMock.getSequencerState()).thenReject(
         new Error('No sequencer present')
       )
 
@@ -150,7 +156,7 @@ describe('Observation page', () => {
       //Checking that obsMode status is NA
       const tabPanel = await screen.findByRole('tabpanel')
       expect(within(tabPanel).getByText('NA')).to.exist
-      verify(sequencerService.getSequencerState()).never()
+      verify(sequencerServiceMock.getSequencerState()).never()
 
       verify(smService.getObsModesDetails()).called()
     })

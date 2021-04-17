@@ -5,11 +5,10 @@ import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
 import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
-import { getMockServices, renderWithAuth } from '../../../../utils/test-utils'
+import { getMockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('StepActions', () => {
   const mockServices = getMockServices()
-  const sequencerService = mockServices.mock.sequencerService
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const stepStatusPending: StepStatus = { _type: 'Pending' }
@@ -63,7 +62,7 @@ describe('StepActions', () => {
       called = !called
     }
 
-    when(sequencerService.removeBreakpoint('step1')).thenResolve({
+    when(sequencerServiceMock.removeBreakpoint('step1')).thenResolve({
       _type: 'Ok'
     })
     renderWithAuth({

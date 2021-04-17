@@ -3,16 +3,11 @@ import { ObsMode, Setup, Step, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mock, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
-import {
-  getMockServices,
-  locServiceMock,
-  renderWithAuth
-} from '../../utils/test-utils'
+import { getMockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 describe('sequencer table', () => {
   const mockServices = getMockServices()
-  const sequencerService = mockServices.mock.sequencerService
-
+  const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
 
   const step = (
@@ -43,7 +38,7 @@ describe('sequencer table', () => {
     const obsMode: ObsMode = new ObsMode('DarkNight_1')
     const sequencers: Subsystem[] = ['ESW', 'APS', 'DPS', 'CIS', 'AOESW']
 
-    when(sequencerService.getSequence())
+    when(sequencerServiceMock.getSequence())
       .thenResolve(stepList1)
       .thenResolve(stepList2)
       .thenResolve(stepList3)
@@ -62,7 +57,7 @@ describe('sequencer table', () => {
     const obsMode: ObsMode = new ObsMode('darknight')
     const sequencers: Subsystem[] = ['ESW']
 
-    when(sequencerService.getSequence()).thenResolve(undefined)
+    when(sequencerServiceMock.getSequence()).thenResolve(undefined)
 
     renderWithAuth({
       ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,

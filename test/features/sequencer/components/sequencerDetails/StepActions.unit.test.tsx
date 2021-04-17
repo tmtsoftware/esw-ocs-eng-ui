@@ -5,7 +5,11 @@ import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
 import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
-import { getMockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../../../utils/test-utils'
 
 describe('StepActions', () => {
   const mockServices = getMockServices()

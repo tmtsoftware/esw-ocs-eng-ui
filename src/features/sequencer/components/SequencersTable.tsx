@@ -94,7 +94,6 @@ export const SequencersTable = ({
   )
 
   const sequencerStatus = useSequencersData(sortedSequencers)
-  console.log(sequencerStatus.data)
   const [isSeqDrawerVisible, setSeqDrawerVisibility] = useState(false)
   const [selectedSequencer, selectSequencer] = useState<Prefix>()
   const [

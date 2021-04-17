@@ -17,7 +17,6 @@ import {
 } from '../../utils/test-utils'
 
 describe('Observation page', () => {
-
   beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
     const mockServices = getMockServices()

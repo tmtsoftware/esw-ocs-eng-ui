@@ -3,7 +3,11 @@ import { ObsMode, Setup, Step, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mock, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
-import { getMockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import {
+  getMockServices,
+  renderWithAuth,
+  sequencerServiceMock
+} from '../../utils/test-utils'
 
 describe('sequencer table', () => {
   const mockServices = getMockServices()

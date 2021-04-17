@@ -10,20 +10,9 @@ import {
 import type { ProvisionResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/models/SequenceManagerRes'
 import { expect } from 'chai'
 import React from 'react'
-import {
-  anything,
-  deepEqual,
-  mock,
-  reset,
-  resetCalls,
-  verify,
-  when
-} from 'ts-mockito'
+import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
-import {
-  CONFIG_SERVICE_CONNECTION,
-  PROVISION_CONF_PATH
-} from '../../../../../src/features/sm/constants'
+import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import {
   getMockServices,
   MockServices,

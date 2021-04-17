@@ -31,7 +31,7 @@ export const DeleteAction = ({
   step,
   sequencerPrefix
 }: SequencerStepProps): JSX.Element => {
-  const { data: sequencerService } = useSequencerService(sequencerPrefix)
+  const sequencerService = useSequencerService(sequencerPrefix)
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
     onSuccess: () => successMessage('Successfully deleted step'),

@@ -36,7 +36,6 @@ const CObsMode = ({
   const isRunningTab = currentTab === 'Running'
   const { data: obsModeStatus } = useSequencerState(
     new Prefix('ESW', obsMode.name),
-    false,
     isRunningTab
   )
   //TODO use StatusAPI of sequencer for this status

@@ -10,6 +10,11 @@ export const PROVISION_CONF_PATH = '/tmt/esw/smProvisionConfig.json'
 export const SM_COMPONENT_ID = new ComponentId(smPrefix, connectionType)
 export const SM_CONNECTION = HttpConnection(smPrefix, connectionType)
 
+export const GATEWAY_CONNECTION = HttpConnection(
+  new Prefix('ESW', 'EswGateway'),
+  'Service'
+)
+
 export const AGENT_SERVICE_CONNECTION = HttpConnection(
   agentPrefix,
   connectionType

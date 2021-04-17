@@ -5,15 +5,11 @@ import { useSequencerService } from './useSequencerService'
 
 export const useSequencerState = <E>(
   sequencerPrefix: Prefix,
-  useErrorBoundary = false,
   enabled = true,
   onError?: (err: E) => void
 ): UseQueryResult<SequencerStateResponse> => {
-  const { data: sequencerService } = useSequencerService(
-    sequencerPrefix,
-    useErrorBoundary,
-    enabled
-  )
+  const sequencerService = useSequencerService(sequencerPrefix)
+
   return useQuery(
     SEQUENCER_STATE(sequencerPrefix).key,
     () => sequencerService?.getSequencerState(),

@@ -41,7 +41,7 @@ export const BreakpointAction = ({
   sequencerPrefix,
   step
 }: SequencerStepProps): JSX.Element => {
-  const { data: sequencerService } = useSequencerService(sequencerPrefix)
+  const sequencerService = useSequencerService(sequencerPrefix)
 
   const insertBreakpointAction = useMutation({
     mutationFn: insertAction(step.id),

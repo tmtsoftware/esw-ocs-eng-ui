@@ -1,18 +1,15 @@
 import type {
   Location,
-  LocationService,
   Prefix,
+  SequencerService,
   StepList
 } from '@tmtsoftware/esw-ts'
-import { ComponentId } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
-import { useLocationService } from '../../../contexts/LocationServiceContext'
-import {
-  ServiceFactoryContextType,
-  useServiceFactory
-} from '../../../contexts/ServiceFactoryContext'
+import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
+import { useAuth } from '../../../contexts/useAuthContext'
 import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
+import { mkSequencerService } from './useSequencerService'
 
 export type StepStatus =
   | 'All Steps Completed'
@@ -22,12 +19,11 @@ export type StepStatus =
   | 'NA'
   | 'Failed to Fetch Status'
 
-export type Datatype = {
+export type SequencerInfo = {
   key: string
   prefix: string
   stepListStatus: { stepNumber: number; status: StepStatus }
   totalSteps: number | 'NA'
-  location?: Location
 }
 
 const Status: { [key: string]: StepStatus } = {
@@ -37,9 +33,9 @@ const Status: { [key: string]: StepStatus } = {
   Success: 'All Steps Completed'
 }
 
-const deriveStatus = (
+export const deriveStatus = (
   stepList: StepList | undefined
-): Datatype['stepListStatus'] => {
+): SequencerInfo['stepListStatus'] => {
   if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
 
   const step = stepList.steps.find((x) => x.status._type !== 'Success')
@@ -49,76 +45,62 @@ const deriveStatus = (
   return { stepNumber, status: Status[step.status._type] }
 }
 
-const getStepList = async (
-  sequencer: Prefix,
-  sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory']
-): Promise<{ stepList?: StepList; isError?: boolean }> => {
+const getStepList = async (sequencerService: SequencerService) => {
   try {
-    const sequencerService = await sequencerServiceFactory(
-      new ComponentId(sequencer, 'Sequencer')
-    )
+    console.log('inside here ')
     const sequence = await sequencerService.getSequence()
+    console.log('inside here ', sequence)
     return { stepList: sequence }
   } catch (e) {
     return { isError: true }
   }
 }
-
-export const getStepListStatus = (
-  stepList?: StepList,
-  isError?: boolean
-): Datatype['stepListStatus'] => {
-  return isError
-    ? {
-        stepNumber: 0,
-        status: 'Failed to Fetch Status' as const
-      }
-    : deriveStatus(stepList)
-}
-
-const getData = async (
-  sequencers: Prefix[],
-  sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory'],
-  locationService: LocationService
-): Promise<Datatype[]> => {
-  const allSequencers = (
-    await locationService.listByComponentType('Sequencer')
-  ).filter((x) => x.connection.connectionType === 'http')
-
+const getSequencerInfo = async (
+  services: [SequencerService, Prefix][]
+): Promise<SequencerInfo[]> => {
   return await Promise.all(
-    sequencers.map(async (prefix) => {
-      const location = allSequencers.find(
-        (x) => x.connection.prefix.toJSON() === prefix.toJSON()
-      )
-      const { stepList, isError } = await getStepList(
-        prefix,
-        sequencerServiceFactory
-      )
+    services.map(async ([service, prefix]) => {
+      const { stepList, isError } = await getStepList(service)
+      const stepListStatus = isError
+        ? {
+            stepNumber: 0,
+            status: 'Failed to Fetch Status' as const
+          }
+        : deriveStatus(stepList)
 
       return {
         key: prefix.toJSON(),
         prefix: prefix.toJSON(),
-        stepListStatus: getStepListStatus(stepList, isError),
-        totalSteps: stepList ? stepList.steps.length : ('NA' as const),
-        location: location
+        stepListStatus,
+        totalSteps: stepList ? stepList.steps.length : ('NA' as const)
       }
     })
   )
 }
 
+export type SequencerLocation = [Location, SequencerService]
+
 export const useSequencersData = (
-  sequencers: Prefix[]
-): UseQueryResult<Datatype[]> => {
-  const { sequencerServiceFactory } = useServiceFactory()
-  const locationService = useLocationService()
+  prefixes: Prefix[]
+): UseQueryResult<SequencerInfo[]> => {
+  const { auth } = useAuth()
+  const tf = auth === null ? () => undefined : auth.token
+  const [gatewayLocation] = useGatewayLocation()
+
+  if (!gatewayLocation) throw new Error('Gateway down!')
+
+  const services: [SequencerService, Prefix][] = prefixes.map((prefix) => [
+    mkSequencerService(gatewayLocation, prefix, tf),
+    prefix
+  ])
 
   return useQuery(
-    [OBS_MODE_SEQUENCERS.key, ...sequencers],
-    () => getData(sequencers, sequencerServiceFactory, locationService),
+    [OBS_MODE_SEQUENCERS.key, ...services.map((x) => x[1].toJSON())],
+    () => getSequencerInfo(services),
     {
       useErrorBoundary: false,
       onError: (err) => message.error((err as Error).message),
-      enabled: !!locationService,
+      enabled: !!services,
       refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
     }
   )

@@ -5,13 +5,10 @@ import { useSequencerService } from './useSequencerService'
 
 export const useSequencerStatus = <E>(
   sequencerPrefix: Prefix,
-  useErrorBoundary = true,
   onError?: (err: E) => void
 ): UseQueryResult<boolean> => {
-  const { data: sequencerService } = useSequencerService(
-    sequencerPrefix,
-    useErrorBoundary
-  )
+  const sequencerService = useSequencerService(sequencerPrefix)
+
   return useQuery(SEQUENCER_STATUS.key, () => sequencerService?.isOnline(), {
     onError,
     enabled: !!sequencerService

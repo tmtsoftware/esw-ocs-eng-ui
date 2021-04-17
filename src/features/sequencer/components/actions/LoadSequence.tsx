@@ -37,7 +37,7 @@ export const LoadSequence = ({
   }
 
   const request = () => {
-    sequencerService.data && loadSequenceAction.mutate(sequencerService.data)
+    sequencerService && loadSequenceAction.mutate(sequencerService)
   }
 
   return (

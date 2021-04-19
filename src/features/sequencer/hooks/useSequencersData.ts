@@ -63,6 +63,18 @@ const getStepList = async (
   }
 }
 
+export const getStepListStatus = (
+  stepList?: StepList,
+  isError?: boolean
+): Datatype['stepListStatus'] => {
+  return isError
+    ? {
+        stepNumber: 0,
+        status: 'Failed to Fetch Status' as const
+      }
+    : deriveStatus(stepList)
+}
+
 const getData = async (
   sequencers: Prefix[],
   sequencerServiceFactory: ServiceFactoryContextType['sequencerServiceFactory'],
@@ -85,12 +97,7 @@ const getData = async (
       return {
         key: prefix.toJSON(),
         prefix: prefix.toJSON(),
-        stepListStatus: isError
-          ? {
-              stepNumber: 0,
-              status: 'Failed to Fetch Status' as const
-            }
-          : deriveStatus(stepList),
+        stepListStatus: getStepListStatus(stepList, isError),
         totalSteps: stepList ? stepList.steps.length : ('NA' as const),
         location: location
       }

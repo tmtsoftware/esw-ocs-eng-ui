@@ -2,6 +2,7 @@ import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect } from 'react'
+import { getStepListStatus } from '../../hooks/useSequencersData'
 import { useStepList } from '../../hooks/useStepList'
 import { typeStatus } from '../SequencersTable'
 import styles from './sequencerDetails.module.css'
@@ -36,19 +37,20 @@ const columns = (
 
 export const StepListTable = ({
   sequencerPrefix,
-  stepListStatus,
   selectedStep,
   setSelectedStep
 }: {
   sequencerPrefix: Prefix
-  stepListStatus: keyof typeof typeStatus
   selectedStep?: Step
   setSelectedStep: (_: Step) => void
 }): JSX.Element => {
-  const { isLoading, data: stepList } = useStepList(sequencerPrefix)
+  const { isLoading, data: stepList, isError } = useStepList(sequencerPrefix)
+  const stepListStatus = getStepListStatus(stepList, isError).status
+
   useEffect(() => {
     !selectedStep && stepList && setSelectedStep(stepList.steps[0])
   })
+
   return (
     <Table
       rowKey={(step) => step.id}

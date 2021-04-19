@@ -11,6 +11,7 @@ import {
   Parameter,
   Prefix,
   Setup,
+  Step,
   StepList,
   stringKey,
   StringKey
@@ -39,17 +40,26 @@ describe('sequencer details', () => {
     uri: ''
   }
 
+  const getStepList = (
+    status: Step['status']['_type'],
+    hasBreakpoint = false
+  ) =>
+    new StepList([
+      {
+        hasBreakpoint: hasBreakpoint,
+        status: { _type: status, message: '' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
+
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
     const mockServices = getMockServices()
+    const sequencerService = mockServices.mock.sequencerService
+    when(sequencerService.getSequence()).thenResolve(getStepList('Failure'))
 
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          stepListStatus={'Failed'}
-          sequencer={sequencerLoc}
-          obsMode={''}
-        />
-      ),
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -72,14 +82,11 @@ describe('sequencer details', () => {
   it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
     const mockServices = getMockServices()
 
+    const sequencerService = mockServices.mock.sequencerService
+    when(sequencerService.getSequence()).thenResolve(getStepList('InFlight'))
+
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          stepListStatus={'In Progress'}
-          sequencer={sequencerLoc}
-          obsMode={''}
-        />
-      ),
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -98,7 +105,7 @@ describe('sequencer details', () => {
     expect(screen.getByRole('ResetSequencer')).to.exist
 
     //check for sequence execution table
-    screen.getByRole('columnheader', {
+    await screen.findByRole('columnheader', {
       name: /sequence steps status: in progress/i
     })
   })
@@ -106,15 +113,12 @@ describe('sequencer details', () => {
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
     const mockServices = getMockServices()
     const sequencerService = mockServices.mock.sequencerService
+    when(sequencerService.getSequence()).thenResolve(
+      getStepList('Pending', true)
+    )
 
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          stepListStatus={'Paused'}
-          sequencer={sequencerLoc}
-          obsMode={''}
-        />
-      ),
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
 
@@ -179,13 +183,7 @@ describe('sequencer details', () => {
     when(sequencerService.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          sequencer={sequencerLoc}
-          obsMode={''}
-          stepListStatus={'In Progress'}
-        />
-      ),
+      ui: <SequencerDetails sequencer={sequencerLoc} obsMode={''} />,
       mockClients: mockServices.serviceFactoryContext
     })
 

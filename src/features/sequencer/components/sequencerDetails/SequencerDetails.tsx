@@ -22,7 +22,6 @@ import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
-import type { typeStatus } from '../SequencersTable'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
@@ -109,12 +108,10 @@ const DescriptionItem = (label: string, item: string) => {
 }
 export const SequencerDetails = ({
   sequencer,
-  obsMode,
-  stepListStatus
+  obsMode
 }: {
   sequencer: Location
   obsMode: string
-  stepListStatus: keyof typeof typeStatus
 }): JSX.Element => {
   const sequencerState = useSequencerState(sequencer.connection.prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
@@ -143,7 +140,6 @@ export const SequencerDetails = ({
         <Sider theme='light' style={{ overflowY: 'scroll' }} width={'18rem'}>
           <StepListTable
             sequencerPrefix={sequencer.connection.prefix}
-            stepListStatus={stepListStatus}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}
           />

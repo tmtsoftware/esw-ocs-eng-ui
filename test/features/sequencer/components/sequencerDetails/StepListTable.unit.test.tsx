@@ -35,14 +35,13 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'In Progress'}
           setSelectedStep={() => ({})}
         />
       ),
       mockClients: mockServices.serviceFactoryContext
     })
 
-    screen.getByRole('columnheader', {
+    await screen.findByRole('columnheader', {
       name: 'Sequence Steps Status: In Progress'
     })
 
@@ -58,7 +57,6 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'NA'}
           setSelectedStep={() => ({})}
         />
       ),
@@ -80,7 +78,6 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'NA'}
           setSelectedStep={() => ({})}
         />
       ),
@@ -102,7 +99,6 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'In Progress'}
           setSelectedStep={() => ({})}
         />
       ),
@@ -141,7 +137,6 @@ describe('stepList table', () => {
       ui: (
         <StepListTable
           sequencerPrefix={sequencerPrefix}
-          stepListStatus={'In Progress'}
           setSelectedStep={() => ({})}
         />
       ),

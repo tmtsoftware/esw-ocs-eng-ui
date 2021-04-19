@@ -68,20 +68,14 @@ type ObsModeSeqTableProps = {
 const SequencerDrawer = ({
   onClose,
   selectedSequencer,
-  obsMode,
-  sequencerStatus
+  obsMode
 }: {
   selectedSequencer: Location
   obsMode: ObsMode
-  sequencerStatus: Datatype
   onClose: () => void
 }) => (
   <Drawer visible width={'80%'} onClose={() => onClose()} destroyOnClose>
-    <SequencerDetails
-      stepListStatus={sequencerStatus.stepListStatus.status}
-      sequencer={selectedSequencer}
-      obsMode={obsMode.name}
-    />
+    <SequencerDetails sequencer={selectedSequencer} obsMode={obsMode.name} />
   </Drawer>
 )
 
@@ -119,7 +113,6 @@ export const SequencersTable = ({
         <SequencerDrawer
           obsMode={obsMode}
           selectedSequencer={selectedSequencer}
-          sequencerStatus={selectedSequencerStatus}
           onClose={() => setSeqDrawerVisibility(false)}
         />
       )}

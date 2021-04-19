@@ -21,7 +21,11 @@ export const useLoadAction = (
 
   return useMutation({
     mutationFn,
-    onSuccess: () => successMessage('Sequence has been loaded successfully'),
+    onSuccess: (res) => {
+      if (res?._type === 'Ok')
+        return successMessage('Sequence has been loaded successfully')
+      return errorMessage('error', Error(res?.msg))
+    },
     onError: (e) => errorMessage('errorMsg', e),
     invalidateKeysOnSuccess: [
       SEQUENCER_STATE(prefix).key,

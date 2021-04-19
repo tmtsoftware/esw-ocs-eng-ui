@@ -1,10 +1,7 @@
 import React, { createContext, useContext } from 'react'
 
-export type CreateContextProps<Value> = {
-  useHook: () => Value
-}
+export type Hook<Value> = () => Value
 
-export type Hook<T> = () => T
 export type Provider<Value> = ({
   children,
   initialValue
@@ -12,6 +9,7 @@ export type Provider<Value> = ({
   children: React.ReactNode
   initialValue?: Value
 }) => JSX.Element
+
 export type CtxType<T> = readonly [Hook<T>, Provider<T>]
 
 export function createCtx<Value>(useHook: () => Value): CtxType<Value> {

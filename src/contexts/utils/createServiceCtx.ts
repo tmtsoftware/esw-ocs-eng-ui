@@ -5,10 +5,11 @@ import type {
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
 import { useCallback } from 'react'
-import { useStream } from '../hooks/useStream'
+import { useAuth } from '../../hooks/useAuth'
+import { useStream } from '../../hooks/useStream'
+import { createTokenFactory } from '../../utils/createTokenFactory'
+import { useLocationService } from '../LocationServiceContext'
 import { createCtx, CtxType } from './createCtx'
-import { useLocationService } from './LocationServiceContext'
-import { useAuth } from './useAuthContext'
 
 export const createServiceCtx = <T>(
   connection: Connection,
@@ -27,10 +28,9 @@ export const useService = <T>(
   const locationService = useLocationService()
   const onEventCallback = useCallback(
     (event: TrackingEvent) => {
-      const tokenFactory = auth !== null ? auth.token : () => undefined
       if (event._type === 'LocationRemoved') return undefined
 
-      return factory(event.location, tokenFactory)
+      return factory(event.location, createTokenFactory(auth))
     },
     [auth, factory]
   )

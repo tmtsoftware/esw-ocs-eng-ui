@@ -6,9 +6,9 @@ import {
   getPostEndPoint
 } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { AGENT_SERVICE_CONNECTION } from '../features/sm/constants'
-import { createServiceCtx } from './createServiceCtx'
+import { createServiceCtx } from './utils/createServiceCtx'
 
-const mkAgentSerice = (
+const mkAgentService = (
   location: Location,
   tokenFactory: TokenFactory
 ): AgentService => {
@@ -19,5 +19,5 @@ const mkAgentSerice = (
 
 export const [useAgentService, AgentServiceProvider] = createServiceCtx(
   AGENT_SERVICE_CONNECTION,
-  mkAgentSerice
+  mkAgentService
 )

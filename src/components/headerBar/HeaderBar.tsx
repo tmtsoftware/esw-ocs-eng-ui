@@ -3,7 +3,7 @@ import { Button, Dropdown, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
-import { useAuth } from '../../contexts/useAuthContext'
+import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
 import styles from './headerBar.module.css'
 

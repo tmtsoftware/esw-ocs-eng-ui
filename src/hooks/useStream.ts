@@ -9,6 +9,7 @@ export type UseStreamProps<I, O> = {
   run: Run<I>
 }
 
+// caller should make sure mapper and run functions are wrapped in callback or memo to avoid unnecessary renders
 export const useStream = <I, O>({
   mapper,
   run

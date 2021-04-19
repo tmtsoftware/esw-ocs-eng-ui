@@ -14,7 +14,8 @@ import {
 } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { Ws } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Ws'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
-import { useAuth } from '../../../contexts/useAuthContext'
+import { useAuth } from '../../../hooks/useAuth'
+import { createTokenFactory } from '../../../utils/createTokenFactory'
 
 export const useSequencerService = (
   sequencerPrefix: Prefix
@@ -23,8 +24,7 @@ export const useSequencerService = (
   const { auth } = useAuth()
   if (!gatewayLocation) throw new Error('Gateway down!')
 
-  const tf = auth === null ? () => undefined : auth.token
-
+  const tf = createTokenFactory(auth)
   return mkSequencerService(gatewayLocation, sequencerPrefix, tf)
 }
 

@@ -10,7 +10,7 @@ import {
   getPostEndPoint
 } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { SM_CONNECTION } from '../features/sm/constants'
-import { createServiceCtx } from './createServiceCtx'
+import { createServiceCtx } from './utils/createServiceCtx'
 
 export type SMContextType = [Location | undefined, boolean]
 

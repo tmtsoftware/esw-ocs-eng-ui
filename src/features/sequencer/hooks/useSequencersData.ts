@@ -7,7 +7,8 @@ import type {
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
-import { useAuth } from '../../../contexts/useAuthContext'
+import { useAuth } from '../../../hooks/useAuth'
+import { createTokenFactory } from '../../../utils/createTokenFactory'
 import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
 import { mkSequencerService } from './useSequencerService'
 
@@ -90,13 +91,12 @@ export const useSequencersData = (
   prefixes: Prefix[]
 ): UseQueryResult<SequencerInfo[]> => {
   const { auth } = useAuth()
-  const tf = auth === null ? () => undefined : auth.token
   const [gatewayLocation] = useGatewayLocation()
 
   if (!gatewayLocation) throw new Error('Gateway down!')
 
   const services: [SequencerService, Prefix][] = prefixes.map((prefix) => [
-    mkSequencerService(gatewayLocation, prefix, tf),
+    mkSequencerService(gatewayLocation, prefix, createTokenFactory(auth)),
     prefix
   ])
 

@@ -1,6 +1,9 @@
 import { LocationService } from '@tmtsoftware/esw-ts'
-import { createCtx } from './createCtx'
+import { createCtx } from './utils/createCtx'
 
-export const [useLocationService, LocationServiceProvider] = createCtx(() =>
-  LocationService()
+const locationService = LocationService()
+
+// wrapped in context for testing purpose
+export const [useLocationService, LocationServiceProvider] = createCtx(
+  () => locationService
 )

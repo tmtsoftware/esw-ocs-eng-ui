@@ -5,7 +5,6 @@ import { verify, when } from 'ts-mockito'
 import { useSequencerStatus } from '../../../../src/features/sequencer/hooks/useSequencerStatus'
 import {
   getContextWithQueryClientProvider,
-  mockServices,
   sequencerServiceMock
 } from '../../../utils/test-utils'
 
@@ -13,8 +12,7 @@ describe('useSequencer', () => {
   it('should return status of sequencer | ESW-455', async () => {
     when(sequencerServiceMock.isOnline()).thenResolve(true)
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true,
-      mockServices
+      true
     )
 
     const { result, waitFor } = renderHook(

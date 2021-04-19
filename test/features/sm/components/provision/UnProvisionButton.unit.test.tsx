@@ -5,11 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
-import {
-  mockServices,
-  MockServices,
-  renderWithAuth
-} from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
   const modalTitle = 'Do you want to shutdown all the Sequence Components?'
@@ -67,9 +63,7 @@ describe('UnProvision button', () => {
 
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)
 
-      const { unProvisionButton } = await renderAndFindProvisionButton(
-        mockServices
-      )
+      const { unProvisionButton } = await renderAndFindProvisionButton()
 
       //User clicks unprovision button
       userEvent.click(unProvisionButton)
@@ -95,11 +89,10 @@ describe('UnProvision button', () => {
     })
   })
 
-  const renderAndFindProvisionButton = async (serviceFactory: MockServices) => {
+  const renderAndFindProvisionButton = async () => {
     renderWithAuth({
       ui: <UnProvisionButton />,
-      loggedIn: true,
-      mockClients: serviceFactory
+      loggedIn: true
     })
 
     const unProvisionButton = await screen.findByRole('button', {

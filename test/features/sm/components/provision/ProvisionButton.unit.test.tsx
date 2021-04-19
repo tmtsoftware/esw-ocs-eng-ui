@@ -15,7 +15,6 @@ import { ProvisionButton } from '../../../../../src/features/sm/components/provi
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import {
   mockServices,
-  MockServices,
   renderWithAuth
 } from '../../../../../test/utils/test-utils'
 
@@ -57,7 +56,7 @@ describe('ProvisionButton component', () => {
       provisionRes
     )
 
-    const { provisionButton } = await renderAndFindProvision(mockServices)
+    const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
     userEvent.click(provisionButton)
@@ -88,7 +87,7 @@ describe('ProvisionButton component', () => {
       Error('error occurred')
     )
 
-    const { provisionButton } = await renderAndFindProvision(mockServices)
+    const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
     userEvent.click(provisionButton)
@@ -146,7 +145,7 @@ describe('ProvisionButton component', () => {
         provisionRes
       )
 
-      const { provisionButton } = await renderAndFindProvision(mockServices)
+      const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
       userEvent.click(provisionButton)
@@ -235,7 +234,7 @@ describe('ProvisionButton component', () => {
         provisionRes
       )
 
-      const { provisionButton } = await renderAndFindProvision(mockServices)
+      const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
       userEvent.click(provisionButton)
@@ -259,12 +258,9 @@ describe('ProvisionButton component', () => {
     })
   })
 
-  const renderAndFindProvision = async (
-    serviceFactoryContext: MockServices
-  ) => {
+  const renderAndFindProvision = async () => {
     renderWithAuth({
-      ui: <ProvisionButton />,
-      mockClients: serviceFactoryContext
+      ui: <ProvisionButton />
     })
 
     const provisionButton = await screen.findByRole('button', {

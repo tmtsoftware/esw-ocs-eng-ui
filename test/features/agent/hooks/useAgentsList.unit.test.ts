@@ -22,8 +22,7 @@ describe('useAgents', () => {
       agentLocation
     ])
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true,
-      mockServices
+      true
     )
 
     const { result, waitFor } = renderHook(() => useAgentsList(), {

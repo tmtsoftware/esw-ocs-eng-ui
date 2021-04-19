@@ -48,8 +48,7 @@ describe('useSequencersData', () => {
       .thenResolve(stepList4)
 
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true,
-      mockServices
+      true
     )
 
     const { result, waitFor } = renderHook(
@@ -117,8 +116,7 @@ describe('useSequencersData', () => {
     when(sequencerServiceMock.getSequence()).thenReject(Error())
 
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true,
-      mockServices
+      true
     )
 
     const { result, waitFor } = renderHook(

@@ -6,7 +6,6 @@ import React from 'react'
 import { when } from 'ts-mockito'
 import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
 import {
-  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
@@ -37,8 +36,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(false, stepStatusPending)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByText('Insert breakpoint')
@@ -52,8 +50,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(true, stepStatusPending)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByText('Remove breakpoint')
@@ -75,8 +72,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(true, stepStatusPending)}
           handleMenuClick={handleMenuClick}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const removeAction = await screen.findByText('Remove breakpoint')
@@ -93,8 +89,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(false, stepStatusInProgress)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -117,8 +112,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(false, stepStatusFailure)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -146,8 +140,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(false, stepStatusSuccess)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -175,8 +168,7 @@ describe('StepActions', () => {
           step={getStepWithBreakpoint(false, stepStatusPending)}
           handleMenuClick={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const insertMenu = (await screen.findByRole('menuitem', {

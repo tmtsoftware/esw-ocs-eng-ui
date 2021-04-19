@@ -20,8 +20,7 @@ describe('SMCard', () => {
         <SMServiceProvider initialValue={[undefined, false]}>
           <SMCard />
         </SMServiceProvider>
-      ),
-      mockClients: mockServices
+      )
     })
 
     await waitFor(
@@ -48,8 +47,7 @@ describe('SMCard', () => {
           ]}>
           <SMCard />
         </SMServiceProvider>
-      ),
-      mockClients: mockServices
+      )
     })
 
     await waitFor(

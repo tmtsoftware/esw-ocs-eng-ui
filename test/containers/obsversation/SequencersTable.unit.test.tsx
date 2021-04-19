@@ -49,8 +49,7 @@ describe('sequencer table', () => {
       .thenReject(Error())
 
     renderWithAuth({
-      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
-      mockClients: mockServices
+      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />
     })
 
     await assertTable()
@@ -63,8 +62,7 @@ describe('sequencer table', () => {
     when(sequencerServiceMock.getSequence()).thenResolve(undefined)
 
     renderWithAuth({
-      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />,
-      mockClients: mockServices
+      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />
     })
 
     await assertHeaders()

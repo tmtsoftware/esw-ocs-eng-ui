@@ -11,7 +11,6 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
 import {
-  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
@@ -66,8 +65,7 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices
+        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />
       })
 
       const insertBreakpoint = await screen.findByText('Insert breakpoint')
@@ -119,8 +117,7 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices
+        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />
       })
 
       const removeBreakpoint = await screen.findByText('Remove breakpoint')

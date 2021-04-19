@@ -87,8 +87,7 @@ describe('Infrastructure page', () => {
       seqCompsWithoutAgent: []
     })
     renderWithAuth({
-      ui: <Infrastructure />,
-      mockClients: mockServices
+      ui: <Infrastructure />
     })
 
     screen.getByText('Sequence Manager')
@@ -107,8 +106,7 @@ describe('Infrastructure page', () => {
             <Infrastructure />
           </SMServiceProvider>
         </AgentServiceProvider>
-      ),
-      mockClients: mockServices
+      )
     })
 
     expect(screen.queryByText('Loading...')).to.not.exist
@@ -131,8 +129,7 @@ describe('Infrastructure page', () => {
             <Infrastructure />
           </SMServiceProvider>
         </AgentServiceProvider>
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByText('Running on ESW.primary')
@@ -155,8 +152,7 @@ describe('Infrastructure page', () => {
           ]}>
           <Infrastructure />
         </SMServiceProvider>
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByText('Running on unknown')
@@ -177,8 +173,7 @@ describe('Infrastructure page', () => {
     when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
     when(agentService.getAgentStatus()).thenResolve(agentStatusSuccess)
     renderWithAuth({
-      ui: <Infrastructure />,
-      mockClients: mockServices
+      ui: <Infrastructure />
     })
     const button = await screen.findByRole('button', { name: 'Configure' })
     userEvent.click(button, { button: 1 })
@@ -243,8 +238,7 @@ describe('Infrastructure page', () => {
       _type: 'Success'
     })
     renderWithAuth({
-      ui: <ProvisionButton disabled={false} />,
-      mockClients: mockServices
+      ui: <ProvisionButton disabled={false} />
     })
 
     const provisionButton = (await screen.findByRole('button', {

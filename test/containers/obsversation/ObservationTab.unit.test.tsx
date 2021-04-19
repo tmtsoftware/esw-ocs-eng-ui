@@ -39,8 +39,7 @@ describe('observation tabs', () => {
           currentTab={'Running'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const shutdownButton = await screen.findByRole('button', {
@@ -117,8 +116,7 @@ describe('observation tabs', () => {
           currentTab={'Configurable'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -147,8 +145,7 @@ describe('observation tabs', () => {
           currentTab={'Non-configurable'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -172,8 +169,7 @@ describe('observation tabs', () => {
           currentTab={'Running'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
     await screen.findAllByRole('table')
     const [
@@ -207,8 +203,7 @@ describe('observation tabs', () => {
           currentTab={'Configurable'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findAllByRole('table')
@@ -239,8 +234,7 @@ describe('observation tabs', () => {
           currentTab={'Non-configurable'}
           setObservation={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findAllByRole('table')

@@ -70,8 +70,7 @@ describe('SM actions', () => {
       when(agentService.getAgentStatus()).thenResolve(agentStatusResponse)
 
       renderWithAuth({
-        ui: <SmActions />,
-        mockClients: mockServices
+        ui: <SmActions />
       })
 
       const configureButton = screen.getByRole('button', {

@@ -54,8 +54,7 @@ describe('Agents Grid View', () => {
       seqCompsWithoutAgent: []
     })
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
 
     await screen.findByText('ESW.machine1')
@@ -80,8 +79,7 @@ describe('Agents Grid View', () => {
       seqCompsWithoutAgent: []
     })
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
     // await sleep(1000)
     await screen.findByText('ESW.machine1')
@@ -125,8 +123,7 @@ describe('Agents Grid View', () => {
       ]
     })
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
 
     await screen.findByText('ESW.machine1')
@@ -145,8 +142,7 @@ describe('Agents Grid View', () => {
       reason: 'Failed to fetch agents location'
     })
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -162,8 +158,7 @@ describe('Agents Grid View', () => {
       state: ''
     })
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -186,8 +181,7 @@ describe('Agents Grid View', () => {
     })
 
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
     const icon = await screen.findByRole('addSeqCompIcon')
 
@@ -219,8 +213,7 @@ describe('Agents Grid View', () => {
     })
 
     renderWithAuth({
-      ui: <AgentCards />,
-      mockClients: mockServices
+      ui: <AgentCards />
     })
     const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
     userEvent.click(deleteIcon)

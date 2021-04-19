@@ -35,8 +35,7 @@ describe('SpawnSMButton', () => {
     ).thenResolve({ _type: 'Spawned' })
 
     renderWithAuth({
-      ui: <SpawnSMButton />,
-      mockClients: mockServices
+      ui: <SpawnSMButton />
     })
 
     //User clicks spawn button
@@ -76,8 +75,7 @@ describe('SpawnSMButton', () => {
     when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
     renderWithAuth({
-      ui: <SpawnSMButton />,
-      mockClients: mockServices
+      ui: <SpawnSMButton />
     })
 
     //User clicks spawn button
@@ -116,8 +114,7 @@ describe('SpawnSMButton', () => {
     ).thenResolve({ _type: 'Failed', msg: 'Config file not found' })
 
     renderWithAuth({
-      ui: <SpawnSMButton />,
-      mockClients: mockServices
+      ui: <SpawnSMButton />
     })
 
     //User clicks spawn button

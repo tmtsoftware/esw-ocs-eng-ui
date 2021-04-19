@@ -18,8 +18,7 @@ describe('ShutdownSMButton', () => {
     })
 
     renderWithAuth({
-      ui: <ShutdownSMButton />,
-      mockClients: mockServices
+      ui: <ShutdownSMButton />
     })
 
     const shutdownButton = await screen.findByRole('button', {
@@ -55,8 +54,7 @@ describe('ShutdownSMButton', () => {
     })
 
     renderWithAuth({
-      ui: <ShutdownSMButton />,
-      mockClients: mockServices
+      ui: <ShutdownSMButton />
     })
 
     const shutdownButton = await screen.findByRole('button', {

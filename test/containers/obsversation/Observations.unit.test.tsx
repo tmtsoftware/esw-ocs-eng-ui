@@ -22,8 +22,7 @@ describe('Observation page', () => {
     const smService = mockServices.mock.smService
 
     renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices
+      ui: <Observations />
     })
 
     when(smService.getObsModesDetails()).thenResolve({
@@ -52,8 +51,7 @@ describe('Observation page', () => {
     const smService = mockServices.mock.smService
 
     renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices
+      ui: <Observations />
     })
 
     when(smService.getObsModesDetails()).thenResolve({
@@ -92,8 +90,7 @@ describe('Observation page', () => {
     })
 
     renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices
+      ui: <Observations />
     })
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
@@ -131,8 +128,7 @@ describe('Observation page', () => {
       )
 
       renderWithAuth({
-        ui: <Observations />,
-        mockClients: mockServices
+        ui: <Observations />
       })
 
       const tab = await screen.findByRole('tab', {
@@ -165,8 +161,7 @@ describe('Observation page', () => {
     })
 
     renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices
+      ui: <Observations />
     })
 
     await screen.findByText('Location service failed')
@@ -185,8 +180,7 @@ describe('Observation page', () => {
     })
 
     renderWithAuth({
-      ui: <Observations />,
-      mockClients: mockServices
+      ui: <Observations />
     })
 
     await screen.findByText('Failed to fetch obsModes')

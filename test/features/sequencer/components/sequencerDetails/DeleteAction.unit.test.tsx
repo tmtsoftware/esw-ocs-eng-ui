@@ -5,7 +5,6 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/sequencerDetails/DeleteAction'
 import {
-  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
@@ -60,8 +59,7 @@ describe('Delete action', () => {
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <DeleteAction sequencerPrefix={sequencerPrefix} step={step} />,
-        mockClients: mockServices
+        ui: <DeleteAction sequencerPrefix={sequencerPrefix} step={step} />
       })
 
       const insertBreakpoint = await screen.findByText('Delete')

@@ -24,8 +24,7 @@ const renderWithRouter = (ui: React.ReactElement) => {
   when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
   return renderWithAuth({
-    ui: <BrowserRouter>{ui}</BrowserRouter>,
-    mockClients: mockServices
+    ui: <BrowserRouter>{ui}</BrowserRouter>
   })
 }
 

@@ -110,7 +110,6 @@ export const mockServices = getMockServices()
 
 const getContextProvider = (
   loggedIn: boolean,
-  mockClients: MockServices,
   loginFunc: () => void,
   logoutFunc: () => void
 ) => {
@@ -137,13 +136,13 @@ const getContextProvider = (
         logout: logoutFunc
       }}>
       <LocationServiceProvider
-        initialValue={mockClients.instance.locationService}>
+        initialValue={mockServices.instance.locationService}>
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider
-            initialValue={[mockClients.instance.agentService, false]}>
+            initialValue={[mockServices.instance.agentService, false]}>
             <SMServiceProvider
               initialValue={[
-                { smService: mockClients.instance.smService, smLocation },
+                { smService: mockServices.instance.smService, smLocation },
                 false
               ]}>
               {children}
@@ -159,17 +158,11 @@ const getContextProvider = (
 
 const getContextWithQueryClientProvider = (
   loggedIn: boolean,
-  mockClients: MockServices,
   loginFunc: () => void = () => ({}),
   logoutFunc: () => void = () => ({})
 ): React.FC<{ children: React.ReactNode }> => {
   const queryClient = new QueryClient()
-  const ContextProvider = getContextProvider(
-    loggedIn,
-    mockClients,
-    loginFunc,
-    logoutFunc
-  )
+  const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
 
   const provider = ({ children }: { children: React.ReactNode }) => (
     <ContextProvider>
@@ -182,25 +175,17 @@ const getContextWithQueryClientProvider = (
 type MockProps = {
   ui: ReactElement
   loggedIn?: boolean
-  mockClients?: MockServices
   loginFunc?: () => void
   logoutFunc?: () => void
 }
 
 const renderWithAuth = (
-  {
-    ui,
-    loggedIn = true,
-    mockClients = mockServices,
-    loginFunc,
-    logoutFunc
-  }: MockProps,
+  { ui, loggedIn = true, loginFunc, logoutFunc }: MockProps,
   options?: Omit<RenderOptions, 'queries'>
 ): RenderResult => {
   return render(ui, {
     wrapper: getContextWithQueryClientProvider(
       loggedIn,
-      mockClients,
       loginFunc,
       logoutFunc
     ) as React.FunctionComponent<Record<string, unknown>>,

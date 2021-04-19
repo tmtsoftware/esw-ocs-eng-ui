@@ -6,7 +6,6 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
 import {
-  mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
@@ -38,8 +37,7 @@ describe('stepList table', () => {
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByRole('columnheader', {
@@ -60,8 +58,7 @@ describe('stepList table', () => {
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     screen.getByRole('columnheader', {
@@ -81,8 +78,7 @@ describe('stepList table', () => {
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     screen.getByRole('columnheader', {
@@ -102,8 +98,7 @@ describe('stepList table', () => {
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const actions = await screen.findAllByRole('stepActions')
@@ -142,8 +137,7 @@ describe('stepList table', () => {
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const actions = await screen.findAllByRole('stepActions')

@@ -61,6 +61,7 @@ describe('sequencer details', () => {
       cancel: () => ({})
     }
   })
+
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
     when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Failure'))
     renderWithAuth({
@@ -69,8 +70,7 @@ describe('sequencer details', () => {
           prefix={sequencerLoc.connection.prefix}
           obsMode={''}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const sequencerTitle = await screen.findByTestId('status-error')
@@ -99,8 +99,7 @@ describe('sequencer details', () => {
           prefix={sequencerLoc.connection.prefix}
           obsMode={''}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     const loadAndUploadButton = screen.getAllByRole('button', {
@@ -134,8 +133,7 @@ describe('sequencer details', () => {
           prefix={sequencerLoc.connection.prefix}
           obsMode={''}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findByTestId('status-error')
@@ -201,8 +199,7 @@ describe('sequencer details', () => {
           prefix={sequencerLoc.connection.prefix}
           obsMode={''}
         />
-      ),
-      mockClients: mockServices
+      )
     })
 
     await screen.findAllByRole('table')

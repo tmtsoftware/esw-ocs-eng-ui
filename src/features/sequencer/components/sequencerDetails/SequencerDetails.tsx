@@ -26,7 +26,7 @@ import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
-import { StepListTable } from './StepListTable'
+import { SequencerDetailsSider } from './SequencerDetailsSider'
 
 const { Sider } = Layout
 
@@ -150,7 +150,7 @@ export const SequencerDetails = ({
       </PageHeader>
       <Layout style={{ height: '90%' }}>
         <Sider theme='light' style={{ overflowY: 'scroll' }} width={'18rem'}>
-          <StepListTable
+          <SequencerDetailsSider
             sequencerPrefix={prefix}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}

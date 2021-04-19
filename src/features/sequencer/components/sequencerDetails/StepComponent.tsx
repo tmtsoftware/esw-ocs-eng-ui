@@ -50,8 +50,8 @@ const StepDropdown = ({
 export const StepComponent = (
   step: Step,
   stepNumber: number,
-  sequencerPrefix: Prefix,
-  setSelectedStep: (_: Step) => void
+  setSelectedStep: (_: Step) => void,
+  sequencerPrefix?: Prefix
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
@@ -83,7 +83,9 @@ export const StepComponent = (
           {step.command.commandName}
         </Typography.Text>
       </Button>
-      <StepDropdown step={step} sequencerPrefix={sequencerPrefix} />
+      {sequencerPrefix && (
+        <StepDropdown step={step} sequencerPrefix={sequencerPrefix} />
+      )}
     </Space>
   )
 }

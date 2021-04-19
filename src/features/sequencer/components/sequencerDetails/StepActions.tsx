@@ -2,6 +2,7 @@ import { CopyOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 
@@ -18,6 +19,8 @@ export const StepActions = ({
   const isFinished = status === 'Failure' || status === 'Success'
   const isInProgress = status === 'InFlight'
 
+  const { handleDuplicate } = useStepListContext()
+
   return (
     <Menu onClick={handleMenuClick}>
       <Menu.Item key='1' disabled={isFinished || isInProgress}>
@@ -27,7 +30,7 @@ export const StepActions = ({
         <PlusCircleOutlined />
         Add a step
       </Menu.Item>
-      <Menu.Item key='3'>
+      <Menu.Item key='3' onClick={handleDuplicate}>
         <CopyOutlined />
         Duplicate
       </Menu.Item>

@@ -30,7 +30,7 @@ const columns = (
     key: 'id',
     dataIndex: 'status',
     render: (_, record, index) => {
-      return StepComponent(record, index + 1, sequencerPrefix, setSelectedStep)
+      return StepComponent(record, index + 1, setSelectedStep, sequencerPrefix)
     }
   }
 ]

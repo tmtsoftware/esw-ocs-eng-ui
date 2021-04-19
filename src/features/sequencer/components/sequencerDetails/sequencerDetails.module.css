@@ -27,3 +27,10 @@ tr.cell > th {
   background: white;
   border-bottom: transparent;
 }
+
+tr.cellInDuplicate > td,
+tr.cellInDuplicate > th {
+  background: white;
+  border-bottom: transparent;
+  padding-left: 0;
+}

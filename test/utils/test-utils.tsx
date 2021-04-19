@@ -1,6 +1,7 @@
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
 import {
   AgentService,
+  Auth,
   AuthContext,
   ConfigService,
   HttpLocation,
@@ -31,7 +32,7 @@ import {
   GATEWAY_CONNECTION,
   SM_CONNECTION
 } from '../../src/features/sm/constants'
-const getMockAuth = (loggedIn: boolean) => {
+export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
   return {
     hasRealmRole: () => true,
@@ -43,7 +44,9 @@ const getMockAuth = (loggedIn: boolean) => {
     },
     token: () => 'token string',
     tokenParsed: () =>
-      ({ preferred_username: 'esw-user' } as KeycloakTokenParsed),
+      ({
+        preferred_username: loggedIn ? 'esw-user' : undefined
+      } as KeycloakTokenParsed),
     realmAccess: () => ([''] as unknown) as KeycloakRoles,
     resourceAccess: () => ([''] as unknown) as KeycloakResourceAccess,
     loadUserProfile: () =>
@@ -74,11 +77,13 @@ const getMockServices: () => MockServices = () => {
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
+
   when(locationServiceMock.track(anything())).thenReturn(() => {
     return {
       cancel: () => ({})
     }
   })
+
   const smServiceMock = mock<SequenceManagerService>(SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
   const sequencerService = mock<SequencerService>(SequencerServiceImpl)

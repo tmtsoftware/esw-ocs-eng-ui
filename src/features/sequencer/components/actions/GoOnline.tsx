@@ -9,7 +9,7 @@ export const GoOnline = ({ prefix }: SequencerProps): JSX.Element => {
   const goOnlineAction = useGoOnlineAction(prefix)
 
   const goOnline = () =>
-    sequencerService.data && goOnlineAction.mutate(sequencerService.data)
+    sequencerService && goOnlineAction.mutate(sequencerService)
 
   return <Button onClick={() => goOnline()}>Go online</Button>
 }

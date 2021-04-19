@@ -9,7 +9,7 @@ export const GoOffline = ({ prefix }: SequencerProps): JSX.Element => {
   const goOfflineAction = useGoOfflineAction(prefix)
 
   const goOffline = () =>
-    sequencerService.data && goOfflineAction.mutate(sequencerService.data)
+    sequencerService && goOfflineAction.mutate(sequencerService)
 
   return <Button onClick={() => goOffline()}>Go offline</Button>
 }

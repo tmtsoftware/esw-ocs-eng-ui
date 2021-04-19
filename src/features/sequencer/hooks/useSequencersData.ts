@@ -33,7 +33,7 @@ const Status: { [key: string]: StepStatus } = {
   Success: 'All Steps Completed'
 }
 
-export const deriveStatus = (
+const deriveStatus = (
   stepList: StepList | undefined
 ): SequencerInfo['stepListStatus'] => {
   if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
@@ -45,28 +45,34 @@ export const deriveStatus = (
   return { stepNumber, status: Status[step.status._type] }
 }
 
+export const getStepListStatus = (
+  stepList?: StepList,
+  isError?: boolean
+): SequencerInfo['stepListStatus'] => {
+  return isError
+    ? {
+        stepNumber: 0,
+        status: 'Failed to Fetch Status' as const
+      }
+    : deriveStatus(stepList)
+}
+
 const getStepList = async (sequencerService: SequencerService) => {
   try {
-    console.log('inside here ')
     const sequence = await sequencerService.getSequence()
-    console.log('inside here ', sequence)
     return { stepList: sequence }
   } catch (e) {
     return { isError: true }
   }
 }
+
 const getSequencerInfo = async (
   services: [SequencerService, Prefix][]
 ): Promise<SequencerInfo[]> => {
   return await Promise.all(
     services.map(async ([service, prefix]) => {
       const { stepList, isError } = await getStepList(service)
-      const stepListStatus = isError
-        ? {
-            stepNumber: 0,
-            status: 'Failed to Fetch Status' as const
-          }
-        : deriveStatus(stepList)
+      const stepListStatus = getStepListStatus(stepList, isError)
 
       return {
         key: prefix.toJSON(),

@@ -11,11 +11,11 @@ import {
   Parameter,
   Prefix,
   Setup,
-  Step,
   StepList,
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
+import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, when } from 'ts-mockito'
@@ -26,6 +26,16 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
+
+const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
+  new StepList([
+    {
+      hasBreakpoint: hasBreakpoint,
+      status: { _type: status, message: '' },
+      command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+      id: 'step1'
+    }
+  ])
 
 describe('sequencer details', () => {
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
@@ -44,6 +54,7 @@ describe('sequencer details', () => {
     uri: ''
   }
   const locServiceMock = mockServices.mock.locationService
+
   when(locServiceMock.find(anything())).thenResolve(sequencerLoc)
   when(locServiceMock.track(anything())).thenReturn(() => {
     return {
@@ -51,6 +62,7 @@ describe('sequencer details', () => {
     }
   })
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
+    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Failure'))
     renderWithAuth({
       ui: (
         <SequencerDetails
@@ -78,6 +90,9 @@ describe('sequencer details', () => {
   })
 
   it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
+    when(sequencerServiceMock.getSequence()).thenResolve(
+      getStepList('InFlight')
+    )
     renderWithAuth({
       ui: (
         <SequencerDetails
@@ -110,7 +125,9 @@ describe('sequencer details', () => {
 
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
     when(sequencerServiceMock.isOnline()).thenResolve(true)
-
+    when(sequencerServiceMock.getSequence()).thenResolve(
+      getStepList('Pending', true)
+    )
     renderWithAuth({
       ui: (
         <SequencerDetails
@@ -211,6 +228,7 @@ describe('sequencer details', () => {
 
     const step = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step)
+
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
       within(parameterBodyTable).getByRole('row', {

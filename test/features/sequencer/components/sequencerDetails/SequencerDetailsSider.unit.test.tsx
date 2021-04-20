@@ -22,8 +22,6 @@ const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   ])
 
 describe('SequenceDetailsSider', () => {
-  const command = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
-
   it('should render duplicate table | ESW-462', async () => {
     when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Pending'))
     renderWithAuth({
@@ -76,11 +74,31 @@ describe('SequenceDetailsSider', () => {
     verify(sequencerServiceMock.getSequence()).called()
   })
 
-  it('should duplicate selected commands | ESW-462', async () => {
-    when(sequencerServiceMock.add(deepEqual([command]))).thenResolve({
-      _type: 'Ok'
-    })
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Pending'))
+  it('should duplicate selected commands in selected order | ESW-462', async () => {
+    const command1 = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
+    const command2 = new Setup(Prefix.fromString('ESW.test'), 'Command-2')
+
+    const stepList: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Success' },
+        command: command1,
+        id: 'step1'
+      },
+      {
+        hasBreakpoint: false,
+        status: { _type: 'InFlight' },
+        command: command2,
+        id: 'step2'
+      }
+    ])
+
+    when(sequencerServiceMock.add(deepEqual([command2, command1]))).thenResolve(
+      {
+        _type: 'Ok'
+      }
+    )
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
     renderWithAuth({
       ui: (
         <SequencerDetailsSider
@@ -98,21 +116,28 @@ describe('SequenceDetailsSider', () => {
     userEvent.click(duplicate)
 
     // select command to duplicate
-    const row = screen.getByRole('row', {
+    const command1Row = screen.getByRole('row', {
       name: /1 command-1/i
     })
 
+    const command2Row = screen.getByRole('row', {
+      name: /2 command-2/i
+    })
+
     // click on the checkbox
-    userEvent.click(within(row).getByRole('checkbox'))
+    userEvent.click(within(command2Row).getByRole('checkbox'))
+    userEvent.click(within(command1Row).getByRole('checkbox'))
     // click on duplicate
     userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
     await screen.findByText('Successfully duplicated steps')
     verify(sequencerServiceMock.getSequence()).called()
-    verify(sequencerServiceMock.add(deepEqual([command]))).called()
+    verify(sequencerServiceMock.add(deepEqual([command2, command1]))).called()
   })
 
   it('should not duplicate steps if error occurred | ESW-462', async () => {
+    const command = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
+
     when(sequencerServiceMock.add(deepEqual([command]))).thenResolve({
       _type: 'Unhandled',
       msg: 'error',

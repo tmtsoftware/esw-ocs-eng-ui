@@ -51,7 +51,7 @@ describe('Delete action', () => {
     it(`should return ${testName} when delete is clicked | ESW-490`, async () => {
       const step: Step = {
         hasBreakpoint: false,
-        status: { _type: 'Success' },
+        status: { _type: 'Pending' },
         command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
         id: 'step1'
       }
@@ -68,8 +68,8 @@ describe('Delete action', () => {
         )
       })
 
-      const insertBreakpoint = await screen.findByText('Delete')
-      userEvent.click(insertBreakpoint, { button: 0 })
+      const deleteButton = await screen.findByText('Delete')
+      userEvent.click(deleteButton, { button: 0 })
 
       await screen.findByText(message)
 

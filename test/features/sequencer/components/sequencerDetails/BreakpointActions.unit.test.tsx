@@ -8,7 +8,7 @@ import {
   Step
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { verify, when } from 'ts-mockito'
+import { reset, verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
 import {
   renderWithAuth,
@@ -16,6 +16,8 @@ import {
 } from '../../../../utils/test-utils'
 
 describe('Breakpoint actions', () => {
+  beforeEach(() => reset(sequencerServiceMock))
+
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const insertBreakpointTests: [string, GenericResponse, string][] = [
@@ -57,7 +59,7 @@ describe('Breakpoint actions', () => {
     it(`should return ${testName} when Insert breakpoint is clicked | ESW-459`, async () => {
       const step: Step = {
         hasBreakpoint: false,
-        status: { _type: 'Success' },
+        status: { _type: 'Pending' },
         command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
         id: 'step1'
       }
@@ -109,7 +111,7 @@ describe('Breakpoint actions', () => {
     it(`should return ${testName} when Remove breakpoint is clicked | ESW-459`, async () => {
       const step: Step = {
         hasBreakpoint: true,
-        status: { _type: 'Success' },
+        status: { _type: 'Pending' },
         command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
         id: 'step1'
       }

@@ -28,7 +28,7 @@ describe('StepActions', () => {
     id: 'step1'
   })
 
-  it('should give insert breakpoint menu if step does not have breakpoint | ESW-459', async () => {
+  it('should give insert breakpoint option in menu if step does not have breakpoint | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions
@@ -42,7 +42,7 @@ describe('StepActions', () => {
     await screen.findByText('Insert breakpoint')
   })
 
-  it('should give remove breakpoint menu if step has breakpoint | ESW-459', async () => {
+  it('should give remove breakpoint option in menu if step has a breakpoint | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions
@@ -56,7 +56,7 @@ describe('StepActions', () => {
     await screen.findByText('Remove breakpoint')
   })
 
-  it('should call handleMenuClick on click | ESW-490', async () => {
+  it('should call handleMenuClick when menu item is click| ESW-490', async () => {
     let called = false
     const handleMenuClick = () => {
       called = !called
@@ -81,7 +81,7 @@ describe('StepActions', () => {
     expect(called).to.be.true
   })
 
-  it('should disable insertBreakpoint and delete when status is in Progress', async () => {
+  it('should disable insertBreakpoint and delete when status is in Progress | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions
@@ -104,7 +104,7 @@ describe('StepActions', () => {
     expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.true
   })
 
-  it('should disable delete, insert breakpoint and add a step when status is failure', async () => {
+  it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions
@@ -132,7 +132,7 @@ describe('StepActions', () => {
     expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be.true
   })
 
-  it('should disable delete, insert breakpoint and add a step when status is success', async () => {
+  it('should disable delete, insert breakpoint and add a step when status is success | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions
@@ -160,7 +160,7 @@ describe('StepActions', () => {
     expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be.true
   })
 
-  it('should every menu item should enabled when status is pending', async () => {
+  it('should every menu item should enabled when status is pending | ESW-459', async () => {
     renderWithAuth({
       ui: (
         <StepActions

@@ -115,6 +115,8 @@ const DuplicateStepListTable = ({
           <Button onClick={toggleDuplicateEnabled}>Cancel</Button>
           <Button
             type='primary'
+            loading={duplicateAction.isLoading}
+            disabled={selectedRows.length === 0}
             onClick={() => {
               duplicateAction.mutateAsync(sequencerService)
               toggleDuplicateEnabled()

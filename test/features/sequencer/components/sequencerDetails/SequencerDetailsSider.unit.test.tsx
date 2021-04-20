@@ -58,7 +58,6 @@ describe('SequenceDetailsSider', () => {
     })
 
     const actions = await screen.findAllByRole('stepActions')
-
     userEvent.click(actions[0])
 
     const duplicate = await screen.findByText('Duplicate')
@@ -119,7 +118,6 @@ describe('SequenceDetailsSider', () => {
     const command1Row = screen.getByRole('row', {
       name: /1 command-1/i
     })
-
     const command2Row = screen.getByRole('row', {
       name: /2 command-2/i
     })
@@ -135,7 +133,7 @@ describe('SequenceDetailsSider', () => {
     verify(sequencerServiceMock.add(deepEqual([command2, command1]))).called()
   })
 
-  it('should not duplicate steps if error occurred | ESW-462', async () => {
+  it.only('should not duplicate steps if error occurred | ESW-462', async () => {
     const command = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
 
     when(sequencerServiceMock.add(deepEqual([command]))).thenResolve({
@@ -166,10 +164,16 @@ describe('SequenceDetailsSider', () => {
       name: /1 command-1/i
     })
 
+    const duplicateAction = screen.getByRole('button', {
+      name: /copy duplicate/i
+    }) as HTMLButtonElement
+
+    expect(duplicateAction.disabled).to.be.true
+
     // click on the checkbox
     userEvent.click(within(row).getByRole('checkbox'))
     // click on duplicate
-    userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
+    userEvent.click(duplicateAction)
 
     await screen.findByText('Failed to duplicate steps, reason: error')
     const stepAction = await screen.findAllByRole('stepActions')

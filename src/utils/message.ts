@@ -8,5 +8,5 @@ export const successMessage = (msg: string): MessageType => message.success(msg)
 
 export const errorMessage = (msg: string, reason?: unknown): MessageType =>
   reason
-    ? message.error(`${msg}, reason: ${((reason as unknown) as Error).message}`)
+    ? message.error(`${msg}, reason: ${(reason as Error).message}`)
     : message.error(msg)

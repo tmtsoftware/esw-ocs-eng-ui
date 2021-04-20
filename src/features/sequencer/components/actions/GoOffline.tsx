@@ -11,5 +11,9 @@ export const GoOffline = ({ prefix }: SequencerProps): JSX.Element => {
   const goOffline = () =>
     sequencerService && goOfflineAction.mutate(sequencerService)
 
-  return <Button onClick={() => goOffline()}>Go offline</Button>
+  return (
+    <Button loading={goOfflineAction.isLoading} onClick={() => goOffline()}>
+      Go offline
+    </Button>
+  )
 }

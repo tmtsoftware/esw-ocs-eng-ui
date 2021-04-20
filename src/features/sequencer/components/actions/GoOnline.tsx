@@ -11,5 +11,9 @@ export const GoOnline = ({ prefix }: SequencerProps): JSX.Element => {
   const goOnline = () =>
     sequencerService && goOnlineAction.mutate(sequencerService)
 
-  return <Button onClick={() => goOnline()}>Go online</Button>
+  return (
+    <Button loading={goOnlineAction.isLoading} onClick={() => goOnline()}>
+      Go online
+    </Button>
+  )
 }

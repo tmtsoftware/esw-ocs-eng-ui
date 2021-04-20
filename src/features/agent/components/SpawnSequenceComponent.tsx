@@ -1,6 +1,6 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
-import { Input, Popconfirm, Tooltip } from 'antd'
+import { Button, Input, Popconfirm, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
@@ -75,13 +75,15 @@ export const SpawnSequenceComponent = ({
         onCancel={resetComponentName}
         onConfirm={onConfirm}
         disabled={spawnSequenceComponentAction.isLoading}>
-        <PlusCircleOutlined
-          className={
-            spawnSequenceComponentAction.isLoading
-              ? styles.disabledIcon
-              : styles.commonIcon
+        <Button
+          type='text'
+          icon={
+            <PlusCircleOutlined
+              className={styles.commonIcon}
+              role='addSeqCompIcon'
+            />
           }
-          role='addSeqCompIcon'
+          loading={spawnSequenceComponentAction.isLoading}
         />
       </Popconfirm>
     </Tooltip>

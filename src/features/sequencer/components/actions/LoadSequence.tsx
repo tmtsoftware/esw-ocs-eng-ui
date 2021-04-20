@@ -1,18 +1,9 @@
-import type { SequenceCommand } from '@tmtsoftware/esw-ts'
-import { SequenceCommandD } from '@tmtsoftware/esw-ts/lib/dist/src/decoders/CommandDecoders'
-import { getOrThrow } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
+import { Sequence, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useLoadAction } from '../../hooks/useLoadAction'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-
-const validateSequence = (sequenceObj: unknown): SequenceCommand[] => {
-  if (!Array.isArray(sequenceObj))
-    throw Error('Malformed sequence: should be a list of sequence command')
-
-  return sequenceObj.map((x) => getOrThrow(SequenceCommandD.decode(x)))
-}
 
 export const LoadSequence = ({
   prefix,
@@ -28,8 +19,7 @@ export const LoadSequence = ({
       reader.readAsText(file)
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          const sequence = validateSequence(JSON.parse(reader.result))
-          setSequence(sequence)
+          setSequence(Sequence.fromString(reader.result).commands)
           resolve()
         }
       }

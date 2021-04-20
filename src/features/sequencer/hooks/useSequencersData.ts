@@ -93,20 +93,20 @@ export const useSequencersData = (
   const { auth } = useAuth()
   const [gatewayLocation] = useGatewayLocation()
 
-  if (!gatewayLocation) throw new Error('Gateway down!')
-
-  const services: [SequencerService, Prefix][] = prefixes.map((prefix) => [
-    mkSequencerService(gatewayLocation, prefix, createTokenFactory(auth)),
-    prefix
-  ])
-
   return useQuery(
-    [OBS_MODE_SEQUENCERS.key, ...services.map((x) => x[1].toJSON())],
-    () => getSequencerInfo(services),
+    [OBS_MODE_SEQUENCERS.key, ...prefixes.map((x) => x.toJSON())],
+    () =>
+      gatewayLocation &&
+      getSequencerInfo(
+        prefixes.map((prefix) => [
+          mkSequencerService(prefix, gatewayLocation, createTokenFactory(auth)),
+          prefix
+        ])
+      ),
     {
       useErrorBoundary: false,
       onError: (err) => message.error((err as Error).message),
-      enabled: !!services,
+      enabled: !!gatewayLocation,
       refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval
     }
   )

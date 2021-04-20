@@ -50,7 +50,7 @@ export const StepListTable = ({
 
   useEffect(
     () => setStepToDisplayParameters(setSelectedStep, stepList, selectedStep),
-    [stepList, selectedStep]
+    [stepList, selectedStep, setSelectedStep]
   )
 
   return (

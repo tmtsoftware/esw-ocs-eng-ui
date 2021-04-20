@@ -7,7 +7,7 @@ import {
   Prefix,
   ProvisionConfig
 } from '@tmtsoftware/esw-ts'
-import type { ProvisionResponse } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/models/SequenceManagerRes'
+import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'

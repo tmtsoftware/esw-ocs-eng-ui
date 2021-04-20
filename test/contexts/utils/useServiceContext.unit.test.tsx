@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, when } from 'ts-mockito'
+import { anything, verify, when } from 'ts-mockito'
 import { createServiceCtx } from '../../../src/contexts/utils/createServiceCtx'
 import { GATEWAY_CONNECTION } from '../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
@@ -43,6 +43,8 @@ describe('Service context helper', () => {
     await waitFor(() => {
       expect(screen.getByText('Unknown')).to.exist
     })
+
+    verify(mockServices.mock.locationService.track(anything())).called()
   })
 
   it('returns instance of a provided factory with use hook', async () => {
@@ -66,5 +68,7 @@ describe('Service context helper', () => {
     await waitFor(() => {
       expect(screen.getByText(serviceInstance)).to.exist
     })
+
+    verify(mockServices.mock.locationService.track(anything())).called()
   })
 })

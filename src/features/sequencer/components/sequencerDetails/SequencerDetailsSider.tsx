@@ -118,7 +118,7 @@ const DuplicateStepListTable = ({
             loading={duplicateAction.isLoading}
             disabled={selectedRows.length === 0}
             onClick={() => {
-              duplicateAction.mutateAsync(sequencerService)
+              sequencerService && duplicateAction.mutateAsync(sequencerService)
               toggleDuplicateEnabled()
             }}>
             <CopyOutlined />

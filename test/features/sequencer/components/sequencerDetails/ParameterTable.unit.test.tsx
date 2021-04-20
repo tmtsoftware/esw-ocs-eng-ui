@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import {
   booleanKey,
   BooleanKey,
@@ -10,7 +10,6 @@ import {
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
-import { expect } from 'chai'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
 import {

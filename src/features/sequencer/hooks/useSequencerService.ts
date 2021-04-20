@@ -1,46 +1,33 @@
 import {
   ComponentId,
+  createSequencerService,
+  Location,
   Prefix,
   SequencerService,
-  TokenFactory,
-  Location
+  TokenFactory
 } from '@tmtsoftware/esw-ts'
-import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
-import { HttpTransport } from '@tmtsoftware/esw-ts/lib/dist/src/utils/HttpTransport'
-import {
-  extractHostPort,
-  getPostEndPoint,
-  getWebSocketEndPoint
-} from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
-import { Ws } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Ws'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { createTokenFactory } from '../../../utils/createTokenFactory'
 
 export const useSequencerService = (
   sequencerPrefix: Prefix
-): SequencerService => {
+): SequencerService | undefined => {
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
-  if (!gatewayLocation) throw new Error('Gateway down!')
 
   const tf = createTokenFactory(auth)
-  return mkSequencerService(gatewayLocation, sequencerPrefix, tf)
+  return (
+    gatewayLocation && mkSequencerService(sequencerPrefix, gatewayLocation, tf)
+  )
 }
 
+// added for testing purpose : checkout /test/mocks/useSequencerService
 export const mkSequencerService = (
+  sequencerPrefix: Prefix,
   gatewayLocation: Location,
-  prefix: Prefix,
   tf: TokenFactory
 ): SequencerService => {
-  const compId = new ComponentId(prefix, 'Sequencer')
-  const { host, port } = extractHostPort(gatewayLocation.uri)
-  const postEndpoint = getPostEndPoint({ host, port })
-  const wsEndpoint = getWebSocketEndPoint({ host, port })
-
-  return new SequencerServiceImpl(
-    compId,
-    new HttpTransport(postEndpoint, tf),
-    () => new Ws(wsEndpoint)
-  )
+  const compId = new ComponentId(sequencerPrefix, 'Sequencer')
+  return createSequencerService(compId, gatewayLocation, tf)
 }

@@ -133,7 +133,7 @@ describe('SequenceDetailsSider', () => {
     verify(sequencerServiceMock.add(deepEqual([command2, command1]))).called()
   })
 
-  it.only('should not duplicate steps if error occurred | ESW-462', async () => {
+  it('should not duplicate steps if error occurred | ESW-462', async () => {
     const command = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
 
     when(sequencerServiceMock.add(deepEqual([command]))).thenResolve({

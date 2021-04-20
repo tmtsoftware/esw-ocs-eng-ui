@@ -20,7 +20,6 @@ import { expect } from 'chai'
 import React from 'react'
 import { anything, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { assertTableHeader } from '../../../../utils/tableTestUtils'
 import {
   mockServices,
   renderWithAuth,

@@ -8,6 +8,13 @@ export const assertTableHeader = (
   within(tableElement).getByRole('columnheader', { name: columnName })
 }
 
+export const assertTableBody = (
+  tableElement: HTMLElement,
+  rowValue: string | RegExp
+): void => {
+  within(tableElement).getByRole('row', { name: rowValue })
+}
+
 export const assertTableHeaderNotPresent = (columnName: string): void => {
   expect(getHeader(columnName)).to.null
 }

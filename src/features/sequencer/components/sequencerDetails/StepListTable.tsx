@@ -1,4 +1,5 @@
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
+import type { Prefix, Step, StepList } from '@tmtsoftware/esw-ts'
+
 import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect } from 'react'
@@ -42,14 +43,15 @@ export const StepListTable = ({
 }: {
   sequencerPrefix: Prefix
   selectedStep?: Step
-  setSelectedStep: (_: Step) => void
+  setSelectedStep: (_: Step | undefined) => void
 }): JSX.Element => {
   const { isLoading, data: stepList, isError } = useStepList(sequencerPrefix)
   const stepListStatus = getStepListStatus(stepList, isError).status
 
-  useEffect(() => {
-    !selectedStep && stepList && setSelectedStep(stepList.steps[0])
-  })
+  useEffect(
+    () => setStepToDisplayParameters(setSelectedStep, stepList, selectedStep),
+    [stepList, selectedStep]
+  )
 
   return (
     <Table
@@ -67,4 +69,32 @@ export const StepListTable = ({
       sticky
     />
   )
+}
+
+const setStepToDisplayParameters = (
+  setSelectedStep: (_: Step | undefined) => void,
+  stepList?: StepList,
+  selectedStep?: Step
+) => {
+  if (stepList) {
+    validStepChecker(setSelectedStep, stepList, selectedStep)
+  } else {
+    // no step-list
+    setSelectedStep(undefined)
+  }
+}
+
+const validStepChecker = (
+  setSelectedStep: (_: Step | undefined) => void,
+  stepList: StepList,
+  selectedStep?: Step
+) => {
+  if (!selectedStep) {
+    // will be set for the first time
+    setSelectedStep(stepList.steps[0])
+  } else {
+    // will check if selected step is always in the step-list for cases like abort sequence
+    !stepList.steps.find((step) => step.id === selectedStep.id) &&
+      setSelectedStep(stepList.steps[0])
+  }
 }

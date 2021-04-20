@@ -72,7 +72,6 @@ const SequencerDrawer = ({
 }: {
   selectedSequencerPrefix: Prefix
   obsMode: ObsMode
-  sequencerStatus: SequencerInfo
   onClose: () => void
 }) => (
   <Drawer visible width={'80%'} onClose={() => onClose()} destroyOnClose>
@@ -115,7 +114,6 @@ export const SequencersTable = ({
         <SequencerDrawer
           obsMode={obsMode}
           selectedSequencerPrefix={selectedSequencer}
-          sequencerStatus={selectedSequencerStatus}
           onClose={() => setSeqDrawerVisibility(false)}
         />
       )}

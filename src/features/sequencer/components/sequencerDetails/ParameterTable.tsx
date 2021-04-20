@@ -14,20 +14,17 @@ const columns: ColumnsType<ParameterDataType> = [
   {
     title: <HeaderTitle title='Parameter' />,
     dataIndex: 'parameter',
-    key: 'parameter',
-    fixed: 'left'
+    key: 'parameter'
   },
   {
     title: <HeaderTitle title='Unit' />,
     dataIndex: 'unit',
-    key: 'unit',
-    fixed: 'left'
+    key: 'unit'
   },
   {
     title: <HeaderTitle title='Values' />,
     dataIndex: 'values',
     key: 'values',
-    fixed: 'right',
     // eslint-disable-next-line react/display-name
     render: (x: string): JSX.Element => {
       return (

@@ -204,24 +204,9 @@ describe('sequencer details', () => {
 
     await screen.findAllByRole('table')
 
-    const [
-      stepListTable,
-      stepListBodyTable,
-      _, // ignoring tables inserted by descriptions
-      parameterTable,
-      parameterBodyTable
-    ] = screen.queryAllByRole('table')
-
-    assertTableHeader(stepListTable, 'Sequence Steps Status: In Progress')
-    assertTableHeader(parameterTable, 'Parameter')
-    assertTableHeader(parameterTable, 'Unit')
-    assertTableHeader(parameterTable, 'Values')
-
-    // check if steps in StepListTable are rendered
-    expect(within(stepListBodyTable).getByRole('row', { name: /Command-1/i }))
-      .to.exist
-    expect(within(stepListBodyTable).getByRole('row', { name: /Command-2/i }))
-      .to.exist
+    const [, , descriptionsTable, , parameterBodyTable] = screen.queryAllByRole(
+      'table'
+    )
 
     const step = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step)

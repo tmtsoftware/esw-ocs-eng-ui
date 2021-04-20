@@ -13,6 +13,10 @@ import {
 import { expect } from 'chai'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
+import {
+  assertTableBody,
+  assertTableHeader
+} from '../../../../utils/tableTestUtils'
 import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Parameters Table', () => {
@@ -31,37 +35,13 @@ describe('Parameters Table', () => {
     const paramSet = [booleanParam, intParam, filterParam, stringParam]
     renderWithAuth({ ui: <ParameterTable paramSet={paramSet} /> })
     await screen.findByRole('table')
-    const [paramTableHeader, paramTableBody] = screen.queryAllByRole('table')
-    expect(
-      within(paramTableHeader).getByRole('columnheader', {
-        name: 'Parameter'
-      })
-    )
-    expect(
-      within(paramTableHeader).getByRole('columnheader', {
-        name: 'Unit'
-      })
-    )
-    expect(
-      within(paramTableHeader).getByRole('columnheader', {
-        name: 'Values'
-      })
-    )
+    const [paramHeaderTable, paramBodyTable] = screen.queryAllByRole('table')
+    assertTableHeader(paramHeaderTable, 'Parameter')
+    assertTableHeader(paramHeaderTable, 'Unit')
+    assertTableHeader(paramHeaderTable, 'Values')
 
-    expect(
-      within(paramTableBody).getByRole('row', {
-        name: 'flag NoUnits [false] copy'
-      })
-    )
-    expect(
-      within(paramTableBody).getByRole('row', {
-        name: 'randomKey NoUnits [123,12432] copy'
-      })
-    )
-    expect(
-      within(paramTableBody).getByRole('row', {
-        name: 'filter NoUnits [[1,2,3],[4,5,6]] copy'
-      })
-    )
+    assertTableBody(paramBodyTable, 'flag NoUnits [false] copy')
+    assertTableBody(paramBodyTable, 'randomKey NoUnits [123,12432] copy')
+    assertTableBody(paramBodyTable, 'filter NoUnits [[1,2,3],[4,5,6]] copy')
   })
 })

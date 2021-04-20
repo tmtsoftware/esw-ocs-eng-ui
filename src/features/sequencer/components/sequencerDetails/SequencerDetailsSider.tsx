@@ -149,7 +149,7 @@ export const SequencerDetailsSider = ({
 }: {
   sequencerPrefix: Prefix
   selectedStep?: Step
-  setSelectedStep: (_: Step) => void
+  setSelectedStep: (_: Step | undefined) => void
 }): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   if (isDuplicateEnabled) {

@@ -1,6 +1,8 @@
 import type { SequencerService } from '@tmtsoftware/esw-ts'
-import { mockServices } from '../utils/test-utils'
+import { sequencerServiceInstance } from '../utils/test-utils'
+
 export const useSequencerService = (): SequencerService =>
-  mockServices.instance.sequencerService
+  sequencerServiceInstance
+
 export const mkSequencerService = (): SequencerService =>
-  mockServices.instance.sequencerService
+  sequencerServiceInstance

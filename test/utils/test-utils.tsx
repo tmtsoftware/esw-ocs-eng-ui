@@ -59,7 +59,6 @@ type Services = {
   locationService: LocationService
   configService: ConfigService
   smService: SequenceManagerService
-  sequencerService: SequencerService
 }
 
 type MockServices = {
@@ -86,10 +85,6 @@ const getMockServices: () => MockServices = () => {
 
   const smServiceMock = mock<SequenceManagerService>(SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
-  const sequencerService = mock<SequencerService>(SequencerServiceImpl)
-  const sequencerServiceInstance = instance<SequencerService>(
-    sequencerServiceMock
-  )
 
   const configServiceMock = mock<ConfigService>(ConfigServiceImpl)
   const configServiceInstance = instance<ConfigService>(configServiceMock)
@@ -98,15 +93,13 @@ const getMockServices: () => MockServices = () => {
       agentService: agentServiceMock,
       locationService: locationServiceMock,
       configService: configServiceMock,
-      smService: smServiceMock,
-      sequencerService: sequencerService
+      smService: smServiceMock
     },
     instance: {
       agentService: agentServiceInstance,
       locationService: locationServiceInstance,
       configService: configServiceInstance,
-      smService: smServiceInstance,
-      sequencerService: sequencerServiceInstance
+      smService: smServiceInstance
     }
   }
 }

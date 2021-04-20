@@ -67,7 +67,13 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />
+        ui: (
+          <BreakpointAction
+            sequencerPrefix={sequencerPrefix}
+            step={step}
+            isDisabled={false}
+          />
+        )
       })
 
       const insertBreakpoint = await screen.findByText('Insert breakpoint')
@@ -119,7 +125,13 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <BreakpointAction sequencerPrefix={sequencerPrefix} step={step} />
+        ui: (
+          <BreakpointAction
+            sequencerPrefix={sequencerPrefix}
+            step={step}
+            isDisabled={false}
+          />
+        )
       })
 
       const removeBreakpoint = await screen.findByText('Remove breakpoint')

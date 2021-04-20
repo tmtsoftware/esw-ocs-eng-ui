@@ -126,7 +126,18 @@ describe('stepList table', () => {
         id: 'step1'
       }
     ])
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    const stepListAfterBreakpoint = new StepList([
+      {
+        hasBreakpoint: true,
+        status: { _type: 'Pending' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(stepListAfterBreakpoint)
     when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
       _type: 'Ok'
     })
@@ -141,7 +152,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0], { button: 0 })
+    userEvent.click(actions[0])
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)
@@ -149,7 +160,7 @@ describe('stepList table', () => {
     // ESW-459
     const insertBreakpoint = await screen.findByText('Insert breakpoint')
 
-    userEvent.click(insertBreakpoint, { button: 0 })
+    userEvent.click(insertBreakpoint)
 
     await screen.findByText('Successfully inserted breakpoint')
 
@@ -157,6 +168,10 @@ describe('stepList table', () => {
       const menuItems = screen.queryAllByRole('menuitem')
       expect(menuItems.length).to.equal(0)
     })
+
+    const stepActions = await screen.findAllByRole('stepActions')
+    userEvent.click(stepActions[0])
+    await screen.findByText('Remove breakpoint')
   })
 })
 

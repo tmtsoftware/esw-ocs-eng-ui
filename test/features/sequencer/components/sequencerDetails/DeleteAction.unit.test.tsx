@@ -59,7 +59,13 @@ describe('Delete action', () => {
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: <DeleteAction sequencerPrefix={sequencerPrefix} step={step} />
+        ui: (
+          <DeleteAction
+            sequencerPrefix={sequencerPrefix}
+            step={step}
+            isDisabled={false}
+          />
+        )
       })
 
       const insertBreakpoint = await screen.findByText('Delete')

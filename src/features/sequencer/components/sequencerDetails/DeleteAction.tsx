@@ -1,11 +1,15 @@
 import { DeleteOutlined } from '@ant-design/icons'
-import type { GenericResponse, SequencerService } from '@tmtsoftware/esw-ts'
+import type {
+  GenericResponse,
+  Prefix,
+  SequencerService,
+  Step
+} from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { SEQUENCER_STEPS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerStepProps } from './StepComponent'
 
 const handleDeleteResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -29,8 +33,13 @@ const deleteStep = (id: string) => (sequencerService: SequencerService) => {
 
 export const DeleteAction = ({
   step,
-  sequencerPrefix
-}: SequencerStepProps): JSX.Element => {
+  sequencerPrefix,
+  isDisabled
+}: {
+  step: Step
+  sequencerPrefix: Prefix
+  isDisabled: boolean
+}): JSX.Element => {
   const sequencerService = useSequencerService(sequencerPrefix)
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
@@ -42,7 +51,9 @@ export const DeleteAction = ({
   return (
     <div
       onClick={() =>
-        sequencerService && deleteAction.mutateAsync(sequencerService)
+        !isDisabled &&
+        sequencerService &&
+        deleteAction.mutateAsync(sequencerService)
       }>
       <DeleteOutlined />
       Delete

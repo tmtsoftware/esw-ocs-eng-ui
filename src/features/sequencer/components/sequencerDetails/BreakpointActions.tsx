@@ -1,15 +1,16 @@
 import { VerticalAlignMiddleOutlined } from '@ant-design/icons'
 import type {
   GenericResponse,
+  Prefix,
   RemoveBreakpointResponse,
-  SequencerService
+  SequencerService,
+  Step
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { SEQUENCER_STEPS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerStepProps } from './StepComponent'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse
@@ -39,8 +40,13 @@ const removeAction = (id: string) => (sequencerService: SequencerService) => {
 
 export const BreakpointAction = ({
   sequencerPrefix,
-  step
-}: SequencerStepProps): JSX.Element => {
+  step,
+  isDisabled
+}: {
+  step: Step
+  sequencerPrefix: Prefix
+  isDisabled: boolean
+}): JSX.Element => {
   const sequencerService = useSequencerService(sequencerPrefix)
 
   const insertBreakpointAction = useMutation({
@@ -63,7 +69,9 @@ export const BreakpointAction = ({
     return (
       <div
         onClick={() =>
-          sequencerService && removeBreakpointAction.mutate(sequencerService)
+          !isDisabled &&
+          sequencerService &&
+          removeBreakpointAction.mutate(sequencerService)
         }>
         <VerticalAlignMiddleOutlined />
         Remove breakpoint
@@ -74,7 +82,9 @@ export const BreakpointAction = ({
   return (
     <div
       onClick={() =>
-        sequencerService && insertBreakpointAction.mutate(sequencerService)
+        !isDisabled &&
+        sequencerService &&
+        insertBreakpointAction.mutate(sequencerService)
       }>
       <VerticalAlignMiddleOutlined />
       Insert breakpoint

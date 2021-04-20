@@ -5,7 +5,7 @@ import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { StepActions } from './StepActions'
 
-export type SequencerStepProps = {
+type SequencerStepProps = {
   step: Step
   sequencerPrefix: Prefix
 }
@@ -36,7 +36,7 @@ const StepDropdown = ({
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={step}
-          handleMenuClick={() => toggleOverlayVisibility(!isOverlayVisible)}
+          hideMenu={() => toggleOverlayVisibility(false)}
         />
       }
       trigger={['click']}

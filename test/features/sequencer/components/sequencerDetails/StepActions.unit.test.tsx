@@ -34,7 +34,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusPending)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })
@@ -48,7 +48,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(true, stepStatusPending)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })
@@ -70,7 +70,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(true, stepStatusPending)}
-          handleMenuClick={handleMenuClick}
+          hideMenu={handleMenuClick}
         />
       )
     })
@@ -87,7 +87,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusInProgress)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })
@@ -110,7 +110,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusFailure)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })
@@ -138,7 +138,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusSuccess)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })
@@ -166,7 +166,7 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusPending)}
-          handleMenuClick={() => ({})}
+          hideMenu={() => ({})}
         />
       )
     })

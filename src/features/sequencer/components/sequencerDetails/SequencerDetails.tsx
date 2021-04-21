@@ -117,11 +117,19 @@ const DescriptionItem = (label: string, item: string) => {
   return (
     <Descriptions.Item
       label={
-        <Typography.Title type={'secondary'} level={5}>
+        <Typography.Title aria-label={`${label}K`} type={'secondary'} level={5}>
           {label}
         </Typography.Title>
       }>
-      {<Typography.Title level={5}>{item}</Typography.Title>}
+      {
+        <Typography.Title
+          aria-label={`${label}V`}
+          style={{ width: '11rem' }}
+          ellipsis={{ tooltip: true }}
+          level={5}>
+          {item}
+        </Typography.Title>
+      }
     </Descriptions.Item>
   )
 }
@@ -164,8 +172,8 @@ export const SequencerDetails = ({
                 flexDirection: 'column',
                 height: '100%'
               }}
-              headStyle={{ paddingBottom: '0.75rem' }}
-              bodyStyle={{ height: '100%' }}
+              headStyle={{ paddingBottom: '0.75rem', height: '8%' }}
+              bodyStyle={{ height: '92%' }}
               title={
                 <Space>
                   <Descriptions column={4}>

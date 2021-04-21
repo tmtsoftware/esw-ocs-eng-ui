@@ -220,4 +220,87 @@ describe('sequencer details', () => {
       })
     ).to.exist
   })
+
+  it('should render Step details when a Step is clicked from the StepLists | ESW-457', async () => {
+    const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
+      false
+    ])
+    const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
+    const filterKey = intArrayKey('filter')
+    const filterParam: Parameter<IntArrayKey> = filterKey.set([
+      [1, 2, 3],
+      [4, 5, 6]
+    ])
+    const stringParam: Parameter<StringKey> = stringKey('ra').set([
+      '12:13:14.1'
+    ])
+
+    const paramSet1 = [booleanParam, intParam]
+    const paramSet2 = [filterParam, stringParam]
+    const stepList: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Success' },
+        command: new Setup(
+          Prefix.fromString('ESW.ESW1'),
+          'Command-1',
+          paramSet1
+        ),
+        id: '1'
+      },
+      {
+        hasBreakpoint: false,
+        status: { _type: 'InFlight' },
+        command: new Setup(
+          Prefix.fromString('ESW.ESW1'),
+          'Command-2',
+          paramSet2
+        ),
+        id: '2'
+      }
+    ])
+
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    renderWithAuth({
+      ui: (
+        <SequencerDetails
+          prefix={sequencerLoc.connection.prefix}
+          obsMode={''}
+        />
+      )
+    })
+
+    await screen.findAllByRole('table')
+
+    const typeK = screen.getByLabelText('TypeK')
+    const typeV = screen.getByLabelText('TypeV')
+    const commandNameK = screen.getByLabelText('CommandK')
+    const commandNameV = screen.getByLabelText('CommandV')
+    const sourceK = screen.getByLabelText('SourceK')
+    const sourceV = screen.getByLabelText('SourceV')
+    const obsIdK = screen.getByLabelText('Obs-IdK')
+    const obsIdV = screen.getByLabelText('Obs-IdV')
+
+    expect(typeK.innerText).to.equals('Type')
+    expect(typeV.innerText).to.equals('Setup')
+    expect(commandNameK.innerText).to.equals('Command')
+    expect(commandNameV.innerText).to.equals('Command-1')
+    expect(sourceK.innerText).to.equals('Source')
+    expect(sourceV.innerText).to.equals('ESW.ESW1')
+    expect(obsIdK.innerText).to.equals('Obs-Id')
+    expect(obsIdV.innerText).to.equals('NA')
+
+    const step = screen.getByRole('button', { name: /Command-2/i })
+    userEvent.click(step)
+
+    expect(typeK.innerText).to.equals('Type')
+    expect(typeV.innerText).to.equals('Setup')
+    expect(commandNameK.innerText).to.equals('Command')
+    expect(commandNameV.innerText).to.equals('Command-2')
+    expect(sourceK.innerText).to.equals('Source')
+    expect(sourceV.innerText).to.equals('ESW.ESW1')
+    expect(obsIdK.innerText).to.equals('Obs-Id')
+    expect(obsIdV.innerText).to.equals('NA')
+  })
 })

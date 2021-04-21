@@ -3,6 +3,7 @@ import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button, Modal } from 'antd'
 import React from 'react'
 import { useSMService } from '../../../../contexts/SMContext'
+import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useAction } from './ActionButton'
 
 const showConfirmModal = (onYes: () => void): void => {
@@ -43,7 +44,9 @@ export const ShutdownButton = ({
 }): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
-  const shutdownAction = useAction('Shutdown', shutdown(obsMode))
+  const shutdownAction = useAction('Shutdown', shutdown(obsMode), [
+    OBS_MODES_DETAILS.key
+  ])
 
   return (
     <Button

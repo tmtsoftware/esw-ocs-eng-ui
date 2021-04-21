@@ -3,6 +3,7 @@ import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Button, Dropdown, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
 
 type SequencerStepProps = {
@@ -51,7 +52,7 @@ export const StepComponent = (
   step: Step,
   stepNumber: number,
   setSelectedStep: (_: Step) => void,
-  sequencerPrefix?: Prefix
+  sequencerPrefix: Prefix
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
@@ -62,6 +63,8 @@ export const StepComponent = (
         : `1px solid ${baseTypeColorCode[color[step.status._type]]}`
     }`
   }
+
+  const { isDuplicateEnabled } = useStepListContext()
 
   return (
     <Space style={{ textAlign: 'right' }}>
@@ -83,7 +86,7 @@ export const StepComponent = (
           {step.command.commandName}
         </Typography.Text>
       </Button>
-      {sequencerPrefix && (
+      {!isDuplicateEnabled && (
         <StepDropdown step={step} sequencerPrefix={sequencerPrefix} />
       )}
     </Space>

@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import {
   StepListTableContext,
   StepListTableContextType
-} from '../components/sequencerDetails/SequencerDetailsSider'
+} from '../components/sequencerDetails/StepListTable'
 
 export const useStepListContext = (): StepListTableContextType => {
   const context = useContext(StepListTableContext)

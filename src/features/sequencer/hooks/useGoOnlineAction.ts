@@ -14,7 +14,7 @@ export const useGoOnlineAction = (
     mutationFn,
     onSuccess: () => successMessage('Sequencer is online successfully'),
     onError: (e) => errorMessage('errorMsg', e),
-    invalidateKeysOnSuccess: [SEQUENCER_STATE(prefix).key],
+    invalidateKeysOnSuccess: [[SEQUENCER_STATE.key, prefix.toJSON()]],
     useErrorBoundary: false
   })
 }

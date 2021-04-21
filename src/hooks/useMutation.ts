@@ -9,7 +9,7 @@ type UseMutationProps<S, T> = {
   mutationFn: (service: S) => Promise<T>
   onSuccess: (a: T) => void
   onError: (e: unknown) => void
-  invalidateKeysOnSuccess?: QueryKey[]
+  invalidateKeysOnSuccess?: (QueryKey[] | QueryKey)[]
   useErrorBoundary?: boolean
 }
 

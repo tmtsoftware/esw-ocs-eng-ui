@@ -6,7 +6,7 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { SEQUENCER_STATE, SEQUENCER_STEPS } from '../../queryKeys'
+import { SEQUENCER_STATE, GET_SEQUENCE } from '../../queryKeys'
 
 export const useLoadAction = (
   prefix: Prefix,
@@ -28,8 +28,8 @@ export const useLoadAction = (
     },
     onError: (e) => errorMessage('errorMsg', e),
     invalidateKeysOnSuccess: [
-      SEQUENCER_STATE(prefix).key,
-      SEQUENCER_STEPS(prefix).key
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [GET_SEQUENCE.key, prefix.toJSON()]
     ],
     useErrorBoundary: false
   })

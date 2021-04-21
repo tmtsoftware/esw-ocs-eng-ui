@@ -9,7 +9,7 @@ import type {
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STEPS } from '../../../queryKeys'
+import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
 const handleActionResponse = (
@@ -53,7 +53,7 @@ export const BreakpointAction = ({
     mutationFn: insertAction(step.id),
     onSuccess: () => successMessage('Successfully inserted breakpoint'),
     onError: (e) => errorMessage('Failed to insert breakpoint', e),
-    invalidateKeysOnSuccess: [SEQUENCER_STEPS(sequencerPrefix).key],
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
     useErrorBoundary: false
   })
 
@@ -61,7 +61,7 @@ export const BreakpointAction = ({
     mutationFn: removeAction(step.id),
     onSuccess: () => successMessage('Successfully removed breakpoint'),
     onError: (e) => errorMessage('Failed to remove breakpoint', e),
-    invalidateKeysOnSuccess: [SEQUENCER_STEPS(sequencerPrefix).key],
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
     useErrorBoundary: false
   })
 

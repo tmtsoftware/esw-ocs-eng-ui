@@ -11,12 +11,12 @@ export const useSequencerState = <E>(
   const sequencerService = useSequencerService(sequencerPrefix)
 
   return useQuery(
-    SEQUENCER_STATE(sequencerPrefix).key,
+    [SEQUENCER_STATE.key, sequencerPrefix.toJSON()],
     () => sequencerService?.getSequencerState(),
     {
       onError,
       enabled: !!sequencerService && enabled,
-      refetchInterval: SEQUENCER_STATE(sequencerPrefix).refetchInterval
+      refetchInterval: SEQUENCER_STATE.refetchInterval
     }
   )
 }

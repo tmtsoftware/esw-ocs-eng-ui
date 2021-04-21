@@ -17,7 +17,7 @@ export const useGoOfflineAction = (
     mutationFn,
     onSuccess: () => successMessage('Sequencer is offline successfully'),
     onError: (e) => errorMessage('errorMsg', e),
-    invalidateKeysOnSuccess: [SEQUENCER_STATE(prefix).key],
+    invalidateKeysOnSuccess: [[SEQUENCER_STATE.key, prefix.toJSON()]],
     useErrorBoundary: false
   })
 }

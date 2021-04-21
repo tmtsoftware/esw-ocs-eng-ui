@@ -11,7 +11,7 @@ import type { ColumnsType } from 'antd/lib/table'
 import React, { createContext, useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STEPS } from '../../../queryKeys'
+import { GET_SEQUENCE } from '../../../queryKeys'
 import { getStepListStatus } from '../../hooks/useSequencersData'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { useStepList } from '../../hooks/useStepList'
@@ -87,7 +87,7 @@ const DuplicateStepListTable = ({
     mutationFn: addCommands(selectedRows),
     onError: (e) => errorMessage('Failed to duplicate steps', e),
     onSuccess: () => successMessage('Successfully duplicated steps'),
-    invalidateKeysOnSuccess: [SEQUENCER_STEPS(sequencerPrefix).key],
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
     useErrorBoundary: false
   })
 

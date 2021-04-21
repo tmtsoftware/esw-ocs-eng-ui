@@ -1,5 +1,3 @@
-import type { Prefix } from '@tmtsoftware/esw-ts'
-
 type Query = {
   key: string
   // refetchIntervalInBackground?: boolean // refetchInterval will continue to refetch while their tab/window is in the background if enabled
@@ -22,17 +20,14 @@ export const OBS_MODES_DETAILS: Query = {
 }
 
 // Sequencers
-export const SEQUENCER_SERVICE = (prefix: Prefix): Query => ({
-  key: `${prefix.toJSON()}-SequencerService`
-})
 
-export const SEQUENCER_STEPS = (prefix: Prefix): Query => ({
-  key: `${prefix.toJSON()}-steps`,
+export const GET_SEQUENCE: Query = {
+  key: 'GetSequence',
   refetchInterval: 1000
-})
+}
 
 export const OBS_MODE_SEQUENCERS: Query = {
-  key: 'ObsModeSequencers',
+  key: 'GetSequenceObsMode',
   refetchInterval: 1000
 }
 
@@ -40,7 +35,7 @@ export const SEQUENCER_STATUS: Query = {
   key: 'SequencerStatus'
 }
 
-export const SEQUENCER_STATE = (prefix: Prefix): Query => ({
-  key: `${prefix.toJSON()}-SequencerState`,
+export const SEQUENCER_STATE = {
+  key: `GetSequencerState`,
   refetchInterval: 1000
-})
+}

@@ -1,7 +1,7 @@
 import type { Subsystem } from '@tmtsoftware/esw-ts'
 import { Empty, Layout, Menu } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import React, { useMemo } from 'react'
+import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import {
   useObsModesDetails,
@@ -32,14 +32,12 @@ const getTabBasedResources = (
 
 export type ObservationTabProps = {
   tabName: TabName
-  currentTab: TabName
   selected?: string
   setObservation: (_: string) => void
 }
 
 export const ObservationTab = ({
   tabName,
-  currentTab,
   selected = '',
   setObservation
 }: ObservationTabProps): JSX.Element => {
@@ -49,19 +47,13 @@ export const ObservationTab = ({
   const data = grouped ? grouped[tabName] : []
   const selectedObs = data.find((x) => x.obsMode.name === selected) ?? data[0]
 
-  const resources = useMemo(
-    () =>
-      data.length > 0
-        ? getTabBasedResources(
-            currentTab,
-            selectedObs.resources,
-            runningResources
-          )
-        : [],
-    [currentTab, data.length, runningResources, selectedObs]
-  )
-
   if (!data.length) return <Empty description={`No ${tabName} ObsModes`} />
+
+  const resources = getTabBasedResources(
+    tabName,
+    selectedObs.resources,
+    runningResources
+  )
 
   return (
     <Layout style={{ height: '99%' }}>
@@ -84,7 +76,7 @@ export const ObservationTab = ({
             obsMode={selectedObs.obsMode}
             sequencers={selectedObs.sequencers}
             resources={resources}
-            currentTab={currentTab}
+            currentTab={tabName}
           />
         )}
       </Content>

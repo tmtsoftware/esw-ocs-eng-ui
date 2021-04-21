@@ -6,7 +6,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React, { memo } from 'react'
+import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
@@ -27,7 +27,7 @@ const Text = ({ content, type }: { content: string; type: BaseType }) => (
   </Typography.Text>
 )
 
-const CObsMode = ({
+export const CurrentObsMode = ({
   currentTab,
   obsMode,
   sequencers,
@@ -84,8 +84,3 @@ const getTextType = (
 ): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
-
-export const CurrentObsMode = memo(
-  CObsMode,
-  (prev, next) => prev.obsMode.name === next.obsMode.name
-)

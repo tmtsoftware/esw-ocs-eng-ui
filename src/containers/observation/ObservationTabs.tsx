@@ -32,14 +32,15 @@ export const ObservationTabs = (): JSX.Element => {
             key={tabName}
             tab={tabName}
             style={{ marginLeft: '1.5rem', width: '99%' }}>
-            <ObservationTab
-              tabName={tabName}
-              currentTab={selectedTab}
-              selected={selectedObservation}
-              setObservation={(observationMode) =>
-                setSelectedObservation(observationMode)
-              }
-            />
+            {selectedTab === tabName && (
+              <ObservationTab
+                tabName={tabName}
+                selected={selectedObservation}
+                setObservation={(observationMode) =>
+                  setSelectedObservation(observationMode)
+                }
+              />
+            )}
           </TabPane>
         )
       })}

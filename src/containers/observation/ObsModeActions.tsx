@@ -32,7 +32,7 @@ const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
   )
 }
 
-// TODO: memoise these components  to avoid unnecessary renders
+// TODO memoise these components  to avoid unnecessary renders
 export const ObsModeActions = ({
   tabName,
   obsMode

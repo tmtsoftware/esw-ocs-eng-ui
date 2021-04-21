@@ -33,13 +33,7 @@ describe('observation tabs', () => {
     })
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Running'}
-          currentTab={'Running'}
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Running' setObservation={() => ({})} />
     })
 
     const shutdownButton = await screen.findByRole('button', {
@@ -110,13 +104,7 @@ describe('observation tabs', () => {
     // mock setup ends here
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Configurable'}
-          currentTab={'Configurable'}
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Configurable' setObservation={() => ({})} />
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -141,8 +129,7 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
-          tabName={'Non-configurable'}
-          currentTab={'Non-configurable'}
+          tabName='Non-configurable'
           setObservation={() => ({})}
         />
       )
@@ -163,13 +150,7 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Running'}
-          currentTab={'Running'}
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Running' setObservation={() => ({})} />
     })
     await screen.findAllByRole('table')
     const [
@@ -197,13 +178,7 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName={'Configurable'}
-          currentTab={'Configurable'}
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Configurable' setObservation={() => ({})} />
     })
 
     await screen.findAllByRole('table')
@@ -230,8 +205,7 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <ObservationTab
-          tabName={'Non-configurable'}
-          currentTab={'Non-configurable'}
+          tabName='Non-configurable'
           setObservation={() => ({})}
         />
       )

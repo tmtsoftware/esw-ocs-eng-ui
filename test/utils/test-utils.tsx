@@ -7,7 +7,9 @@ import {
   HttpLocation,
   LocationService,
   SequenceManagerService,
-  SequencerService
+  SequencerService,
+  GATEWAY_CONNECTION,
+  SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
@@ -28,10 +30,7 @@ import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
-import {
-  GATEWAY_CONNECTION,
-  SM_CONNECTION
-} from '../../src/features/sm/constants'
+
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
   return {
@@ -114,7 +113,7 @@ const getContextProvider = (
   const auth = getMockAuth(loggedIn)
   const smLocation: HttpLocation = {
     _type: 'HttpLocation',
-    connection: SM_CONNECTION,
+    connection: SEQUENCE_MANAGER_CONNECTION,
     uri: 'http://localhost:5000/',
     metadata: {
       agentPrefix: 'ESW.primary'

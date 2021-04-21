@@ -1,10 +1,9 @@
 import { screen, waitFor } from '@testing-library/react'
-import type { HttpLocation } from '@tmtsoftware/esw-ts'
+import { HttpLocation, GATEWAY_CONNECTION } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, verify, when } from 'ts-mockito'
 import { createServiceCtx } from '../../../src/contexts/utils/createServiceCtx'
-import { GATEWAY_CONNECTION } from '../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 const gatewayLocation: HttpLocation = {
   _type: 'HttpLocation',

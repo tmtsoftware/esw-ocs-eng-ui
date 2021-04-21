@@ -11,7 +11,10 @@ import {
   ObsMode,
   ObsModesDetailsResponse,
   Prefix,
-  ProvisionConfig
+  ProvisionConfig,
+  AGENT_SERVICE_CONNECTION,
+  SEQUENCE_MANAGER_CONNECTION,
+  CONFIG_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -20,12 +23,7 @@ import { Infrastructure } from '../../../src/containers/infrastructure/Infrastru
 import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
 import { SMServiceProvider } from '../../../src/contexts/SMContext'
 import { ProvisionButton } from '../../../src/features/sm/components/provision/ProvisionButton'
-import {
-  AGENT_SERVICE_CONNECTION,
-  CONFIG_SERVICE_CONNECTION,
-  PROVISION_CONF_PATH,
-  SM_CONNECTION
-} from '../../../src/features/sm/constants'
+import { PROVISION_CONF_PATH } from '../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 const obsModeDetails: ObsModesDetailsResponse = {
@@ -71,10 +69,10 @@ describe('Infrastructure page', () => {
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService
 
-  when(locServiceMock.track(SM_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
-  when(locServiceMock.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(CONFIG_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
   when(locServiceMock.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
@@ -117,7 +115,7 @@ describe('Infrastructure page', () => {
   it('should render running status with agent machine if sequence manager is running on an agent | ESW-442', async () => {
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
-      connection: SM_CONNECTION,
+      connection: SEQUENCE_MANAGER_CONNECTION,
       uri: 'url',
       metadata: { agentPrefix: 'ESW.primary' }
     }
@@ -138,7 +136,7 @@ describe('Infrastructure page', () => {
   it('should render running on unknown status if sequence manager is running standalone(not on agent) | ESW-442', async () => {
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
-      connection: SM_CONNECTION,
+      connection: SEQUENCE_MANAGER_CONNECTION,
       uri: 'url',
       metadata: {}
     }

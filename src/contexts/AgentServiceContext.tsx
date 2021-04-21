@@ -1,5 +1,7 @@
-import { createAgentService } from '@tmtsoftware/esw-ts'
-import { AGENT_SERVICE_CONNECTION } from '../features/sm/constants'
+import {
+  createAgentService,
+  AGENT_SERVICE_CONNECTION
+} from '@tmtsoftware/esw-ts'
 import { createServiceCtx } from './utils/createServiceCtx'
 
 export const [useAgentService, AgentServiceProvider] = createServiceCtx(

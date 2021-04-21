@@ -203,9 +203,7 @@ describe('sequencer details', () => {
 
     await screen.findAllByRole('table')
 
-    const [, , descriptionsTable, , parameterBodyTable] = screen.queryAllByRole(
-      'table'
-    )
+    const [, , , , parameterBodyTable] = screen.queryAllByRole('table')
 
     const step = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step)

@@ -2,9 +2,9 @@ import {
   Location,
   SequenceManagerService,
   createSequenceManagerService,
-  TokenFactory
+  TokenFactory,
+  SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
-import { SM_CONNECTION } from '../features/sm/constants'
 import { createServiceCtx } from './utils/createServiceCtx'
 
 export type SMContextType = [Location | undefined, boolean]
@@ -17,6 +17,6 @@ const mkSMContext = (loc: Location, tf: TokenFactory): SMContext => ({
 })
 
 export const [useSMService, SMServiceProvider] = createServiceCtx(
-  SM_CONNECTION,
+  SEQUENCE_MANAGER_CONNECTION,
   mkSMContext
 )

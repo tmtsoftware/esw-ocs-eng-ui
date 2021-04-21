@@ -1,16 +1,15 @@
 import { screen, waitFor } from '@testing-library/react'
-import type { HttpLocation } from '@tmtsoftware/esw-ts'
+import { HttpLocation, SEQUENCE_MANAGER_CONNECTION } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
 import { SMServiceProvider } from '../../../../src/contexts/SMContext'
 import { SMCard } from '../../../../src/features/sm/components/smcard/SMCard'
-import { SM_CONNECTION } from '../../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('SMCard', () => {
   const locServiceMock = mockServices.mock.locationService
-  when(locServiceMock.track(SM_CONNECTION)).thenReturn(() => ({
+  when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => ({
     cancel: () => ({})
   }))
 
@@ -33,7 +32,7 @@ describe('SMCard', () => {
   it('should show Shutdown button if Sequence Manager is already spawned | ESW-441', async () => {
     const smLocation: HttpLocation = {
       _type: 'HttpLocation',
-      connection: SM_CONNECTION,
+      connection: SEQUENCE_MANAGER_CONNECTION,
       uri: 'url',
       metadata: {}
     }

@@ -5,17 +5,15 @@ import {
   ComponentId,
   ObsMode,
   Prefix,
-  SequenceComponentStatus
+  SequenceComponentStatus,
+  AGENT_SERVICE_CONNECTION,
+  CONFIG_CONNECTION,
+  SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
-import {
-  AGENT_SERVICE_CONNECTION,
-  CONFIG_SERVICE_CONNECTION,
-  SM_CONNECTION
-} from '../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
@@ -34,13 +32,13 @@ describe('SM actions', () => {
       }
     ]
   })
-  when(locServiceMock.track(SM_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
   when(locServiceMock.track(AGENT_SERVICE_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
-  when(locServiceMock.track(CONFIG_SERVICE_CONNECTION)).thenReturn(() => {
+  when(locServiceMock.track(CONFIG_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
   })
 

@@ -92,7 +92,7 @@ describe('SequenceDetailsSider', () => {
       }
     ])
 
-    when(sequencerServiceMock.add(deepEqual([command2, command1]))).thenResolve(
+    when(sequencerServiceMock.add(deepEqual([command1, command2]))).thenResolve(
       {
         _type: 'Ok'
       }
@@ -123,14 +123,14 @@ describe('SequenceDetailsSider', () => {
     })
 
     // click on the checkbox
-    userEvent.click(within(command2Row).getByRole('checkbox'))
     userEvent.click(within(command1Row).getByRole('checkbox'))
+    userEvent.click(within(command2Row).getByRole('checkbox'))
     // click on duplicate
     userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
     await screen.findByText('Successfully duplicated steps')
     verify(sequencerServiceMock.getSequence()).called()
-    verify(sequencerServiceMock.add(deepEqual([command2, command1]))).called()
+    verify(sequencerServiceMock.add(deepEqual([command1, command2]))).called()
   })
 
   it('should not duplicate steps if error occurred | ESW-462', async () => {

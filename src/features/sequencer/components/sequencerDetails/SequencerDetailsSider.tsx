@@ -3,7 +3,8 @@ import type {
   Prefix,
   SequenceCommand,
   SequencerService,
-  Step
+  Step,
+  StepStatus
 } from '@tmtsoftware/esw-ts'
 import { Button, Card, Row, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
@@ -19,10 +20,18 @@ import styles from './sequencerDetails.module.css'
 import { StepComponent } from './StepComponent'
 import { StepListTable } from './StepListTable'
 
+type StepData = {
+  id: string
+  command: SequenceCommand
+  status: StepStatus
+  hasBreakpoint: boolean
+  index: number
+}
+
 const columns = (
   stepListStatus: keyof typeof typeStatus,
   setSelectedStep: (_: Step) => void
-): ColumnsType<Step> => [
+): ColumnsType<StepData> => [
   {
     title: (
       <>
@@ -37,10 +46,10 @@ const columns = (
         </Space>
       </>
     ),
-    key: 'id',
+    key: 'index',
     dataIndex: 'status',
-    render: (_, record, index) => {
-      return StepComponent(record, index + 1, setSelectedStep)
+    render: (_, record) => {
+      return StepComponent(record, record.index + 1, setSelectedStep)
     }
   }
 ]
@@ -83,9 +92,10 @@ const DuplicateStepListTable = ({
   })
 
   const rowSelection = {
-    onChange: (_: React.Key[], selectedRows: Step[]) => {
+    onChange: (_: React.Key[], selectedRows: StepData[]) => {
       console.log('selectedRows: ', selectedRows)
-      setSelectedRow(selectedRows.map((step) => step.command))
+      const sortedRows = selectedRows.sort((a, b) => a.index - b.index)
+      setSelectedRow(sortedRows.map((step) => step.command))
     },
     hideSelectAll: true
   }
@@ -98,7 +108,7 @@ const DuplicateStepListTable = ({
         rowKey={(step) => step.id}
         pagination={false}
         loading={isLoading}
-        dataSource={stepList?.steps}
+        dataSource={stepList?.steps.map((step, index) => ({ ...step, index }))}
         columns={columns(stepListStatus, setSelectedStep)}
         onRow={() => ({ className: styles.cellInDuplicate })}
         onHeaderRow={() => ({ className: styles.cell })}

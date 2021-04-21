@@ -5,6 +5,7 @@ import React from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
+import styles from './sequencerDetails.module.css'
 
 export const StepActions = ({
   step,
@@ -22,7 +23,7 @@ export const StepActions = ({
   const { handleDuplicate } = useStepListContext()
 
   return (
-    <Menu onClick={hideMenu}>
+    <Menu onClick={hideMenu} className={styles.menu}>
       <Menu.Item key='1' disabled={isInProgressOrIsFinished}>
         <BreakpointAction
           step={step}

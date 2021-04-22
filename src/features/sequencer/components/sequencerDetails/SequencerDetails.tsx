@@ -11,6 +11,7 @@ import {
   Descriptions,
   Layout,
   PageHeader,
+  Result,
   Space,
   Tooltip,
   Typography
@@ -18,12 +19,16 @@ import {
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
+import { Spinner } from '../../../../components/spinners/Spinner'
 import { useLocationService } from '../../../../contexts/LocationServiceContext'
+import { HOME } from '../../../../routes/RoutesConfig'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
+import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
@@ -97,19 +102,12 @@ const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
   )
 }
 
-const SequencerTitle = ({
-  title,
-  obsMode
-}: {
-  title: string
-  obsMode: string
-}): JSX.Element => {
-  const masterSequencer = new Prefix('ESW', obsMode)
-  const { data: isOnline } = useSequencerStatus(masterSequencer)
+const SequencerTitle = ({ prefix }: { prefix: Prefix }): JSX.Element => {
+  const { data: isOnline } = useSequencerStatus(prefix)
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
       <Badge status={isOnline ? 'success' : 'error'} />
-      {title}
+      {prefix.toJSON()}
     </div>
   )
 }
@@ -134,19 +132,29 @@ const DescriptionItem = (label: string, item: string) => {
   )
 }
 export const SequencerDetails = ({
-  prefix,
-  obsMode
+  prefix
 }: {
   prefix: Prefix
-  obsMode: string
 }): JSX.Element => {
   const sequencerState = useSequencerState(prefix)
+  const seqLocation = useSequencerLocation(prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
+
+  if (seqLocation.isLoading) return <Spinner />
+
+  if (!seqLocation.data)
+    return (
+      <SequencerError
+        title='404'
+        subtitle={`Sequencer ${prefix.toJSON()} : Not found`}
+      />
+    )
+
   return (
     <>
       <PageHeader
         ghost={false}
-        title={<SequencerTitle title={prefix.toJSON()} obsMode={obsMode} />}
+        title={<SequencerTitle prefix={prefix} />}
         className={styles.headerBox}
         extra={
           <Actions

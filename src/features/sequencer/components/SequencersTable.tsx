@@ -1,23 +1,20 @@
 import { EditOutlined } from '@ant-design/icons'
 import { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
-import { Drawer, Space, Table, Typography } from 'antd'
+import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
+import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from '../../agent/components/agentCards.module.css'
 import { SequencerInfo, useSequencersData } from '../hooks/useSequencersData'
-import { SequencerDetails } from './sequencerDetails/SequencerDetails'
 
-const getPrefixColumn = (
-  record: SequencerInfo,
-  onEditHandle: (sequencerPrefix: string) => void
-) => (
+const getPrefixColumn = (record: SequencerInfo) => (
   <Space>
-    <EditOutlined
-      onClick={() => onEditHandle(record.prefix)}
-      className={styles.commonIcon}
-    />
+    <Link to={getSequencerPath(record.prefix)}>
+      <EditOutlined className={styles.commonIcon} />
+    </Link>
     <Typography.Text>{record.prefix}</Typography.Text>
   </Space>
 )
@@ -38,14 +35,12 @@ const getStepColumn = (status: SequencerInfo['stepListStatus']) => (
   </Typography.Text>
 )
 
-const columns = (
-  onEditHandle: (sequencerPrefix: string) => void
-): ColumnsType<SequencerInfo> => [
+const columns: ColumnsType<SequencerInfo> = [
   {
     title: <HeaderTitle title='Sequencers' />,
     dataIndex: 'prefix',
     width: '40%',
-    render: (_, record) => getPrefixColumn(record, onEditHandle)
+    render: (_, record) => getPrefixColumn(record)
   },
   {
     title: <HeaderTitle title='Sequence Status' />,
@@ -65,20 +60,6 @@ type ObsModeSeqTableProps = {
   sequencers: Subsystem[]
 }
 
-const SequencerDrawer = ({
-  onClose,
-  selectedSequencerPrefix,
-  obsMode
-}: {
-  selectedSequencerPrefix: Prefix
-  obsMode: ObsMode
-  onClose: () => void
-}) => (
-  <Drawer visible width={'80%'} onClose={() => onClose()} destroyOnClose>
-    <SequencerDetails prefix={selectedSequencerPrefix} obsMode={obsMode.name} />
-  </Drawer>
-)
-
 export const SequencersTable = ({
   obsMode,
   sequencers
@@ -93,39 +74,16 @@ export const SequencersTable = ({
   )
 
   const sequencerStatus = useSequencersData(sortedSequencers)
-  const [isSeqDrawerVisible, setSeqDrawerVisibility] = useState(false)
-  const [selectedSequencer, selectSequencer] = useState<Prefix>()
-  const [
-    selectedSequencerStatus,
-    selectSequencerStatus
-  ] = useState<SequencerInfo>()
-
-  const onEditHandle = (sequencerPrefix: string) => {
-    selectSequencer(Prefix.fromString(sequencerPrefix))
-    setSeqDrawerVisibility(true)
-    selectSequencerStatus(
-      sequencerStatus.data?.find((x) => sequencerPrefix === x.prefix)
-    )
-  }
 
   return (
-    <>
-      {isSeqDrawerVisible && selectedSequencer && selectedSequencerStatus && (
-        <SequencerDrawer
-          obsMode={obsMode}
-          selectedSequencerPrefix={selectedSequencer}
-          onClose={() => setSeqDrawerVisibility(false)}
-        />
-      )}
-      <Table
-        rowKey={(record) => record.prefix}
-        style={{ paddingBottom: '1.5rem' }}
-        pagination={false}
-        loading={sequencerStatus.isLoading || sequencerStatus.isError}
-        columns={columns(onEditHandle)}
-        dataSource={sequencerStatus.data}
-        onRow={() => ({ style: { fontSize: '1rem' } })}
-      />
-    </>
+    <Table
+      rowKey={(record) => record.prefix}
+      style={{ paddingBottom: '1.5rem' }}
+      pagination={false}
+      loading={sequencerStatus.isLoading || sequencerStatus.isError}
+      columns={columns}
+      dataSource={sequencerStatus.data}
+      onRow={() => ({ style: { fontSize: '1rem' } })}
+    />
   )
 }

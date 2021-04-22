@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import { ObsMode, Setup, Step, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { mock, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import {
@@ -49,7 +50,11 @@ describe('sequencer table', () => {
       .thenReject(Error())
 
     renderWithAuth({
-      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+      ui: (
+        <BrowserRouter>
+          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+        </BrowserRouter>
+      )
     })
 
     await assertTable()
@@ -62,7 +67,11 @@ describe('sequencer table', () => {
     when(sequencerServiceMock.getSequence()).thenResolve(undefined)
 
     renderWithAuth({
-      ui: <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+      ui: (
+        <BrowserRouter>
+          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+        </BrowserRouter>
+      )
     })
 
     await assertHeaders()

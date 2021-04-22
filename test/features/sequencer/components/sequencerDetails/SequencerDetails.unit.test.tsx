@@ -64,12 +64,7 @@ describe('sequencer details', () => {
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
     when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Failure'))
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          prefix={sequencerLoc.connection.prefix}
-          obsMode={''}
-        />
-      )
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
     const sequencerTitle = await screen.findByTestId('status-error')
@@ -93,27 +88,24 @@ describe('sequencer details', () => {
       getStepList('InFlight')
     )
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          prefix={sequencerLoc.connection.prefix}
-          obsMode={''}
-        />
-      )
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    const loadAndUploadButton = screen.getAllByRole('button', {
+    const loadAndUploadButton = await screen.findAllByRole('button', {
       name: 'Load Sequence'
     })
-    const abortButton = screen.getByRole('button', { name: 'Abort sequence' })
-    const goOffline = screen.getByRole('button', { name: 'Go offline' })
+    const abortButton = await screen.findByRole('button', {
+      name: 'Abort sequence'
+    })
+    const goOffline = await screen.findByRole('button', { name: 'Go offline' })
 
     expect(loadAndUploadButton.length).to.equal(2)
     expect(goOffline).to.exist
     expect(abortButton).to.exist
 
-    expect(screen.getByRole('PlaySequencer')).to.exist
-    expect(screen.getByRole('StopSequencer')).to.exist
-    expect(screen.getByRole('ResetSequencer')).to.exist
+    expect(await screen.findByRole('PlaySequencer')).to.exist
+    expect(await screen.findByRole('StopSequencer')).to.exist
+    expect(await screen.findByRole('ResetSequencer')).to.exist
 
     //check for sequence execution table
     await screen.findByRole('columnheader', {
@@ -127,12 +119,7 @@ describe('sequencer details', () => {
       getStepList('Pending', true)
     )
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          prefix={sequencerLoc.connection.prefix}
-          obsMode={''}
-        />
-      )
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
     await screen.findByTestId('status-error')
@@ -193,12 +180,7 @@ describe('sequencer details', () => {
     when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          prefix={sequencerLoc.connection.prefix}
-          obsMode={''}
-        />
-      )
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
     await screen.findAllByRole('table')
@@ -263,12 +245,7 @@ describe('sequencer details', () => {
     when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 
     renderWithAuth({
-      ui: (
-        <SequencerDetails
-          prefix={sequencerLoc.connection.prefix}
-          obsMode={''}
-        />
-      )
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
     await screen.findAllByRole('table')

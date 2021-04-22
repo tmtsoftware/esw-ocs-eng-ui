@@ -1,7 +1,6 @@
 import type {
   ObsModeDetails,
-  SequenceManagerService,
-  Subsystem
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import type { TabName } from '../../../containers/observation/ObservationTabs'
 import { useSMService } from '../../../contexts/SMContext'
@@ -42,9 +41,4 @@ export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
       refetchInterval: OBS_MODES_DETAILS.refetchInterval
     }
   )
-}
-
-export const useRunningResources = (): Subsystem[] => {
-  const { data } = useObsModesDetails()
-  return [...new Set(data && data.Running.flatMap((om) => om.resources))]
 }

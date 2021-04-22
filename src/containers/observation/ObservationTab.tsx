@@ -3,10 +3,7 @@ import { Empty, Layout, Menu } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
-import {
-  useObsModesDetails,
-  useRunningResources
-} from '../../features/sm/hooks/useObsModesDetails'
+import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import { CurrentObsMode } from './CurrentObsMode'
 import type { TabName } from './ObservationTabs'
 
@@ -42,7 +39,12 @@ export const ObservationTab = ({
   setObservation
 }: ObservationTabProps): JSX.Element => {
   const { data: grouped } = useObsModesDetails()
-  const runningResources = useRunningResources()
+
+  const runningResources = [
+    ...new Set(
+      grouped && grouped.Running.flatMap((obsMode) => obsMode.resources)
+    )
+  ]
 
   const data = grouped ? grouped[tabName] : []
   const selectedObs = data.find((x) => x.obsMode.name === selected) ?? data[0]

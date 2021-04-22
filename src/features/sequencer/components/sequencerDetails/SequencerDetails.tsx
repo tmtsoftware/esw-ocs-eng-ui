@@ -11,14 +11,13 @@ import {
   Descriptions,
   Empty,
   Layout,
-  PageHeader,
   Space,
   Tooltip,
   Typography
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router'
+import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerState } from '../../hooks/useSequencerState'
@@ -166,7 +165,6 @@ export const SequencerDetails = ({
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  const history = useHistory()
   const sequencerState = useSequencerState(prefix)
   const seqLocation = useSequencerLocation(prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
@@ -184,16 +182,15 @@ export const SequencerDetails = ({
   return (
     <>
       <PageHeader
-        ghost={false}
         title={<SequencerTitle prefix={prefix} />}
+        ghost={false}
         className={styles.headerBox}
         extra={
           <Actions
             prefix={prefix}
             sequencerState={sequencerState.data?._type}
           />
-        }
-        onBack={() => history.goBack()}>
+        }>
         <SequencerDescription prefix={prefix} />
       </PageHeader>
       <Layout

@@ -4,7 +4,10 @@ import { useGoOfflineAction } from '../../hooks/useGoOfflineAction'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
-export const GoOffline = ({ prefix }: SequencerProps): JSX.Element => {
+export const GoOffline = ({
+  prefix,
+  sequencerState
+}: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOfflineAction = useGoOfflineAction(prefix)
 
@@ -12,7 +15,10 @@ export const GoOffline = ({ prefix }: SequencerProps): JSX.Element => {
     sequencerService && goOfflineAction.mutate(sequencerService)
 
   return (
-    <Button loading={goOfflineAction.isLoading} onClick={() => goOffline()}>
+    <Button
+      disabled={!sequencerState || sequencerState === 'Running'}
+      loading={goOfflineAction.isLoading}
+      onClick={() => goOffline()}>
       Go offline
     </Button>
   )

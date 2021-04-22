@@ -57,7 +57,7 @@ const SequenceActions = ({
 }: SequencerProps): JSX.Element => (
   <Space>
     <LoadSequence prefix={prefix} sequencerState={sequencerState} />
-    <LifecycleState prefix={prefix} />
+    <LifecycleState prefix={prefix} sequencerState={sequencerState} />
     <Button danger> Abort sequence</Button>
   </Space>
 )

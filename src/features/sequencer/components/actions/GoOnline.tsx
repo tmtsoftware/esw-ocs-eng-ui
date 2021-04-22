@@ -4,7 +4,10 @@ import { useGoOnlineAction } from '../../hooks/useGoOnlineAction'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
-export const GoOnline = ({ prefix }: SequencerProps): JSX.Element => {
+export const GoOnline = ({
+  prefix,
+  sequencerState
+}: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOnlineAction = useGoOnlineAction(prefix)
 
@@ -12,7 +15,10 @@ export const GoOnline = ({ prefix }: SequencerProps): JSX.Element => {
     sequencerService && goOnlineAction.mutate(sequencerService)
 
   return (
-    <Button loading={goOnlineAction.isLoading} onClick={() => goOnline()}>
+    <Button
+      disabled={!sequencerState || sequencerState === 'Running'}
+      loading={goOnlineAction.isLoading}
+      onClick={() => goOnline()}>
       Go online
     </Button>
   )

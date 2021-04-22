@@ -1,6 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GoOfflineResponse, Prefix } from '@tmtsoftware/esw-ts'
+import {
+  GoOfflineResponse,
+  Prefix,
+  SequencerStateResponse
+} from '@tmtsoftware/esw-ts'
+import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOffline } from '../../../../../src/features/sequencer/components/actions/GoOffline'
@@ -34,7 +39,12 @@ describe('GoOffline', () => {
       when(sequencerServiceMock.goOffline()).thenResolve(res)
 
       renderWithAuth({
-        ui: <GoOffline prefix={new Prefix('ESW', 'darknight')} />
+        ui: (
+          <GoOffline
+            prefix={new Prefix('ESW', 'darknight')}
+            sequencerState={'Loaded'}
+          />
+        )
       })
 
       const offlineButton = await screen.findByRole('button', {
@@ -53,7 +63,12 @@ describe('GoOffline', () => {
     when(sequencerServiceMock.goOffline()).thenReject(Error('error occurred'))
 
     renderWithAuth({
-      ui: <GoOffline prefix={new Prefix('ESW', 'darknight')} />
+      ui: (
+        <GoOffline
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Idle'}
+        />
+      )
     })
 
     const offlineButton = await screen.findByRole('button', {
@@ -67,5 +82,29 @@ describe('GoOffline', () => {
     )
 
     verify(sequencerServiceMock.goOffline()).called()
+  })
+
+  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+    undefined,
+    'Running'
+  ]
+
+  disabledStates.forEach((state) => {
+    it(`should be disabled if sequencer in ${state}`, async () => {
+      renderWithAuth({
+        ui: (
+          <GoOffline
+            prefix={new Prefix('ESW', 'darknight')}
+            sequencerState={state}
+          />
+        )
+      })
+
+      const offlineButton = (await screen.findByRole('button', {
+        name: 'Go offline'
+      })) as HTMLButtonElement
+
+      expect(offlineButton.disabled).true
+    })
   })
 })

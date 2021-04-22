@@ -1,6 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GoOnlineResponse, Prefix } from '@tmtsoftware/esw-ts'
+import {
+  GoOnlineResponse,
+  Prefix,
+  SequencerStateResponse
+} from '@tmtsoftware/esw-ts'
+import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOnline } from '../../../../../src/features/sequencer/components/actions/GoOnline'
@@ -34,7 +39,12 @@ describe('GoOffline', () => {
       when(sequencerServiceMock.goOnline()).thenResolve(res)
 
       renderWithAuth({
-        ui: <GoOnline prefix={new Prefix('ESW', 'darknight')} />
+        ui: (
+          <GoOnline
+            prefix={new Prefix('ESW', 'darknight')}
+            sequencerState={'Idle'}
+          />
+        )
       })
 
       const onlineButton = await screen.findByRole('button', {
@@ -53,7 +63,12 @@ describe('GoOffline', () => {
     when(sequencerServiceMock.goOnline()).thenReject(Error('error occurred'))
 
     renderWithAuth({
-      ui: <GoOnline prefix={new Prefix('ESW', 'darknight')} />
+      ui: (
+        <GoOnline
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Idle'}
+        />
+      )
     })
 
     const onlineButton = await screen.findByRole('button', {
@@ -67,5 +82,29 @@ describe('GoOffline', () => {
     )
 
     verify(sequencerServiceMock.goOnline()).called()
+  })
+
+  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+    undefined,
+    'Running'
+  ]
+
+  disabledStates.forEach((state) => {
+    it(`should be disabled if sequencer in ${state}`, async () => {
+      renderWithAuth({
+        ui: (
+          <GoOnline
+            prefix={new Prefix('ESW', 'darknight')}
+            sequencerState={state}
+          />
+        )
+      })
+
+      const onlineButton = (await screen.findByRole('button', {
+        name: 'Go online'
+      })) as HTMLButtonElement
+
+      expect(onlineButton.disabled).true
+    })
   })
 })

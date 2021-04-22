@@ -34,7 +34,7 @@ describe('sequencer table', () => {
     step('Success', 'command-42')
   ])
 
-  it.only('should be able to render SequencersTable successfully | ESW-451', async () => {
+  it('should be able to render SequencersTable successfully | ESW-451, ESW-496', async () => {
     const obsMode: ObsMode = new ObsMode('DarkNight_1')
     const sequencers: Subsystem[] = ['ESW', 'APS', 'DPS', 'CIS', 'AOESW']
 
@@ -80,6 +80,7 @@ describe('sequencer table', () => {
 
 const assertHeaders = async () => {
   await assertHeader('Sequencers')
+  await assertHeader('Current Step')
   await assertHeader('Sequence Status')
   await assertHeader('Total Steps')
 }

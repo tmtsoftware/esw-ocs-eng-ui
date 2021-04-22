@@ -38,7 +38,7 @@ describe('useSequencersData', () => {
     step('Success', 'command-42')
   ])
 
-  it('should return sequencers data with their steps and status | ESW-451', async () => {
+  it('should return sequencers data with their steps and status | ESW-451, ESW-496', async () => {
     when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
     when(sequencerServiceMock.getSequence())
       .thenResolve(stepList1)
@@ -114,7 +114,7 @@ describe('useSequencersData', () => {
     expect(result.current.data).to.deep.equal(sequencerData)
   })
 
-  it('should return Failed to fetch data if error occurred | ESW-451', async () => {
+  it('should return Failed to fetch data if error occurred | ESW-451, ESW-496', async () => {
     when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
 
     when(sequencerServiceMock.getSequence()).thenReject(Error())

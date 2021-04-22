@@ -6,7 +6,7 @@ import styles from './pageHeader.module.css'
 export const PageHeader = ({
   title,
   ...props
-}: PageHeaderProps & { children: ReactNode }): JSX.Element => {
+}: PageHeaderProps & { children?: ReactNode }): JSX.Element => {
   const history = useHistory()
   return (
     <AntPageHeader

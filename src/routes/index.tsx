@@ -29,10 +29,7 @@ const RedirectToLogin = ({ login }: { login: () => void }) => {
 export const Routes = (): JSX.Element => {
   const { login, auth } = useAuth()
 
-  // TODO is this required? It is already handled in main app.
-  if (auth === null) return <Result icon={<LoadingOutlined />} />
-
-  return auth.isAuthenticated() ? (
+  return !!auth && auth.isAuthenticated() ? (
     <Switch>
       <Route exact path={HOME} component={Home} />
       <Route path={INFRASTRUCTURE} component={Infrastructure} />

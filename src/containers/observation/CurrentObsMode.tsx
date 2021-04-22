@@ -27,6 +27,32 @@ const Text = ({ content, type }: { content: string; type: BaseType }) => (
   </Typography.Text>
 )
 
+const Status = ({
+  obsMode,
+  isRunning
+}: {
+  obsMode: ObsMode
+  isRunning: boolean
+}) => {
+  const { data: obsModeStatus } = useSequencerState(
+    new Prefix('ESW', obsMode.name),
+    isRunning
+  )
+
+  const status = obsModeStatus ? (
+    <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
+  ) : (
+    <Text content='NA' type='secondary' />
+  )
+
+  return (
+    <Space>
+      <Text type='secondary' content='Status: ' />
+      {status}
+    </Space>
+  )
+}
+
 export const CurrentObsMode = ({
   currentTab,
   obsMode,
@@ -34,25 +60,6 @@ export const CurrentObsMode = ({
   resources
 }: CurrentObsModeProps): JSX.Element => {
   const isRunningTab = currentTab === 'Running'
-  const { data: obsModeStatus } = useSequencerState(
-    new Prefix('ESW', obsMode.name),
-    isRunningTab
-  )
-  //TODO use StatusAPI of sequencer for this status
-  const Status = () => {
-    const status = obsModeStatus ? (
-      <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
-    ) : (
-      <Text content='NA' type='secondary' />
-    )
-    return (
-      <Space>
-        <Text type='secondary' content='Status: ' />
-        {status}
-      </Space>
-    )
-  }
-
   return (
     <>
       <Card
@@ -62,7 +69,7 @@ export const CurrentObsMode = ({
         title={
           <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-            <Status />
+            <Status obsMode={obsMode} isRunning={isRunningTab} />
           </>
         }
         extra={

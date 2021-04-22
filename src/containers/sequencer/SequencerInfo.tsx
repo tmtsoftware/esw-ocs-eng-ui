@@ -3,29 +3,22 @@ import React from 'react'
 import { useLocation } from 'react-router'
 import { SequencerDetails } from '../../features/sequencer/components/sequencerDetails/SequencerDetails'
 import { SequencerError } from '../../features/sequencer/components/SequencerError'
+import { prefixKey } from '../../routes/RoutesConfig'
+
+const invalidTitle = 'Invalid sequencer prefix'
+const notFound = 'Sequencer prefix not present'
 
 export const SequencerInfo = (): JSX.Element => {
   const { search } = useLocation()
   const query = new URLSearchParams(search)
-  const maybePrefix = query.get('prefix')
+  const maybePrefix = query.get(prefixKey)
 
   if (!maybePrefix)
-    return (
-      <SequencerError
-        title={'Invalid sequencer prefix'}
-        subtitle={'Sequencer prefix not present'}
-      />
-    )
+    return <SequencerError title={invalidTitle} subtitle={notFound} />
 
   try {
-    const sequencerPrefix = Prefix.fromString(maybePrefix)
-    return <SequencerDetails prefix={sequencerPrefix} />
+    return <SequencerDetails prefix={Prefix.fromString(maybePrefix)} />
   } catch (e) {
-    return (
-      <SequencerError
-        title={'Invalid sequencer prefix'}
-        subtitle={e?.message}
-      />
-    )
+    return <SequencerError title={invalidTitle} subtitle={e?.message} />
   }
 }

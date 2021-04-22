@@ -30,9 +30,9 @@ export const KillSequenceComponent = ({
         `Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`
       ),
     onError: (e) => errorMessage('Sequence Component could not be killed', e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
+
   return (
     <Tooltip placement='bottom' title={'Delete sequence component'}>
       <Button

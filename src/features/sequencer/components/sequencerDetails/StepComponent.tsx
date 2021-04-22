@@ -1,6 +1,6 @@
 import { MoreOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
-import { Button, Dropdown, Space, Typography } from 'antd'
+import { Button, Dropdown, Space, Tooltip, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
@@ -71,21 +71,23 @@ export const StepComponent = (
       <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
       </div>
-      <Button
-        key={step.command.commandName}
-        style={stepsStyle}
-        shape={'round'}
-        onClick={() => {
-          setSelectedStep(step)
-        }}>
-        <Typography.Text
-          type={color[step.status._type]}
-          ellipsis
-          style={{ width: '100%' }}
-          strong>
-          {step.command.commandName}
-        </Typography.Text>
-      </Button>
+      <Tooltip title={step.command.commandName}>
+        <Button
+          key={step.command.commandName}
+          style={stepsStyle}
+          shape={'round'}
+          onClick={() => {
+            setSelectedStep(step)
+          }}>
+          <Typography.Text
+            type={color[step.status._type]}
+            ellipsis
+            style={{ width: '100%' }}
+            strong>
+            {step.command.commandName}
+          </Typography.Text>
+        </Button>
+      </Tooltip>
       {!isDuplicateEnabled && (
         <StepDropdown step={step} sequencerPrefix={sequencerPrefix} />
       )}

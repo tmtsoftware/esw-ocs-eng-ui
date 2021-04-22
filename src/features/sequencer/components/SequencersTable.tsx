@@ -39,8 +39,11 @@ const columns: ColumnsType<SequencerInfo> = [
   {
     title: <HeaderTitle title='Sequencers' />,
     dataIndex: 'prefix',
-    width: '40%',
     render: (_, record) => getPrefixColumn(record)
+  },
+  {
+    title: <HeaderTitle title='Current step' />,
+    dataIndex: 'currentStepCommandName'
   },
   {
     title: <HeaderTitle title='Sequence Status' />,

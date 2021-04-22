@@ -1,8 +1,10 @@
 import type {
+  Option,
   Location,
   Prefix,
   SequencerService,
-  StepList
+  StepList,
+  Step
 } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
@@ -23,6 +25,7 @@ export type StepStatus =
 export type SequencerInfo = {
   key: string
   prefix: string
+  currentStepCommandName: string
   stepListStatus: { stepNumber: number; status: StepStatus }
   totalSteps: number | 'NA'
 }
@@ -33,13 +36,15 @@ const Status: { [key: string]: StepStatus } = {
   InFlight: 'In Progress',
   Success: 'All Steps Completed'
 }
+const currentStep = (stepList: StepList): Option<Step> => {
+  return stepList.steps.find((e) => e.status._type !== 'Success')
+}
 
 const deriveStatus = (
   stepList: StepList | undefined
 ): SequencerInfo['stepListStatus'] => {
   if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
-
-  const step = stepList.steps.find((x) => x.status._type !== 'Success')
+  const step = currentStep(stepList)
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.steps.indexOf(step) + 1
@@ -78,11 +83,24 @@ const getSequencerInfo = async (
       return {
         key: prefix.toJSON(),
         prefix: prefix.toJSON(),
+        currentStepCommandName: getCurrentStepCommandName(stepList),
         stepListStatus,
         totalSteps: stepList ? stepList.steps.length : ('NA' as const)
       }
     })
   )
+}
+const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
+  if (stepList === undefined) {
+    return 'NA'
+  }
+
+  const step = currentStep(stepList)
+
+  if (step === undefined) {
+    return 'NA'
+  }
+  return step.command.commandName
 }
 
 export type SequencerLocation = [Location, SequencerService]

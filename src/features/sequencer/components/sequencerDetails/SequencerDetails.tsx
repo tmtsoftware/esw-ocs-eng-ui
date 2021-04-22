@@ -11,7 +11,6 @@ import {
   Descriptions,
   Layout,
   PageHeader,
-  Result,
   Space,
   Tooltip,
   Typography
@@ -19,10 +18,8 @@ import {
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
-import { Link } from 'react-router-dom'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useLocationService } from '../../../../contexts/LocationServiceContext'
-import { HOME } from '../../../../routes/RoutesConfig'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { LifecycleState } from '../actions/LifecycleState'

@@ -6,7 +6,6 @@ import {
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
-  Button,
   Card,
   Descriptions,
   Empty,
@@ -22,6 +21,7 @@ import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
+import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import type { SequencerProps } from '../Props'
@@ -60,7 +60,7 @@ const SequenceActions = ({
   <Space>
     <LoadSequence prefix={prefix} sequencerState={sequencerState} />
     <LifecycleState prefix={prefix} sequencerState={sequencerState} />
-    <Button danger> Abort sequence</Button>
+    <AbortSequence prefix={prefix} sequencerState={sequencerState} />
   </Space>
 )
 

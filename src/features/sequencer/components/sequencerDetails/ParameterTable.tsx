@@ -26,12 +26,12 @@ const columns: ColumnsType<ParameterDataType> = [
     dataIndex: 'values',
     key: 'values',
     // eslint-disable-next-line react/display-name
-    render: (x: string): JSX.Element => {
+    render: (values: string): JSX.Element => {
       return (
         <Typography.Paragraph
           copyable
           ellipsis={{ expandable: true, rows: 2, tooltip: true }}>
-          {x}
+          {values}
         </Typography.Paragraph>
       )
     }

@@ -5,37 +5,39 @@ type Query = {
   retry?: number // only failing queries will retry given number of times
 }
 // Agent
-export const LIST_AGENTS: Query = { key: 'ListAgents' }
+export const LIST_AGENTS: Query = { key: 'listAgents' }
 
 // SM
-export const PROVISION_STATUS: Query = { key: 'ProvisionStatus' }
+export const PROVISION_STATUS: Query = { key: 'provisionStatus' }
 
 export const AGENTS_STATUS: Query = {
-  key: 'AgentsStatus',
+  key: 'agentsStatus',
   refetchInterval: 3000
 }
 export const OBS_MODES_DETAILS: Query = {
-  key: 'ObsModesDetails',
+  key: 'obsModesDetails',
   refetchInterval: 3000
 }
 
 // Sequencers
 
 export const GET_SEQUENCE: Query = {
-  key: 'GetSequence',
+  key: 'getSequence',
   refetchInterval: 1000
 }
 
 export const OBS_MODE_SEQUENCERS: Query = {
-  key: 'GetSequenceObsMode',
+  key: 'getSequenceObsMode',
   refetchInterval: 1000
 }
 
 export const SEQUENCER_STATUS: Query = {
-  key: 'SequencerStatus'
+  key: 'sequencerStatus'
 }
 
 export const SEQUENCER_STATE = {
-  key: `GetSequencerState`,
+  key: `getSequencerState`,
   refetchInterval: 1000
 }
+
+export const SEQUENCER_LOCATION = { key: 'findSequencerLocation' }

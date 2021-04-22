@@ -149,14 +149,7 @@ const StepInfo = ({ step }: { step: Step }) => {
 
 const EmptyStep = () => (
   <Card style={{ height: '100%' }}>
-    <Empty
-      image={Empty.PRESENTED_IMAGE_SIMPLE}
-      description={
-        <Typography.Text type='secondary'>
-          Select a step for details
-        </Typography.Text>
-      }
-    />
+    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   </Card>
 )
 

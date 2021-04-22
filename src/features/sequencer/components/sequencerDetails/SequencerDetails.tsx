@@ -3,7 +3,7 @@ import {
   ScissorOutlined,
   StopOutlined
 } from '@ant-design/icons'
-import { AkkaConnection, Prefix, Step } from '@tmtsoftware/esw-ts'
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Button,
@@ -18,10 +18,9 @@ import {
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
-import { useQuery } from 'react-query'
 import { useHistory } from 'react-router'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import { useLocationService } from '../../../../contexts/LocationServiceContext'
+import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerState } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { LifecycleState } from '../actions/LifecycleState'
@@ -73,13 +72,6 @@ const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
       <SequenceActions prefix={prefix} sequencerState={sequencerState} />
     </Space>
   )
-}
-
-const useSequencerLocation = (prefix: Prefix) => {
-  const locationService = useLocationService()
-  return useQuery([prefix.toJSON()], {
-    queryFn: () => locationService.find(AkkaConnection(prefix, 'Sequencer'))
-  })
 }
 
 const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {

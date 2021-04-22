@@ -7,9 +7,10 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getStepListStatus } from '../../hooks/useSequencersData'
 import { useStepList } from '../../hooks/useStepList'
+import { StepListTableContext } from '../../hooks/useStepListContext'
 import { typeStatus } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import styles from './sequencerDetails.module.css'
@@ -76,20 +77,6 @@ const columns = (
       StepComponent(record, record.index + 1, setSelectedStep, sequencerPrefix)
   }
 ]
-
-export type StepListTableContextType = {
-  handleDuplicate: () => void
-  isDuplicateEnabled: boolean
-}
-
-const defaultStepListTableContext: StepListTableContextType = {
-  handleDuplicate: () => undefined,
-  isDuplicateEnabled: false
-}
-
-export const StepListTableContext: React.Context<StepListTableContextType> = createContext(
-  defaultStepListTableContext
-)
 
 export const StepListTable = ({
   sequencerPrefix,

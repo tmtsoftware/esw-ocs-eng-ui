@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Descriptions,
+  Empty,
   Layout,
   PageHeader,
   Space,
@@ -18,6 +19,7 @@ import {
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
+import { useHistory } from 'react-router'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useLocationService } from '../../../../contexts/LocationServiceContext'
 import { useSequencerState } from '../../hooks/useSequencerState'
@@ -128,11 +130,51 @@ const DescriptionItem = (label: string, item: string) => {
     </Descriptions.Item>
   )
 }
+
+const StepInfo = ({ step }: { step: Step }) => {
+  return (
+    <Card
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%'
+      }}
+      headStyle={{ paddingBottom: '0.75rem', height: '8%' }}
+      bodyStyle={{ height: '92%' }}
+      title={
+        <Space>
+          <Descriptions column={4}>
+            {DescriptionItem('Type', step.command._type.toString())}
+            {DescriptionItem('Command', step.command.commandName)}
+            {DescriptionItem('Source', step.command.source.toJSON())}
+            {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
+          </Descriptions>
+        </Space>
+      }>
+      {<ParameterTable paramSet={step.command.paramSet} />}
+    </Card>
+  )
+}
+
+const EmptyStep = () => (
+  <Card style={{ height: '100%' }}>
+    <Empty
+      image={Empty.PRESENTED_IMAGE_SIMPLE}
+      description={
+        <Typography.Text type='secondary'>
+          Select a step for details
+        </Typography.Text>
+      }
+    />
+  </Card>
+)
+
 export const SequencerDetails = ({
   prefix
 }: {
   prefix: Prefix
 }): JSX.Element => {
+  const history = useHistory()
   const sequencerState = useSequencerState(prefix)
   const seqLocation = useSequencerLocation(prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
@@ -158,10 +200,12 @@ export const SequencerDetails = ({
             prefix={prefix}
             sequencerState={sequencerState.data?._type}
           />
-        }>
+        }
+        onBack={() => history.goBack()}>
         <SequencerDescription prefix={prefix} />
       </PageHeader>
-      <Layout style={{ height: '90%' }}>
+      <Layout
+        style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
         <Sider theme='light' style={{ overflowY: 'scroll' }} width={'18rem'}>
           <StepListTable
             sequencerPrefix={prefix}
@@ -169,42 +213,9 @@ export const SequencerDetails = ({
             setSelectedStep={setSelectedStep}
           />
         </Sider>
-        {selectedStep && (
-          <Content>
-            <Card
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%'
-              }}
-              headStyle={{ paddingBottom: '0.75rem', height: '8%' }}
-              bodyStyle={{ height: '92%' }}
-              title={
-                <Space>
-                  <Descriptions column={4}>
-                    {DescriptionItem(
-                      'Type',
-                      selectedStep.command._type.toString()
-                    )}
-                    {DescriptionItem(
-                      'Command',
-                      selectedStep.command.commandName
-                    )}
-                    {DescriptionItem(
-                      'Source',
-                      selectedStep.command.source.toJSON()
-                    )}
-                    {DescriptionItem(
-                      'Obs-Id',
-                      selectedStep.command.maybeObsId ?? 'NA'
-                    )}
-                  </Descriptions>
-                </Space>
-              }>
-              {<ParameterTable paramSet={selectedStep.command.paramSet} />}
-            </Card>
-          </Content>
-        )}
+        <Content>
+          {selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}
+        </Content>
       </Layout>
     </>
   )

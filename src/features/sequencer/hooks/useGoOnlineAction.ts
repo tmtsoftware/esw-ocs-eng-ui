@@ -2,7 +2,7 @@ import type { Prefix, SequencerService } from '@tmtsoftware/esw-ts'
 import type { GoOnlineResponse } from '@tmtsoftware/esw-ts/lib/src/index'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { SEQUENCER_STATE } from '../../queryKeys'
+import { SEQUENCER_STATE, SEQUENCER_STATUS } from '../../queryKeys'
 
 export const useGoOnlineAction = (
   prefix: Prefix
@@ -21,7 +21,10 @@ export const useGoOnlineAction = (
       )
     },
     onError: (e) => errorMessage('Sequencer failed to go Online', e),
-    invalidateKeysOnSuccess: [[SEQUENCER_STATE.key, prefix.toJSON()]],
+    invalidateKeysOnSuccess: [
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [SEQUENCER_STATUS.key, prefix.toJSON()]
+    ],
     useErrorBoundary: false
   })
 }

@@ -9,8 +9,12 @@ export const useSequencerStatus = <E>(
 ): UseQueryResult<boolean> => {
   const sequencerService = useSequencerService(sequencerPrefix)
 
-  return useQuery(SEQUENCER_STATUS.key, () => sequencerService?.isOnline(), {
-    onError,
-    enabled: !!sequencerService
-  })
+  return useQuery(
+    [SEQUENCER_STATUS.key, sequencerPrefix.toJSON()],
+    () => sequencerService?.isOnline(),
+    {
+      onError,
+      enabled: !!sequencerService
+    }
+  )
 }

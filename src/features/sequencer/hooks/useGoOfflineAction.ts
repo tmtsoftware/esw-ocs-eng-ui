@@ -5,7 +5,7 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { SEQUENCER_STATE } from '../../queryKeys'
+import { SEQUENCER_STATE, SEQUENCER_STATUS } from '../../queryKeys'
 
 export const useGoOfflineAction = (
   prefix: Prefix
@@ -24,7 +24,10 @@ export const useGoOfflineAction = (
       )
     },
     onError: (e) => errorMessage('Sequencer failed to go Offline', e),
-    invalidateKeysOnSuccess: [[SEQUENCER_STATE.key, prefix.toJSON()]],
+    invalidateKeysOnSuccess: [
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [SEQUENCER_STATUS.key, prefix.toJSON()]
+    ],
     useErrorBoundary: false
   })
 }

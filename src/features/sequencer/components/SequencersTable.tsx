@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons'
+import { SettingOutlined } from '@ant-design/icons'
 import { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
 import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
@@ -13,7 +13,7 @@ import { SequencerInfo, useSequencersData } from '../hooks/useSequencersData'
 const getPrefixColumn = (record: SequencerInfo) => (
   <Space>
     <Link to={getSequencerPath(record.prefix)}>
-      <EditOutlined className={styles.commonIcon} />
+      <SettingOutlined className={styles.commonIcon} />
     </Link>
     <Typography.Text>{record.prefix}</Typography.Text>
   </Space>

@@ -1,7 +1,7 @@
 import { Card, Col, Row, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { InfraIcon, SettingsIcon, TelescopeIcon } from '../../components/icons'
+import { InfraIcon, ResourceIcon, TelescopeIcon } from '../../components/icons'
 import { SMCard } from '../../features/sm/components/smcard/SMCard'
 import {
   INFRASTRUCTURE,
@@ -36,7 +36,7 @@ const cards: CardDetail[] = [
   },
   {
     title: 'Resources',
-    icon: <SettingsIcon className={styles.settingsIcon} />,
+    icon: <ResourceIcon className={styles.settingsIcon} />,
     link: RESOURCES
   }
 ]

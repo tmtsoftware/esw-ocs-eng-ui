@@ -1,7 +1,7 @@
 import Icon from '@ant-design/icons'
 import React from 'react'
 import { Infra } from './Infra'
-import { Settings } from './Settings'
+import { Resource } from './Resource'
 import { Telescope } from './Telescope'
 
 type CustomIconComponentProps = {
@@ -18,9 +18,9 @@ export const TelescopeIcon = (props: CustomIconComponentProps): JSX.Element => (
   />
 )
 
-export const SettingsIcon = (props: CustomIconComponentProps): JSX.Element => (
+export const ResourceIcon = (props: CustomIconComponentProps): JSX.Element => (
   <Icon
-    component={() => <Settings className={props.className} fill={props.fill} />}
+    component={() => <Resource className={props.className} fill={props.fill} />}
     {...props}
   />
 )

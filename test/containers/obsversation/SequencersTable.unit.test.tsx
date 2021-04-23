@@ -73,7 +73,7 @@ describe('sequencer table', () => {
     await assertHeaders()
     await screen.findByRole('table')
     await screen.findByRole('row', {
-      name: /edit esw\.darknight na na/i
+      name: /setting esw\.darknight na na/i
     })
   })
 })
@@ -91,29 +91,29 @@ const assertTable = async () => {
 
   await assertHeaders()
 
-  await assertRow(/edit esw\.darknight_1/i, [
-    'edit ESW.DarkNight_1',
+  await assertRow(/setting esw\.darknight_1/i, [
+    'setting ESW.DarkNight_1',
     'command-11',
     'Step 1 Paused',
     '2'
   ])
 
   await assertRow(/aps\.darknight_1/i, [
-    'edit APS.DarkNight_1',
+    'setting APS.DarkNight_1',
     'command-22',
     'Step 2 Failed',
     '3'
   ])
 
   await assertRow(/dps\.darknight_1/i, [
-    'edit DPS.DarkNight_1',
+    'setting DPS.DarkNight_1',
     'command-31',
     'Step 1 In Progress',
     '2'
   ])
 
   await assertRow(/cis\.darknight_1/i, [
-    'edit CIS.DarkNight_1',
+    'setting CIS.DarkNight_1',
     'NA',
     'All Steps Completed',
     '2'
@@ -123,7 +123,7 @@ const assertTable = async () => {
     name: /aoesw\.darknight_1/i
   })
 
-  assertCell(nonSpawnedSequencer, 'edit AOESW.DarkNight_1')
+  assertCell(nonSpawnedSequencer, 'setting AOESW.DarkNight_1')
   assertCell(nonSpawnedSequencer, 'Failed to Fetch Status')
   const cells = await within(nonSpawnedSequencer).findAllByRole('cell', {
     name: 'NA'

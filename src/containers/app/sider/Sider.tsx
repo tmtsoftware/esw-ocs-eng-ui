@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import {
   TelescopeIcon,
   InfraIcon,
-  SettingsIcon
+  ResourceIcon
 } from '../../../components/icons'
 import {
   HOME,
@@ -38,7 +38,7 @@ const menuItemLabels = [
   ),
   getMenuLabel(
     'Resources',
-    <SettingsIcon className={styles.menuIconSize} />,
+    <ResourceIcon className={styles.menuIconSize} />,
     RESOURCES
   )
 ]

@@ -21,7 +21,7 @@ export const KillSequenceComponent = ({
 }: {
   componentId: ComponentId
 }): JSX.Element => {
-  const [agentService] = useAgentService()
+  const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
@@ -47,7 +47,7 @@ export const KillSequenceComponent = ({
             }
           />
         }
-        loading={killSequenceComponentAction.isLoading}
+        loading={isLoading || killSequenceComponentAction.isLoading}
       />
     </Tooltip>
   )

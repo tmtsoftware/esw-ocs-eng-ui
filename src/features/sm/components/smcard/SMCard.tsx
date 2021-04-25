@@ -1,16 +1,19 @@
 import { Card, Typography } from 'antd'
 import React from 'react'
 import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
+import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
 import { ShutdownSMButton } from '../ShutdownButton'
 import { SpawnSMButton } from '../SpawnButton'
 import styles from './smcard.module.css'
 
 export const SMCard = (): JSX.Element => {
-  const [smContext] = useSMService()
+  const [smContext, isLoading] = useSMService()
+
   return (
     <CustomErrorBoundary>
       <Card
+        loading={isLoading}
         title={
           <Typography.Title level={4} className={styles.title}>
             Sequence Manager

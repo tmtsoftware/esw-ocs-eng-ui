@@ -33,5 +33,5 @@ export default {
     exclude: ['_snowpack/**/*'],
     threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }
   },
-  browserLogs: false
+  browserLogs: true
 }

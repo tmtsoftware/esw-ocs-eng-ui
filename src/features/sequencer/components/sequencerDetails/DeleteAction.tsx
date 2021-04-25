@@ -1,10 +1,11 @@
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import type {
   GenericResponse,
   Prefix,
   SequencerService,
   Step
 } from '@tmtsoftware/esw-ts'
+import { Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -31,6 +32,23 @@ const deleteStep = (id: string) => (sequencerService: SequencerService) => {
   return sequencerService.delete(id).then(handleDeleteResponse)
 }
 
+const showConfirmModal = (onYes: () => void): void => {
+  Modal.confirm({
+    title: 'Do you want to delete a step?',
+    icon: <ExclamationCircleOutlined />,
+    centered: true,
+    okText: 'Delete',
+    okButtonProps: {
+      danger: true,
+      type: 'primary'
+    },
+    closable: true,
+    maskClosable: true,
+    cancelText: 'Cancel',
+    onOk: () => onYes()
+  })
+}
+
 export const DeleteAction = ({
   step,
   sequencerPrefix,
@@ -52,8 +70,9 @@ export const DeleteAction = ({
     <div
       onClick={() =>
         !isDisabled &&
-        sequencerService &&
-        deleteAction.mutateAsync(sequencerService)
+        showConfirmModal(() => {
+          sequencerService && deleteAction.mutateAsync(sequencerService)
+        })
       }>
       <DeleteOutlined />
       Delete

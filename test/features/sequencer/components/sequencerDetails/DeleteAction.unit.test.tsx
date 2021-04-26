@@ -71,7 +71,7 @@ describe('Delete action', () => {
       const deleteButton = await screen.findByText('Delete')
       userEvent.click(deleteButton, { button: 0 })
 
-      await screen.findByText(/do you want to delete a step\?/i)
+      await screen.findByText(/do you want to delete a step 'Command-1'\?/i)
       const deleteStep = screen.getByRole('button', { name: /delete/i })
 
       userEvent.click(deleteStep)

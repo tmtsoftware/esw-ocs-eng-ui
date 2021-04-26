@@ -32,9 +32,9 @@ const deleteStep = (id: string) => (sequencerService: SequencerService) => {
   return sequencerService.delete(id).then(handleDeleteResponse)
 }
 
-const showConfirmModal = (onYes: () => void): void => {
+const showConfirmModal = (stepName: string, onYes: () => void): void => {
   Modal.confirm({
-    title: 'Do you want to delete a step?',
+    title: `Do you want to delete a step '${stepName}'?`,
     icon: <ExclamationCircleOutlined />,
     centered: true,
     okText: 'Delete',
@@ -70,7 +70,7 @@ export const DeleteAction = ({
     <div
       onClick={() =>
         !isDisabled &&
-        showConfirmModal(() => {
+        showConfirmModal(step.command.commandName, () => {
           sequencerService && deleteAction.mutateAsync(sequencerService)
         })
       }>

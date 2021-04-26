@@ -25,6 +25,7 @@ const baseTypeColorCode = {
   success: '#52c41a'
 }
 
+//TODO: StepDropdown should be merged with StepActions. exposed component name should be StepActions
 const StepDropdown = ({
   sequencerPrefix,
   step

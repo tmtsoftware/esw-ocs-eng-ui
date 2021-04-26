@@ -84,8 +84,8 @@ export const ProvisionButton = ({
 
   const handleModalCancel = () => setModalVisibility(false)
 
-  const [configService] = useConfigService()
-  const [smContext] = useSMService()
+  const [configService, isLoading] = useConfigService()
+  const [smContext, smContextLoading] = useSMService()
   const smService = smContext?.smService
 
   const fetchProvisionConfAction = useMutation({
@@ -124,7 +124,7 @@ export const ProvisionButton = ({
         type='primary'
         size='middle'
         disabled={disabled}
-        loading={provisionAction.isLoading}
+        loading={smContextLoading || isLoading || provisionAction.isLoading}
         onClick={onProvisionClick}>
         Provision
       </Button>

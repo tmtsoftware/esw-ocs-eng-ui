@@ -4,7 +4,7 @@ import type {
   TokenFactory,
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
@@ -25,6 +25,7 @@ export const useService = <T>(
   factory: (location: Location, tokenFactory: TokenFactory) => T
 ): [T | undefined, boolean] => {
   const { auth } = useAuth()
+  const [loading, setLoading] = useState(true)
   const locationService = useLocationService()
   const onEventCallback = useCallback(
     (event: TrackingEvent) => {
@@ -35,13 +36,19 @@ export const useService = <T>(
     [auth, factory]
   )
 
+  useEffect(() => {
+    locationService.find(connection).finally(() => setLoading(false))
+  }, [connection, locationService])
+
   const track = useCallback(
     (onEvent) => locationService.track(connection)(onEvent),
     [connection, locationService]
   )
 
-  return useStream({
+  const [value] = useStream({
     mapper: onEventCallback,
     run: track
   })
+
+  return [value, loading]
 }

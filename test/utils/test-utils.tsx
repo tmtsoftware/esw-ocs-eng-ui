@@ -81,6 +81,7 @@ const getMockServices: () => MockServices = () => {
       cancel: () => ({})
     }
   })
+  when(locationServiceMock.find(anything())).thenResolve(undefined)
 
   const smServiceMock = mock<SequenceManagerService>(SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)

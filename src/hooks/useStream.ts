@@ -7,6 +7,7 @@ export type Run<I> = (cb: Mapper<I, void>) => Subscription
 export type UseStreamProps<I, O> = {
   mapper: Mapper<I, O>
   run: Run<I>
+  defaultLoading?: boolean
 }
 
 // caller should make sure mapper and run functions are wrapped in callback or memo to avoid unnecessary renders
@@ -25,9 +26,8 @@ export const useStream = <I, O>({
 
     const sub = run(mappedCallback)
     setLoading(false)
-
     return sub.cancel
-  }, [mapper, run])
+  }, [loading, mapper, run])
 
   return [value, loading]
 }

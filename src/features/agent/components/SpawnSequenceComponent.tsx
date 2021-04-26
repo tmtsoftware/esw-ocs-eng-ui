@@ -36,7 +36,7 @@ export const SpawnSequenceComponent = ({
 }): JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
-  const [agentService] = useAgentService()
+  const [agentService, isLoading] = useAgentService()
 
   const spawnSequenceComponentAction = useMutation({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
@@ -83,7 +83,7 @@ export const SpawnSequenceComponent = ({
               role='addSeqCompIcon'
             />
           }
-          loading={spawnSequenceComponentAction.isLoading}
+          loading={isLoading || spawnSequenceComponentAction.isLoading}
         />
       </Popconfirm>
     </Tooltip>

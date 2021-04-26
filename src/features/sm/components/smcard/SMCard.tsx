@@ -7,10 +7,12 @@ import { SpawnSMButton } from '../SpawnButton'
 import styles from './smcard.module.css'
 
 export const SMCard = (): JSX.Element => {
-  const [smContext] = useSMService()
+  const [smContext, isLoading] = useSMService()
+
   return (
     <CustomErrorBoundary>
       <Card
+        loading={isLoading}
         title={
           <Typography.Title level={4} className={styles.title}>
             Sequence Manager

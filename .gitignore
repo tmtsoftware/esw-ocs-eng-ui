@@ -17,3 +17,4 @@ target
 testStoryMappping.txt
 **/RTM/*.txt
 **/RTM/*.html
+.log

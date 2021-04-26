@@ -26,7 +26,7 @@ export const HeaderBar = (): JSX.Element => {
   const Logout = () => (
     <Dropdown trigger={['click']} overlay={menu}>
       {username ? (
-        <Button type={'text'}>
+        <Button type='text'>
           {username.toUpperCase()}
           <DownOutlined />
         </Button>
@@ -38,10 +38,10 @@ export const HeaderBar = (): JSX.Element => {
 
   return (
     <>
-      <Logout />
       <Link to={HOME}>
         <img role='tmt_logo' src={TMTLogo} className={styles.logo} />
       </Link>
+      <Logout />
     </>
   )
 }

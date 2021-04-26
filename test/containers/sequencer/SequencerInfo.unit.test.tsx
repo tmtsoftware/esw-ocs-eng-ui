@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, when } from 'ts-mockito'
-import { SequencerInfo } from '../../../src/containers/sequencer/SequencerInfo'
+import { ManageSequencer } from '../../../src/containers/sequencer/ManageSequencer'
 import { getSequencerPath } from '../../../src/routes/RoutesConfig'
 import {
   mockServices,
@@ -34,7 +34,7 @@ describe('SequencerInfo ', () => {
       uri: ''
     })
 
-    renderWithRouter(<SequencerInfo />, prefix)
+    renderWithRouter(<ManageSequencer />, prefix)
 
     await screen.findByText(prefix)
   })
@@ -65,7 +65,7 @@ describe('SequencerInfo ', () => {
         undefined
       )
 
-      renderWithRouter(<SequencerInfo />, prefix)
+      renderWithRouter(<ManageSequencer />, prefix)
 
       await screen.findByText(subtitle)
       expect(screen.getByText(title)).to.exist
@@ -87,7 +87,7 @@ describe('SequencerInfo ', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SequencerInfo />
+          <ManageSequencer />
         </BrowserRouter>
       )
     })

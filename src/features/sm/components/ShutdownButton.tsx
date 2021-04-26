@@ -32,16 +32,16 @@ const shutdownSM = (agent: AgentService) =>
   })
 
 export const ShutdownSMButton = (): JSX.Element => {
-  const [agentService, loading] = useAgentService()
+  const [agentService, agentServiceLoading] = useAgentService()
 
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
     onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
     onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),
-    useErrorBoundary: true
+    useErrorBoundary: true //TODO : remove error boundary
   })
 
-  if (loading) return <Spinner />
+  if (agentServiceLoading) return <Spinner />
 
   return (
     <Button

@@ -1,7 +1,7 @@
 import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Card, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import { HeaderTitle } from '../../components/table/HeaderTitle'
 import {
@@ -70,7 +70,7 @@ const groupByResourceStatus = (
   ].sort(byStatus)
 }
 
-export const getStatusColumn = (status: ResourceType): JSX.Element => (
+export const resourceStatusCol = (status: ResourceType): JSX.Element => (
   <Typography.Text
     strong
     style={{
@@ -90,7 +90,7 @@ const columns: ColumnsType<ResourceData> = [
   {
     title: <HeaderTitle title='Status' />,
     dataIndex: 'status',
-    render: (value: ResourceType) => getStatusColumn(value)
+    render: (value: ResourceType) => resourceStatusCol(value)
   },
   {
     title: <HeaderTitle title='Used By' />,
@@ -100,11 +100,6 @@ const columns: ColumnsType<ResourceData> = [
 
 export const Resources = (): JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
-  const [resourceData, setResourceData] = useState<ResourceData[]>([])
-
-  useEffect(() => {
-    groupedObsModes && setResourceData(groupByResourceStatus(groupedObsModes))
-  }, [groupedObsModes])
 
   return (
     <>
@@ -116,7 +111,7 @@ export const Resources = (): JSX.Element => {
           columns={columns}
           loading={isLoading}
           pagination={false}
-          dataSource={resourceData}
+          dataSource={groupedObsModes && groupByResourceStatus(groupedObsModes)}
         />
       </Card>
     </>

@@ -25,3 +25,5 @@ export const SMCard = (): JSX.Element => {
     </CustomErrorBoundary>
   )
 }
+
+// TODO : remove error boundary to make it consistent with other actions (configure , provision)

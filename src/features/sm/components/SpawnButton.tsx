@@ -26,7 +26,7 @@ export const SpawnSMButton = (): JSX.Element => {
   const [agentPrefix, setAgentPrefix] = useState('')
 
   const allAgentsQuery = useAgentsList()
-  const [agentService, loading] = useAgentService()
+  const [agentService, agentServiceLoading] = useAgentService()
 
   const spawnSmAction = useMutation({
     mutationFn: spawnSM(agentPrefix),
@@ -36,11 +36,11 @@ export const SpawnSMButton = (): JSX.Element => {
         'Sequence Manager could not be spawned. Please try again.',
         e
       ),
-    useErrorBoundary: true
+    useErrorBoundary: true // TODO : Remove error boundary
   })
 
   const handleModalOk = () => {
-    if (agentPrefix && agentPrefix !== '') {
+    if (agentPrefix !== '') {
       agentService && spawnSmAction.mutateAsync(agentService)
       setModalVisibility(false)
     } else {
@@ -48,7 +48,8 @@ export const SpawnSMButton = (): JSX.Element => {
     }
   }
 
-  const handleOnButtonClick = () => {
+  const handleSpawnButtonClick = () => {
+    // do we need special treatment when agent list is empty ?
     if (allAgentsQuery.data && allAgentsQuery.data.length !== 0) {
       setModalVisibility(true)
     } else {
@@ -56,9 +57,9 @@ export const SpawnSMButton = (): JSX.Element => {
     }
   }
   const handleModalCancel = () => setModalVisibility(false)
-  const handleModalAgentSelection = (value: string) => setAgentPrefix(value)
+  const handleAgentSelected = (value: string) => setAgentPrefix(value)
 
-  if (loading || allAgentsQuery.isLoading) return <Spinner />
+  if (agentServiceLoading || allAgentsQuery.isLoading) return <Spinner />
 
   return (
     <>
@@ -66,7 +67,7 @@ export const SpawnSMButton = (): JSX.Element => {
         type='primary'
         size='middle'
         loading={spawnSmAction.isLoading}
-        onClick={handleOnButtonClick}>
+        onClick={handleSpawnButtonClick}>
         Spawn
       </Button>
       <SelectionModal
@@ -78,7 +79,7 @@ export const SpawnSMButton = (): JSX.Element => {
         onCancel={handleModalCancel}
         data={allAgentsQuery.data?.map((prefix) => prefix.toJSON())}
         selectedItem={agentPrefix}
-        onChange={handleModalAgentSelection}
+        onChange={handleAgentSelected}
       />
     </>
   )

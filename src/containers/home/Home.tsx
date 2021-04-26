@@ -68,3 +68,4 @@ export const Home = (): JSX.Element => (
     </Row>
   </>
 )
+// TODO : extract SMCardRow and otherCardRow

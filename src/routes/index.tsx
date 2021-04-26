@@ -6,7 +6,7 @@ import { Home } from '../containers/home/Home'
 import { Infrastructure } from '../containers/infrastructure/Infrastructure'
 import { Observations } from '../containers/observation/Observations'
 import { Resources } from '../containers/resources/Resources'
-import { SequencerInfo } from '../containers/sequencer/SequencerInfo'
+import { ManageSequencer } from '../containers/sequencer/ManageSequencer'
 import { useAuth } from '../hooks/useAuth'
 import { NoMatch } from './NoMatch'
 import {
@@ -35,7 +35,7 @@ export const Routes = (): JSX.Element => {
       <Route path={INFRASTRUCTURE} component={Infrastructure} />
       <Route path={OBSERVATIONS} component={Observations} />
       <Route path={RESOURCES} component={Resources} />
-      <Route path={SEQUENCER_PATH} component={SequencerInfo} />
+      <Route path={SEQUENCER_PATH} component={ManageSequencer} />
       <Route path={NO_MATCH} component={NoMatch} />
     </Switch>
   ) : (

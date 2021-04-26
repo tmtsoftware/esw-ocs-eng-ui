@@ -14,21 +14,18 @@ export type UseStreamProps<I, O> = {
 export const useStream = <I, O>({
   mapper,
   run,
-  defaultLoading = true
 }: UseStreamProps<I, O>): [O | undefined, boolean] => {
   const [value, setValue] = useState<O | undefined>(undefined)
-  const [loading, setLoading] = useState(defaultLoading)
-
-  useEffect(() => setLoading(defaultLoading), [defaultLoading])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const mappedCallback = (v: I) => {
       const mappedValue = mapper(v)
       setValue(mappedValue)
-      loading && setLoading(false)
     }
-    console.log('calling', loading)
+
     const sub = run(mappedCallback)
+    setLoading(false)
     return sub.cancel
   }, [loading, mapper, run])
 

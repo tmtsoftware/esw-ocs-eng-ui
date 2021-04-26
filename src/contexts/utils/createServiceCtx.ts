@@ -37,9 +37,7 @@ export const useService = <T>(
   )
 
   useEffect(() => {
-    locationService
-      .find(connection)
-      .then((location) => location === undefined && setLoading(false))
+    locationService.find(connection).finally(() => setLoading(false))
   }, [connection, locationService])
 
   const track = useCallback(
@@ -47,9 +45,10 @@ export const useService = <T>(
     [connection, locationService]
   )
 
-  return useStream({
+  const [value] = useStream({
     mapper: onEventCallback,
-    run: track,
-    defaultLoading: loading
+    run: track
   })
+
+  return [value, loading]
 }

@@ -23,7 +23,7 @@ export const StepActions = ({
   const { handleDuplicate } = useStepListContext()
 
   return (
-    <Menu onClick={hideMenu} className={styles.menu}>
+    <Menu onClick={hideMenu} className={styles.menu} selectedKeys={[]}>
       <Menu.Item key='1' disabled={isInProgressOrIsFinished}>
         <BreakpointAction
           step={step}

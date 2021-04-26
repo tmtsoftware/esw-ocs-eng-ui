@@ -113,6 +113,18 @@ describe('sequencer details', () => {
     })
   })
 
+  it('should render the sequence and show all steps completed | ESW-455, ESW-456', async () => {
+    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Success'))
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    //check for sequence execution table
+    await screen.findByRole('columnheader', {
+      name: /sequence steps status: all steps completed/i
+    })
+  })
+
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
     when(sequencerServiceMock.isOnline()).thenResolve(true)
     when(sequencerServiceMock.getSequence()).thenResolve(

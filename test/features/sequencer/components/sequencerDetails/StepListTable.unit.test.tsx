@@ -38,6 +38,52 @@ describe('stepList table', () => {
     }
   ])
 
+  const testData: [Step['status']['_type'], string, string, string][] = [
+    [
+      'Success',
+      'All Steps Completed',
+      'ant-typography-secondary',
+      'rgba(0, 0, 0, 0.45)'
+    ],
+    ['Failure', 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
+    ['InFlight', 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
+    ['Pending', 'Paused', 'ant-typography-warning', 'rgb(255, 197, 61)']
+  ]
+
+  testData.forEach(
+    ([lastStepStatus, stepListStatus, className, borderColor]) => {
+      it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
+        when(sequencerServiceMock.getSequence()).thenResolve(
+          getStepList(lastStepStatus)
+        )
+
+        renderWithAuth({
+          ui: (
+            <StepListTable
+              sequencerPrefix={sequencerPrefix}
+              setSelectedStep={() => ({})}
+            />
+          )
+        })
+
+        await screen.findByRole('columnheader', {
+          name: `Sequence Steps Status: ${stepListStatus}`
+        })
+
+        const htmlElement = await findCell('1 Command-1 more')
+
+        const stepButton = within(htmlElement).getByRole('button')
+
+        expect(stepButton.style.borderColor).to.equal(borderColor)
+        const spanElement = stepButton.firstChild as HTMLSpanElement
+
+        expect(spanElement.classList.contains(className)).true
+
+        verify(sequencerServiceMock.getSequence()).called()
+      })
+    }
+  )
+
   it('should show all the steps within a column | ESW-456', async () => {
     when(sequencerServiceMock.getSequence()).thenResolve(stepList)
 

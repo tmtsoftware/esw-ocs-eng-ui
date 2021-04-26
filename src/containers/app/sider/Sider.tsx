@@ -2,12 +2,11 @@ import { Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
-  TelescopeIcon,
   InfraIcon,
-  ResourceIcon
+  ResourceIcon,
+  TelescopeIcon
 } from '../../../components/icons'
 import {
-  HOME,
   INFRASTRUCTURE,
   OBSERVATIONS,
   RESOURCES
@@ -42,20 +41,16 @@ const menuItemLabels = [
     RESOURCES
   )
 ]
+
 export const Sider = (): JSX.Element => {
   const [collapsed, setCollapsed] = useState(true)
-  const [selectedKey, setSelectedKey] = useState<string>('')
+  const [selectedKey, setSelectedKey] = useState<string>('/')
   const location = useLocation()
 
   const onCollapse = () => setCollapsed(!collapsed)
 
   useEffect(() => {
-    menuItemLabels.forEach((item, i) => {
-      if (location.pathname === item.link) setSelectedKey(i.toString())
-      else if (location.pathname === HOME) {
-        setSelectedKey(HOME)
-      }
-    })
+    setSelectedKey(location.pathname)
   }, [location])
 
   return (
@@ -65,12 +60,12 @@ export const Sider = (): JSX.Element => {
       collapsed={collapsed}
       onCollapse={onCollapse}>
       <Menu selectedKeys={[selectedKey]}>
-        {menuItemLabels.map((item, i) => (
+        {menuItemLabels.map((item) => (
           <Menu.Item
             className={styles.menuItem}
             icon={item.defaultIcon}
-            onClick={() => setSelectedKey(i.toString())}
-            key={i}>
+            onClick={() => setSelectedKey(item.link)}
+            key={item.link}>
             <Link role={item.role} to={item.link}>
               {item.title}
             </Link>

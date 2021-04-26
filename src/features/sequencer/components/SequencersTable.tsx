@@ -7,13 +7,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
-import styles from '../../agent/components/agentCards.module.css'
 import { SequencerInfo, useSequencersData } from '../hooks/useSequencersData'
+import styles from './sequencerTable.module.css'
 
 const getPrefixColumn = (record: SequencerInfo) => (
   <Space>
     <Link to={getSequencerPath(record.prefix)}>
-      <SettingOutlined className={styles.commonIcon} />
+      <SettingOutlined className={styles.sequencerIcon} />
     </Link>
     <Typography.Text>{record.prefix}</Typography.Text>
   </Space>

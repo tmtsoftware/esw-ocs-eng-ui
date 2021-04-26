@@ -1,0 +1,8 @@
+.sequencerIcon {
+  color: var(--labelColor);
+  font-size: 1.25rem;
+}
+
+.sequencerIcon:hover {
+  color: var(--activeColor);
+}

@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
@@ -54,7 +55,11 @@ describe('Agents Grid View', () => {
       seqCompsWithoutAgent: []
     })
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
 
     await screen.findByText('ESW.machine1')
@@ -79,9 +84,13 @@ describe('Agents Grid View', () => {
       seqCompsWithoutAgent: []
     })
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
-    // await sleep(1000)
+
     await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('ESW.machine2')).exist
@@ -123,7 +132,11 @@ describe('Agents Grid View', () => {
       ]
     })
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
 
     await screen.findByText('ESW.machine1')
@@ -142,7 +155,11 @@ describe('Agents Grid View', () => {
       reason: 'Failed to fetch agents location'
     })
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -158,7 +175,11 @@ describe('Agents Grid View', () => {
       state: ''
     })
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
@@ -181,7 +202,11 @@ describe('Agents Grid View', () => {
     })
 
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
     const icon = await screen.findByRole('addSeqCompIcon')
 
@@ -213,12 +238,40 @@ describe('Agents Grid View', () => {
     })
 
     renderWithAuth({
-      ui: <AgentCards />
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
     })
     const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
     userEvent.click(deleteIcon)
 
     await screen.findByText(/Successfully killed Sequence Component/)
+
+    verify(agentService.getAgentStatus()).called()
+  })
+
+  it('should change the location on click of sequencer | ESW-490', async () => {
+    when(agentService.getAgentStatus()).thenResolve({
+      _type: 'Success',
+      agentStatus: [agentStatus],
+      seqCompsWithoutAgent: []
+    })
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <AgentCards />
+        </BrowserRouter>
+      )
+    })
+
+    const sequencer = await screen.findByText('[ESW.darkNight]')
+    userEvent.click(sequencer)
+
+    expect(window.location.pathname).to.equal('/sequencer')
+    expect(window.location.search).to.equal('?prefix=ESW.darkNight')
 
     verify(agentService.getAgentStatus()).called()
   })

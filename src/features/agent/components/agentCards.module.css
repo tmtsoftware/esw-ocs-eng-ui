@@ -51,7 +51,8 @@
   font-size: 14px;
 }
 
-.seqCompTitle {
+.seqCompTitle,
+.sequencerTitle {
   padding: 0.5rem 0.75rem;
 }
 
@@ -62,4 +63,8 @@
 
 .disabledIcon {
   color: var(--disabledColor);
+}
+
+.sequencerTitle {
+  cursor: pointer;
 }

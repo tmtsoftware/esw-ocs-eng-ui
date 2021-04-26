@@ -42,3 +42,8 @@ tr.cellInDuplicate > th {
     0 9px 28px 8px rgb(0 0 0 / 5%) !important;
   border-radius: 2px;
 }
+
+.badge > span {
+  width: 0.75rem;
+  height: 0.75rem;
+}

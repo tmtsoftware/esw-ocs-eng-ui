@@ -2,6 +2,8 @@ import { FileAddOutlined, FileExcelOutlined } from '@ant-design/icons'
 import type { ComponentId, Location } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Tooltip, Typography } from 'antd'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from './agentCards.module.css'
 import { KillSequenceComponent } from './KillSequenceComponent'
 
@@ -26,23 +28,27 @@ const UnloadScript = () => (
 )
 
 type TitleProps = {
-  seqCompId: string
-  obsMode: string | undefined
+  seqCompPrefix: string
+  obsMode: string
 }
 
-const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
+const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
+  const history = useHistory()
   const Title = () => (
     <Space direction='vertical' size={1}>
       <Typography.Text style={{ color: '#237804' }}>
         [{obsMode}]
       </Typography.Text>
-      <Typography.Text type='secondary'>{seqCompId}</Typography.Text>
+      <Typography.Text type='secondary'>{seqCompPrefix}</Typography.Text>
     </Space>
   )
 
   return (
     <Row className={styles.sequencerComp}>
-      <Col flex='auto' className={styles.seqCompTitle}>
+      <Col
+        flex='auto'
+        className={styles.sequencerTitle}
+        onClick={() => history.push(getSequencerPath(obsMode))}>
         <Title />
       </Col>
       <Col className={styles.iconBoxSequencer}>
@@ -52,15 +58,17 @@ const Sequencer = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
   )
 }
 
-const SequenceComponent = ({ seqCompId, obsMode }: TitleProps): JSX.Element => {
-  if (obsMode) {
-    return <Sequencer seqCompId={seqCompId} obsMode={obsMode} />
-  }
+const SequenceComponent = ({
+  seqCompPrefix,
+  obsMode
+}: TitleProps): JSX.Element => {
+  if (obsMode)
+    return <Sequencer seqCompPrefix={seqCompPrefix} obsMode={obsMode} />
 
   const Title = () => (
     <Space direction='vertical' size={1}>
       <Typography.Text style={{ color: 'var(--labelColor)' }}>
-        {seqCompId}
+        {seqCompPrefix}
       </Typography.Text>
     </Space>
   )
@@ -89,7 +97,7 @@ export const SequenceComponentCard = ({
   <Row style={{ paddingBottom: '1rem' }}>
     <Col flex='auto'>
       <SequenceComponent
-        seqCompId={seqCompId.prefix.toJSON()}
+        seqCompPrefix={seqCompId.prefix.toJSON()}
         obsMode={location[0]?.connection.prefix.toJSON()}
       />
     </Col>

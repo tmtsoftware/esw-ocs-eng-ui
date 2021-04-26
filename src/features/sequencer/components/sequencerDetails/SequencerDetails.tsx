@@ -96,7 +96,7 @@ const SequencerTitle = ({ prefix }: { prefix: Prefix }): JSX.Element => {
   const { data: isOnline } = useSequencerStatus(prefix)
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
-      <Badge status={isOnline ? 'success' : 'error'} />
+      <Badge status={isOnline ? 'success' : 'error'} className={styles.badge} />
       {prefix.toJSON()}
     </div>
   )

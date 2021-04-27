@@ -16,56 +16,60 @@ type CardDetail = {
   link: string
 }
 
-const cards: CardDetail[] = [
-  {
-    title: 'Manage Infrastructure',
-    icon: (
-      <InfraIcon
-        className={styles.commonIconSize}
-        fill={'var(--activeColor)'}
-      />
-    ),
-    link: INFRASTRUCTURE
-  },
-  {
-    title: 'Manage Observations',
-    icon: (
-      <TelescopeIcon className={styles.commonIconSize} fill={'var(--purple)'} />
-    ),
-    link: OBSERVATIONS
-  },
-  {
-    title: 'Resources',
-    icon: <ResourceIcon className={styles.settingsIcon} />,
-    link: RESOURCES
-  }
-]
-
 const HomePageCard = (card: CardDetail) => (
-  <Link role={card.title} to={card.link}>
-    <Card hoverable>
-      {card.icon}
-      <Typography.Title className={styles.cardTitle} level={3}>
-        {card.title}
-      </Typography.Title>
-    </Card>
-  </Link>
+  <Col xs={24} md={12} xl={8}>
+    <Link role={card.title} to={card.link}>
+      <Card hoverable>
+        {card.icon}
+        <Typography.Title className={styles.cardTitle} level={3}>
+          {card.title}
+        </Typography.Title>
+      </Card>
+    </Link>
+  </Col>
+)
+
+const InfraCard = HomePageCard({
+  title: 'Manage Infrastructure',
+  icon: (
+    <InfraIcon className={styles.commonIconSize} fill={'var(--activeColor)'} />
+  ),
+  link: INFRASTRUCTURE
+})
+
+const ObservationCard = HomePageCard({
+  title: 'Manage Observations',
+  icon: (
+    <TelescopeIcon className={styles.commonIconSize} fill={'var(--purple)'} />
+  ),
+  link: OBSERVATIONS
+})
+
+const ResourcesCard = HomePageCard({
+  title: 'Resources',
+  icon: <ResourceIcon className={styles.settingsIcon} />,
+  link: RESOURCES
+})
+
+const SMCardRow = (
+  <Row justify='center'>
+    <Col xs={24} className={styles.smCard}>
+      {<SMCard />}
+    </Col>
+  </Row>
+)
+
+const HomePageCards = (
+  <Row gutter={[32, 32]} className={styles.homePageCardsRow}>
+    {InfraCard}
+    {ObservationCard}
+    {ResourcesCard}
+  </Row>
 )
 
 export const Home = (): JSX.Element => (
   <>
-    <Row justify='center'>
-      <Col xs={24} className={styles.smCard}>
-        {<SMCard />}
-      </Col>
-    </Row>
-    <Row gutter={[32, 32]} className={styles.homePageCardsRow}>
-      {cards.map((x, index) => (
-        <Col key={index} xs={24} md={12} xl={8}>
-          {HomePageCard(x)}
-        </Col>
-      ))}
-    </Row>
+    {SMCardRow}
+    {HomePageCards}
   </>
 )
-// TODO : extract SMCardRow and otherCardRow

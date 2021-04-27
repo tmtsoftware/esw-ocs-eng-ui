@@ -30,7 +30,7 @@ describe('AbortSequence', () => {
   ]
 
   testData.forEach(([res, msg, state]) => {
-    it(`should be ${state} if sequencer response is ${res._type}| ESW-493`, async () => {
+    it(`should be ${state} if sequencer response is ${res._type}| ESW-494`, async () => {
       when(sequencerServiceMock.abortSequence()).thenResolve(res)
 
       renderWithAuth({
@@ -54,7 +54,7 @@ describe('AbortSequence', () => {
     })
   })
 
-  it(`should be failed if abortSequence call fails | ESW-493`, async () => {
+  it(`should be failed if abortSequence call fails | ESW-494`, async () => {
     when(sequencerServiceMock.abortSequence()).thenReject(
       Error('error occurred')
     )
@@ -90,7 +90,7 @@ describe('AbortSequence', () => {
   ]
 
   disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state}`, async () => {
+    it(`should be disabled if sequencer in ${state} | ESW-494`, async () => {
       renderWithAuth({
         ui: (
           <AbortSequence

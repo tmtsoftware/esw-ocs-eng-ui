@@ -1,4 +1,7 @@
-import { VerticalAlignMiddleOutlined } from '@ant-design/icons'
+import {
+  VerticalAlignMiddleOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons'
 import type {
   GenericResponse,
   Prefix,
@@ -73,7 +76,7 @@ export const BreakpointAction = ({
           sequencerService &&
           removeBreakpointAction.mutate(sequencerService)
         }>
-        <VerticalAlignMiddleOutlined />
+        <CloseCircleOutlined />
         Remove breakpoint
       </div>
     )

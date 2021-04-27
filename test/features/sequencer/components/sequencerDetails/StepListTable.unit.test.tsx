@@ -374,6 +374,68 @@ describe('stepList table', () => {
     verify(sequencerServiceMock.getSequence()).called()
     verify(sequencerServiceMock.add(deepEqual([command]))).called()
   })
+
+  it('should add red border to step with breakpoint | ESW-459', async () => {
+    const stepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
+
+    const stepListAfterBreakpoint = new StepList([
+      {
+        hasBreakpoint: true,
+        status: { _type: 'Pending' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(stepListAfterBreakpoint)
+
+    when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={sequencerPrefix}
+          setSelectedStep={() => ({})}
+        />
+      )
+    })
+
+    const actions = await screen.findAllByRole('stepActions')
+    userEvent.click(actions[0])
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    const stepBeforeBreakpoint = screen.getByRole('button', {
+      name: /command-1/i
+    })
+
+    expect(stepBeforeBreakpoint.style.borderLeft).to.equals(
+      '1px solid rgb(255, 197, 61)'
+    )
+    // ESW-459
+    const insertBreakpoint = await screen.findByText('Insert breakpoint')
+
+    userEvent.click(insertBreakpoint)
+    await screen.findByText('Successfully inserted breakpoint')
+    const stepAfterBreakpoint = screen.getByRole('button', {
+      name: /command-1/i
+    })
+
+    await waitFor(() =>
+      expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red')
+    )
+  })
 })
 
 const findCell = (name: string) => screen.findByRole('cell', { name })

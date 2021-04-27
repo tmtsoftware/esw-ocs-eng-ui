@@ -60,7 +60,7 @@ export const StepComponent = (
     width: '10.9rem',
     borderLeft: `${
       step.hasBreakpoint
-        ? '1rem red solid'
+        ? '1rem solid red'
         : `1px solid ${baseTypeColorCode[color[step.status._type]]}`
     }`
   }

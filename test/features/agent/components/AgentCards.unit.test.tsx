@@ -252,7 +252,7 @@ describe('Agents Grid View', () => {
     verify(agentService.getAgentStatus()).called()
   })
 
-  it('should change the location on click of sequencer | ESW-490', async () => {
+  it('should change the location on click of sequencer | ESW-492', async () => {
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],

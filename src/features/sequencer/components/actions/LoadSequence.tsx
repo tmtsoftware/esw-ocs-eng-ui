@@ -1,9 +1,44 @@
-import { Sequence, SequenceCommand } from '@tmtsoftware/esw-ts'
+import {
+  OkOrUnhandledResponse,
+  Prefix,
+  Sequence,
+  SequenceCommand,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
-import { useLoadAction } from '../../hooks/useLoadAction'
+import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../../utils/message'
+import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+
+const useLoadAction = (
+  prefix: Prefix,
+  sequence?: SequenceCommand[]
+): UseMutationResult<
+  OkOrUnhandledResponse | undefined,
+  unknown,
+  SequencerService
+> => {
+  const mutationFn = async (sequencerService: SequencerService) =>
+    sequence && (await sequencerService.loadSequence(sequence))
+
+  return useMutation({
+    mutationFn,
+    onSuccess: (res) => {
+      if (res?._type === 'Ok')
+        return successMessage('Sequence has been loaded successfully')
+      return errorMessage('error', Error(res?.msg))
+    },
+    onError: (e) => errorMessage('errorMsg', e),
+    invalidateKeysOnSuccess: [
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [GET_SEQUENCE.key, prefix.toJSON()]
+    ],
+    useErrorBoundary: false
+  })
+}
 
 export const LoadSequence = ({
   prefix,

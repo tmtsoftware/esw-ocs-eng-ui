@@ -105,13 +105,16 @@ const DescriptionItem = (label: string, item: string) => {
   return (
     <Descriptions.Item
       label={
-        <Typography.Title aria-label={`${label}K`} type={'secondary'} level={5}>
+        <Typography.Title
+          aria-label={`${label}-Key`}
+          type={'secondary'}
+          level={5}>
           {label}
         </Typography.Title>
       }>
       {
         <Typography.Title
-          aria-label={`${label}V`}
+          aria-label={`${label}-Value`}
           style={{ width: '11rem' }}
           ellipsis={{ tooltip: true }}
           level={5}>

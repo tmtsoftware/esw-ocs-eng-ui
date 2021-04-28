@@ -5,6 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'
 import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
+import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
 import {
   renderWithAuth,
   sequencerServiceMock
@@ -187,5 +188,31 @@ describe('StepActions', () => {
     expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.false
     expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be
       .false
+  })
+
+  it('should disable duplicate if stepListStatus is completed | ESW-462', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListContextProvider
+          value={{
+            handleDuplicate: () => undefined,
+            isDuplicateEnabled: false,
+            stepListStatus: 'All Steps Completed'
+          }}>
+          <StepActions
+            sequencerPrefix={sequencerPrefix}
+            step={getStepWithBreakpoint(false, stepStatusInProgress)}
+            hideMenu={() => ({})}
+          />
+        </StepListContextProvider>
+      )
+    })
+
+    const duplicateMenu = (await screen.findByRole('menuitem', {
+      name: /duplicate/i
+    })) as HTMLMenuElement
+
+    expect(duplicateMenu.classList.contains('ant-menu-item-disabled')).to.be
+      .true
   })
 })

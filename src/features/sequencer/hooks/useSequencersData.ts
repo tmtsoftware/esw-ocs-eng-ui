@@ -14,7 +14,7 @@ import { createTokenFactory } from '../../../utils/createTokenFactory'
 import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
 import { mkSequencerService } from './useSequencerService'
 
-export type StepStatus =
+export type StepListStatus =
   | 'All Steps Completed'
   | 'Paused'
   | 'In Progress'
@@ -26,11 +26,11 @@ export type SequencerInfo = {
   key: string
   prefix: string
   currentStepCommandName: string
-  stepListStatus: { stepNumber: number; status: StepStatus }
+  stepListStatus: { stepNumber: number; status: StepListStatus }
   totalSteps: number | 'NA'
 }
 
-const Status: { [key: string]: StepStatus } = {
+const Status: { [key: string]: StepListStatus } = {
   Pending: 'Paused',
   Failure: 'Failed',
   InFlight: 'In Progress',

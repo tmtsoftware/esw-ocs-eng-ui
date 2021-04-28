@@ -10,7 +10,7 @@ import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import { getStepListStatus } from '../../hooks/useSequencersData'
 import { useStepList } from '../../hooks/useStepList'
-import { StepListTableContext } from '../../hooks/useStepListContext'
+import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { typeStatus } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import styles from './sequencerDetails.module.css'
@@ -106,10 +106,11 @@ export const StepListTable = ({
   )
 
   return (
-    <StepListTableContext.Provider
+    <StepListContextProvider
       value={{
         handleDuplicate: () => toggleDuplicateEnabled(!isDuplicateEnabled),
-        isDuplicateEnabled
+        isDuplicateEnabled,
+        stepListStatus
       }}>
       <Card bordered={false} bodyStyle={{ padding: 0 }}>
         <Table
@@ -141,6 +142,6 @@ export const StepListTable = ({
           />
         )}
       </Card>
-    </StepListTableContext.Provider>
+    </StepListContextProvider>
   )
 }

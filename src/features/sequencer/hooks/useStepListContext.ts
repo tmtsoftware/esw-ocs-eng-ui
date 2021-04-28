@@ -1,18 +1,23 @@
 import { createContext, useContext } from 'react'
+import type { StepListStatus } from '../hooks/useSequencersData'
 
 export type StepListTableContextType = {
   handleDuplicate: () => void
   isDuplicateEnabled: boolean
+  stepListStatus: StepListStatus
 }
 
 const defaultStepListTableContext: StepListTableContextType = {
   handleDuplicate: () => undefined,
-  isDuplicateEnabled: false
+  isDuplicateEnabled: false,
+  stepListStatus: 'NA'
 }
 
-export const StepListTableContext: React.Context<StepListTableContextType> = createContext(
+const StepListTableContext: React.Context<StepListTableContextType> = createContext(
   defaultStepListTableContext
 )
+
+export const StepListContextProvider = StepListTableContext.Provider
 
 export const useStepListContext = (): StepListTableContextType => {
   const context = useContext(StepListTableContext)

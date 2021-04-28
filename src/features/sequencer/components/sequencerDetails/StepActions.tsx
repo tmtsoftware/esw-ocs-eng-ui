@@ -20,7 +20,7 @@ export const StepActions = ({
   const isFinished = status === 'Failure' || status === 'Success'
   const isInProgressOrIsFinished = status === 'InFlight' || isFinished
 
-  const { handleDuplicate } = useStepListContext()
+  const { handleDuplicate, stepListStatus } = useStepListContext()
 
   return (
     <Menu onClick={hideMenu} className={styles.menu} selectedKeys={[]}>
@@ -35,7 +35,10 @@ export const StepActions = ({
         <PlusCircleOutlined />
         Add a step
       </Menu.Item>
-      <Menu.Item key='3' onClick={handleDuplicate}>
+      <Menu.Item
+        key='3'
+        onClick={handleDuplicate}
+        disabled={stepListStatus === 'All Steps Completed'}>
         <CopyOutlined />
         Duplicate
       </Menu.Item>

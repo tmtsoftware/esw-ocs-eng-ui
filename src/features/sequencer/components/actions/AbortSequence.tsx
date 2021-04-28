@@ -7,7 +7,7 @@ import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STATE } from '../../../queryKeys'
+import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
@@ -25,7 +25,10 @@ const useAbortSequence = (
       return errorMessage('Failed to abort the Sequence', Error(res.msg))
     },
     onError: (e) => errorMessage('Failed to abort the Sequence', e),
-    invalidateKeysOnSuccess: [[SEQUENCER_STATE.key, prefix.toJSON()]],
+    invalidateKeysOnSuccess: [
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [GET_SEQUENCE.key, prefix.toJSON()]
+    ],
     useErrorBoundary: false
   })
 }

@@ -126,7 +126,7 @@ const DescriptionItem = (label: string, item: string) => {
 
 const StepInfo = ({ step }: { step: Step }) => (
   <div className={styles.stepInfo}>
-    <Descriptions column={{ lg: 2, xl: 4 }}>
+    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 4 }}>
       {DescriptionItem('Type', step.command._type.toString())}
       {DescriptionItem('Command', step.command.commandName)}
       {DescriptionItem('Source', step.command.source.toJSON())}

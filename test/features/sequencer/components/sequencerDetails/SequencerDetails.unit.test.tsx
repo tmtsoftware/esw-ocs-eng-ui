@@ -291,4 +291,37 @@ describe('sequencer details', () => {
     expect(obsIdKey.innerText).to.equals('Obs-Id')
     expect(obsIdValue.innerText).to.equals('2020A-001-123')
   })
+
+  it('should render step details with text data having elipsis when viewport size is small | ESW-457', async () => {
+    const stepList: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Success' },
+        command: new Setup(
+          Prefix.fromString('ESW.ESW123456789123456'),
+          'Command-1',
+          [],
+          '2020A-001-123'
+        ),
+        id: '1'
+      }
+    ])
+
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    //Set small viewport so that values will have elipsis
+    await setViewport({ width: 1280, height: 800 })
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    await screen.findAllByRole('table')
+
+    const commandNameValue = screen.getByLabelText('Command-Value')
+    const sourceValue = screen.getByLabelText('Source-Value')
+
+    expect(commandNameValue.innerText).to.equals('Command-1')
+    expect(sourceValue.innerText).to.equals('ESW.ESW123456...')
+  })
 })

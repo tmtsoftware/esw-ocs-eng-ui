@@ -16,6 +16,7 @@ import {
   StringKey
 } from '@tmtsoftware/esw-ts'
 import type { Step } from '@tmtsoftware/esw-ts/lib/src'
+import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, when } from 'ts-mockito'
@@ -37,6 +38,19 @@ const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   ])
 
 describe('sequencer details', () => {
+  let windowWidth: number
+  let windowHeight: number
+  beforeEach(() => {
+    windowHeight = window.innerHeight
+    windowWidth = window.innerWidth
+  })
+  afterEach(async () => {
+    //Reset the viewport
+    await setViewport({
+      width: windowWidth,
+      height: windowHeight
+    })
+  })
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
   const sequenceComponentPrefix = 'ESW.ESW1'
 
@@ -216,45 +230,30 @@ describe('sequencer details', () => {
   })
 
   it('should render Step details when a Step is clicked from the StepLists | ESW-457', async () => {
-    const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
-      false
-    ])
-    const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
-    const filterKey = intArrayKey('filter')
-    const filterParam: Parameter<IntArrayKey> = filterKey.set([
-      [1, 2, 3],
-      [4, 5, 6]
-    ])
-    const stringParam: Parameter<StringKey> = stringKey('ra').set([
-      '12:13:14.1'
-    ])
-
-    const paramSet1 = [booleanParam, intParam]
-    const paramSet2 = [filterParam, stringParam]
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
         status: { _type: 'Success' },
-        command: new Setup(
-          Prefix.fromString('ESW.ESW1'),
-          'Command-1',
-          paramSet1
-        ),
+        command: new Setup(Prefix.fromString('ESW.ESW1'), 'Command-1', []),
         id: '1'
       },
       {
         hasBreakpoint: false,
         status: { _type: 'InFlight' },
         command: new Setup(
-          Prefix.fromString('ESW.ESW1'),
+          Prefix.fromString('ESW.ESW2'),
           'Command-2',
-          paramSet2
+          [],
+          '2020A-001-123'
         ),
         id: '2'
       }
     ])
 
     when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    //Set bigger viewport so that values wont be elipsis
+    await setViewport({ width: 1440, height: 900 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -288,8 +287,8 @@ describe('sequencer details', () => {
     expect(commandNameKey.innerText).to.equals('Command')
     expect(commandNameValue.innerText).to.equals('Command-2')
     expect(sourceKey.innerText).to.equals('Source')
-    expect(sourceValue.innerText).to.equals('ESW.ESW1')
+    expect(sourceValue.innerText).to.equals('ESW.ESW2')
     expect(obsIdKey.innerText).to.equals('Obs-Id')
-    expect(obsIdValue.innerText).to.equals('NA')
+    expect(obsIdValue.innerText).to.equals('2020A-001-123')
   })
 })

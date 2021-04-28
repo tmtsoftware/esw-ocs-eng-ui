@@ -115,7 +115,6 @@ const DescriptionItem = (label: string, item: string) => {
       {
         <Typography.Title
           aria-label={`${label}-Value`}
-          style={{ width: '11rem' }}
           ellipsis={{ tooltip: true }}
           level={5}>
           {item}
@@ -125,30 +124,17 @@ const DescriptionItem = (label: string, item: string) => {
   )
 }
 
-const StepInfo = ({ step }: { step: Step }) => {
-  return (
-    <Card
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%'
-      }}
-      headStyle={{ paddingBottom: '0.75rem', height: '8%' }}
-      bodyStyle={{ height: '92%' }}
-      title={
-        <Space>
-          <Descriptions column={4}>
-            {DescriptionItem('Type', step.command._type.toString())}
-            {DescriptionItem('Command', step.command.commandName)}
-            {DescriptionItem('Source', step.command.source.toJSON())}
-            {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
-          </Descriptions>
-        </Space>
-      }>
-      {<ParameterTable paramSet={step.command.paramSet} />}
-    </Card>
-  )
-}
+const StepInfo = ({ step }: { step: Step }) => (
+  <div className={styles.stepInfo}>
+    <Descriptions column={{ lg: 2, xl: 4 }}>
+      {DescriptionItem('Type', step.command._type.toString())}
+      {DescriptionItem('Command', step.command.commandName)}
+      {DescriptionItem('Source', step.command.source.toJSON())}
+      {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
+    </Descriptions>
+    {<ParameterTable paramSet={step.command.paramSet} />}
+  </div>
+)
 
 const EmptyStep = () => (
   <Card style={{ height: '100%' }}>

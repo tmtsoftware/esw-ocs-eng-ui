@@ -47,3 +47,12 @@ tr.cellInDuplicate > th {
   width: 0.75rem;
   height: 0.75rem;
 }
+
+.stepInfo {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--backgroundColor);
+  padding: 1.5rem;
+  margin-left: 1px;
+}

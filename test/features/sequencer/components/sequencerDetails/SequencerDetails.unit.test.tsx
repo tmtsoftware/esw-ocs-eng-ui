@@ -322,6 +322,6 @@ describe('sequencer details', () => {
     const sourceValue = screen.getByLabelText('Source-Value')
 
     expect(commandNameValue.innerText).to.equals('Command-1')
-    expect(sourceValue.innerText).to.equals('ESW.ESW123456...')
+    expect(sourceValue.innerText).to.equals('ESW.ESW1234567...')
   })
 })

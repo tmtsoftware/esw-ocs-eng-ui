@@ -1,13 +1,21 @@
-import { CopyOutlined, PlusCircleOutlined } from '@ant-design/icons'
+import {
+  CopyOutlined,
+  PlusCircleOutlined,
+  MoreOutlined
+} from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
-import React from 'react'
+import { Dropdown, Menu } from 'antd'
+import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 import styles from './sequencerDetails.module.css'
+type SequencerStepProps = {
+  step: Step
+  sequencerPrefix: Prefix
+}
 
-export const StepActions = ({
+const StepActionsMenu = ({
   step,
   sequencerPrefix,
   hideMenu
@@ -50,5 +58,28 @@ export const StepActions = ({
         />
       </Menu.Item>
     </Menu>
+  )
+}
+
+export const StepActions = ({
+  sequencerPrefix,
+  step
+}: SequencerStepProps): JSX.Element => {
+  const [isOverlayVisible, toggleOverlayVisibility] = useState<boolean>(false)
+
+  return (
+    <Dropdown
+      overlay={
+        <StepActionsMenu
+          sequencerPrefix={sequencerPrefix}
+          step={step}
+          hideMenu={() => toggleOverlayVisibility(false)}
+        />
+      }
+      trigger={['click']}
+      onVisibleChange={toggleOverlayVisibility}
+      visible={isOverlayVisible}>
+      <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
+    </Dropdown>
   )
 }

@@ -3,13 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, Step, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { when } from 'ts-mockito'
 import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('StepActions', () => {
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
@@ -35,10 +31,10 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusPending)}
-          hideMenu={() => ({})}
         />
       )
     })
+    userEvent.click(await screen.findByRole('stepActions'))
 
     await screen.findByText('Insert breakpoint')
   })
@@ -49,37 +45,11 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(true, stepStatusPending)}
-          hideMenu={() => ({})}
         />
       )
     })
-
+    userEvent.click(await screen.findByRole('stepActions'))
     await screen.findByText('Remove breakpoint')
-  })
-
-  it('should call handleMenuClick when menu item is clicked | ESW-459', async () => {
-    let called = false
-    const handleMenuClick = () => {
-      called = !called
-    }
-
-    when(sequencerServiceMock.removeBreakpoint('step1')).thenResolve({
-      _type: 'Ok'
-    })
-    renderWithAuth({
-      ui: (
-        <StepActions
-          sequencerPrefix={sequencerPrefix}
-          step={getStepWithBreakpoint(true, stepStatusPending)}
-          hideMenu={handleMenuClick}
-        />
-      )
-    })
-
-    const removeAction = await screen.findByText('Remove breakpoint')
-    userEvent.click(removeAction, { button: 0 })
-
-    expect(called).to.be.true
   })
 
   it('should disable insertBreakpoint and delete when status is in Progress | ESW-459, ESW-490', async () => {
@@ -88,11 +58,10 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusInProgress)}
-          hideMenu={() => ({})}
         />
       )
     })
-
+    userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: /insert breakpoint/i
     })) as HTMLMenuElement
@@ -111,11 +80,10 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusFailure)}
-          hideMenu={() => ({})}
         />
       )
     })
-
+    userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: /insert breakpoint/i
     })) as HTMLMenuElement
@@ -139,11 +107,10 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusSuccess)}
-          hideMenu={() => ({})}
         />
       )
     })
-
+    userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: /insert breakpoint/i
     })) as HTMLMenuElement
@@ -167,11 +134,10 @@ describe('StepActions', () => {
         <StepActions
           sequencerPrefix={sequencerPrefix}
           step={getStepWithBreakpoint(false, stepStatusPending)}
-          hideMenu={() => ({})}
         />
       )
     })
-
+    userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: /insert breakpoint/i
     })) as HTMLMenuElement
@@ -202,11 +168,12 @@ describe('StepActions', () => {
           <StepActions
             sequencerPrefix={sequencerPrefix}
             step={getStepWithBreakpoint(false, stepStatusInProgress)}
-            hideMenu={() => ({})}
           />
         </StepListContextProvider>
       )
     })
+
+    userEvent.click(await screen.findByRole('stepActions'))
 
     const duplicateMenu = (await screen.findByRole('menuitem', {
       name: /duplicate/i

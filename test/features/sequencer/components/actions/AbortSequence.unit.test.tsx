@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   OkOrUnhandledResponse,
@@ -7,7 +7,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { verify, when } from 'ts-mockito'
+import { reset, verify, when } from 'ts-mockito'
 import { AbortSequence } from '../../../../../src/features/sequencer/components/actions/AbortSequence'
 import {
   renderWithAuth,
@@ -29,6 +29,10 @@ describe('AbortSequence', () => {
     ]
   ]
 
+  beforeEach(() => {
+    reset(sequencerServiceMock)
+  })
+
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-494`, async () => {
       when(sequencerServiceMock.abortSequence()).thenResolve(res)
@@ -48,9 +52,24 @@ describe('AbortSequence', () => {
 
       userEvent.click(abortSeqButton, { button: 0 })
 
+      await screen.findByText('Do you want to abort the sequence?')
+      const modalAbortButton = await within(
+        screen.getByRole('document')
+      ).findByRole('button', {
+        name: 'Abort'
+      })
+
+      userEvent.click(modalAbortButton, { button: 0 })
+
       await screen.findByText(msg)
 
       verify(sequencerServiceMock.abortSequence()).called()
+
+      await waitFor(
+        () =>
+          expect(screen.queryByText('Do you want to abort the sequence?')).to
+            .not.exist
+      )
     })
   })
 
@@ -68,11 +87,38 @@ describe('AbortSequence', () => {
       )
     })
 
-    const abortSeqButton = await screen.findByRole('button', {
+    //*********testing cancel button ***********************
+    const abortSeqButton1 = await screen.findByRole('button', {
       name: 'Abort sequence'
     })
 
-    userEvent.click(abortSeqButton, { button: 0 })
+    userEvent.click(abortSeqButton1, { button: 0 })
+    await screen.findByText('Do you want to abort the sequence?')
+    const modalCancelButton = within(screen.getByRole('document')).getByRole(
+      'button',
+      {
+        name: 'Cancel'
+      }
+    )
+    userEvent.click(modalCancelButton)
+
+    verify(sequencerServiceMock.abortSequence()).never()
+
+    //*********testing abort(confirm) button ***********************
+    const abortSeqButton2 = await screen.findByRole('button', {
+      name: 'Abort sequence'
+    })
+
+    userEvent.click(abortSeqButton2, { button: 0 })
+    await screen.findByText('Do you want to abort the sequence?')
+    const modalAbortButton = within(screen.getByRole('document')).getByRole(
+      'button',
+      {
+        name: 'Abort'
+      }
+    )
+
+    userEvent.click(modalAbortButton)
 
     await screen.findByText(
       'Failed to abort the Sequence, reason: error occurred'

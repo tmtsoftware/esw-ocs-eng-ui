@@ -1,15 +1,33 @@
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type {
   OkOrUnhandledResponse,
   Prefix,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+
+const showConfirmModal = (onYes: () => void): void => {
+  Modal.confirm({
+    title: 'Do you want to abort the sequence?',
+    icon: <ExclamationCircleOutlined />,
+    centered: true,
+    okText: 'Abort',
+    okButtonProps: {
+      danger: true,
+      type: 'primary'
+    },
+    closable: true,
+    maskClosable: true,
+    cancelText: 'Cancel',
+    onOk: () => onYes()
+  })
+}
 
 const useAbortSequence = (
   prefix: Prefix
@@ -44,7 +62,12 @@ export const AbortSequence = ({
     <Button
       danger
       loading={abortAction.isLoading}
-      onClick={() => sequencerService && abortAction.mutate(sequencerService)}
+      onClick={() =>
+        sequencerService &&
+        showConfirmModal(() => {
+          abortAction.mutate(sequencerService)
+        })
+      }
       disabled={!sequencerState || sequencerState !== 'Running'}>
       Abort sequence
     </Button>

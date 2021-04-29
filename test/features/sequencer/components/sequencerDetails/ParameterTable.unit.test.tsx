@@ -39,8 +39,8 @@ describe('Parameters Table', () => {
     assertTableHeader(paramHeaderTable, 'Unit')
     assertTableHeader(paramHeaderTable, 'Values')
 
-    assertTableBody(paramBodyTable, 'flag NoUnits [false] copy')
-    assertTableBody(paramBodyTable, 'randomKey NoUnits [123,12432] copy')
-    assertTableBody(paramBodyTable, 'filter NoUnits [[1,2,3],[4,5,6]] copy')
+    assertTableBody(paramBodyTable, 'flag [false] copy NoUnits')
+    assertTableBody(paramBodyTable, 'randomKey [123,12432] copy NoUnits')
+    assertTableBody(paramBodyTable, 'filter [[1,2,3],[4,5,6]] copy NoUnits')
   })
 })

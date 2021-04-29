@@ -17,11 +17,6 @@ const columns: ColumnsType<ParameterDataType> = [
     key: 'parameter'
   },
   {
-    title: <HeaderTitle title='Unit' />,
-    dataIndex: 'unit',
-    key: 'unit'
-  },
-  {
     title: <HeaderTitle title='Values' />,
     dataIndex: 'values',
     key: 'values',
@@ -35,6 +30,11 @@ const columns: ColumnsType<ParameterDataType> = [
         </Typography.Paragraph>
       )
     }
+  },
+  {
+    title: <HeaderTitle title='Unit' />,
+    dataIndex: 'unit',
+    key: 'unit'
   }
 ]
 

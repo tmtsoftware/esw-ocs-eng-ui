@@ -5,10 +5,13 @@ import type {
   StepList,
   StepStatus
 } from '@tmtsoftware/esw-ts'
-import { Card, Space, Table, Typography } from 'antd'
+import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import { getStepListStatus } from '../../hooks/useSequencersData'
+import {
+  getStepListStatus,
+  StepListStatus
+} from '../../hooks/useSequencersData'
 import { useStepList } from '../../hooks/useStepList'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { typeStatus } from '../SequencersTable'
@@ -53,30 +56,34 @@ const validStepChecker = (
 }
 
 const columns = (
-  stepListStatus: keyof typeof typeStatus,
   sequencerPrefix: Prefix,
   setSelectedStep: (_: Step) => void
 ): ColumnsType<StepData> => [
   {
-    title: (
-      <>
-        <Typography.Title level={5} style={{ marginBottom: 0 }}>
-          Sequence Steps
-        </Typography.Title>
-        <Space>
-          <Typography.Text type={'secondary'}>Status:</Typography.Text>
-          <Typography.Text type={typeStatus[stepListStatus]}>
-            {stepListStatus}
-          </Typography.Text>
-        </Space>
-      </>
-    ),
     key: 'index',
     dataIndex: 'status',
     render: (_, record) =>
       StepComponent(record, record.index + 1, setSelectedStep, sequencerPrefix)
   }
 ]
+
+const StepListTitle = ({
+  stepListStatus
+}: {
+  stepListStatus: StepListStatus
+}): JSX.Element => (
+  <div style={{ margin: '1rem 2rem' }} role='stepListTitle'>
+    <Typography.Title level={5} style={{ marginBottom: 0 }}>
+      Sequence Steps
+    </Typography.Title>
+    <Space>
+      <Typography.Text type={'secondary'}>Status:</Typography.Text>
+      <Typography.Text type={typeStatus[stepListStatus]}>
+        {stepListStatus}
+      </Typography.Text>
+    </Space>
+  </div>
+)
 
 export const StepListTable = ({
   sequencerPrefix,
@@ -112,8 +119,10 @@ export const StepListTable = ({
         isDuplicateEnabled,
         stepListStatus
       }}>
-      <Card bordered={false} bodyStyle={{ padding: 0 }}>
+      <div>
+        <StepListTitle stepListStatus={stepListStatus} />
         <Table
+          showHeader={false}
           style={{ marginBottom: '5rem' }}
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
           rowKey={(step) => step.id}
@@ -123,13 +132,12 @@ export const StepListTable = ({
             ...step,
             index
           }))}
-          columns={columns(stepListStatus, sequencerPrefix, setSelectedStep)}
+          columns={columns(sequencerPrefix, setSelectedStep)}
           onRow={(step) =>
             selectedStep && step.id === selectedStep.id
               ? { id: styles.selectedRow }
               : { className: styles.cell }
           }
-          onHeaderRow={() => ({ className: styles.cell })}
           sticky
         />
         {isDuplicateEnabled && (
@@ -141,7 +149,7 @@ export const StepListTable = ({
             }
           />
         )}
-      </Card>
+      </div>
     </StepListContextProvider>
   )
 }

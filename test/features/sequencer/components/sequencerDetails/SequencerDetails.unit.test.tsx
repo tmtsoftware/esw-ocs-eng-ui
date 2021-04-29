@@ -92,9 +92,8 @@ describe('sequencer details', () => {
     )
 
     //check for sequence execution table
-    screen.getByRole('columnheader', {
-      name: /sequence steps status: failed/i
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nFailed`)
   })
 
   it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
@@ -122,9 +121,10 @@ describe('sequencer details', () => {
     expect(await screen.findByRole('ResetSequencer')).to.exist
 
     //check for sequence execution table
-    await screen.findByRole('columnheader', {
-      name: /sequence steps status: in progress/i
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(
+      `Sequence Steps\nStatus:\nIn Progress`
+    )
   })
 
   it('should render the sequence and show all steps completed | ESW-455, ESW-456', async () => {
@@ -134,9 +134,10 @@ describe('sequencer details', () => {
     })
 
     //check for sequence execution table
-    await screen.findByRole('columnheader', {
-      name: /sequence steps status: all steps completed/i
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(
+      `Sequence Steps\nStatus:\nAll Steps Completed`
+    )
   })
 
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
@@ -159,12 +160,11 @@ describe('sequencer details', () => {
     )
 
     //check for sequence execution table
-    screen.getByRole('columnheader', {
-      name: /sequence steps status: paused/i
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nPaused`)
   })
 
-  it('should render parameter table when a Step is clicked from the StepList | ESW-457', async () => {
+  it.only('should render parameter table when a Step is clicked from the StepList | ESW-457', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
       false
     ])
@@ -211,7 +211,9 @@ describe('sequencer details', () => {
 
     await screen.findAllByRole('table')
 
-    const [, , , , parameterBodyTable] = screen.queryAllByRole('table')
+    console.log(screen.queryAllByRole('table'))
+
+    const [, , , parameterBodyTable] = screen.queryAllByRole('table')
 
     const step = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step)

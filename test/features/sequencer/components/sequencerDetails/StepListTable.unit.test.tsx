@@ -66,9 +66,10 @@ describe('stepList table', () => {
           )
         })
 
-        await screen.findByRole('columnheader', {
-          name: `Sequence Steps Status: ${stepListStatus}`
-        })
+        const title = `Sequence Steps\nStatus:\n${stepListStatus}`
+
+        const stepListTitle = await screen.findByRole('stepListTitle')
+        expect(stepListTitle.innerText).to.equals(title)
 
         const htmlElement = await findCell('1 Command-1 more')
 
@@ -96,9 +97,10 @@ describe('stepList table', () => {
       )
     })
 
-    await screen.findByRole('columnheader', {
-      name: 'Sequence Steps Status: In Progress'
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(
+      `Sequence Steps\nStatus:\nIn Progress`
+    )
 
     await findCell('1 Command-1 more')
     await findCell('2 Command-2 more')
@@ -117,9 +119,8 @@ describe('stepList table', () => {
       )
     })
 
-    screen.getByRole('columnheader', {
-      name: 'Sequence Steps Status: NA'
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nNA`)
 
     await findCell('No Data')
     verify(sequencerServiceMock.getSequence()).called()
@@ -137,9 +138,8 @@ describe('stepList table', () => {
       )
     })
 
-    screen.getByRole('columnheader', {
-      name: 'Sequence Steps Status: NA'
-    })
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nNA`)
 
     await findCell('No Data')
     verify(sequencerServiceMock.getSequence()).called()

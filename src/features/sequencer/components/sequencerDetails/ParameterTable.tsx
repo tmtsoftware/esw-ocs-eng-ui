@@ -38,12 +38,16 @@ const columns: ColumnsType<ParameterDataType> = [
   }
 ]
 
+const commaSeparator = ', '
+
 const createDataSource = (paramSet: Parameter<Key>[]): ParameterDataType[] =>
   paramSet.map((parameter) => {
     return {
       parameter: parameter.keyName.toString(),
       unit: parameter.units.toString(),
-      values: JSON.stringify(parameter.values)
+      values: parameter.values
+        .map((v) => JSON.stringify(v))
+        .join(commaSeparator)
     }
   })
 

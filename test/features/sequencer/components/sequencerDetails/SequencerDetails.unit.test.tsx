@@ -322,6 +322,7 @@ describe('sequencer details', () => {
     const sourceValue = screen.getByLabelText('Source-Value')
 
     expect(commandNameValue.innerText).to.equals('Command-1')
-    expect(sourceValue.innerText).to.equals('ESW.ESW1234567...')
+    // assert text to have ellipses at the end
+    expect(sourceValue.innerText).to.match(/...$/)
   })
 })

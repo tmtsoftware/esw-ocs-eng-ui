@@ -27,7 +27,6 @@ const columns = (
   },
   {
     title: <HeaderTitle title='Number of Sequence Component' />,
-    // width: 400,
     dataIndex: 'numOfSequenceComps',
     key: 'numOfSequenceComps',
     fixed: 'left',

@@ -181,7 +181,7 @@ describe('ProvisionButton component', () => {
 
   const spawnSeqCompError: ProvisionResponse = {
     _type: 'SpawningSequenceComponentsFailed',
-    failureResponses: ['failed to spawn']
+    failureResponses: ['failed to spawn: ESW.ESW_1 on ESW.machine, reason: invalid binary']
   }
 
   const couldNotFindMachine: ProvisionResponse = {
@@ -207,7 +207,7 @@ describe('ProvisionButton component', () => {
     [
       'SpawningSequenceComponentsFailed',
       Promise.resolve(spawnSeqCompError),
-      'Failed to provision, reason: failed to spawn'
+      'Failed to provision, reason: Unable to spawn following sequence comps on machines: ESW.ESW_1 on ESW.machine,'
     ],
     [
       'CouldNotFindMachines',
@@ -220,6 +220,7 @@ describe('ProvisionButton component', () => {
       'Failed to provision, reason: error occured'
     ]
   ]
+  
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
     it(`should be able to show error log if provision return ${name} | ESW-444`, async () => {

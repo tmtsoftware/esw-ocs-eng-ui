@@ -35,7 +35,7 @@ const provision = (provisionRecord: ProvisionRecord) => async (
       throw Error(res.msg)
     case 'SpawningSequenceComponentsFailed':
       throw Error(
-        `Failed to spawn Sequence component: ${sanitiseErrorMsg(res)}`
+        `Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(res)}`
       )
     case 'CouldNotFindMachines':
       throw Error(

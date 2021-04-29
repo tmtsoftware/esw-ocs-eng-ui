@@ -14,7 +14,7 @@ import {
   sequencerServiceMock
 } from '../../../../utils/test-utils'
 
-describe('GoOffline', () => {
+describe('GoOnline', () => {
   const testData: [GoOnlineResponse, string, string][] = [
     [{ _type: 'Ok' }, 'Sequencer is online successfully', 'successful'],
     [

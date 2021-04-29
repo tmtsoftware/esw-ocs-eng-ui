@@ -17,11 +17,6 @@
   box-shadow: inset 0 -1px 0 var(--shadowColor);
 }
 
-tr.selectedCell > td {
-  background: #e6f7ff;
-  border-bottom: transparent;
-}
-
 tr.cell > td,
 tr.cell > th {
   background: white;
@@ -33,6 +28,11 @@ tr.cellInDuplicate > th {
   background: white;
   border-bottom: transparent;
   padding-left: 0;
+}
+
+tr#selectedRow > td {
+  background: #e6f7ff;
+  border-bottom: transparent;
 }
 
 .menu {

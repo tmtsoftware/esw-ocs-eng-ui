@@ -22,3 +22,11 @@ body {
   /* hide vertical scroll bar */
   overflow-y: hidden;
 }
+
+:global .ant-table-tbody > tr.ant-table-row-selected > td {
+  background: white;
+}
+
+:global .ant-table-tbody > tr.ant-table-row-selected:hover > td {
+  background: #fafafa;
+}

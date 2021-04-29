@@ -101,6 +101,7 @@ const SequencerTitle = ({ prefix }: { prefix: Prefix }): JSX.Element => {
     </div>
   )
 }
+
 const DescriptionItem = (label: string, item: string) => {
   return (
     <Descriptions.Item

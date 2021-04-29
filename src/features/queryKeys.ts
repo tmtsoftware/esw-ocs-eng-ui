@@ -1,6 +1,5 @@
 type Query = {
   key: string
-  // refetchIntervalInBackground?: boolean // refetchInterval will continue to refetch while their tab/window is in the background if enabled
   refetchInterval?: number // Refetch the data every defined milliseconds
   retry?: number // only failing queries will retry given number of times
 }
@@ -8,7 +7,6 @@ type Query = {
 export const LIST_AGENTS: Query = { key: 'listAgents' }
 
 // SM
-export const PROVISION_STATUS: Query = { key: 'provisionStatus' }
 
 export const AGENTS_STATUS: Query = {
   key: 'agentsStatus',

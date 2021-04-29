@@ -6,15 +6,15 @@ import { Provision } from '../../features/sm/components/provision/Provision'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 
 export const SmActions = (): JSX.Element => {
-  const provisionStatus = useProvisionStatus(false)
+  const provisionStatus = useProvisionStatus()
   const [smContext, loading] = useSMService()
   const smLocation = smContext?.smLocation
 
   const disabled = !smLocation || loading
   return (
     <Space>
-      <Provision provisionStatus={provisionStatus.data} disabled={disabled} />
-      <Configure disabled={!provisionStatus.data || disabled} />
+      <Provision provisionStatus={provisionStatus} disabled={disabled} />
+      <Configure disabled={!provisionStatus || disabled} />
     </Space>
   )
 }

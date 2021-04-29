@@ -1,7 +1,7 @@
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { AGENTS_STATUS, PROVISION_STATUS } from '../../queryKeys'
+import { AGENTS_STATUS } from '../../queryKeys'
 
 export const useProvisionAction = <T>(
   mutationFn: (agent: SequenceManagerService) => Promise<T>,
@@ -13,6 +13,6 @@ export const useProvisionAction = <T>(
     mutationFn,
     onSuccess: () => successMessage(successMsg),
     onError: (e) => errorMessage(errorMsg, e),
-    invalidateKeysOnSuccess: [PROVISION_STATUS.key, AGENTS_STATUS.key],
+    invalidateKeysOnSuccess: [AGENTS_STATUS.key],
     useErrorBoundary
   })

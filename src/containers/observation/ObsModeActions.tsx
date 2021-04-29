@@ -20,13 +20,13 @@ const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
   const configureAction = useConfigureAction(obsMode)
   const [smContext, isLoading] = useSMService()
   const smService = smContext?.smService
-  const provisionStatus = useProvisionStatus(false)
+  const provisionStatus = useProvisionStatus()
 
   return (
     <Button
       onClick={() => smService && configureAction.mutate(smService)}
       loading={isLoading || configureAction.isLoading}
-      disabled={tabName === 'Non-configurable' || !provisionStatus.data}>
+      disabled={tabName === 'Non-configurable' || !provisionStatus}>
       Configure
     </Button>
   )

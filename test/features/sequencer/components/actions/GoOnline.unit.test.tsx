@@ -90,7 +90,7 @@ describe('GoOnline', () => {
   ]
 
   disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state}`, async () => {
+    it(`should be disabled if sequencer in ${state} | ESW-493`, async () => {
       renderWithAuth({
         ui: (
           <GoOnline

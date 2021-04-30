@@ -83,7 +83,7 @@ const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
   return (
     <Space>
       <Typography.Text type='secondary' strong aria-label='SeqCompLabel'>
-        Sequence Component :
+        Sequence Component:
       </Typography.Text>
       <Typography.Text aria-label='SeqCompValue'>
         {componentName}

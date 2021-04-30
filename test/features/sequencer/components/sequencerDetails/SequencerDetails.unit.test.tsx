@@ -85,7 +85,7 @@ describe('sequencer details', () => {
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
 
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
-      'Sequence Component :'
+      'Sequence Component:'
     )
     expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
       sequenceComponentPrefix
@@ -153,7 +153,7 @@ describe('sequencer details', () => {
     const sequencerTitle = await screen.findByTestId('status-success')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
-      'Sequence Component :'
+      'Sequence Component:'
     )
     expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
       sequenceComponentPrefix
@@ -164,7 +164,7 @@ describe('sequencer details', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nPaused`)
   })
 
-  it.only('should render parameter table when a Step is clicked from the StepList | ESW-457', async () => {
+  it('should render parameter table when a Step is clicked from the StepList | ESW-457', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
       false
     ])

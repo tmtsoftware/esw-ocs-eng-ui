@@ -133,11 +133,10 @@ export const StepListTable = ({
             index
           }))}
           columns={columns(sequencerPrefix, setSelectedStep)}
-          onRow={(step) =>
-            selectedStep && step.id === selectedStep.id
-              ? { id: styles.selectedRow }
-              : { className: styles.cell }
-          }
+          onRow={(step) => ({
+            id: step.id === selectedStep?.id && styles.selectedRow,
+            className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
+          })}
           sticky
         />
         {isDuplicateEnabled && (

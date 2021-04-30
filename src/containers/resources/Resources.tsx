@@ -107,6 +107,7 @@ export const Resources = (): JSX.Element => {
       <Card className={styles.resourcesCard}>
         <Table
           sticky
+          bordered
           onRow={() => ({ style: { fontSize: '1rem' } })}
           columns={columns}
           loading={isLoading}

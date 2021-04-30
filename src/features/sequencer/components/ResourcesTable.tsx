@@ -38,6 +38,7 @@ export const ResourcesTable = ({
         pagination={false}
         columns={columns}
         dataSource={resources}
+        bordered
       />
     </div>
   )

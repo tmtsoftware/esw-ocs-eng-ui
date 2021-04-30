@@ -63,6 +63,7 @@ export const ParameterTable = ({
       pagination={false}
       columns={columns}
       dataSource={createDataSource(paramSet)}
+      bordered
     />
   </div>
 )

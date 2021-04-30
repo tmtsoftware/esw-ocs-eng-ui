@@ -87,6 +87,7 @@ export const SequencersTable = ({
       columns={columns}
       dataSource={sequencerStatus.data}
       onRow={() => ({ style: { fontSize: '1rem' } })}
+      bordered
     />
   )
 }

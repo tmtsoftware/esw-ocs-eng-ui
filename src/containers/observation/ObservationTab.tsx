@@ -61,6 +61,7 @@ export const ObservationTab = ({
     <Layout style={{ height: '99%' }}>
       <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
         <Menu
+          mode='inline'
           selectedKeys={selectedObs && [selectedObs.obsMode.name]}
           style={{ paddingTop: '0.4rem' }}>
           {data.map((item) => (

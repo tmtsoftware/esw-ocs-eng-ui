@@ -14,7 +14,8 @@ const columns: ColumnsType<ParameterDataType> = [
   {
     title: <HeaderTitle title='Parameter' />,
     dataIndex: 'parameter',
-    key: 'parameter'
+    key: 'parameter',
+    width: '12rem'
   },
   {
     title: <HeaderTitle title='Values' />,
@@ -34,7 +35,8 @@ const columns: ColumnsType<ParameterDataType> = [
   {
     title: <HeaderTitle title='Unit' />,
     dataIndex: 'unit',
-    key: 'unit'
+    key: 'unit',
+    width: '12rem'
   }
 ]
 

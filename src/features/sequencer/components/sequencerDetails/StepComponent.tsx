@@ -1,7 +1,7 @@
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React from 'react'
+import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
 
@@ -36,13 +36,14 @@ export const StepComponent = (
   }
 
   const { isDuplicateEnabled } = useStepListContext()
+  const [isVisible, setVisible] = useState<boolean>(false)
 
   return (
     <Space style={{ textAlign: 'right' }}>
       <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
       </div>
-      <Tooltip title={step.command.commandName}>
+      <Tooltip title={isVisible ? step.command.commandName : undefined}>
         <Button
           key={step.command.commandName}
           style={stepsStyle}
@@ -52,7 +53,7 @@ export const StepComponent = (
           }}>
           <Typography.Text
             type={color[step.status._type]}
-            ellipsis
+            ellipsis={{ onEllipsis: setVisible }}
             style={{ width: '100%' }}
             strong>
             {step.command.commandName}

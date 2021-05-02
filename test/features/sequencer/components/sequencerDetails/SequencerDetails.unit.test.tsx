@@ -100,6 +100,11 @@ describe('sequencer details', () => {
     when(sequencerServiceMock.getSequence()).thenResolve(
       getStepList('InFlight')
     )
+
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Running'
+    })
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -116,7 +121,7 @@ describe('sequencer details', () => {
     expect(goOffline).to.exist
     expect(abortButton).to.exist
 
-    expect(await screen.findByRole('PlaySequencer')).to.exist
+    expect(await screen.findByRole('PauseSequence')).to.exist
     expect(await screen.findByRole('StopSequencer')).to.exist
     expect(await screen.findByRole('ResetSequencer')).to.exist
 
@@ -210,8 +215,6 @@ describe('sequencer details', () => {
     })
 
     await screen.findAllByRole('table')
-
-    console.log(screen.queryAllByRole('table'))
 
     const [, , , parameterBodyTable] = screen.queryAllByRole('table')
 

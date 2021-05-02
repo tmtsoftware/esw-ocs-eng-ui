@@ -4,13 +4,13 @@ import type {
   Prefix,
   SequencerService
 } from '@tmtsoftware/esw-ts'
+import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-import { Button } from 'antd'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useResumeSequence = (
@@ -24,9 +24,9 @@ const useResumeSequence = (
     onSuccess: (res) => {
       if (res._type === 'Ok')
         return successMessage('Sequence is resumed successfully')
-      return errorMessage('Failed to resume the Sequence', Error(res.msg))
+      return errorMessage('Failed to resume the sequence', Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to resume the Sequence', e),
+    onError: (e) => errorMessage('Failed to resume the sequence', e),
     invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]],
     useErrorBoundary: false
   })

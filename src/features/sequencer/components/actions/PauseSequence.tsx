@@ -25,7 +25,7 @@ const usePauseSequence = (
       if (res._type === 'Ok')
         return successMessage('Sequence is paused successfully')
       return errorMessage(
-        'Failed to pause sequence',
+        'Failed to pause the sequence',
         Error(
           res._type === 'CannotOperateOnAnInFlightOrFinishedStep'
             ? res._type
@@ -33,7 +33,7 @@ const usePauseSequence = (
         )
       )
     },
-    onError: (e) => errorMessage('Failed to pause sequence', e),
+    onError: (e) => errorMessage('Failed to pause the sequence', e),
     invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]],
     useErrorBoundary: false
   })

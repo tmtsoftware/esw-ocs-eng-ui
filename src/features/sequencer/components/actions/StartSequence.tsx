@@ -4,6 +4,7 @@ import type {
   SequencerService,
   SubmitResponse
 } from '@tmtsoftware/esw-ts'
+import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -11,7 +12,6 @@ import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import { Button } from 'antd'
 
 const useStartSequence = (
   prefix: Prefix
@@ -28,14 +28,20 @@ const useStartSequence = (
         case 'Started':
           return successMessage('Sequence is started successfully')
         case 'Error':
-          return errorMessage('Failed to start the Sequence', res.message)
+          return errorMessage(
+            'Failed to start the sequence',
+            Error(res.message)
+          )
         case 'Invalid':
-          return errorMessage('Failed to start the Sequence', res.issue.reason)
+          return errorMessage(
+            'Failed to start the sequence',
+            Error(res.issue.reason)
+          )
         default:
-          return errorMessage('Failed to start the Sequence', Error(res._type))
+          return errorMessage('Failed to start the sequence', Error(res._type))
       }
     },
-    onError: (e) => errorMessage('Failed to start the Sequence', e),
+    onError: (e) => errorMessage('Failed to start the sequence', e),
     invalidateKeysOnSuccess: [
       [SEQUENCER_STATE.key, prefix.toJSON()],
       [GET_SEQUENCE.key, prefix.toJSON()]

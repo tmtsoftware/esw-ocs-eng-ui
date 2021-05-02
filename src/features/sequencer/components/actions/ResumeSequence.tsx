@@ -1,67 +1,59 @@
-import { PauseCircleOutlined } from '@ant-design/icons'
+import { PlayCircleOutlined } from '@ant-design/icons'
 import type {
-  PauseResponse,
+  OkOrUnhandledResponse,
   Prefix,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+import { Button } from 'antd'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
-const usePauseSequence = (
+const useResumeSequence = (
   prefix: Prefix
-): UseMutationResult<PauseResponse, unknown, SequencerService> => {
+): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
   const mutationFn = (sequencerService: SequencerService) =>
-    sequencerService.pause()
+    sequencerService.resume()
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
       if (res._type === 'Ok')
-        return successMessage('Sequence is paused successfully')
-      return errorMessage(
-        'Failed to pause sequence',
-        Error(
-          res._type === 'CannotOperateOnAnInFlightOrFinishedStep'
-            ? res._type
-            : res.msg
-        )
-      )
+        return successMessage('Sequence is resumed successfully')
+      return errorMessage('Failed to resume the Sequence', Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to pause sequence', e),
+    onError: (e) => errorMessage('Failed to resume the Sequence', e),
     invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]],
     useErrorBoundary: false
   })
 }
 
-export const PauseSequence = ({
+export const ResumeSequence = ({
   prefix,
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const pauseSequence = usePauseSequence(prefix)
-
-  const onClick = () =>
-    sequencerService && pauseSequence.mutate(sequencerService)
+  const resumeSequence = useResumeSequence(prefix)
 
   const disabled = !sequencerState || sequencerState !== 'Running'
   return (
     <Button
-      onClick={onClick}
+      onClick={() =>
+        sequencerService && resumeSequence.mutate(sequencerService)
+      }
       type={'text'}
       shape={'circle'}
       icon={
-        <PauseCircleOutlined
+        <PlayCircleOutlined
           className={disabled ? styles.actionDisabled : styles.actionEnabled}
         />
       }
       disabled={disabled}
-      role='PauseSequence'
+      role='ResumeSequence'
     />
   )
 }

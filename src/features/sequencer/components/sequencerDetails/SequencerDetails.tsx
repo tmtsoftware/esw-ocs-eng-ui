@@ -1,8 +1,4 @@
-import {
-  PlayCircleOutlined,
-  ScissorOutlined,
-  StopOutlined
-} from '@ant-design/icons'
+import { ScissorOutlined, StopOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
@@ -24,6 +20,7 @@ import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
+import { PlayPauseSequence } from '../actions/PlayPauseSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
@@ -36,23 +33,25 @@ type DescriptionProps = {
   prefix: Prefix
 }
 
-const SequencerActions = (): JSX.Element => (
-  <Space size={15}>
-    <Tooltip placement='bottom' title='Play sequencer'>
-      <PlayCircleOutlined
-        className={styles.actionEnabled}
-        role='PlaySequencer'
-      />
-    </Tooltip>
-    <Tooltip placement='bottom' title='Reset sequencer'>
-      <ScissorOutlined className={styles.actionEnabled} role='ResetSequencer' />
-    </Tooltip>
-    <Tooltip placement='bottom' title={'Stop sequencer'}>
-      <StopOutlined className={styles.actionDisabled} role='StopSequencer' />
-    </Tooltip>
-  </Space>
-)
-
+const SequencerActions = ({
+  prefix,
+  sequencerState
+}: SequencerProps): JSX.Element => {
+  return (
+    <Space size={15}>
+      <PlayPauseSequence prefix={prefix} sequencerState={sequencerState} />
+      <Tooltip placement='bottom' title='Reset sequencer'>
+        <ScissorOutlined
+          className={styles.actionEnabled}
+          role='ResetSequencer'
+        />
+      </Tooltip>
+      <Tooltip placement='bottom' title={'Stop sequencer'}>
+        <StopOutlined className={styles.actionDisabled} role='StopSequencer' />
+      </Tooltip>
+    </Space>
+  )
+}
 const SequenceActions = ({
   prefix,
   sequencerState
@@ -67,7 +66,7 @@ const SequenceActions = ({
 const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   return (
     <Space size={20}>
-      <SequencerActions />
+      <SequencerActions prefix={prefix} sequencerState={sequencerState} />
       <SequenceActions prefix={prefix} sequencerState={sequencerState} />
     </Space>
   )

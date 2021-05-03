@@ -1,27 +1,12 @@
-import { FileExcelOutlined } from '@ant-design/icons'
 import type { ComponentId, Location, Prefix } from '@tmtsoftware/esw-ts'
-import { Button, Col, Row, Space, Tooltip, Typography } from 'antd'
+import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import { LoadScript } from '../../sm/components/LoadScript'
+import { UnloadScript } from '../../sm/components/UnloadScript'
 import styles from './agentCards.module.css'
 import { KillSequenceComponent } from './KillSequenceComponent'
-
-const UnloadScript = () => (
-  <Tooltip placement='bottom' title='Unload script'>
-    <Button
-      type='text'
-      icon={
-        <FileExcelOutlined
-          className={styles.icon}
-          role='unloadScriptIcon'
-          onClick={() => ({})}
-        />
-      }
-    />
-  </Tooltip>
-)
 
 type TitleProps = {
   seqCompPrefix: Prefix

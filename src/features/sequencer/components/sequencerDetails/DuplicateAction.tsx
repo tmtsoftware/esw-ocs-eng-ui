@@ -4,7 +4,7 @@ import type {
   SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Button, Card, Row } from 'antd'
+import { Button, Card, Space } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -51,7 +51,7 @@ export const DuplicateAction = ({
         bottom: 0,
         width: '18rem'
       }}>
-      <Row justify='space-around'>
+      <Space>
         <Button onClick={toggleDuplicateEnabled}>Cancel</Button>
         <Button
           type='primary'
@@ -64,7 +64,7 @@ export const DuplicateAction = ({
           <CopyOutlined />
           Duplicate
         </Button>
-      </Row>
+      </Space>
     </Card>
   )
 }

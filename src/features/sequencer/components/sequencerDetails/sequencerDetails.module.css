@@ -74,3 +74,13 @@ tr#selectedRow > td:last-child::after {
   padding: 1.5rem;
   margin-left: 1px;
 }
+
+.stepListTable,
+.duplicateStepListTable {
+  overflow-y: scroll;
+  height: 100%;
+}
+
+.duplicateStepListTable {
+  height: 90%;
+}

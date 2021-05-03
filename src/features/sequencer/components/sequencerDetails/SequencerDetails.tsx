@@ -177,7 +177,7 @@ export const SequencerDetails = ({
       </PageHeader>
       <Layout
         style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
-        <Sider theme='light' style={{ overflowY: 'scroll' }} width={'18rem'}>
+        <Sider theme='light' width={'18rem'}>
           <StepListTable
             sequencerPrefix={prefix}
             selectedStep={selectedStep}

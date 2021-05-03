@@ -119,11 +119,15 @@ export const StepListTable = ({
         isDuplicateEnabled,
         stepListStatus
       }}>
-      <div>
+      <div style={{ height: '90%' }}>
         <StepListTitle stepListStatus={stepListStatus} />
         <Table
           showHeader={false}
-          style={{ marginBottom: '5rem' }}
+          className={
+            isDuplicateEnabled
+              ? styles.duplicateStepListTable
+              : styles.stepListTable
+          }
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
           rowKey={(step) => step.id}
           pagination={false}
@@ -139,16 +143,16 @@ export const StepListTable = ({
           })}
           sticky
         />
-        {isDuplicateEnabled && (
-          <DuplicateAction
-            commands={commands}
-            sequencerPrefix={sequencerPrefix}
-            toggleDuplicateEnabled={() =>
-              toggleDuplicateEnabled(!isDuplicateEnabled)
-            }
-          />
-        )}
       </div>
+      {isDuplicateEnabled && (
+        <DuplicateAction
+          commands={commands}
+          sequencerPrefix={sequencerPrefix}
+          toggleDuplicateEnabled={() =>
+            toggleDuplicateEnabled(!isDuplicateEnabled)
+          }
+        />
+      )}
     </StepListContextProvider>
   )
 }

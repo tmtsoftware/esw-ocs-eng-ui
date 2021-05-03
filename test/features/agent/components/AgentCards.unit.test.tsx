@@ -73,7 +73,7 @@ describe('Agents Grid View', () => {
     // ESW.esw1 is with sequencer hence unload icon will appear
     expect(screen.getByRole('unloadScriptIcon')).exist
     // ESW.esw2 is without sequencer hence load icon will appear
-    expect(screen.getByRole('loadScriptIcon')).exist
+    expect(screen.getByRole('loadScript')).exist
     verify(agentService.getAgentStatus()).called()
   })
 

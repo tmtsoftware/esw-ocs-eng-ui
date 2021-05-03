@@ -50,7 +50,7 @@ export const LoadScript = ({
 
   const loadScriptAction = useMutation({
     mutationFn: loadScript(subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage('Failed to load script:', e),
+    onError: (e) => errorMessage('Failed to load script', e),
     onSuccess: () => successMessage('Successfully loaded script'),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
@@ -76,9 +76,8 @@ export const LoadScript = ({
         disabled={isLoading}>
         <Button
           type='text'
-          icon={
-            <FileAddOutlined className={styles.icon} role='loadScriptIcon' />
-          }
+          icon={<FileAddOutlined className={styles.icon} />}
+          role='loadScript'
           loading={loadScriptAction.isLoading}
         />
       </Popconfirm>

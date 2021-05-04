@@ -1,6 +1,6 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
-import { Space, Table, Typography } from 'antd'
+import { Space, Table, Tooltip, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
@@ -12,9 +12,11 @@ import styles from './sequencerTable.module.css'
 
 const getPrefixColumn = (record: SequencerInfo) => (
   <Space>
-    <Link to={getSequencerPath(record.prefix)}>
-      <SettingOutlined className={styles.sequencerIcon} />
-    </Link>
+    <Tooltip title={'Manage sequencer'}>
+      <Link to={getSequencerPath(record.prefix)}>
+        <SettingOutlined className={styles.sequencerIcon} />
+      </Link>
+    </Tooltip>
     <Typography.Text>{record.prefix}</Typography.Text>
   </Space>
 )

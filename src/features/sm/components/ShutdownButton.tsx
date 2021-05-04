@@ -1,11 +1,11 @@
 import type { AgentService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
+import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { Spinner } from '../../../components/spinners/Spinner'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { showConfirmModal } from '../../../utils/showConfirmModal'
 import { SM_COMPONENT_ID } from '../constants'
 
 const shutdownSM = (agent: AgentService) =>

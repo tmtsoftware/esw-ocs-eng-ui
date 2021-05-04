@@ -1,8 +1,8 @@
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
+import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../../contexts/SMContext'
-import { showConfirmModal } from '../../../../utils/showConfirmModal'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useAction } from './ActionButton'
 

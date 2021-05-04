@@ -8,10 +8,10 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
+import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import { showConfirmModal } from '../../../utils/showConfirmModal'
 import styles from '../../agent/components/agentCards.module.css'
 import { AGENTS_STATUS } from '../../queryKeys'
 
@@ -37,7 +37,6 @@ export const UnloadScript = ({
 }: {
   sequencerPrefix: Prefix
 }): JSX.Element => {
-  console.log(sequencerPrefix)
   const [data, isLoading] = useSMService()
 
   const unloadAction = useMutation({
@@ -54,21 +53,19 @@ export const UnloadScript = ({
     <Tooltip placement='bottom' title='Unload script'>
       <Button
         type='text'
-        icon={
-          <FileExcelOutlined
-            className={styles.icon}
-            role='unloadScriptIcon'
-            onClick={() =>
-              showConfirmModal(
-                () =>
-                  data?.smService && unloadAction.mutateAsync(data.smService),
-                'Do you want to unload the sequencer?',
-                'Unload'
-              )
-            }
-          />
-        }
+        icon={<FileExcelOutlined className={styles.icon} />}
+        role='unloadScriptIcon'
         disabled={isLoading}
+        onClick={() =>
+          data?.smService &&
+          showConfirmModal(
+            () => {
+              unloadAction.mutate(data.smService)
+            },
+            'Do you want to unload the sequencer?',
+            'Unload'
+          )
+        }
       />
     </Tooltip>
   )

@@ -57,6 +57,29 @@ describe('Pause Sequence', () => {
     })
   })
 
+  it('should show failed if error is returned | ESW-497', async () => {
+    when(sequencerServiceMock.pause()).thenReject(Error('Something went wrong'))
+
+    renderWithAuth({
+      ui: (
+        <PauseSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Running'}
+        />
+      )
+    })
+
+    const button = await screen.findByRole('PauseSequence')
+
+    userEvent.click(button)
+
+    await screen.findByText(
+      'Failed to pause the sequence, reason: Something went wrong'
+    )
+
+    verify(sequencerServiceMock.pause()).called()
+  })
+
   const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
     undefined,
     'Loaded',

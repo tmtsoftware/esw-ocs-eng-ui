@@ -52,6 +52,31 @@ describe('Resume Sequence', () => {
     })
   })
 
+  it('should show failed if error is returned | ESW-497', async () => {
+    when(sequencerServiceMock.resume()).thenReject(
+      Error('Something went wrong')
+    )
+
+    renderWithAuth({
+      ui: (
+        <ResumeSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Running'}
+        />
+      )
+    })
+
+    const button = await screen.findByRole('ResumeSequence')
+
+    userEvent.click(button)
+
+    await screen.findByText(
+      'Failed to resume the sequence, reason: Something went wrong'
+    )
+
+    verify(sequencerServiceMock.resume()).called()
+  })
+
   const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
     undefined,
     'Loaded',

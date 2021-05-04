@@ -19,6 +19,9 @@ const useStartSequence = (
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.startSequence()
 
+  const showError = (str: string) =>
+    errorMessage('Failed to start the sequence', Error(str))
+
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
@@ -28,20 +31,18 @@ const useStartSequence = (
         case 'Started':
           return successMessage('Sequence is started successfully')
         case 'Error':
-          return errorMessage(
-            'Failed to start the sequence',
-            Error(res.message)
-          )
+          return showError(res.message)
         case 'Invalid':
-          return errorMessage(
-            'Failed to start the sequence',
-            Error(res.issue.reason)
-          )
+          return showError(res.issue.reason)
         default:
-          return errorMessage('Failed to start the sequence', Error(res._type))
+          return showError(res._type)
       }
     },
-    onError: (e) => errorMessage('Failed to start the sequence', e),
+    onError: (e) =>
+      errorMessage(
+        'Failed to start the sequence',
+        (e as Error).message ? e : Error((e as string).toString())
+      ),
     invalidateKeysOnSuccess: [
       [SEQUENCER_STATE.key, prefix.toJSON()],
       [GET_SEQUENCE.key, prefix.toJSON()]

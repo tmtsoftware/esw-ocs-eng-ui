@@ -57,7 +57,7 @@ describe('Start Sequence', () => {
   ]
 
   testData.forEach(([res, msg, state]) => {
-    it(`should be ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
+    it(`should show ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
       when(sequencerServiceMock.startSequence()).thenResolve(res)
 
       renderWithAuth({
@@ -77,6 +77,31 @@ describe('Start Sequence', () => {
 
       verify(sequencerServiceMock.startSequence()).called()
     })
+  })
+
+  it('should show failed if error is returned | ESW-497', async () => {
+    when(sequencerServiceMock.startSequence()).thenReject(
+      Error('Something went wrong')
+    )
+
+    renderWithAuth({
+      ui: (
+        <StartSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Loaded'}
+        />
+      )
+    })
+
+    const button = await screen.findByRole('StartSequence')
+
+    userEvent.click(button)
+
+    await screen.findByText(
+      'Failed to start the sequence, reason: Something went wrong'
+    )
+
+    verify(sequencerServiceMock.startSequence()).called()
   })
 
   const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [

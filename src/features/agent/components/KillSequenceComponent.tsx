@@ -2,6 +2,7 @@ import { DeleteOutlined } from '@ant-design/icons'
 import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
+import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
@@ -43,7 +44,13 @@ export const KillSequenceComponent = ({
             role='deleteSeqCompIcon'
             onClick={() =>
               agentService &&
-              killSequenceComponentAction.mutateAsync(agentService)
+              showConfirmModal(
+                () => {
+                  killSequenceComponentAction.mutateAsync(agentService)
+                },
+                `Do you want to delete ${componentId.prefix.toJSON()} sequence component?`,
+                'Delete'
+              )
             }
           />
         }

@@ -1,4 +1,4 @@
-import { cleanup, screen } from '@testing-library/react'
+import { cleanup, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -246,6 +246,15 @@ describe('Agents Grid View', () => {
     })
     const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
     userEvent.click(deleteIcon)
+
+    await screen.findByText(
+      `Do you want to delete ${seqCompPrefix.toJSON()} sequence component?`
+    )
+
+    const document = screen.getByRole('document')
+    const confirm = within(document).getByRole('button', { name: /delete/i })
+
+    userEvent.click(confirm)
 
     await screen.findByText(/Successfully killed Sequence Component/)
 

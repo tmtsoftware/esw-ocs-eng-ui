@@ -1,25 +1,10 @@
-import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
+import { showConfirmModal } from '../../../../utils/showConfirmModal'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-
-function showConfirmModal(onYes: () => void): void {
-  Modal.confirm({
-    title: 'Do you want to shutdown all the Sequence Components?',
-    icon: <ExclamationCircleOutlined />,
-    centered: true,
-    okText: 'Shutdown',
-    okButtonProps: {
-      danger: true,
-      type: 'primary'
-    },
-    cancelText: 'Cancel',
-    onOk: () => onYes()
-  })
-}
 
 const shutdownAllSequenceComps = (
   sequenceManagerService: SequenceManagerService
@@ -60,9 +45,13 @@ export const UnProvisionButton = ({
       loading={unProvisionAction.isLoading}
       onClick={() =>
         smService &&
-        showConfirmModal(() => {
-          unProvisionAction.mutateAsync(smService)
-        })
+        showConfirmModal(
+          () => {
+            unProvisionAction.mutateAsync(smService)
+          },
+          'Do you want to shutdown all the Sequence Components?',
+          'Shutdown'
+        )
       }>
       Unprovision
     </Button>

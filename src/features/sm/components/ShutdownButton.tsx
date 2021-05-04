@@ -1,29 +1,12 @@
-import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { AgentService } from '@tmtsoftware/esw-ts'
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../components/spinners/Spinner'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
+import { showConfirmModal } from '../../../utils/showConfirmModal'
 import { SM_COMPONENT_ID } from '../constants'
-
-const showConfirmModal = (onYes: () => void): void => {
-  Modal.confirm({
-    title: 'Do you want to shutdown Sequence Manager?',
-    icon: <ExclamationCircleOutlined />,
-    centered: true,
-    okText: 'Shutdown',
-    okButtonProps: {
-      danger: true,
-      type: 'primary'
-    },
-    closable: true,
-    maskClosable: true,
-    cancelText: 'Cancel',
-    onOk: () => onYes()
-  })
-}
 
 const shutdownSM = (agent: AgentService) =>
   agent.killComponent(SM_COMPONENT_ID).then((res) => {
@@ -49,9 +32,13 @@ export const ShutdownSMButton = (): JSX.Element => {
       loading={shutdownSmAction.isLoading}
       onClick={() =>
         agentService &&
-        showConfirmModal(() => {
-          shutdownSmAction.mutateAsync(agentService)
-        })
+        showConfirmModal(
+          () => {
+            shutdownSmAction.mutateAsync(agentService)
+          },
+          'Do you want to shutdown Sequence Manager?',
+          'Shutdown'
+        )
       }>
       Shutdown
     </Button>

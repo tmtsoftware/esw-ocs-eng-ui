@@ -1,27 +1,10 @@
-import { ExclamationCircleOutlined } from '@ant-design/icons'
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import React from 'react'
 import { useSMService } from '../../../../contexts/SMContext'
+import { showConfirmModal } from '../../../../utils/showConfirmModal'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { useAction } from './ActionButton'
-
-const showConfirmModal = (onYes: () => void): void => {
-  Modal.confirm({
-    title: 'Do you want to shutdown observation?',
-    icon: <ExclamationCircleOutlined />,
-    centered: true,
-    okText: 'Shutdown',
-    okButtonProps: {
-      danger: true,
-      type: 'primary'
-    },
-    closable: true,
-    maskClosable: true,
-    cancelText: 'Cancel',
-    onOk: () => onYes()
-  })
-}
 
 const shutdown = (obsMode: ObsMode) => async (
   smService: SequenceManagerService
@@ -54,9 +37,13 @@ export const ShutdownButton = ({
       loading={shutdownAction.isLoading}
       onClick={() =>
         smService &&
-        showConfirmModal(() => {
-          shutdownAction.mutateAsync(smService)
-        })
+        showConfirmModal(
+          () => {
+            shutdownAction.mutateAsync(smService)
+          },
+          'Do you want to shutdown observation?',
+          'Shutdown'
+        )
       }
       danger>
       Shutdown

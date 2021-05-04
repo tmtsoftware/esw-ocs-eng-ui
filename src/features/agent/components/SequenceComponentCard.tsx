@@ -1,4 +1,4 @@
-import type { ComponentId, Location, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, Location, Prefix } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
@@ -35,7 +35,7 @@ const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
         <Title />
       </Col>
       <Col className={styles.iconBoxSequencer}>
-        <UnloadScript />
+        <UnloadScript sequencerPrefix={Prefix.fromString(obsMode)} />
       </Col>
     </Row>
   )

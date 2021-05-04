@@ -1,4 +1,4 @@
-import { cleanup, screen, within } from '@testing-library/react'
+import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -213,7 +213,10 @@ describe('Agents Grid View', () => {
     userEvent.click(icon)
     const inputBox = await screen.findByText('Component name:')
     expect(inputBox).to.exist
-    userEvent.type(screen.getByRole('textbox'), 'ESW_1')
+    const textbox = screen.getByRole('textbox')
+
+    await waitFor(() => userEvent.click(textbox))
+    userEvent.type(textbox, 'ESW_1')
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
 
     await screen.findByText(

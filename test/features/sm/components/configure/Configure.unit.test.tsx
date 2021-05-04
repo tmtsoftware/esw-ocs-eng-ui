@@ -1,10 +1,4 @@
-import {
-  ByRoleMatcher,
-  cleanup,
-  screen,
-  waitFor,
-  within
-} from '@testing-library/react'
+import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   ComponentId,
@@ -135,9 +129,7 @@ describe('Configure button', () => {
     expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to
       .null
 
-    await assertDialog((container, name) =>
-      screen.getByRole(container, { name })
-    )
+    await assertDialog()
     //verify obsModesDetails are fetched when dialog is opened
     verify(smService.getObsModesDetails()).called()
 
@@ -189,14 +181,14 @@ describe('Configure button', () => {
   })
 })
 
-const assertDialog = async (
-  getByRole: (con: ByRoleMatcher, name: string | RegExp) => HTMLElement
-) => {
+const assertDialog = async () => {
   await screen.findByRole('dialog', {
     name: 'Select an Observation Mode to configure:'
   })
 
-  const dialog = getByRole('dialog', 'Select an Observation Mode to configure:')
+  const dialog = screen.getByRole('dialog', {
+    name: 'Select an Observation Mode to configure:'
+  })
 
   await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
   await within(dialog).findByRole('button', { name: 'Configure' })

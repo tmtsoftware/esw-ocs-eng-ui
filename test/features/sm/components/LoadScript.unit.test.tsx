@@ -92,6 +92,7 @@ describe('LoadScript Icon', () => {
       const modalTitle = await screen.findByText('Observation Mode:')
       expect(modalTitle).to.exist
       const input = within(modalTitle).getByRole('textbox')
+      await waitFor(() => userEvent.click(input))
       userEvent.type(input, obsMode.name)
 
       const confirmButton = screen.getByRole('button', { name: /ok/i })

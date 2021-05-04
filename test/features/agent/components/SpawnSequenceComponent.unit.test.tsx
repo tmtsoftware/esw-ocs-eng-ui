@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -24,7 +24,9 @@ describe('Spawn sequence component icon', () => {
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
     })
     await assertPopup()
-    userEvent.type(screen.getByRole('textbox'), ' primary21 ')
+    const textBox = screen.getByRole('textbox')
+    await waitFor(() => userEvent.click(textBox))
+    userEvent.type(textBox, ' primary21 ')
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
     await screen.findByText(
       'component name has leading and trailing whitespaces'
@@ -43,7 +45,9 @@ describe('Spawn sequence component icon', () => {
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
     })
     await assertPopup()
-    userEvent.type(screen.getByRole('textbox'), seqCompName)
+    const textBox = screen.getByRole('textbox')
+    await waitFor(() => userEvent.click(textBox))
+    userEvent.type(textBox, seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
 
     await screen.findByText(
@@ -67,7 +71,10 @@ describe('Spawn sequence component icon', () => {
     })
 
     await assertPopup()
-    userEvent.type(screen.getByRole('textbox'), seqCompName)
+    const textBox = screen.getByRole('textbox')
+
+    await waitFor(() => userEvent.click(textBox))
+    userEvent.type(textBox, seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'OK' }))
 
     await screen.findByText(
@@ -77,7 +84,7 @@ describe('Spawn sequence component icon', () => {
 
   const assertPopup = async () => {
     const icon = await screen.findByRole('addSeqCompIcon')
-    userEvent.click(icon)
+    await waitFor(() => userEvent.click(icon))
     const inputBox = await screen.findByText('Component name:')
     expect(inputBox).to.exist
   }

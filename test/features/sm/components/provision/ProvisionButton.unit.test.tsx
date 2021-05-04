@@ -1,13 +1,12 @@
-import type { ByRoleMatcher } from '@testing-library/dom/types/matches'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import {
   AgentProvisionConfig,
   ConfigData,
   Prefix,
   ProvisionConfig
 } from '@tmtsoftware/esw-ts'
-import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
@@ -62,9 +61,7 @@ describe('ProvisionButton component', () => {
     userEvent.click(provisionButton)
 
     //Provision config modal will appear with provision button
-    await assertDialog((container, name) =>
-      screen.getByRole(container, { name })
-    )
+    await assertDialog()
 
     verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
@@ -242,9 +239,7 @@ describe('ProvisionButton component', () => {
       userEvent.click(provisionButton)
 
       //Provision config modal will appear with provision button
-      await assertDialog((container, name) =>
-        screen.getByRole(container, { name })
-      )
+      await assertDialog()
 
       verify(configService.getActive(PROVISION_CONF_PATH)).called()
 
@@ -272,14 +267,16 @@ describe('ProvisionButton component', () => {
     return { provisionButton }
   }
 
-  const assertDialog = async (
-    getByRole: (con: ByRoleMatcher, name: string | RegExp) => HTMLElement
-  ) => {
+  const assertDialog = async () => {
     await waitFor(
-      () => expect(getByRole('dialog', 'Provision Configuration:')).to.exist
+      () =>
+        expect(screen.getByRole('dialog', { name: 'Provision Configuration:' }))
+          .to.exist
     )
 
-    const dialog = getByRole('dialog', 'Provision Configuration:')
+    const dialog = screen.getByRole('dialog', {
+      name: 'Provision Configuration:'
+    })
 
     await within(dialog).findByRole('table')
     await within(dialog).findByRole('button', { name: 'Provision' })

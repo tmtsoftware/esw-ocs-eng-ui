@@ -76,6 +76,7 @@ describe('stepList table', () => {
         const stepButton = within(htmlElement).getByRole('button')
 
         expect(stepButton.style.borderColor).to.equal(borderColor)
+        // eslint-disable-next-line testing-library/no-node-access
         const spanElement = stepButton.firstChild as HTMLSpanElement
 
         expect(spanElement.classList.contains(className)).true
@@ -216,7 +217,7 @@ describe('stepList table', () => {
     // ESW-459
     const insertBreakpoint = await screen.findByText('Insert breakpoint')
 
-    userEvent.click(insertBreakpoint)
+    await waitFor(() => userEvent.click(insertBreakpoint))
 
     await screen.findByText('Successfully inserted breakpoint')
 
@@ -247,7 +248,7 @@ describe('stepList table', () => {
     userEvent.click(actions[0])
 
     const duplicate = await screen.findByText('Duplicate')
-    userEvent.click(duplicate)
+    await waitFor(() => userEvent.click(duplicate))
 
     expect(screen.getByRole('button', { name: /copy duplicate/i })).to.exist
     verify(sequencerServiceMock.getSequence()).called()
@@ -269,7 +270,7 @@ describe('stepList table', () => {
     userEvent.click(actions[0])
 
     const duplicate = await screen.findByText('Duplicate')
-    userEvent.click(duplicate)
+    await waitFor(() => userEvent.click(duplicate))
 
     const cancel = screen.getByRole('button', {
       name: 'Cancel'
@@ -305,7 +306,7 @@ describe('stepList table', () => {
     userEvent.click(actions[0])
 
     const duplicate = await screen.findByText('Duplicate')
-    userEvent.click(duplicate)
+    await waitFor(() => userEvent.click(duplicate))
 
     // select command to duplicate
     const command1Row = screen.getByRole('row', {
@@ -350,7 +351,7 @@ describe('stepList table', () => {
     userEvent.click(actions[0])
 
     const duplicate = await screen.findByText('Duplicate')
-    userEvent.click(duplicate)
+    await waitFor(() => userEvent.click(duplicate))
 
     // select command to duplicate
     const row = screen.getByRole('row', {
@@ -425,8 +426,7 @@ describe('stepList table', () => {
     )
     // ESW-459
     const insertBreakpoint = await screen.findByText('Insert breakpoint')
-
-    userEvent.click(insertBreakpoint)
+    await waitFor(() => userEvent.click(insertBreakpoint))
     await screen.findByText('Successfully inserted breakpoint')
     const stepAfterBreakpoint = screen.getByRole('button', {
       name: /command-1/i

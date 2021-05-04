@@ -30,13 +30,11 @@
   font-size: 1.35rem;
 }
 
-.icon,
 .deleteIcon {
   padding-top: 0.2rem;
   font-size: 1.25rem;
 }
 
-.icon:hover,
 .commonIcon:hover {
   color: var(--activeColor);
 }

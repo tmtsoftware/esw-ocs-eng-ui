@@ -10,8 +10,8 @@ import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import styles from '../../agent/components/agentCards.module.css' // Move icon style to global css
 import { AGENTS_STATUS } from '../../queryKeys'
+import styles from './sm.module.css'
 
 const handleResponse = (res: StartSequencerResponse) => {
   switch (res._type) {

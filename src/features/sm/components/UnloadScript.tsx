@@ -12,8 +12,8 @@ import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
-import styles from '../../agent/components/agentCards.module.css'
 import { AGENTS_STATUS } from '../../queryKeys'
+import styles from './sm.module.css'
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
   switch (res._type) {

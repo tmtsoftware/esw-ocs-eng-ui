@@ -1,4 +1,3 @@
-import { Tooltip } from 'antd'
 import React from 'react'
 import { useStepList } from '../../hooks/useStepList'
 import type { SequencerProps } from '../Props'
@@ -14,15 +13,9 @@ export const PlayPauseSequence = ({
   const canBePaused =
     stepList.data && sequencerState === 'Running' && !stepList.data.isPaused()
 
-  return (
-    <Tooltip
-      placement='bottom'
-      title={canBePaused ? 'Pause sequence' : 'Play sequencer'}>
-      {canBePaused ? (
-        <PauseSequence prefix={prefix} sequencerState={sequencerState} />
-      ) : (
-        <PlaySequence prefix={prefix} sequencerState={sequencerState} />
-      )}
-    </Tooltip>
+  return canBePaused ? (
+    <PauseSequence prefix={prefix} sequencerState={sequencerState} />
+  ) : (
+    <PlaySequence prefix={prefix} sequencerState={sequencerState} />
   )
 }

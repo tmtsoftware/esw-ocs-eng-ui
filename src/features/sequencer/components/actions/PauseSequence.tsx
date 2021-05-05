@@ -4,7 +4,7 @@ import type {
   Prefix,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Button } from 'antd'
+import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -51,17 +51,19 @@ export const PauseSequence = ({
 
   const disabled = !sequencerState || sequencerState !== 'Running'
   return (
-    <Button
-      onClick={onClick}
-      type={'text'}
-      shape={'circle'}
-      icon={
-        <PauseCircleOutlined
-          className={disabled ? styles.actionDisabled : styles.actionEnabled}
-        />
-      }
-      disabled={disabled}
-      role='PauseSequence'
-    />
+    <Tooltip placement='bottom' title={'Pause sequence'}>
+      <Button
+        onClick={onClick}
+        type={'text'}
+        shape={'circle'}
+        icon={
+          <PauseCircleOutlined
+            className={disabled ? styles.actionDisabled : styles.actionEnabled}
+          />
+        }
+        disabled={disabled}
+        role='PauseSequence'
+      />
+    </Tooltip>
   )
 }

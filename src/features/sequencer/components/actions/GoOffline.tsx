@@ -31,8 +31,7 @@ const useGoOfflineAction = (
     invalidateKeysOnSuccess: [
       [SEQUENCER_STATE.key, prefix.toJSON()],
       [SEQUENCER_STATUS.key, prefix.toJSON()]
-    ],
-    useErrorBoundary: false
+    ]
   })
 }
 

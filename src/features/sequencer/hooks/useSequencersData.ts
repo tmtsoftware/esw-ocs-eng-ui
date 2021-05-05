@@ -122,7 +122,6 @@ export const useSequencersData = (
         ])
       ),
     {
-      useErrorBoundary: false,
       onError: (err) => message.error((err as Error).message),
       enabled: !!gatewayLocation,
       refetchInterval: OBS_MODE_SEQUENCERS.refetchInterval

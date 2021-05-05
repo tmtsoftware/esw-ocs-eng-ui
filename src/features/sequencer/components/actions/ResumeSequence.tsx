@@ -27,8 +27,7 @@ const useResumeSequence = (
       return errorMessage('Failed to resume the sequence', Error(res.msg))
     },
     onError: (e) => errorMessage('Failed to resume the sequence', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
   })
 }
 

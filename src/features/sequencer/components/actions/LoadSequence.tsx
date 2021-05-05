@@ -35,8 +35,7 @@ const useLoadAction = (
     invalidateKeysOnSuccess: [
       [SEQUENCER_STATE.key, prefix.toJSON()],
       [GET_SEQUENCE.key, prefix.toJSON()]
-    ],
-    useErrorBoundary: false
+    ]
   })
 }
 

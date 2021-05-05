@@ -56,16 +56,14 @@ export const BreakpointAction = ({
     mutationFn: insertAction(step.id),
     onSuccess: () => successMessage('Successfully inserted breakpoint'),
     onError: (e) => errorMessage('Failed to insert breakpoint', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
   })
 
   const removeBreakpointAction = useMutation({
     mutationFn: removeAction(step.id),
     onSuccess: () => successMessage('Successfully removed breakpoint'),
     onError: (e) => errorMessage('Failed to remove breakpoint', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
   })
 
   if (step.hasBreakpoint) {

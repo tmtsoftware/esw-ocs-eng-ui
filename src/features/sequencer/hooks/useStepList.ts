@@ -12,7 +12,6 @@ export const useStepList = (
     [GET_SEQUENCE.key, sequencerPrefix.toJSON()],
     () => sequencerService?.getSequence(),
     {
-      useErrorBoundary: false,
       refetchInterval: GET_SEQUENCE.refetchInterval,
       enabled: !!sequencerService
     }

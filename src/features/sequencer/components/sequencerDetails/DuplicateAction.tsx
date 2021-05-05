@@ -39,8 +39,7 @@ export const DuplicateAction = ({
     mutationFn: addCommands(selectedCommands),
     onError: (e) => errorMessage('Failed to duplicate steps', e),
     onSuccess: () => successMessage('Successfully duplicated steps'),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
   })
 
   return (

@@ -34,8 +34,7 @@ const usePauseSequence = (
       )
     },
     onError: (e) => errorMessage('Failed to pause the sequence', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
   })
 }
 

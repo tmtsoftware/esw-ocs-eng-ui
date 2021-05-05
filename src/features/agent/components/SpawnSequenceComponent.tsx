@@ -48,8 +48,7 @@ export const SpawnSequenceComponent = ({
         ).toJSON()}`
       ),
     onError: (e) => errorMessage('Sequence Component could not be spawned', e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key],
-    useErrorBoundary: false
+    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 
   const resetComponentName = () => setComponentName('')

@@ -38,12 +38,12 @@ const Status = ({
     new Prefix('ESW', obsMode.name),
     isRunning
   )
-
-  const status = obsModeStatus ? (
-    <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
-  ) : (
-    <Text content='NA' type='secondary' />
-  )
+  const status =
+    obsModeStatus && isRunning ? (
+      <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
+    ) : (
+      <Text content='NA' type='secondary' />
+    )
 
   return (
     <Space>

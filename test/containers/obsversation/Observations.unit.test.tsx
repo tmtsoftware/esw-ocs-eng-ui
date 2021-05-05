@@ -1,9 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
+import {
+  ObsMode,
+  ObsModeDetails,
+  ObsModesDetailsResponseSuccess,
+  ObsModeStatus
+} from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { resetCalls, verify, when } from 'ts-mockito'
+import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
 import {
   configurableObsModesData,
@@ -15,6 +20,26 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../utils/test-utils'
+
+const getObsModes = (
+  status: ObsModeStatus['_type']
+): ObsModesDetailsResponseSuccess => {
+  const obsModes: ObsModeDetails[] = [
+    {
+      obsMode: new ObsMode('DarkNight_1'),
+      status: {
+        _type: status
+      },
+      resources: ['ESW', 'TCS'],
+      sequencers: ['ESW', 'TCS']
+    }
+  ]
+  const obsModesData: ObsModesDetailsResponseSuccess = {
+    _type: 'Success',
+    obsModes: obsModes
+  }
+  return obsModesData
+}
 
 describe('Observation page', () => {
   beforeEach(() => resetCalls(sequencerServiceMock))
@@ -169,6 +194,50 @@ describe('Observation page', () => {
     await waitFor(() => {
       verify(smService.getObsModesDetails()).called()
     })
+  })
+  it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450`, async () => {
+    const smService = mockServices.mock.smService
+
+    when(smService.getObsModesDetails())
+      .thenResolve(getObsModes('Configured'))
+      .thenResolve(getObsModes('Configurable'))
+    const obsMode = new ObsMode('DarkNight_1')
+    when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
+      _type: 'Success'
+    })
+
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Loaded'
+    })
+
+    renderWithAuth({
+      ui: <Observations />
+    })
+
+    await screen.findByRole('menuitem', { name: 'DarkNight_1' })
+    const runningTabPanel = await screen.findByRole('tabpanel')
+    await within(runningTabPanel).findByText('Loaded')
+    const shutdownButton = within(runningTabPanel).getByRole('button', {
+      name: 'Shutdown'
+    })
+    userEvent.click(shutdownButton)
+
+    const modalDocument = await screen.findByRole('document')
+    const modalShutdownButton = within(modalDocument).getByRole('button', {
+      name: 'Shutdown'
+    })
+
+    userEvent.click(modalShutdownButton)
+
+    const configurableTab = await screen.findByRole('tab', {
+      name: 'Configurable'
+    })
+    userEvent.click(configurableTab)
+    await screen.findByText('Successfully shutdown sequencer')
+
+    const configurableTabPanel = await screen.findByRole('tabpanel')
+    await within(configurableTabPanel).findByText('NA')
+    verify(sequencerServiceMock.getSequencerState()).once
   })
 
   it('should log error if useObsModesDetails() Fails | ESW-450', async () => {

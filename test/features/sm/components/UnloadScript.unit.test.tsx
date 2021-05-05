@@ -14,7 +14,7 @@ describe('UnloadScript Icon', () => {
   beforeEach(() => reset(mockServices.mock.smService))
   const obsMode = new ObsMode('DarkNight')
   const smService = mockServices.mock.smService
-
+  const seqPrefix = new Prefix('ESW', obsMode.name)
   const tests: [string, ShutdownSequencersResponse, string][] = [
     [
       'success',
@@ -51,7 +51,7 @@ describe('UnloadScript Icon', () => {
       )
 
       renderWithAuth({
-        ui: <UnloadScript sequencerPrefix={new Prefix('ESW', obsMode.name)} />
+        ui: <UnloadScript sequencerPrefix={seqPrefix} />
       })
 
       const unloadScriptButton = screen.getByRole(
@@ -64,7 +64,7 @@ describe('UnloadScript Icon', () => {
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(
-        'Do you want to unload the sequencer?'
+        `Do you want to unload the sequencer ${seqPrefix.toJSON()}?`
       )
       expect(modalTitle).to.exist
 
@@ -78,8 +78,11 @@ describe('UnloadScript Icon', () => {
       verify(smService.shutdownSequencer('ESW', deepEqual(obsMode))).called()
       await waitFor(
         () =>
-          expect(screen.queryByText('Do you want to unload the sequencer?')).to
-            .null
+          expect(
+            screen.queryByText(
+              `Do you want to unload the sequencer ${seqPrefix.toJSON()}?`
+            )
+          ).to.null
       )
     })
   })

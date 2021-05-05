@@ -62,7 +62,7 @@ export const UnloadScript = ({
             () => {
               unloadAction.mutate(data.smService)
             },
-            'Do you want to unload the sequencer?',
+            `Do you want to unload the sequencer ${sequencerPrefix.toJSON()}?`,
             'Unload'
           )
         }

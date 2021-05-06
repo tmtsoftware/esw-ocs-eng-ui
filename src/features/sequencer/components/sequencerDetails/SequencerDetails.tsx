@@ -1,4 +1,4 @@
-import { ScissorOutlined, StopOutlined } from '@ant-design/icons'
+import { StopOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
@@ -26,6 +26,7 @@ import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
+import { ResetSequence } from '../actions/ResetSequence'
 
 const { Sider } = Layout
 
@@ -40,12 +41,7 @@ const SequencerActions = ({
   return (
     <Space size={15}>
       <PlayPauseSequence prefix={prefix} sequencerState={sequencerState} />
-      <Tooltip placement='bottom' title='Reset sequencer'>
-        <ScissorOutlined
-          className={styles.actionEnabled}
-          role='ResetSequencer'
-        />
-      </Tooltip>
+      <ResetSequence prefix={prefix} sequencerState={sequencerState} />
       <Tooltip placement='bottom' title={'Stop sequencer'}>
         <StopOutlined className={styles.actionDisabled} role='StopSequencer' />
       </Tooltip>

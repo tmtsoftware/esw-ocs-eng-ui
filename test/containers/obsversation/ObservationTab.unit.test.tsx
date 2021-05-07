@@ -56,7 +56,7 @@ describe('observation tabs', () => {
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
     )
 
-    expect(screen.queryByText(modalMessage)).to.null
+    await waitFor(() => expect(screen.queryByText(modalMessage)).to.null)
   })
 
   it('should be able to configure a configurable observation | ESW-450', async () => {

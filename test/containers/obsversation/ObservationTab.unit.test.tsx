@@ -25,9 +25,10 @@ describe('observation tabs', () => {
     reset(agentService)
     reset(sequencerServiceMock)
   })
-  it('should be able to shutdown running observation | ESW-450', async () => {
+  it('should be able to shutdown running observation | ESW-450, ESW-454', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
+    const modalMessage = `Do you want to shutdown observation?`
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'
     })
@@ -41,6 +42,8 @@ describe('observation tabs', () => {
     })
     userEvent.click(shutdownButton)
 
+    await screen.findByText(modalMessage)
+
     const modalDocument = await screen.findByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
       name: 'Shutdown'
@@ -52,6 +55,8 @@ describe('observation tabs', () => {
     await waitFor(() =>
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
     )
+
+    expect(screen.queryByText(modalMessage)).to.null
   })
 
   it('should be able to configure a configurable observation | ESW-450', async () => {

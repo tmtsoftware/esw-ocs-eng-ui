@@ -123,7 +123,7 @@ describe('sequencer details', () => {
 
     expect(await screen.findByRole('PauseSequence')).to.exist
     expect(await screen.findByRole('StopSequencer')).to.exist
-    expect(await screen.findByRole('ResetSequencer')).to.exist
+    expect(await screen.findByRole('ResetSequence')).to.exist
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
@@ -329,5 +329,11 @@ describe('sequencer details', () => {
     expect(commandNameValue.innerText).to.equals('Command-1')
     // assert text to have ellipses at the end
     expect(sourceValue.innerText).to.match(/...$/)
+  })
+
+  it('should show display Pause action when stepList is in Progress state', () => {
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
   })
 })

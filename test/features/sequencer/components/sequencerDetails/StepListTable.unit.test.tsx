@@ -427,7 +427,7 @@ describe('stepList table', () => {
     // ESW-459
     const insertBreakpoint = await screen.findByText('Insert breakpoint')
     await waitFor(() => userEvent.click(insertBreakpoint))
-    await screen.findByText('Successfully inserted breakpoint')
+
     const stepAfterBreakpoint = screen.getByRole('button', {
       name: /command-1/i
     })

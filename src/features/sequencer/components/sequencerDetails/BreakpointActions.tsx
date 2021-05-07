@@ -33,13 +33,11 @@ const handleActionResponse = (
   }
 }
 
-const insertAction = (id: string) => (sequencerService: SequencerService) => {
-  return sequencerService.addBreakpoint(id).then(handleActionResponse)
-}
+const insertAction = (id: string) => (sequencerService: SequencerService) =>
+  sequencerService.addBreakpoint(id).then(handleActionResponse)
 
-const removeAction = (id: string) => (sequencerService: SequencerService) => {
-  return sequencerService.removeBreakpoint(id).then(handleActionResponse)
-}
+const removeAction = (id: string) => (sequencerService: SequencerService) =>
+  sequencerService.removeBreakpoint(id).then(handleActionResponse)
 
 export const BreakpointAction = ({
   sequencerPrefix,
@@ -69,11 +67,11 @@ export const BreakpointAction = ({
   if (step.hasBreakpoint) {
     return (
       <div
-        onClick={() =>
+        onClick={() => {
           !isDisabled &&
-          sequencerService &&
-          removeBreakpointAction.mutate(sequencerService)
-        }>
+            sequencerService &&
+            removeBreakpointAction.mutate(sequencerService)
+        }}>
         <CloseCircleOutlined />
         Remove breakpoint
       </div>
@@ -82,11 +80,11 @@ export const BreakpointAction = ({
 
   return (
     <div
-      onClick={() =>
+      onClick={() => {
         !isDisabled &&
-        sequencerService &&
-        insertBreakpointAction.mutate(sequencerService)
-      }>
+          sequencerService &&
+          insertBreakpointAction.mutate(sequencerService)
+      }}>
       <VerticalAlignMiddleOutlined />
       Insert breakpoint
     </div>

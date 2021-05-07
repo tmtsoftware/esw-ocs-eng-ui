@@ -41,7 +41,7 @@ export const ShutdownButton = ({
           () => {
             shutdownAction.mutateAsync(smService)
           },
-          'Do you want to shutdown observation?',
+          `Do you want to shutdown Observation ${obsMode.toJSON()}?`,
           'Shutdown'
         )
       }

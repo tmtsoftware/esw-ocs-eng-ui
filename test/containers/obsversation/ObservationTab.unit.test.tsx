@@ -28,7 +28,8 @@ describe('observation tabs', () => {
   it('should be able to shutdown running observation | ESW-450, ESW-454', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
-    const modalMessage = `Do you want to shutdown observation?`
+    const modalMessage = `Do you want to shutdown Observation DarkNight_1?`
+
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'
     })

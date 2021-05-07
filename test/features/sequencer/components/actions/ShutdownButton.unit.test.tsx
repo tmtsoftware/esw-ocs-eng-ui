@@ -6,6 +6,7 @@ import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+
 describe('Shutdown button for Sequencer ', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
   const smService = mockServices.mock.smService
@@ -39,6 +40,7 @@ describe('Shutdown button for Sequencer ', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
+    const modalMessage = 'Do you want to shutdown Observation ESW.DarkNight?'
     it(`should return ${testname} | ESW-454`, async () => {
       when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve(
         response
@@ -57,9 +59,7 @@ describe('Shutdown button for Sequencer ', () => {
       userEvent.click(shutdownButton, { button: 0 })
 
       // expect modal to be visible
-      const modalTitle = await screen.findByText(
-        'Do you want to shutdown observation?'
-      )
+      const modalTitle = await screen.findByText(modalMessage)
       expect(modalTitle).to.exist
       const modalDocument = screen.getByRole('document')
       const modalShutdownButton = within(modalDocument).getByRole('button', {
@@ -71,11 +71,7 @@ describe('Shutdown button for Sequencer ', () => {
 
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
 
-      await waitFor(
-        () =>
-          expect(screen.queryByText('Do you want to shutdown observation?')).to
-            .not.exist
-      )
+      await waitFor(() => expect(screen.queryByText(modalMessage)).to.not.exist)
     })
   })
 })

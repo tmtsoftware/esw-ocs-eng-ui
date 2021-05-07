@@ -122,7 +122,7 @@ describe('sequencer details', () => {
     expect(abortButton).to.exist
 
     expect(await screen.findByRole('PauseSequence')).to.exist
-    expect(await screen.findByRole('StopSequencer')).to.exist
+    expect(await screen.findByRole('StopSequence')).to.exist
     expect(await screen.findByRole('ResetSequence')).to.exist
 
     //check for sequence execution table

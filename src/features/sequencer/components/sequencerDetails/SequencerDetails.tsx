@@ -1,4 +1,3 @@
-import { StopOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
@@ -7,7 +6,6 @@ import {
   Empty,
   Layout,
   Space,
-  Tooltip,
   Typography
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
@@ -21,12 +19,13 @@ import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import { PlayPauseSequence } from '../actions/PlayPauseSequence'
+import { ResetSequence } from '../actions/ResetSequence'
+import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
-import { ResetSequence } from '../actions/ResetSequence'
 
 const { Sider } = Layout
 
@@ -42,9 +41,7 @@ const SequencerActions = ({
     <Space size={15}>
       <PlayPauseSequence prefix={prefix} sequencerState={sequencerState} />
       <ResetSequence prefix={prefix} sequencerState={sequencerState} />
-      <Tooltip placement='bottom' title={'Stop sequencer'}>
-        <StopOutlined className={styles.actionDisabled} role='StopSequencer' />
-      </Tooltip>
+      <StopSequence prefix={prefix} sequencerState={sequencerState} />
     </Space>
   )
 }

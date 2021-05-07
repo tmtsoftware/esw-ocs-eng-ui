@@ -60,10 +60,13 @@ export const StopSequence = ({
         onClick={onClick}
         type={'text'}
         shape={'circle'}
-        danger
         icon={
           <StopOutlined
-            className={disabled ? styles.actionDisabled : styles.actionEnabled}
+            className={
+              disabled
+                ? styles.actionDisabled
+                : styles.actionEnabled + ' ' + styles.danger
+            }
           />
         }
         disabled={disabled}

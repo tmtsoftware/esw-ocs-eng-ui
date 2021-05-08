@@ -233,7 +233,9 @@ describe('Observation page', () => {
       name: 'Configurable'
     })
     userEvent.click(configurableTab)
-    await screen.findByText('Successfully shutdown sequencer')
+    await screen.findByText(
+      'DarkNight_1 Observation has been shutdown and moved to Configurable.'
+    )
 
     const configurableTabPanel = await screen.findByRole('tabpanel')
     await within(configurableTabPanel).findByText('NA')

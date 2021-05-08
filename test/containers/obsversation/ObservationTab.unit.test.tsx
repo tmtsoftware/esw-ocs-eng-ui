@@ -52,7 +52,9 @@ describe('observation tabs', () => {
 
     userEvent.click(modalShutdownButton)
 
-    await screen.findByText('Successfully shutdown sequencer')
+    await screen.findByText(
+      'DarkNight_1 Observation has been shutdown and moved to Configurable.'
+    )
     await waitFor(() =>
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
     )

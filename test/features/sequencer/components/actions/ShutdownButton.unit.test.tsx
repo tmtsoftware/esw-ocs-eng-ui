@@ -17,7 +17,7 @@ describe('Shutdown button for Sequencer ', () => {
       {
         _type: 'Success'
       },
-      'Successfully shutdown sequencer'
+      'ESW.DarkNight Observation has been shutdown and moved to Configurable.'
     ],
     [
       'locationServiceError',
@@ -25,7 +25,7 @@ describe('Shutdown button for Sequencer ', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer location not found'
       },
-      'Failed to shutdown sequencer, reason: Sequencer location not found'
+      'Failed to shutdown Observation ESW.DarkNight, reason: Sequencer location not found'
     ],
     [
       'Unhandled',
@@ -35,7 +35,7 @@ describe('Shutdown button for Sequencer ', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to shutdown sequencer, reason: Shutdown message type is not supported in Processing state'
+      'Failed to shutdown Observation ESW.DarkNight, reason: Shutdown message type is not supported in Processing state'
     ]
   ]
 

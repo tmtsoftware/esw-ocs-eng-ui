@@ -3,8 +3,9 @@ import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../../contexts/SMContext'
+import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
-import { useAction } from './ActionButton'
 
 const shutdown = (obsMode: ObsMode) => async (
   smService: SequenceManagerService
@@ -20,6 +21,22 @@ const shutdown = (obsMode: ObsMode) => async (
   }
 }
 
+const ShutdownButtonAction = <QResult, MResult>(
+  obsMode: ObsMode,
+  onClick: (data: QResult) => Promise<MResult>,
+  invalidateKeysOnSuccess?: string[]
+): UseMutationResult<MResult, unknown, QResult> =>
+  useMutation({
+    mutationFn: onClick,
+    onSuccess: () =>
+      successMessage(
+        `${obsMode.name} Observation has been shutdown and moved to Configurable.`
+      ),
+    onError: (e) =>
+      errorMessage(`Failed to shutdown Observation ${obsMode.name}`, e),
+    invalidateKeysOnSuccess: invalidateKeysOnSuccess
+  })
+
 export const ShutdownButton = ({
   obsMode
 }: {
@@ -27,7 +44,7 @@ export const ShutdownButton = ({
 }): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
-  const shutdownAction = useAction('Shutdown', shutdown(obsMode), [
+  const shutdownAction = ShutdownButtonAction(obsMode, shutdown(obsMode), [
     OBS_MODES_DETAILS.key
   ])
 

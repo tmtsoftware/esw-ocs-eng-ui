@@ -1,6 +1,6 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
-import { Button, Input, Popconfirm, Tooltip } from 'antd'
+import { Button, Input, Popconfirm, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
@@ -61,19 +61,28 @@ export const SpawnSequenceComponent = ({
   return (
     <Tooltip placement='bottom' title='Add sequence component'>
       <Popconfirm
+        id='spawnSequenceComponent'
+        style={{ paddingLeft: 0 }}
         title={
-          <>
-            Component name:
-            <Input
-              value={componentName}
-              onChange={(e) => setComponentName(e.target.value)}
-            />
-          </>
+          <div>
+            <Space direction='vertical'>
+              <Typography.Text>Add a sequence component</Typography.Text>
+              <Input
+                placeholder='Enter a name'
+                value={componentName}
+                onChange={(e) => setComponentName(e.target.value)}
+              />
+            </Space>
+          </div>
         }
         icon={<></>}
         onCancel={resetComponentName}
+        onVisibleChange={(visible) => {
+          if (!visible) resetComponentName()
+        }}
         onConfirm={onConfirm}
-        disabled={spawnSequenceComponentAction.isLoading}>
+        disabled={spawnSequenceComponentAction.isLoading}
+        okText='Confirm'>
         <Button
           type='text'
           icon={

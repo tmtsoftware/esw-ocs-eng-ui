@@ -211,13 +211,13 @@ describe('Agents Grid View', () => {
     const icon = await screen.findByRole('addSeqCompIcon')
 
     userEvent.click(icon)
-    const inputBox = await screen.findByText('Component name:')
+    const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
     const textbox = screen.getByRole('textbox')
 
     await waitFor(() => userEvent.click(textbox))
     userEvent.type(textbox, 'ESW_1')
-    userEvent.click(screen.getByRole('button', { name: 'OK' }))
+    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
     await screen.findByText(
       'Successfully spawned Sequence Component: ESW.ESW_1'
@@ -259,7 +259,7 @@ describe('Agents Grid View', () => {
 
     userEvent.click(confirm)
 
-    await screen.findByText(/Successfully killed Sequence Component/)
+    await screen.findByText('Successfully killed Sequence Component: ESW.ESW1')
 
     verify(agentService.getAgentStatus()).called()
   })

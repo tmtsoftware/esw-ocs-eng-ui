@@ -66,3 +66,8 @@
 .sequencerTitle {
   cursor: pointer;
 }
+
+:global #spawnSequenceComponent .ant-popover-message-title {
+  padding-left: 0;
+}
+

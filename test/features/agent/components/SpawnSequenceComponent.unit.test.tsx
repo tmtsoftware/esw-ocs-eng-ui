@@ -27,10 +27,22 @@ describe('Spawn sequence component icon', () => {
     const textBox = screen.getByRole('textbox')
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, ' primary21 ')
-    userEvent.click(screen.getByRole('button', { name: 'OK' }))
+    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
     await screen.findByText(
       'component name has leading and trailing whitespaces'
     )
+  })
+
+  it("should show validation error on invalid component name with '-' | ESW-446", async function () {
+    renderWithAuth({
+      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
+    })
+    await assertPopup()
+    const textBox = screen.getByRole('textbox')
+    await waitFor(() => userEvent.click(textBox))
+    userEvent.type(textBox, 'primary-21')
+    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
+    await screen.findByText("component name has '-'")
   })
 
   it('should spawn sequence component on a agent | ESW-446', async function () {
@@ -48,7 +60,7 @@ describe('Spawn sequence component icon', () => {
     const textBox = screen.getByRole('textbox')
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, seqCompName)
-    userEvent.click(screen.getByRole('button', { name: 'OK' }))
+    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
     await screen.findByText(
       `Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`
@@ -75,7 +87,7 @@ describe('Spawn sequence component icon', () => {
 
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, seqCompName)
-    userEvent.click(screen.getByRole('button', { name: 'OK' }))
+    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
     await screen.findByText(
       'Sequence Component could not be spawned, reason: Failed to spawn Sequence Component'
@@ -85,7 +97,7 @@ describe('Spawn sequence component icon', () => {
   const assertPopup = async () => {
     const icon = await screen.findByRole('addSeqCompIcon')
     await waitFor(() => userEvent.click(icon))
-    const inputBox = await screen.findByText('Component name:')
+    const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
   }
 })

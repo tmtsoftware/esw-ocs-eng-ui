@@ -188,37 +188,34 @@ describe('ProvisionButton component', () => {
     prefix: [Prefix.fromString('esw.esw_machine')]
   }
 
-  const provisionErrorTestData: [
-    string,
-    Promise<ProvisionResponse>,
-    string
-  ][] = [
+  const provisionErrorTestData: [string, Promise<ProvisionResponse>, string][] =
     [
-      'Unhandled',
-      Promise.resolve(unhandled),
-      'Failed to provision, reason: Provision message type is not supported in Processing state'
-    ],
-    [
-      'LocationServiceError',
-      Promise.resolve(locServiceError),
-      'Failed to provision, reason: ESW.sequence_manager is not found'
-    ],
-    [
-      'SpawningSequenceComponentsFailed',
-      Promise.resolve(spawnSeqCompError),
-      'Failed to provision, reason: Unable to spawn following sequence comps on machines: ESW.ESW_1 on ESW.machine,'
-    ],
-    [
-      'CouldNotFindMachines',
-      Promise.resolve(couldNotFindMachine),
-      'Failed to provision, reason: Could not find following machine: ESW.esw_machine'
-    ],
-    [
-      'Exception',
-      Promise.reject(Error('error occured')),
-      'Failed to provision, reason: error occured'
+      [
+        'Unhandled',
+        Promise.resolve(unhandled),
+        'Failed to provision, reason: Provision message type is not supported in Processing state'
+      ],
+      [
+        'LocationServiceError',
+        Promise.resolve(locServiceError),
+        'Failed to provision, reason: ESW.sequence_manager is not found'
+      ],
+      [
+        'SpawningSequenceComponentsFailed',
+        Promise.resolve(spawnSeqCompError),
+        'Failed to provision, reason: Unable to spawn following sequence comps on machines: ESW.ESW_1 on ESW.machine,'
+      ],
+      [
+        'CouldNotFindMachines',
+        Promise.resolve(couldNotFindMachine),
+        'Failed to provision, reason: Could not find following machine: ESW.esw_machine'
+      ],
+      [
+        'Exception',
+        Promise.reject(Error('error occured')),
+        'Failed to provision, reason: error occured'
+      ]
     ]
-  ]
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
     it(`should be able to show error log if provision return ${name} | ESW-444`, async () => {

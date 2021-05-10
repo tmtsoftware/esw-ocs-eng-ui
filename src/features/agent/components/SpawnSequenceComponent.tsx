@@ -8,15 +8,15 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './agentCards.module.css'
 
-const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
-  agentService: AgentService
-) =>
-  agentService
-    .spawnSequenceComponent(agentPrefix, componentName)
-    .then((res) => {
-      if (res._type === 'Failed') throw new Error(res.msg)
-      return res
-    })
+const spawnSequenceComponent =
+  (agentPrefix: Prefix, componentName: string) =>
+  (agentService: AgentService) =>
+    agentService
+      .spawnSequenceComponent(agentPrefix, componentName)
+      .then((res) => {
+        if (res._type === 'Failed') throw new Error(res.msg)
+        return res
+      })
 
 const requirement = (predicate: boolean, msg: string) =>
   predicate && errorMessage(msg)

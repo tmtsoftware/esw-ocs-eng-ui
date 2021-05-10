@@ -18,8 +18,7 @@ describe('UnProvision button', () => {
     _type: 'Unhandled',
     state: 'Processing',
     messageType: 'ShutdownAllSequenceComponents',
-    msg:
-      'ShutdownAllSequenceComponents message type is not supported in Processing state'
+    msg: 'ShutdownAllSequenceComponents message type is not supported in Processing state'
   }
 
   const locServiceError: ShutdownSequenceComponentResponse = {

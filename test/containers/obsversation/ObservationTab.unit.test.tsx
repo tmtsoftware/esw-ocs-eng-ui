@@ -161,11 +161,8 @@ describe('observation tabs', () => {
       ui: <ObservationTab tabName='Running' setObservation={() => ({})} />
     })
     await screen.findAllByRole('table')
-    const [
-      sequencerTable,
-      resourcesTable,
-      resourcesBodyTable
-    ] = screen.queryAllByRole('table')
+    const [sequencerTable, resourcesTable, resourcesBodyTable] =
+      screen.queryAllByRole('table')
 
     assertTableHeader(sequencerTable, 'Sequencers')
     assertTableHeader(sequencerTable, 'Sequence Status')

@@ -46,9 +46,8 @@ describe('useSequencersData', () => {
       .thenResolve(stepList3)
       .thenResolve(stepList4)
 
-    const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true
-    )
+    const ContextAndQueryClientProvider =
+      getContextWithQueryClientProvider(true)
 
     const { result, waitFor } = renderHook(
       () =>
@@ -119,9 +118,8 @@ describe('useSequencersData', () => {
 
     when(sequencerServiceMock.getSequence()).thenReject(Error())
 
-    const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true
-    )
+    const ContextAndQueryClientProvider =
+      getContextWithQueryClientProvider(true)
 
     const { result, waitFor } = renderHook(
       () => useSequencersData([Prefix.fromString('IRIS.Darknight')]),

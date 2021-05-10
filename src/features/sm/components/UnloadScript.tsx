@@ -28,9 +28,10 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
   }
 }
 
-const unloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (
-  smService: SequenceManagerService
-) => smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
+const unloadScript =
+  (subsystem: Subsystem, obsMode: ObsMode) =>
+  (smService: SequenceManagerService) =>
+    smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
 export const UnloadScript = ({
   sequencerPrefix

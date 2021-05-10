@@ -46,8 +46,8 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
       } as KeycloakTokenParsed),
-    realmAccess: () => ([''] as unknown) as KeycloakRoles,
-    resourceAccess: () => ([''] as unknown) as KeycloakResourceAccess,
+    realmAccess: () => [''] as unknown as KeycloakRoles,
+    resourceAccess: () => [''] as unknown as KeycloakResourceAccess,
     loadUserProfile: () =>
       Promise.resolve({}) as KeycloakPromise<KeycloakProfile, void>
   }
@@ -66,9 +66,8 @@ type MockServices = {
 }
 
 export const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
-export const sequencerServiceInstance = instance<SequencerService>(
-  sequencerServiceMock
-)
+export const sequencerServiceInstance =
+  instance<SequencerService>(sequencerServiceMock)
 
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(AgentServiceImpl)

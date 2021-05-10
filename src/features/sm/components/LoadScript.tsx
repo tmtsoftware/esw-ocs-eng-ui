@@ -35,9 +35,10 @@ const handleResponse = (res: StartSequencerResponse) => {
   }
 }
 
-const loadScript = (subsystem: Subsystem, obsMode: ObsMode) => (
-  smService: SequenceManagerService
-) => smService.startSequencer(subsystem, obsMode).then(handleResponse)
+const loadScript =
+  (subsystem: Subsystem, obsMode: ObsMode) =>
+  (smService: SequenceManagerService) =>
+    smService.startSequencer(subsystem, obsMode).then(handleResponse)
 
 export const LoadScript = ({
   subsystem

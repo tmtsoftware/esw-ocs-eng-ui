@@ -35,8 +35,7 @@ describe('UnloadScript Icon', () => {
       'Unhandled',
       {
         _type: 'Unhandled',
-        msg:
-          'ShutdownSequencer message type is not supported in Processing state',
+        msg: 'ShutdownSequencer message type is not supported in Processing state',
         state: 'Idle',
         messageType: 'Unhandled'
       },

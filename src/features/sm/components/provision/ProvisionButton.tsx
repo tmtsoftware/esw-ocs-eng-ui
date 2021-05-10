@@ -21,32 +21,32 @@ type ProvisionRecord = Record<string, number>
 const sanitiseErrorMsg = (res: SpawningSequenceComponentsFailed) =>
   res.failureResponses.map((x) => x.split('reason')[0].split(':')[1]).join('\n')
 
-const provision = (provisionRecord: ProvisionRecord) => async (
-  sequenceManagerService: SequenceManagerService
-) => {
-  const provisionConfig = parseProvisionConf(provisionRecord)
-  const res = await sequenceManagerService.provision(provisionConfig)
-  switch (res._type) {
-    case 'Success':
-      return res
-    case 'LocationServiceError':
-      throw Error(res.reason)
-    case 'Unhandled':
-      throw Error(res.msg)
-    case 'SpawningSequenceComponentsFailed':
-      throw Error(
-        `Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(
-          res
-        )}`
-      )
-    case 'CouldNotFindMachines':
-      throw Error(
-        `Could not find following machine: ${res.prefix
-          .map((x) => x.toJSON())
-          .join(',')}`
-      )
+const provision =
+  (provisionRecord: ProvisionRecord) =>
+  async (sequenceManagerService: SequenceManagerService) => {
+    const provisionConfig = parseProvisionConf(provisionRecord)
+    const res = await sequenceManagerService.provision(provisionConfig)
+    switch (res._type) {
+      case 'Success':
+        return res
+      case 'LocationServiceError':
+        throw Error(res.reason)
+      case 'Unhandled':
+        throw Error(res.msg)
+      case 'SpawningSequenceComponentsFailed':
+        throw Error(
+          `Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(
+            res
+          )}`
+        )
+      case 'CouldNotFindMachines':
+        throw Error(
+          `Could not find following machine: ${res.prefix
+            .map((x) => x.toJSON())
+            .join(',')}`
+        )
+    }
   }
-}
 
 const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
   const agentProvisionConfigs = Object.entries(provisionRecord).map(

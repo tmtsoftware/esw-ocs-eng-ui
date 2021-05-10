@@ -11,19 +11,18 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 
-const addCommands = (commands: SequenceCommand[]) => (
-  sequencerService: SequencerService
-) => {
-  return sequencerService.add(commands).then((res) => {
-    switch (res._type) {
-      case 'Ok':
-        return res
+const addCommands =
+  (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
+    return sequencerService.add(commands).then((res) => {
+      switch (res._type) {
+        case 'Ok':
+          return res
 
-      case 'Unhandled':
-        throw new Error(res.msg)
-    }
-  })
-}
+        case 'Unhandled':
+          throw new Error(res.msg)
+      }
+    })
+  }
 
 export const DuplicateAction = ({
   sequencerPrefix,

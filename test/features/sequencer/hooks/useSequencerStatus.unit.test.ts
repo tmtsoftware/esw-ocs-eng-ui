@@ -11,9 +11,8 @@ import {
 describe('useSequencer', () => {
   it('should return status of sequencer | ESW-455', async () => {
     when(sequencerServiceMock.isOnline()).thenResolve(true)
-    const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true
-    )
+    const ContextAndQueryClientProvider =
+      getContextWithQueryClientProvider(true)
 
     const { result, waitFor } = renderHook(
       () => useSequencerStatus(Prefix.fromString('ESW.irisDarkNight')),

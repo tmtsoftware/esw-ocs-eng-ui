@@ -20,9 +20,8 @@ describe('Resources table', () => {
     ]
     renderWithAuth({ ui: <ResourcesTable resources={resources} /> })
     await screen.findByRole('table')
-    const [resourceHeaderTable, resourceBodyTable] = screen.queryAllByRole(
-      'table'
-    )
+    const [resourceHeaderTable, resourceBodyTable] =
+      screen.queryAllByRole('table')
     expect(
       within(resourceHeaderTable).getByRole('columnheader', {
         name: 'Resource Required'

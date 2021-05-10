@@ -7,19 +7,18 @@ import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
 
-const shutdown = (obsMode: ObsMode) => async (
-  smService: SequenceManagerService
-) => {
-  const res = await smService.shutdownObsModeSequencers(obsMode)
-  switch (res._type) {
-    case 'Success':
-      return res
-    case 'LocationServiceError':
-      throw new Error(res.reason)
-    case 'Unhandled':
-      throw new Error(res.msg)
+const shutdown =
+  (obsMode: ObsMode) => async (smService: SequenceManagerService) => {
+    const res = await smService.shutdownObsModeSequencers(obsMode)
+    switch (res._type) {
+      case 'Success':
+        return res
+      case 'LocationServiceError':
+        throw new Error(res.reason)
+      case 'Unhandled':
+        throw new Error(res.msg)
+    }
   }
-}
 
 const ShutdownButtonAction = <QResult, MResult>(
   obsMode: ObsMode,

@@ -85,16 +85,20 @@ describe('SM actions', () => {
       // wait for both buttons to be enabled once data is loaded in async manner
       await waitFor(() => {
         expect(
-          (screen.getByRole('button', {
-            name: 'Provision'
-          }) as HTMLButtonElement).disabled
+          (
+            screen.getByRole('button', {
+              name: 'Provision'
+            }) as HTMLButtonElement
+          ).disabled
         ).false
       })
       await waitFor(() => {
         expect(
-          (screen.getByRole('button', {
-            name: 'Configure'
-          }) as HTMLButtonElement).disabled
+          (
+            screen.getByRole('button', {
+              name: 'Configure'
+            }) as HTMLButtonElement
+          ).disabled
         ).false
       })
 

@@ -9,13 +9,12 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './agentCards.module.css'
 
-const killComponent = (componentId: ComponentId) => (
-  agentService: AgentService
-) =>
-  agentService.killComponent(componentId).then((res) => {
-    if (res._type === 'Failed') throw new Error(res.msg)
-    return res
-  })
+const killComponent =
+  (componentId: ComponentId) => (agentService: AgentService) =>
+    agentService.killComponent(componentId).then((res) => {
+      if (res._type === 'Failed') throw new Error(res.msg)
+      return res
+    })
 
 export const KillSequenceComponent = ({
   componentId

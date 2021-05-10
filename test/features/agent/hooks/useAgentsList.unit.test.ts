@@ -21,9 +21,8 @@ describe('useAgents', () => {
     when(locServiceMock.listByComponentType('Machine')).thenResolve([
       agentLocation
     ])
-    const ContextAndQueryClientProvider = getContextWithQueryClientProvider(
-      true
-    )
+    const ContextAndQueryClientProvider =
+      getContextWithQueryClientProvider(true)
 
     const { result, waitFor } = renderHook(() => useAgentsList(), {
       wrapper: ContextAndQueryClientProvider

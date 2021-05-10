@@ -1,9 +1,10 @@
 import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { ObsMode, StepList, Subsystem } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { when } from 'ts-mockito'
+import { verify, when } from 'ts-mockito'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import { step } from '../../utils/sequence-utils'
 import {
@@ -75,6 +76,29 @@ describe('sequencer table', () => {
     await screen.findByRole('row', {
       name: /setting esw\.darknight na na/i
     })
+  })
+
+  it('should change the location on click of sequencer | ESW-492', async () => {
+    const obsMode: ObsMode = new ObsMode('darknight')
+    const sequencers: Subsystem[] = ['ESW']
+
+    when(sequencerServiceMock.getSequence()).thenResolve(undefined)
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+        </BrowserRouter>
+      )
+    })
+
+    const sequencer = await screen.findByRole('link')
+    userEvent.click(sequencer)
+
+    expect(window.location.pathname).to.equal('/sequencer')
+    expect(window.location.search).to.equal('?prefix=ESW.darknight')
+
+    verify(sequencerServiceMock.getSequence()).called()
   })
 })
 

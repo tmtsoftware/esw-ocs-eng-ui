@@ -8,7 +8,7 @@ import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
+import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
@@ -43,10 +43,7 @@ const useStartSequence = (
         'Failed to start the sequence',
         (e as Error).message ? e : Error((e as string).toString())
       ),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [GET_SEQUENCE.key, prefix.toJSON()]
-    ]
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
   })
 }
 

@@ -7,7 +7,7 @@ import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STATE, SEQUENCER_STATUS } from '../../../queryKeys'
+import { SEQUENCER_STATUS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
@@ -28,10 +28,7 @@ const useGoOnlineAction = (
       )
     },
     onError: (e) => errorMessage('Sequencer failed to go Online', e),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [SEQUENCER_STATUS.key, prefix.toJSON()]
-    ]
+    invalidateKeysOnSuccess: [[SEQUENCER_STATUS.key, prefix.toJSON()]]
   })
 }
 

@@ -33,9 +33,4 @@ export const SEQUENCER_STATUS: Query = {
   key: 'sequencerStatus'
 }
 
-export const SEQUENCER_STATE = {
-  key: `getSequencerState`,
-  refetchInterval: 1000
-}
-
 export const SEQUENCER_LOCATION = { key: 'findSequencerLocation' }

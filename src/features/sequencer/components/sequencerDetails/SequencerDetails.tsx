@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
-import { useSequencerState } from '../../hooks/useSequencerState'
+import { useSequencerDetails } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
@@ -140,13 +140,13 @@ export const SequencerDetails = ({
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  const sequencerState = useSequencerState(prefix)
+  const sequencerStateResponse = useSequencerDetails(prefix)
   const seqLocation = useSequencerLocation(prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
 
   if (seqLocation.isLoading) return <Spinner />
 
-  if (!seqLocation.data)
+  if (!seqLocation.data || !sequencerStateResponse)
     return (
       <SequencerError
         title='404'
@@ -163,7 +163,7 @@ export const SequencerDetails = ({
         extra={
           <Actions
             prefix={prefix}
-            sequencerState={sequencerState.data?._type}
+            sequencerState={sequencerStateResponse.sequencerState._type}
           />
         }>
         <SequencerDescription prefix={prefix} />

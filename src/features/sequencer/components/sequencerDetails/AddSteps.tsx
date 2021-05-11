@@ -1,0 +1,83 @@
+import { PlusCircleOutlined } from '@ant-design/icons'
+import {
+  GenericResponse,
+  Sequence,
+  SequenceCommand,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
+import type { Prefix } from '@tmtsoftware/esw-ts/lib/src'
+import { Upload } from 'antd'
+import React, { useState } from 'react'
+import { useMutation } from '../../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../../utils/message'
+import { GET_SEQUENCE } from '../../../queryKeys'
+import { useSequencerService } from '../../hooks/useSequencerService'
+import styles from './sequencerDetails.module.css'
+
+const handleResponse = (res: GenericResponse) => {
+  switch (res._type) {
+    case 'Ok':
+      return res
+
+    case 'CannotOperateOnAnInFlightOrFinishedStep':
+      throw new Error('Cannot operate on in progress or finished step')
+
+    case 'IdDoesNotExist':
+      throw new Error(`${res.id} does not exist`)
+
+    case 'Unhandled':
+      throw new Error(res.msg)
+  }
+}
+
+const addSteps =
+  (id: string, commands: SequenceCommand[]) =>
+  (sequencerService: SequencerService) =>
+    sequencerService.insertAfter(id, commands).then(handleResponse)
+
+export const AddSteps = ({
+  disabled,
+  stepId,
+  sequencerPrefix
+}: {
+  disabled: boolean
+  stepId: string
+  sequencerPrefix: Prefix
+}): JSX.Element => {
+  const [commands, setCommands] = useState<SequenceCommand[]>([])
+  const sequencerService = useSequencerService(sequencerPrefix)
+
+  const addStepAction = useMutation({
+    mutationFn: addSteps(stepId, commands),
+    onError: (e) => errorMessage('Failed to add steps', e),
+    onSuccess: () => successMessage('Successfully added steps'),
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+  })
+
+  const beforeUpload = (file: File): Promise<void> => {
+    const promise = new Promise<Sequence>((resolve) => {
+      const reader = new FileReader()
+      reader.readAsText(file)
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          resolve(Sequence.fromString(reader.result))
+        }
+      }
+    })
+    return promise.then((e) => setCommands(e.commands))
+  }
+
+  return (
+    <Upload
+      disabled={disabled}
+      beforeUpload={beforeUpload}
+      customRequest={() =>
+        sequencerService && addStepAction.mutate(sequencerService)
+      }>
+      <div className={disabled && styles.actionDisabled}>
+        <PlusCircleOutlined />
+        Add steps
+      </div>
+    </Upload>
+  )
+}

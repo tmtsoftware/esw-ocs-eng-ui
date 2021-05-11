@@ -93,7 +93,7 @@ describe('StepActions', () => {
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add a step/i
+      name: /add steps/i
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.true
@@ -120,7 +120,7 @@ describe('StepActions', () => {
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add a step/i
+      name: /add steps/i
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.true
@@ -147,7 +147,7 @@ describe('StepActions', () => {
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add a step/i
+      name: /add steps/i
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.false

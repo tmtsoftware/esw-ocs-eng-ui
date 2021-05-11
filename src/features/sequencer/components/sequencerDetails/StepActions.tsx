@@ -1,12 +1,9 @@
-import {
-  CopyOutlined,
-  PlusCircleOutlined,
-  MoreOutlined
-} from '@ant-design/icons'
+import { CopyOutlined, MoreOutlined } from '@ant-design/icons'
 import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu } from 'antd'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { AddSteps } from './AddSteps'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 import styles from './sequencerDetails.module.css'
@@ -40,8 +37,11 @@ const StepActionsMenu = ({
         />
       </Menu.Item>
       <Menu.Item key='2' disabled={isFinished}>
-        <PlusCircleOutlined />
-        Add a step
+        <AddSteps
+          disabled={isFinished}
+          stepId={step.id}
+          sequencerPrefix={sequencerPrefix}
+        />
       </Menu.Item>
       <Menu.Item
         key='3'

@@ -170,7 +170,7 @@ describe('stepList table', () => {
     //ESW-490
     await screen.findByText('Delete')
 
-    await screen.findByText('Add a step')
+    await screen.findByText('Add steps')
     await screen.findByText('Duplicate')
   })
 

@@ -11,9 +11,9 @@ export type SMContextType = [Location | undefined, boolean]
 
 type SMContext = { smService: SequenceManagerService; smLocation: Location }
 
-const mkSMContext = (loc: Location, tf: TokenFactory): SMContext => ({
-  smService: createSequenceManagerService(loc, tf),
-  smLocation: loc
+const mkSMContext = (location: Location, tf: TokenFactory): SMContext => ({
+  smService: createSequenceManagerService(location, tf),
+  smLocation: location
 })
 
 export const [useSMService, SMServiceProvider] = createServiceCtx(

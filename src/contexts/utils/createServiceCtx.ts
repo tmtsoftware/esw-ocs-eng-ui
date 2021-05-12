@@ -36,10 +36,6 @@ export const useService = <T>(
     [auth, factory]
   )
 
-  useEffect(() => {
-    locationService.find(connection).finally(() => setLoading(false))
-  }, [connection, locationService])
-
   const track = useCallback(
     (onEvent) => locationService.track(connection)(onEvent),
     [connection, locationService]
@@ -49,6 +45,11 @@ export const useService = <T>(
     mapper: onEventCallback,
     run: track
   })
+
+  useEffect(() => {
+    console.log('Location', connection)
+    locationService.find(connection).finally(() => setLoading(false))
+  }, [connection, locationService])
 
   return [value, loading]
 }

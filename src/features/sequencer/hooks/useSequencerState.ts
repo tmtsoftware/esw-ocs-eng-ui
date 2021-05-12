@@ -1,7 +1,9 @@
-import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
+import { useCallback, useState } from 'react'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
+import { useStream } from '../../../hooks/useStream'
 import { SEQUENCER_STATE } from '../../queryKeys'
 import { useSequencerService } from './useSequencerService'
+import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 
 export const useSequencerState = <E>(
   sequencerPrefix: Prefix,
@@ -24,9 +26,8 @@ export const useSequencerState = <E>(
 export const useSequencerDetails = (
   sequencerPrefix: Prefix
 ): SequencerStateResponse | undefined => {
-  const [sequencerStateResponse, setSequencerStateResponse] = useState<
-    SequencerStateResponse | undefined
-  >(undefined)
+  const [sequencerStateResponse, setSequencerStateResponse] =
+    useState<SequencerStateResponse | undefined>(undefined)
 
   const sequencerService = useSequencerService(sequencerPrefix)
   if (!sequencerService) throw Error('sequencer not found')

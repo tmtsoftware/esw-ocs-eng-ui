@@ -10,7 +10,7 @@ import {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
-import React, { memo, useEffect, useMemo } from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
@@ -70,6 +70,7 @@ export const CurrentObsMode = ({
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
+  const [loading, setLoading] = useState(true)
 
   const sortedSequencers: Prefix[] = sequencers.reduce(
     (acc: Prefix[], elem) => {
@@ -92,17 +93,20 @@ export const CurrentObsMode = ({
       sequencersInfoMap[key.toJSON()] = {
         data: undefined,
         onevent: (sequencerStateResponse: SequencerStateResponse) => {
+          loading && setLoading(false)
           sequencersInfoMap[key.toJSON()]['data'] = sequencerStateResponse
         }
       }
     }
 
     const services: [SequencerService, Prefix][] | undefined =
-      gatewayLocation &&
-      sortedSequencers.map((seq) => [
-        mkSequencerService(seq, gatewayLocation, tf),
-        seq
-      ])
+      currentTab === 'Running'
+        ? gatewayLocation &&
+          sortedSequencers.map((seq) => [
+            mkSequencerService(seq, gatewayLocation, tf),
+            seq
+          ])
+        : []
 
     const subscriptions = services?.map(
       ([sequencerService, sequencerPrefix]) => {
@@ -157,7 +161,9 @@ export const CurrentObsMode = ({
             <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
         }>
-        {isRunningTab && <SequencersTable sequencersInfo={sequencersInfo} />}
+        {isRunningTab && (
+          <SequencersTable sequencersInfo={sequencersInfo} loading={loading} />
+        )}
         <ResourcesTable resources={resources} />
       </Card>
     </>

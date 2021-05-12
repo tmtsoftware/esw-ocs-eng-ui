@@ -12,8 +12,8 @@ import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
+import { useSequencerDetails } from '../../hooks/useSequencerDetails'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
-import { useSequencerDetails } from '../../hooks/useSequencerState'
 import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
@@ -146,13 +146,15 @@ export const SequencerDetails = ({
 
   if (seqLocation.isLoading) return <Spinner />
 
-  if (!seqLocation.data || !sequencerStateResponse)
+  if (!seqLocation.data || !sequencerStateResponse) {
+    console.log('Error here')
     return (
       <SequencerError
         title='404'
         subtitle={`Sequencer ${prefix.toJSON()} : Not found`}
       />
     )
+  }
 
   return (
     <>

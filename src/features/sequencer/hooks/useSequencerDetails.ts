@@ -1,36 +1,18 @@
 import { useCallback, useState } from 'react'
-import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { useStream } from '../../../hooks/useStream'
-import { SEQUENCER_STATE } from '../../queryKeys'
 import { useSequencerService } from './useSequencerService'
 import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
-
-export const useSequencerState = <E>(
-  sequencerPrefix: Prefix,
-  enabled = true,
-  onError?: (err: E) => void
-): UseQueryResult<SequencerStateResponse> => {
-  const sequencerService = useSequencerService(sequencerPrefix)
-
-  return useQuery(
-    [SEQUENCER_STATE.key, sequencerPrefix.toJSON()],
-    () => sequencerService?.getSequencerState(),
-    {
-      onError,
-      enabled: !!sequencerService && enabled,
-      refetchInterval: SEQUENCER_STATE.refetchInterval
-    }
-  )
-}
 
 export const useSequencerDetails = (
   sequencerPrefix: Prefix
 ): SequencerStateResponse | undefined => {
-  const [sequencerStateResponse, setSequencerStateResponse] =
-    useState<SequencerStateResponse | undefined>(undefined)
+  const [sequencerStateResponse, setSequencerStateResponse] = useState<
+    SequencerStateResponse | undefined
+  >(undefined)
 
+  console.log('using sequencer service:')
   const sequencerService = useSequencerService(sequencerPrefix)
-  if (!sequencerService) throw Error('sequencer not found')
+  if (!sequencerService) throw Error('sequencer not found sorry')
 
   const subscribeState = useCallback(
     (onEvent: (sequencerStateResponse: SequencerStateResponse) => void) =>

@@ -47,7 +47,7 @@ const currentStep = (stepList: StepList): Option<Step> => {
 const deriveStatus = (
   stepList: StepList | undefined
 ): SequencerInfo['stepListStatus'] => {
-  if (stepList === undefined || stepList === null)
+  if (stepList === undefined || stepList.steps.length === 0)
     return { stepNumber: 0, status: 'NA' as const }
   const step = currentStep(stepList)
   if (step === undefined)

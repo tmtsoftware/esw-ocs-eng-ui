@@ -62,10 +62,12 @@ const columns: ColumnsType<SequencerInfo> = [
 
 type ObsModeSeqTableProps = {
   sequencersInfo: SequencerInfo[]
+  loading: boolean
 }
 
 export const SequencersTable = ({
-  sequencersInfo
+  sequencersInfo,
+  loading
 }: ObsModeSeqTableProps): JSX.Element => {
   // const [gatewayLocation] = useGatewayLocation()
   // const { auth } = useAuth()
@@ -130,7 +132,7 @@ export const SequencersTable = ({
       rowKey={(record) => record.prefix}
       style={{ paddingBottom: '1.5rem' }}
       pagination={false}
-      // loading={sequencerStatus.isLoading || sequencerStatus.isError}
+      loading={loading}
       columns={columns}
       dataSource={sequencersInfo}
       onRow={() => ({ style: { fontSize: '1rem' } })}

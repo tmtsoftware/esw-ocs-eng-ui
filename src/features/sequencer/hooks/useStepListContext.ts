@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { StepListStatus } from '../hooks/useSequencersData'
+import type { StepListStatus } from './useSequencersData'
 
 export type StepListTableContextType = {
   handleDuplicate: () => void

@@ -109,15 +109,13 @@ describe('sequencer details', () => {
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    const loadAndUploadButton = await screen.findAllByRole('button', {
-      name: 'Load Sequence'
-    })
+    const loadButton = await screen.findByRole('LoadSequence')
     const abortButton = await screen.findByRole('button', {
       name: 'Abort sequence'
     })
     const goOffline = await screen.findByRole('button', { name: 'Go offline' })
 
-    expect(loadAndUploadButton.length).to.equal(2)
+    expect(loadButton).to.exist
     expect(goOffline).to.exist
     expect(abortButton).to.exist
 

@@ -29,9 +29,9 @@ const useLoadAction = (
     onSuccess: (res) => {
       if (res?._type === 'Ok')
         return successMessage('Sequence has been loaded successfully')
-      return errorMessage('error', Error(res?.msg))
+      return errorMessage('Failed to load the sequence', Error(res?.msg))
     },
-    onError: (e) => errorMessage('errorMsg', e),
+    onError: (e) => errorMessage('Failed to load the sequence', e),
     invalidateKeysOnSuccess: [
       [SEQUENCER_STATE.key, prefix.toJSON()],
       [GET_SEQUENCE.key, prefix.toJSON()]
@@ -71,6 +71,8 @@ export const LoadSequence = ({
       showUploadList={false}>
       <Button
         type='primary'
+        loading={loadSequenceAction.isLoading}
+        role={'LoadSequence'}
         disabled={
           !sequencerState ||
           !(sequencerState === 'Idle' || sequencerState === 'Loaded')

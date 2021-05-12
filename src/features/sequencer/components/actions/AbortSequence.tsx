@@ -8,7 +8,7 @@ import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
+import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
@@ -26,7 +26,10 @@ const useAbortSequence = (
       return errorMessage('Failed to abort the Sequence', Error(res.msg))
     },
     onError: (e) => errorMessage('Failed to abort the Sequence', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
+    invalidateKeysOnSuccess: [
+      [SEQUENCER_STATE.key, prefix.toJSON()],
+      [GET_SEQUENCE.key, prefix.toJSON()]
+    ]
   })
 }
 

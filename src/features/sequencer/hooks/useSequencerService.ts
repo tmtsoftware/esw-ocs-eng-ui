@@ -10,12 +10,16 @@ import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { createTokenFactory } from '../../../utils/createTokenFactory'
 
-export const useSequencerService = (sequencerPrefix: Prefix): SequencerService | undefined => {
+export const useSequencerService = (
+  sequencerPrefix: Prefix
+): SequencerService | undefined => {
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
 
   const tf = createTokenFactory(auth)
-  return gatewayLocation && mkSequencerService(sequencerPrefix, gatewayLocation, tf)
+  return (
+    gatewayLocation && mkSequencerService(sequencerPrefix, gatewayLocation, tf)
+  )
 }
 
 // added for testing purpose : checkout /test/mocks/useSequencerService

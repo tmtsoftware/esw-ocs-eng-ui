@@ -1,11 +1,16 @@
-import { ObsMode, Prefix, SequencerState, Subsystem } from '@tmtsoftware/esw-ts'
+import {
+  ObsMode,
+  Prefix,
+  SequencerStateResponse,
+  Subsystem
+} from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
-import { useSequencerDetails } from '../../features/sequencer/hooks/useSequencerState'
+import { useSequencerState } from '../../features/sequencer/hooks/useSequencerState'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
 
@@ -29,15 +34,13 @@ const Status = ({
   obsMode: ObsMode
   isRunning: boolean
 }) => {
-  const sequencerStateResponse = useSequencerDetails(
-    new Prefix('ESW', obsMode.name)
+  const { data: obsModeStatus } = useSequencerState(
+    new Prefix('ESW', obsMode.name),
+    isRunning
   )
   const status =
-    sequencerStateResponse && isRunning ? (
-      <Text
-        content={sequencerStateResponse.sequencerState._type}
-        type={getTextType(sequencerStateResponse.sequencerState)}
-      />
+    obsModeStatus && isRunning ? (
+      <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
     ) : (
       <Text content='NA' type='secondary' />
     )
@@ -83,6 +86,8 @@ export const CurrentObsMode = ({
   )
 }
 
-const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
+const getTextType = (
+  runningObsModeStatus: SequencerStateResponse
+): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }

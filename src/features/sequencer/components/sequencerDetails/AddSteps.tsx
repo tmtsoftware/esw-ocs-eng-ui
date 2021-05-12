@@ -60,18 +60,17 @@ export const AddSteps = ({
     invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
   })
 
-  const beforeUpload = (file: File): Promise<void> => {
-    const promise = new Promise<Sequence>((resolve) => {
+  const beforeUpload = (file: File): Promise<void> =>
+    new Promise<void>((resolve) => {
       const reader = new FileReader()
       reader.readAsText(file)
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          resolve(Sequence.fromString(reader.result))
+          setCommands(Sequence.fromString(reader.result).commands)
+          resolve()
         }
       }
     })
-    return promise.then((e) => setCommands(e.commands))
-  }
 
   return (
     <Upload
@@ -80,7 +79,7 @@ export const AddSteps = ({
       customRequest={() =>
         sequencerService && addStepAction.mutate(sequencerService)
       }>
-      <div className={disabled && styles.actionDisabled}>
+      <div className={disabled ? styles.disabled : undefined}>
         <PlusCircleOutlined />
         Add steps
       </div>

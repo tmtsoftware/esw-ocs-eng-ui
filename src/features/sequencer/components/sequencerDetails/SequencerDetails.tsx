@@ -163,26 +163,28 @@ export const SequencerDetails = ({
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  const [sequencerStateResponse, setSequencerStateResponse] =
-    useState<SequencerStateResponse | undefined>(undefined)
-  const [gatewayLocation] = useGatewayLocation()
-  const { auth } = useAuth()
-  const tf = createTokenFactory(auth)
-  const [loading, setLoading] = useState(true)
+  // const [sequencerStateResponse, setSequencerStateResponse] =
+  //   useState<SequencerStateResponse | undefined>(undefined)
+  // const [gatewayLocation] = useGatewayLocation()
+  // const { auth } = useAuth()
+  // const tf = createTokenFactory(auth)
+  // const [loading, setLoading] = useState(true)
 
+  // const subscription = useRef<Subscription>()
+  // useEffect(() => {
+  //   if (subscription.current) subscription.current.cancel()
+  //   const seqService =
+  //     gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
+  //   subscription.current = seqService?.subscribeSequencerState()(
+  //     (sequencerStateResponse: SequencerStateResponse) => {
+  //       loading && setLoading(false)
+  //       setSequencerStateResponse(sequencerStateResponse)
+  //     }
+  //   )
+  // }, [gatewayLocation, tf])
+  console.log('inside details')
   const seqLocation = useSequencerLocation(prefix)
-  const subscription = useRef<Subscription>()
-  useEffect(() => {
-    if (subscription.current) subscription.current.cancel()
-    const seqService =
-      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
-    subscription.current = seqService?.subscribeSequencerState()(
-      (sequencerStateResponse: SequencerStateResponse) => {
-        loading && setLoading(false)
-        setSequencerStateResponse(sequencerStateResponse)
-      }
-    )
-  }, [gatewayLocation, tf])
+  const [sequencerStateResponse, loading] = useSequencerDetails(prefix)
   const [selectedStep, setSelectedStep] = useState<Step>()
 
   if (seqLocation.isLoading) return <Spinner />

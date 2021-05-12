@@ -9,7 +9,7 @@ import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
+import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
@@ -31,11 +31,8 @@ const useLoadAction = (
         return successMessage('Sequence has been loaded successfully')
       return errorMessage('Failed to load the sequence', Error(res?.msg))
     },
-    onError: (e) => errorMessage('Failed to load the sequence', e),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [GET_SEQUENCE.key, prefix.toJSON()]
-    ]
+    onError: (e) => errorMessage('errorMsg', e),
+    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
   })
 }
 

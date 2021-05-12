@@ -10,7 +10,7 @@ import {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
-import React, { useEffect, useMemo } from 'react'
+import React, { memo, useEffect, useMemo } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
@@ -79,7 +79,7 @@ export const CurrentObsMode = ({
     },
     []
   )
-  const map: Record<
+  const sequencersInfoMap: Record<
     string,
     {
       data: SequencerStateResponse | undefined
@@ -89,10 +89,10 @@ export const CurrentObsMode = ({
 
   useEffect(() => {
     for (const key of sortedSequencers) {
-      map[key.toJSON()] = {
+      sequencersInfoMap[key.toJSON()] = {
         data: undefined,
         onevent: (sequencerStateResponse: SequencerStateResponse) => {
-          map[key.toJSON()]['data'] = sequencerStateResponse
+          sequencersInfoMap[key.toJSON()]['data'] = sequencerStateResponse
         }
       }
     }
@@ -104,14 +104,18 @@ export const CurrentObsMode = ({
         seq
       ])
 
-    services?.map(([sequencerService, sequencerPrefix]) =>
-      sequencerService.subscribeSequencerState()(
-        map[sequencerPrefix.toJSON()]['onevent']
-      )
+    const subscriptions = services?.map(
+      ([sequencerService, sequencerPrefix]) => {
+        console.log('subscribing for ', sequencerPrefix)
+        return sequencerService.subscribeSequencerState()(
+          sequencersInfoMap[sequencerPrefix.toJSON()]['onevent']
+        )
+      }
     )
-  }, [gatewayLocation, map, sortedSequencers, tf])
+    return () => subscriptions?.forEach((subscription) => subscription.cancel())
+  }, [])
 
-  const sequencersInfo: SequencerInfo[] = Object.entries(map).map(
+  const sequencersInfo: SequencerInfo[] = Object.entries(sequencersInfoMap).map(
     ([prefix, sequencerStatus]) => {
       const stepList = sequencerStatus.data?.stepList
       const stepListStatus = getStepListStatus(stepList)
@@ -159,6 +163,13 @@ export const CurrentObsMode = ({
     </>
   )
 }
+
+export const MemoisedCurrentObsMode = memo(CurrentObsMode, (prev, next) => {
+  return (
+    prev.obsMode.name === next.obsMode.name &&
+    prev.currentTab === next.currentTab
+  )
+})
 
 const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'

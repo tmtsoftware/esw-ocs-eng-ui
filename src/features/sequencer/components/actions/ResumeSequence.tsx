@@ -40,7 +40,7 @@ export const ResumeSequence = ({
 
   const disabled = !sequencerState || sequencerState !== 'Running'
   return (
-    <Tooltip placement='bottom' title={'Play sequence'}>
+    <Tooltip placement='bottom' title={'Resume sequence'}>
       <Button
         onClick={() =>
           sequencerService && resumeSequence.mutate(sequencerService)

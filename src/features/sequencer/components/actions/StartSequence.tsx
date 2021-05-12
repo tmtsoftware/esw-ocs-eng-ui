@@ -59,7 +59,7 @@ export const StartSequence = ({
 
   const disabled = !sequencerState || sequencerState !== 'Loaded'
   return (
-    <Tooltip placement='bottom' title={'Play sequence'}>
+    <Tooltip placement='bottom' title={'Start sequence'}>
       <Button
         onClick={() =>
           sequencerService && startSequence.mutate(sequencerService)

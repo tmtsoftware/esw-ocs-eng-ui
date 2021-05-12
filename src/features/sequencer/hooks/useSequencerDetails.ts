@@ -6,10 +6,6 @@ import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 export const useSequencerDetails = (
   sequencerPrefix: Prefix
 ): SequencerStateResponse | undefined => {
-  const [sequencerStateResponse, setSequencerStateResponse] = useState<
-    SequencerStateResponse | undefined
-  >(undefined)
-
   console.log('using sequencer service:')
   const sequencerService = useSequencerService(sequencerPrefix)
   if (!sequencerService) throw Error('sequencer not found sorry')
@@ -19,12 +15,11 @@ export const useSequencerDetails = (
       sequencerService.subscribeSequencerState()(onEvent),
     [sequencerService]
   )
-  useStream({
-    mapper: (sequencerStateResponse: SequencerStateResponse) => {
-      setSequencerStateResponse(sequencerStateResponse)
-    },
+  const [value] = useStream({
+    mapper: (sequencerStateResponse: SequencerStateResponse) =>
+      sequencerStateResponse,
     run: subscribeState
   })
 
-  return sequencerStateResponse
+  return value
 }

@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { verify, when } from 'ts-mockito'
-import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
+import { MemoisedSequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import { step } from '../../utils/sequence-utils'
 import {
   mockServices,
@@ -49,7 +49,7 @@ describe('sequencer table', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
         </BrowserRouter>
       )
     })
@@ -66,7 +66,7 @@ describe('sequencer table', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
         </BrowserRouter>
       )
     })
@@ -87,7 +87,7 @@ describe('sequencer table', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
         </BrowserRouter>
       )
     })

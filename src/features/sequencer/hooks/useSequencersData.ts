@@ -1,11 +1,3 @@
-import type {
-  Location,
-  Option,
-  Prefix,
-  SequencerService,
-  Step,
-  StepList
-} from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
@@ -13,6 +5,15 @@ import { useAuth } from '../../../hooks/useAuth'
 import { createTokenFactory } from '../../../utils/createTokenFactory'
 import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
 import { mkSequencerService } from './useSequencerService'
+import type {
+  Location,
+  Option,
+  Prefix,
+  SequencerService,
+  SequencerState,
+  Step,
+  StepList
+} from '@tmtsoftware/esw-ts'
 
 export type StepListStatus =
   | 'All Steps Completed'
@@ -29,6 +30,7 @@ export type SequencerInfo = {
   currentStepCommandName: string
   stepListStatus: { stepNumber: number; status: StepListStatus }
   totalSteps: number | 'NA'
+  sequencerState: SequencerState
 }
 
 const Status: { [key: string]: StepListStatus } = {
@@ -87,11 +89,15 @@ const getSequencerInfo = async (
       const { stepList, isError } = await getStepList(service)
       const stepListStatus = getStepListStatus(stepList, isError)
 
+      const state: SequencerState = {
+        _type: 'Idle'
+      }
       return {
         key: prefix.toJSON(),
         prefix: prefix.toJSON(),
         currentStepCommandName: getCurrentStepCommandName(stepList),
         stepListStatus,
+        sequencerState: state,
         totalSteps: stepList ? stepList.steps.length : ('NA' as const)
       }
     })

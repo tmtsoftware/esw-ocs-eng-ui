@@ -1,19 +1,30 @@
 import {
   ObsMode,
+  Option,
   Prefix,
+  SequencerService,
   SequencerState,
   SequencerStateResponse,
+  Step,
+  StepList,
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
-import type { BaseType } from 'antd/lib/typography/Base'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
+import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
-import { useSequencerDetails, useSequencerState } from '../../features/sequencer/hooks/useSequencerState'
+import {
+  getStepListStatus,
+  SequencerInfo
+} from '../../features/sequencer/hooks/useSequencersData'
+import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
+import { useAuth } from '../../hooks/useAuth'
+import { createTokenFactory } from '../../utils/createTokenFactory'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
+import type { BaseType } from 'antd/lib/typography/Base'
 
 type CurrentObsModeProps = {
   currentTab: TabName
@@ -29,18 +40,15 @@ const Text = ({ content, type }: { content: string; type: BaseType }) => (
 )
 
 const Status = ({
-  obsMode,
-  isRunning
+  isRunning,
+  sequencerState
 }: {
-  obsMode: ObsMode
   isRunning: boolean
+  sequencerState: SequencerState
 }) => {
-  const obsModeStatus = useSequencerDetails(
-    new Prefix('ESW', obsMode.name)
-  )
   const status =
-    obsModeStatus && isRunning ? (
-      <Text content={obsModeStatus._type} type={getTextType(obsModeStatus)} />
+    sequencerState && isRunning ? (
+      <Text content={sequencerState._type} type={getTextType(sequencerState)} />
     ) : (
       <Text content='NA' type='secondary' />
     )
@@ -59,6 +67,67 @@ export const CurrentObsMode = ({
   sequencers,
   resources
 }: CurrentObsModeProps): JSX.Element => {
+  const [gatewayLocation] = useGatewayLocation()
+  const { auth } = useAuth()
+  const tf = createTokenFactory(auth)
+
+  const sortedSequencers: Prefix[] = sequencers.reduce(
+    (acc: Prefix[], elem) => {
+      const sequencer = new Prefix(elem, obsMode.name)
+      if (elem === 'ESW') return [sequencer].concat(acc)
+      return acc.concat(sequencer)
+    },
+    []
+  )
+  const map: Record<
+    string,
+    {
+      data: SequencerStateResponse | undefined
+      onevent: (sequencerStateResponse: SequencerStateResponse) => void
+    }
+  > = useMemo(() => ({}), [])
+
+  useEffect(() => {
+    for (const key of sortedSequencers) {
+      map[key.toJSON()] = {
+        data: undefined,
+        onevent: (sequencerStateResponse: SequencerStateResponse) => {
+          map[key.toJSON()]['data'] = sequencerStateResponse
+        }
+      }
+    }
+
+    const services: [SequencerService, Prefix][] | undefined =
+      gatewayLocation &&
+      sortedSequencers.map((seq) => [
+        mkSequencerService(seq, gatewayLocation, tf),
+        seq
+      ])
+
+    services?.map(([sequencerService, sequencerPrefix]) =>
+      sequencerService.subscribeSequencerState()(
+        map[sequencerPrefix.toJSON()]['onevent']
+      )
+    )
+  }, [gatewayLocation, map, sortedSequencers, tf])
+
+  const sequencersInfo: SequencerInfo[] = Object.entries(map).map(
+    ([prefix, sequencerStatus]) => {
+      const stepList = sequencerStatus.data?.stepList
+      const stepListStatus = getStepListStatus(stepList)
+
+      return {
+        key: prefix,
+        prefix: prefix,
+        currentStepCommandName: getCurrentStepCommandName(stepList),
+        stepListStatus,
+        sequencerState: sequencerStatus.data?.sequencerState ?? {
+          _type: 'Idle'
+        },
+        totalSteps: stepList ? stepList.steps.length : ('NA' as const)
+      }
+    }
+  )
   const isRunningTab = currentTab === 'Running'
   return (
     <>
@@ -69,7 +138,14 @@ export const CurrentObsMode = ({
         title={
           <>
             <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-            <Status obsMode={obsMode} isRunning={isRunningTab} />
+            <Status
+              sequencerState={
+                sequencersInfo.length > 0
+                  ? sequencersInfo[0].sequencerState
+                  : { _type: 'Idle' }
+              }
+              isRunning={isRunningTab}
+            />
           </>
         }
         extra={
@@ -77,17 +153,30 @@ export const CurrentObsMode = ({
             <ObsModeActions tabName={currentTab} obsMode={obsMode} />
           </Space>
         }>
-        {isRunningTab && (
-          <SequencersTable obsMode={obsMode} sequencers={sequencers} />
-        )}
+        {isRunningTab && <SequencersTable sequencersInfo={sequencersInfo} />}
         <ResourcesTable resources={resources} />
       </Card>
     </>
   )
 }
 
-const getTextType = (
-  runningObsModeStatus: SequencerState
-): BaseType => {
+const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
+}
+
+const currentStep = (stepList: StepList): Option<Step> => {
+  return stepList.steps.find((e) => e.status._type !== 'Success')
+}
+
+const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
+  if (stepList === undefined) {
+    return 'NA'
+  }
+
+  const step = currentStep(stepList)
+
+  if (step === undefined) {
+    return 'NA'
+  }
+  return step.command.commandName
 }

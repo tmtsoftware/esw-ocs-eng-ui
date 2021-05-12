@@ -1,28 +1,10 @@
 import { SettingOutlined } from '@ant-design/icons'
-import {
-  ObsMode,
-  Option,
-  Prefix,
-  SequencerService,
-  SequencerStateResponse,
-  Step,
-  StepList,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
 import { Space, Table, Tooltip, Typography } from 'antd'
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
-import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
-import { useAuth } from '../../../hooks/useAuth'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
-import { createTokenFactory } from '../../../utils/createTokenFactory'
-import {
-  getStepListStatus,
-  SequencerInfo,
-  useSequencersData
-} from '../hooks/useSequencersData'
-import { mkSequencerService } from '../hooks/useSequencerService'
+import type { SequencerInfo } from '../hooks/useSequencersData'
 import styles from './sequencerTable.module.css'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
@@ -79,99 +61,80 @@ const columns: ColumnsType<SequencerInfo> = [
 ]
 
 type ObsModeSeqTableProps = {
-  obsMode: ObsMode
-  sequencers: Subsystem[]
+  sequencersInfo: SequencerInfo[]
 }
 
 export const SequencersTable = ({
-  obsMode,
-  sequencers
+  sequencersInfo
 }: ObsModeSeqTableProps): JSX.Element => {
-  const [gatewayLocation] = useGatewayLocation()
-  const { auth } = useAuth()
-  const tf = createTokenFactory(auth)
-  const sortedSequencers: Prefix[] = sequencers.reduce(
-    (acc: Prefix[], elem) => {
-      const sequencer = new Prefix(elem, obsMode.name)
-      if (elem === 'ESW') return [sequencer].concat(acc)
-      return acc.concat(sequencer)
-    },
-    []
-  )
+  // const [gatewayLocation] = useGatewayLocation()
+  // const { auth } = useAuth()
+  // const tf = createTokenFactory(auth)
+  // const sortedSequencers: Prefix[] = sequencers.reduce(
+  //   (acc: Prefix[], elem) => {
+  //     const sequencer = new Prefix(elem, obsMode.name)
+  //     if (elem === 'ESW') return [sequencer].concat(acc)
+  //     return acc.concat(sequencer)
+  //   },
+  //   []
+  // )
 
-  const map: Record<
-    string,
-    {
-      data: SequencerStateResponse | undefined
-      onevent: (sequencerStateResponse: SequencerStateResponse) => void
-    }
-  > = useMemo(() => ({}), [])
+  // // const map: Record<
+  // //   string,
+  // //   {
+  // //     data: SequencerStateResponse | undefined
+  // //     onevent: (sequencerStateResponse: SequencerStateResponse) => void
+  // //   }
+  // // > = useMemo(() => ({}), [])
 
-  useEffect(() => {
-    for (const key of sortedSequencers) {
-      map[key.toJSON()] = {
-        data: undefined,
-        onevent: (sequencerStateResponse: SequencerStateResponse) => {
-          map[key.toJSON()]['data'] = sequencerStateResponse
-        }
-      }
-    }
+  // // useEffect(() => {
+  // //   for (const key of sortedSequencers) {
+  // //     map[key.toJSON()] = {
+  // //       data: undefined,
+  // //       onevent: (sequencerStateResponse: SequencerStateResponse) => {
+  // //         map[key.toJSON()]['data'] = sequencerStateResponse
+  // //       }
+  // //     }
+  // //   }
 
-    const services: [SequencerService, Prefix][] | undefined =
-      gatewayLocation &&
-      sortedSequencers.map((seq) => [
-        mkSequencerService(seq, gatewayLocation, tf),
-        seq
-      ])
+  // //   const services: [SequencerService, Prefix][] | undefined =
+  // //     gatewayLocation &&
+  // //     sortedSequencers.map((seq) => [
+  // //       mkSequencerService(seq, gatewayLocation, tf),
+  // //       seq
+  // //     ])
 
-    services?.map(([sequencerService, sequencerPrefix]) =>
-      sequencerService.subscribeSequencerState()(
-        map[sequencerPrefix.toJSON()]['onevent']
-      )
-    )
-  }, [gatewayLocation, map, sortedSequencers, tf])
-  const sequencerStatus = useSequencersData(sortedSequencers)
-  const tableData: SequencerInfo[] = Object.entries(map).map(
-    ([prefix, sequencerStatus]) => {
-      const stepList = sequencerStatus.data?.stepList
-      const stepListStatus = getStepListStatus(stepList)
+  // //   services?.map(([sequencerService, sequencerPrefix]) =>
+  // //     sequencerService.subscribeSequencerState()(
+  // //       map[sequencerPrefix.toJSON()]['onevent']
+  // //     )
+  // //   )
+  // // }, [gatewayLocation, map, sortedSequencers, tf])
+  // // const sequencerStatus = useSequencersData(sortedSequencers)
+  // // const tableData: SequencerInfo[] = Object.entries(map).map(
+  // //   ([prefix, sequencerStatus]) => {
+  // //     const stepList = sequencerStatus.data?.stepList
+  // //     const stepListStatus = getStepListStatus(stepList)
 
-      return {
-        key: prefix,
-        prefix: prefix,
-        currentStepCommandName: getCurrentStepCommandName(stepList),
-        stepListStatus,
-        totalSteps: stepList ? stepList.steps.length : ('NA' as const)
-      }
-    }
-  )
+  // //     return {
+  // //       key: prefix,
+  // //       prefix: prefix,
+  // //       currentStepCommandName: getCurrentStepCommandName(stepList),
+  // //       stepListStatus,
+  // //       totalSteps: stepList ? stepList.steps.length : ('NA' as const)
+  // //     }
+  // //   }
+  // // )
   return (
     <Table
       rowKey={(record) => record.prefix}
       style={{ paddingBottom: '1.5rem' }}
       pagination={false}
-      loading={sequencerStatus.isLoading || sequencerStatus.isError}
+      // loading={sequencerStatus.isLoading || sequencerStatus.isError}
       columns={columns}
-      dataSource={tableData}
+      dataSource={sequencersInfo}
       onRow={() => ({ style: { fontSize: '1rem' } })}
       bordered
     />
   )
-}
-
-const currentStep = (stepList: StepList): Option<Step> => {
-  return stepList.steps.find((e) => e.status._type !== 'Success')
-}
-
-const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
-  if (stepList === undefined) {
-    return 'NA'
-  }
-
-  const step = currentStep(stepList)
-
-  if (step === undefined) {
-    return 'NA'
-  }
-  return step.command.commandName
 }

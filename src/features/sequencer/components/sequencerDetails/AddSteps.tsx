@@ -12,6 +12,10 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import {
+  cannotOperateOnAnInFlightOrFinishedStepMsg,
+  idDoesNotExistMsg
+} from '../sequencerResponsesMapping'
 import styles from './sequencerDetails.module.css'
 
 const handleResponse = (res: GenericResponse) => {
@@ -20,10 +24,10 @@ const handleResponse = (res: GenericResponse) => {
       return res
 
     case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error('Cannot operate on in progress or finished step')
+      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
 
     case 'IdDoesNotExist':
-      throw new Error(`${res.id} does not exist`)
+      throw new Error(idDoesNotExistMsg(res.id))
 
     case 'Unhandled':
       throw new Error(res.msg)
@@ -35,15 +39,17 @@ const addSteps =
   (sequencerService: SequencerService) =>
     sequencerService.insertAfter(id, commands).then(handleResponse)
 
+type AddStepsProps = {
+  disabled: boolean
+  stepId: string
+  sequencerPrefix: Prefix
+}
+
 export const AddSteps = ({
   disabled,
   stepId,
   sequencerPrefix
-}: {
-  disabled: boolean
-  stepId: string
-  sequencerPrefix: Prefix
-}): JSX.Element => {
+}: AddStepsProps): JSX.Element => {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const sequencerService = useSequencerService(sequencerPrefix)
 

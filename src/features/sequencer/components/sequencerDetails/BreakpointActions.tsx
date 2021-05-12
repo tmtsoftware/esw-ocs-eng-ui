@@ -14,6 +14,10 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import {
+  cannotOperateOnAnInFlightOrFinishedStepMsg,
+  idDoesNotExistMsg
+} from '../sequencerResponsesMapping'
 
 const handleActionResponse = (
   res: GenericResponse | RemoveBreakpointResponse
@@ -26,10 +30,10 @@ const handleActionResponse = (
       throw new Error(res.msg)
 
     case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error('Cannot operate on in progress or finished step')
+      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
 
     case 'IdDoesNotExist':
-      throw new Error(`${res.id} does not exist`)
+      throw new Error(idDoesNotExistMsg(res.id))
   }
 }
 

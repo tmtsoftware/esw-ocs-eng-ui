@@ -297,7 +297,7 @@ describe('sequencer details', () => {
     await screen.findByText('ESW.test3')
   })
 
-  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501', async () => {
+  it.only('should render step2 followed by step3 parameter table when step2 is clicked and sequence progress from step1, step2 and step3 | ESW-501', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('InFlight', '1'),
       stepUsingId('Pending', '2'),

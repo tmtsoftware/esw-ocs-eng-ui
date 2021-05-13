@@ -89,5 +89,5 @@ export const CurrentObsMode = ({
 const getTextType = (
   runningObsModeStatus: SequencerStateResponse
 ): BaseType => {
-  return runningObsModeStatus.sequencerState._type === 'Offline' ? 'secondary' : 'success'
+  return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }

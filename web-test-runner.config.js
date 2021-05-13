@@ -6,7 +6,7 @@ import ConsoleReporter from './ConsoleReporter.js'
 
 // NODE_ENV=test - Needed by "@snowpack/web-test-runner-plugin"
 process.env.NODE_ENV = 'test'
-console.log('process.logs', process.env.LOGS)
+console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
   testFramework: {
     config: {
@@ -32,5 +32,5 @@ export default {
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
     ConsoleReporter()
   ],
-  browserLogs: Boolean(process.env.LOGS)
+  browserLogs: Boolean(process.env.ESW_OCS_ENG_UI_LOGS)
 }

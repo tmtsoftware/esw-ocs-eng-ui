@@ -483,8 +483,8 @@ describe('stepList table', () => {
     ).called()
 
     // assert step is added
-    await screen.findByRole('button', { name: /command-2/i })
-    await screen.findByRole('button', { name: /command-1/i })
+    await screen.findByRole('row', { name: /1 command-1/i })
+    await screen.findByRole('row', { name: /2 command-2/i })
   })
 })
 

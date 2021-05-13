@@ -107,10 +107,31 @@ export const StepListTable = ({
     hideSelectAll: true
   }
 
+  //Both useEffect can be be moved to parent component
   useEffect(
     () => setStepToDisplayParameters(setSelectedStep, stepList, selectedStep),
     [stepList, selectedStep, setSelectedStep]
   )
+
+  useEffect(() => {
+    const currentStep = stepList?.steps.find(
+      (step) => step.status._type === 'InFlight'
+    )
+    if (
+      currentStep !== undefined &&
+      selectedStep !== undefined &&
+      stepList !== undefined
+    ) {
+      const currentStepIndex = stepList.steps.findIndex(
+        (step) => step.id === currentStep.id
+      )
+      const selectedStepIndex = stepList.steps.findIndex(
+        (step) => step.id === selectedStep.id
+      )
+      if (currentStepIndex - selectedStepIndex === 1)
+        setSelectedStep(currentStep)
+    }
+  }, [stepList])
 
   return (
     <StepListContextProvider

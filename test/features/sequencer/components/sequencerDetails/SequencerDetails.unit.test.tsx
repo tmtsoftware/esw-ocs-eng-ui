@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   booleanKey,
@@ -19,8 +19,9 @@ import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, when } from 'ts-mockito'
+import { anything, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
+import { stepUsingId } from '../../../../utils/sequence-utils'
 import {
   mockServices,
   renderWithAuth,
@@ -50,6 +51,7 @@ describe('sequencer details', () => {
       width: windowWidth,
       height: windowHeight
     })
+    reset(sequencerServiceMock)
   })
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
   const sequenceComponentPrefix = 'ESW.ESW1'
@@ -230,6 +232,123 @@ describe('sequencer details', () => {
         name: 'ra "12:13:14.1" copy NoUnits'
       })
     ).to.exist
+  })
+
+  it('should render step2 parameter table when a sequence progress from step1 to step2 | ESW-501', async () => {
+    const stepList: StepList = new StepList([
+      stepUsingId('InFlight', '1'),
+      stepUsingId('Pending', '2')
+    ])
+
+    const updatedStepList: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('InFlight', '2')
+    ])
+
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(updatedStepList)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    await screen.findByText('ESW.test1')
+
+    //After 1 sec, polling is done, and step2 is InFlight
+    await screen.findByText('ESW.test2', undefined, { timeout: 1200 })
+    verify(sequencerServiceMock.getSequence()).times(2)
+  })
+
+  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501', async () => {
+    const stepList: StepList = new StepList([
+      stepUsingId('InFlight', '1'),
+      stepUsingId('Pending', '2'),
+      stepUsingId('Pending', '3')
+    ])
+
+    const updatedStepListWithStep2InProgress: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('InFlight', '2'),
+      stepUsingId('Pending', '3')
+    ])
+
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(updatedStepListWithStep2InProgress)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    const step = await screen.findByRole('button', { name: /command3/i })
+    userEvent.click(step)
+
+    await screen.findByText('ESW.test3')
+
+    await waitFor(
+      () => {
+        verify(sequencerServiceMock.getSequence()).times(2)
+      },
+      { timeout: 1200 }
+    )
+
+    //even when step2 starts executing, ui should continue to show step3
+    await screen.findByText('ESW.test3')
+  })
+
+  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501', async () => {
+    const stepList: StepList = new StepList([
+      stepUsingId('InFlight', '1'),
+      stepUsingId('Pending', '2'),
+      stepUsingId('Pending', '3')
+    ])
+
+    const updatedStepListWithStep2InProgress: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('InFlight', '2'),
+      stepUsingId('Pending', '3')
+    ])
+
+    const updatedStepListWithStep3InProgress: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('Success', '2'),
+      stepUsingId('InFlight', '3')
+    ])
+
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(updatedStepListWithStep2InProgress)
+      .thenResolve(updatedStepListWithStep3InProgress)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    const step2 = await screen.findByRole('button', { name: /command2/i })
+    userEvent.click(step2)
+
+    await screen.findByText('ESW.test2')
+
+    //wait for 1 sec, so that step2 starts executing
+    await waitFor(
+      () => {
+        verify(sequencerServiceMock.getSequence()).times(2)
+      },
+      { timeout: 1200 }
+    )
+
+    await screen.findByText('ESW.test2')
+
+    //wait for another 1 sec, so that step3 starts executing
+    await waitFor(
+      () => {
+        verify(sequencerServiceMock.getSequence()).times(3)
+      },
+      { timeout: 1200 }
+    )
+
+    await screen.findByText('ESW.test3')
   })
 
   it('should render Step details when a Step is clicked from the StepLists | ESW-457', async () => {

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
 import {
   renderWithAuth,
@@ -435,6 +435,70 @@ describe('stepList table', () => {
     await waitFor(() =>
       expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red')
     )
+  })
+
+  it('add steps should add uploaded steps after the selected step | ESW-461', async () => {
+    const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
+
+    const file = new File(
+      [JSON.stringify({ commands: [commandToInsert] })],
+      'commands.json'
+    )
+
+    const stepList = getStepList('Pending', false)
+
+    const stepListAfterInsertion = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: new Setup(sequencerPrefix, 'Command-1'),
+        id: 'step1'
+      },
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: commandToInsert,
+        id: 'step2'
+      }
+    ])
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(stepListAfterInsertion)
+
+    when(sequencerServiceMock.insertAfter('step1', anything())).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={sequencerPrefix}
+          setSelectedStep={() => ({})}
+        />
+      )
+    })
+
+    const actions = await screen.findAllByRole('stepActions')
+    await waitFor(() => userEvent.click(actions[0]))
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    const addSteps = await screen.findByRole('button', { name: /add steps/i })
+    await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const inputBox = addSteps.firstChild as HTMLInputElement
+    await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
+
+    await screen.findByText('Successfully added steps')
+    verify(
+      sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))
+    ).called()
+
+    // assert step is added
+    await screen.findByRole('button', { name: /command-2/i })
+    await screen.findByRole('button', { name: /command-1/i })
   })
 })
 

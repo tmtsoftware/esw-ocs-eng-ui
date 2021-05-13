@@ -25,32 +25,32 @@ type TestData = {
 }
 
 describe('AddSteps', () => {
+  const unhandledMsg = 'unhandled'
   const id = 'step_1'
   const seqPrefix = Prefix.fromString('ESW.darknight')
   const commands: SequenceCommand[] = [
-    new Setup(Prefix.fromString('CSW.filter'), 'move', [], '2020A-001-123')
+    new Setup(seqPrefix, 'move', [], '2020A-001-123')
   ]
-  const unhandledMsg = 'unhandled'
-
   const file = new File([JSON.stringify({ commands })], 'commands.json')
   const testCases: TestData[] = [
     {
-      testName: 'should add uploaded steps',
+      testName: 'should add uploaded steps | ESW-461',
       response: { _type: 'Ok' },
       message: 'Successfully added steps'
     },
     {
-      testName: 'should show error if step id does not exist',
+      testName: 'should show error if step id does not exist | ESW-461',
       response: { _type: 'IdDoesNotExist', id },
       message: `Failed to add steps, reason: ${idDoesNotExistMsg(id)}`
     },
     {
-      testName: 'should show error if the step is finished',
+      testName: 'should show error if the step is finished | ESW-461',
       response: { _type: 'CannotOperateOnAnInFlightOrFinishedStep' },
       message: `Failed to add steps, reason: ${cannotOperateOnAnInFlightOrFinishedStepMsg}`
     },
     {
-      testName: 'should show error if unhandled response is given by sequencer',
+      testName:
+        'should show error if unhandled response is given by sequencer | ESW-461',
       response: {
         _type: 'Unhandled',
         msg: unhandledMsg,

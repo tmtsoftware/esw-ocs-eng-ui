@@ -43,7 +43,8 @@ const currentStep = (stepList: StepList): Option<Step> => {
 const deriveStatus = (
   stepList: StepList | undefined
 ): SequencerInfo['stepListStatus'] => {
-  if (stepList === undefined) return { stepNumber: 0, status: 'NA' as const }
+  if (stepList === undefined || stepList === null)
+    return { stepNumber: 0, status: 'NA' as const }
   const step = currentStep(stepList)
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }
@@ -91,7 +92,7 @@ const getSequencerInfo = async (
   )
 }
 const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
-  if (stepList === undefined) {
+  if (stepList === undefined || stepList === null) {
     return 'NA'
   }
 

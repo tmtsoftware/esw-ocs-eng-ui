@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { obsModesData } from '../../jsons/obsmodes'
@@ -35,7 +36,11 @@ describe('observation tabs', () => {
     })
 
     renderWithAuth({
-      ui: <ObservationTab tabName='Running' setObservation={() => ({})} />
+      ui: (
+        <BrowserRouter>
+          <ObservationTab tabName='Running' setObservation={() => ({})} />
+        </BrowserRouter>
+      )
     })
 
     const shutdownButton = await screen.findByRole('button', {
@@ -158,7 +163,11 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: <ObservationTab tabName='Running' setObservation={() => ({})} />
+      ui: (
+        <BrowserRouter>
+          <ObservationTab tabName='Running' setObservation={() => ({})} />
+        </BrowserRouter>
+      )
     })
     await screen.findAllByRole('table')
     const [sequencerTable, resourcesTable, resourcesBodyTable] =

@@ -8,7 +8,9 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
+
 import { Observations } from '../../../src/containers/observation/Observations'
 import {
   configurableObsModesData,
@@ -115,7 +117,11 @@ describe('Observation page', () => {
     })
 
     renderWithAuth({
-      ui: <Observations />
+      ui: (
+        <BrowserRouter>
+          <Observations />
+        </BrowserRouter>
+      )
     })
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
@@ -211,7 +217,11 @@ describe('Observation page', () => {
     })
 
     renderWithAuth({
-      ui: <Observations />
+      ui: (
+        <BrowserRouter>
+          <Observations />
+        </BrowserRouter>
+      )
     })
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })

@@ -448,9 +448,57 @@ describe('sequencer details', () => {
     expect(sourceValue.innerText).to.match(/...$/)
   })
 
-  it('should show display Pause action when stepList is in Progress state', () => {
+  it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497', async () => {
+    const stepList = getStepList('InFlight')
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Running'
+    })
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
+
+    await screen.findByRole('PauseSequence')
+    screen.getByRole('img', { name: 'pause-circle' })
+
+    expect(screen.queryByRole('StartSequence')).to.null
+    expect(screen.queryByRole('ResumeSequence')).to.null
+  })
+
+  it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497', async () => {
+    const stepList = getStepList('Pending', true)
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Running'
+    })
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    await screen.findByRole('ResumeSequence')
+    screen.getByRole('img', { name: 'play-circle' })
+
+    expect(screen.queryByRole('StartSequence')).to.null
+    expect(screen.queryByRole('PauseSequence')).to.null
+  })
+
+  it('should show display Start action when sequencer is in Loaded state | ESW-497', async () => {
+    const stepList = getStepList('Pending')
+    when(sequencerServiceMock.getSequencerState()).thenResolve({
+      _type: 'Loaded'
+    })
+    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    await screen.findByRole('StartSequence')
+    screen.getByRole('img', { name: 'play-circle' })
+
+    expect(screen.queryByRole('ResumeSequence')).to.null
+    expect(screen.queryByRole('PauseSequence')).to.null
   })
 })

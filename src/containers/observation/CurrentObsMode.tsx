@@ -1,12 +1,9 @@
 import {
   ObsMode,
-  Option,
   Prefix,
   SequencerService,
   SequencerState,
   SequencerStateResponse,
-  Step,
-  StepList,
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
@@ -15,11 +12,12 @@ import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
+import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
 import {
+  getCurrentStepCommandName,
   getStepListStatus,
   SequencerInfo
-} from '../../features/sequencer/hooks/useSequencersData'
-import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
+} from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import type { TabName } from './ObservationTabs'
@@ -38,6 +36,10 @@ const Text = ({ content, type }: { content: string; type: BaseType }) => (
     {content}
   </Typography.Text>
 )
+
+const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
+  return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
+}
 
 const Status = ({
   isRunning,
@@ -80,6 +82,7 @@ export const CurrentObsMode = ({
     },
     []
   )
+
   const sequencersInfoMap: Record<
     string,
     {
@@ -136,37 +139,36 @@ export const CurrentObsMode = ({
       }
     }
   )
+
   const isRunningTab = currentTab === 'Running'
   return (
-    <>
-      <Card
-        style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
-        headStyle={{ paddingBottom: '0.75rem' }}
-        bodyStyle={{ overflowY: 'scroll', height: '100%' }}
-        title={
-          <>
-            <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-            <Status
-              sequencerState={
-                sequencersInfo.length > 0
-                  ? sequencersInfo[0].sequencerState
-                  : { _type: 'Idle' }
-              }
-              isRunning={isRunningTab}
-            />
-          </>
-        }
-        extra={
-          <Space style={{ paddingRight: '2.5rem' }}>
-            <ObsModeActions tabName={currentTab} obsMode={obsMode} />
-          </Space>
-        }>
-        {isRunningTab && (
-          <SequencersTable sequencersInfo={sequencersInfo} loading={loading} />
-        )}
-        <ResourcesTable resources={resources} />
-      </Card>
-    </>
+    <Card
+      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      headStyle={{ paddingBottom: '0.75rem' }}
+      bodyStyle={{ overflowY: 'scroll', height: '100%' }}
+      title={
+        <>
+          <Typography.Title level={4}>{obsMode.name}</Typography.Title>
+          <Status
+            sequencerState={
+              sequencersInfo.length > 0
+                ? sequencersInfo[0].sequencerState
+                : { _type: 'Idle' }
+            }
+            isRunning={isRunningTab}
+          />
+        </>
+      }
+      extra={
+        <Space style={{ paddingRight: '2.5rem' }}>
+          <ObsModeActions tabName={currentTab} obsMode={obsMode} />
+        </Space>
+      }>
+      {isRunningTab && (
+        <SequencersTable sequencersInfo={sequencersInfo} loading={loading} />
+      )}
+      <ResourcesTable resources={resources} />
+    </Card>
   )
 }
 
@@ -176,24 +178,3 @@ export const MemoisedCurrentObsMode = memo(CurrentObsMode, (prev, next) => {
     prev.currentTab === next.currentTab
   )
 })
-
-const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
-  return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
-}
-
-const currentStep = (stepList: StepList): Option<Step> => {
-  return stepList.steps.find((e) => e.status._type !== 'Success')
-}
-
-const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
-  if (stepList === undefined) {
-    return 'NA'
-  }
-
-  const step = currentStep(stepList)
-
-  if (step === undefined) {
-    return 'NA'
-  }
-  return step.command.commandName
-}

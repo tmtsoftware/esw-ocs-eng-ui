@@ -8,12 +8,8 @@ import type {
 import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
-import {
-  getStepListStatus,
-  StepListStatus
-} from '../../hooks/useSequencersData'
-import { useStepList } from '../../hooks/useStepList'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
+import { getStepListStatus, StepListStatus } from '../../utils'
 import { typeStatus } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import styles from './sequencerDetails.module.css'
@@ -100,8 +96,6 @@ export const StepListTable = ({
 }): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
-  // this needs to be coming from outside
-  // const { isLoading, data: stepList, isError } = useStepList(sequencerPrefix)
   const stepListStatus = getStepListStatus(stepList).status
 
   const rowSelection = {
@@ -170,7 +164,10 @@ export const StepListTable = ({
           }))}
           columns={columns(sequencerPrefix, setSelectedStep)}
           onRow={(step) => ({
-            id: step.id === selectedStep?.id && styles.selectedRow,
+            id:
+              selectedStep && step.id === selectedStep.id
+                ? styles.selectedRow
+                : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
           })}
           sticky

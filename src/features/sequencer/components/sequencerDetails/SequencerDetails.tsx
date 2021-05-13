@@ -16,7 +16,6 @@ import { useAuth } from '../../../../hooks/useAuth'
 import { createTokenFactory } from '../../../../utils/createTokenFactory'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { mkSequencerService } from '../../hooks/useSequencerService'
-import { useSequencerStatus } from '../../hooks/useSequencerStatus'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -30,6 +29,7 @@ import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
 import type {
   Prefix,
+  SequencerState,
   SequencerStateResponse,
   Step,
   Subscription
@@ -107,8 +107,14 @@ const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
   )
 }
 
-const SequencerTitle = ({ prefix }: { prefix: Prefix }): JSX.Element => {
-  const { data: isOnline } = useSequencerStatus(prefix)
+const SequencerTitle = ({
+  sequencerState,
+  prefix
+}: {
+  sequencerState: SequencerState
+  prefix: Prefix
+}): JSX.Element => {
+  const isOnline = sequencerState._type !== 'Offline'
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
       <Badge status={isOnline ? 'success' : 'error'} className={styles.badge} />
@@ -163,34 +169,36 @@ export const SequencerDetails = ({
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  // const [sequencerStateResponse, setSequencerStateResponse] =
-  //   useState<SequencerStateResponse | undefined>(undefined)
-  // const [gatewayLocation] = useGatewayLocation()
-  // const { auth } = useAuth()
-  // const tf = createTokenFactory(auth)
-  // const [loading, setLoading] = useState(true)
+  const [sequencerStateResponse, setSequencerStateResponse] =
+    useState<SequencerStateResponse | undefined>(undefined)
 
-  // const subscription = useRef<Subscription>()
-  // useEffect(() => {
-  //   if (subscription.current) subscription.current.cancel()
-  //   const seqService =
-  //     gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
-  //   subscription.current = seqService?.subscribeSequencerState()(
-  //     (sequencerStateResponse: SequencerStateResponse) => {
-  //       loading && setLoading(false)
-  //       setSequencerStateResponse(sequencerStateResponse)
-  //     }
-  //   )
-  // }, [gatewayLocation, tf])
-  console.log('inside details')
+  const [gatewayLocation] = useGatewayLocation()
+  const { auth } = useAuth()
+  const tf = createTokenFactory(auth)
+  const [loading, setLoading] = useState(true)
+
+  const subscription = useRef<Subscription>()
+
+  useEffect(() => {
+    const seqService =
+      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
+
+    subscription.current = seqService?.subscribeSequencerState()(
+      (sequencerStateResponse: SequencerStateResponse) => {
+        loading && setLoading(false)
+        setSequencerStateResponse(sequencerStateResponse)
+      }
+    )
+    return subscription.current?.cancel
+  }, [gatewayLocation, tf])
+
   const seqLocation = useSequencerLocation(prefix)
-  const [sequencerStateResponse, loading] = useSequencerDetails(prefix)
+
   const [selectedStep, setSelectedStep] = useState<Step>()
 
-  if (seqLocation.isLoading) return <Spinner />
+  if (seqLocation.isLoading || loading) return <Spinner />
 
   if (!seqLocation.data || !sequencerStateResponse) {
-    console.log('Error here')
     return (
       <SequencerError
         title='404'
@@ -202,7 +210,12 @@ export const SequencerDetails = ({
   return (
     <>
       <PageHeader
-        title={<SequencerTitle prefix={prefix} />}
+        title={
+          <SequencerTitle
+            prefix={prefix}
+            sequencerState={sequencerStateResponse.sequencerState}
+          />
+        }
         ghost={false}
         className={styles.headerBox}
         extra={

@@ -17,7 +17,6 @@ export const useSequencerService = (
   const { auth } = useAuth()
 
   const tf = createTokenFactory(auth)
-  console.log('Gateway location: ', gatewayLocation)
   return (
     gatewayLocation && mkSequencerService(sequencerPrefix, gatewayLocation, tf)
   )

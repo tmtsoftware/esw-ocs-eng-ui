@@ -7,7 +7,7 @@ import {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
@@ -31,6 +31,29 @@ type CurrentObsModeProps = {
   resources: ResourceTableStatus[]
 }
 
+/**
+ * tuple of sequencers information : [sequencerPrefix, sequencerStateResponse]
+ */
+type SequencerInfoMap = [string, SequencerStateResponse][]
+
+const masterSequencer = (sequencersInfo: SequencerInfo[]): SequencerInfo[] => {
+  const mayBeMaster = sequencersInfo.find(
+    (sequencerInfo) =>
+      Prefix.fromString(sequencerInfo.prefix).subsystem === 'ESW'
+  )
+  return mayBeMaster ? [mayBeMaster] : []
+}
+
+const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
+  const sortedSequencersWithoutMasterSequencer = sequencerInfo
+    .filter((x) => Prefix.fromString(x.prefix).subsystem !== 'ESW')
+    .sort((a, b) => (a.prefix > b.prefix ? 1 : -1))
+
+  return masterSequencer(sequencerInfo).concat(
+    sortedSequencersWithoutMasterSequencer
+  )
+}
+
 const Text = ({ content, type }: { content: string; type: BaseType }) => (
   <Typography.Text strong type={type}>
     {content}
@@ -48,12 +71,11 @@ const Status = ({
   isRunning: boolean
   sequencerState: SequencerState
 }) => {
-  const status =
-    sequencerState && isRunning ? (
-      <Text content={sequencerState._type} type={getTextType(sequencerState)} />
-    ) : (
-      <Text content='NA' type='secondary' />
-    )
+  const status = isRunning ? (
+    <Text content={sequencerState._type} type={getTextType(sequencerState)} />
+  ) : (
+    <Text content='NA' type='secondary' />
+  )
 
   return (
     <Space>
@@ -74,57 +96,49 @@ export const CurrentObsMode = ({
   const tf = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
-  const sortedSequencers: Prefix[] = sequencers.reduce(
-    (acc: Prefix[], elem) => {
-      const sequencer = new Prefix(elem, obsMode.name)
-      if (elem === 'ESW') return [sequencer].concat(acc)
-      return acc.concat(sequencer)
-    },
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
     []
   )
 
-  const sequencersInfoMap: Record<
-    string,
-    {
-      data: SequencerStateResponse | undefined
-      onevent: (sequencerStateResponse: SequencerStateResponse) => void
-    }
-  > = useMemo(() => ({}), [])
+  const handleSequencerStateChange = useCallback(
+    (prefix: string, sequencerStateResponse: SequencerStateResponse) => {
+      setLoading(false)
+      setSequencerInfoMap((previousMap) => {
+        const filterArray = previousMap.filter(
+          ([sequencerPrefix]) => sequencerPrefix !== prefix
+        )
+        return [...filterArray, [prefix, sequencerStateResponse]]
+      })
+    },
+    [setLoading]
+  )
+
+  const services: [SequencerService, Prefix][] = useMemo(
+    () =>
+      currentTab === 'Running' && gatewayLocation
+        ? sequencers.map((seq) => {
+            const seqPrefix = new Prefix(seq, obsMode.name)
+            return [
+              mkSequencerService(seqPrefix, gatewayLocation, tf),
+              seqPrefix
+            ]
+          })
+        : [],
+    [currentTab, gatewayLocation, obsMode.name, sequencers, tf]
+  )
 
   useEffect(() => {
-    for (const key of sortedSequencers) {
-      sequencersInfoMap[key.toJSON()] = {
-        data: undefined,
-        onevent: (sequencerStateResponse: SequencerStateResponse) => {
-          loading && setLoading(false)
-          sequencersInfoMap[key.toJSON()]['data'] = sequencerStateResponse
-        }
-      }
-    }
-
-    const services: [SequencerService, Prefix][] | undefined =
-      currentTab === 'Running'
-        ? gatewayLocation &&
-          sortedSequencers.map((seq) => [
-            mkSequencerService(seq, gatewayLocation, tf),
-            seq
-          ])
-        : []
-
-    const subscriptions = services?.map(
-      ([sequencerService, sequencerPrefix]) => {
-        console.log('subscribing for ', sequencerPrefix)
-        return sequencerService.subscribeSequencerState()(
-          sequencersInfoMap[sequencerPrefix.toJSON()]['onevent']
-        )
-      }
+    const subscriptions = services.map(([sequencerService, sequencerPrefix]) =>
+      sequencerService.subscribeSequencerState()((sequencerState) =>
+        handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState)
+      )
     )
-    return () => subscriptions?.forEach((subscription) => subscription.cancel())
-  }, [])
+    return () => subscriptions.forEach((x) => x.cancel())
+  }, [handleSequencerStateChange, services])
 
-  const sequencersInfo: SequencerInfo[] = Object.entries(sequencersInfoMap).map(
+  const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(
     ([prefix, sequencerStatus]) => {
-      const stepList = sequencerStatus.data?.stepList
+      const stepList = sequencerStatus.stepList
       const stepListStatus = getStepListStatus(stepList)
 
       return {
@@ -132,13 +146,13 @@ export const CurrentObsMode = ({
         prefix: prefix,
         currentStepCommandName: getCurrentStepCommandName(stepList),
         stepListStatus,
-        sequencerState: sequencerStatus.data?.sequencerState ?? {
-          _type: 'Idle'
-        },
+        sequencerState: sequencerStatus.sequencerState,
         totalSteps: stepList ? stepList.steps.length : ('NA' as const)
       }
     }
   )
+
+  const sortedSequencers = sortSequencers(sequencersInfo)
 
   const isRunningTab = currentTab === 'Running'
   return (
@@ -151,8 +165,8 @@ export const CurrentObsMode = ({
           <Typography.Title level={4}>{obsMode.name}</Typography.Title>
           <Status
             sequencerState={
-              sequencersInfo.length > 0
-                ? sequencersInfo[0].sequencerState
+              !!sortedSequencers[0]
+                ? sortedSequencers[0].sequencerState
                 : { _type: 'Idle' }
             }
             isRunning={isRunningTab}
@@ -165,16 +179,9 @@ export const CurrentObsMode = ({
         </Space>
       }>
       {isRunningTab && (
-        <SequencersTable sequencersInfo={sequencersInfo} loading={loading} />
+        <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />
       )}
       <ResourcesTable resources={resources} />
     </Card>
   )
 }
-
-export const MemoisedCurrentObsMode = memo(CurrentObsMode, (prev, next) => {
-  return (
-    prev.obsMode.name === next.obsMode.name &&
-    prev.currentTab === next.currentTab
-  )
-})

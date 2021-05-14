@@ -172,31 +172,29 @@ export const SequencerDetails = ({
   const [sequencerStateResponse, setSequencerStateResponse] =
     useState<SequencerStateResponse | undefined>(undefined)
 
-  const [gatewayLocation] = useGatewayLocation()
+  const [gatewayLocation, isLoading] = useGatewayLocation()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
-
-  const subscription = useRef<Subscription>()
 
   useEffect(() => {
     const seqService =
       gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
 
-    subscription.current = seqService?.subscribeSequencerState()(
+    const subscription = seqService?.subscribeSequencerState()(
       (sequencerStateResponse: SequencerStateResponse) => {
-        loading && setLoading(false)
+        setLoading(false)
         setSequencerStateResponse(sequencerStateResponse)
       }
     )
-    return subscription.current?.cancel
-  }, [gatewayLocation, tf])
+    return subscription?.cancel
+  }, [gatewayLocation, setLoading, prefix, tf])
 
   const seqLocation = useSequencerLocation(prefix)
 
   const [selectedStep, setSelectedStep] = useState<Step>()
 
-  if (seqLocation.isLoading || loading) return <Spinner />
+  if (seqLocation.isLoading || loading || isLoading) return <Spinner />
 
   if (!seqLocation.data || !sequencerStateResponse) {
     return (

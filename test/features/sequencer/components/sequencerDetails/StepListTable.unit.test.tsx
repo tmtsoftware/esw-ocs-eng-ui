@@ -74,13 +74,11 @@ describe('stepList table', () => {
   testData.forEach(
     ([lastStepStatus, breakpoint, stepListStatus, className, borderColor]) => {
       it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
-        when(sequencerServiceMock.getSequence()).thenResolve(
-          getStepList(lastStepStatus, breakpoint)
-        )
-
         renderWithAuth({
           ui: (
             <StepListTable
+              isLoading={false}
+              stepList={getStepList(lastStepStatus, breakpoint)}
               sequencerPrefix={sequencerPrefix}
               setSelectedStep={() => ({})}
             />
@@ -103,18 +101,16 @@ describe('stepList table', () => {
         console.log(spanElement)
 
         expect(spanElement.classList.contains(className)).true
-
-        verify(sequencerServiceMock.getSequence()).called()
       })
     }
   )
 
   it('should show all the steps within a column | ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
-
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
@@ -128,7 +124,6 @@ describe('stepList table', () => {
 
     await findCell('1 Command-1 more')
     await findCell('2 Command-2 more')
-    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should not show any step data if no sequence is running | ESW-456', async () => {
@@ -137,6 +132,8 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={new StepList([])}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
@@ -147,34 +144,14 @@ describe('stepList table', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nNA`)
 
     await findCell('No Data')
-    verify(sequencerServiceMock.getSequence()).called()
-  })
-
-  it('should not show any step data if there is an error while api call | ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenReject(Error())
-
-    renderWithAuth({
-      ui: (
-        <StepListTable
-          sequencerPrefix={sequencerPrefix}
-          setSelectedStep={() => ({})}
-        />
-      )
-    })
-
-    const stepListTitle = await screen.findByRole('stepListTitle')
-    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nNA`)
-
-    await findCell('No Data')
-    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should show stepActions menu | ESW-459, ESW-490', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
-
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
@@ -200,10 +177,6 @@ describe('stepList table', () => {
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
     const stepList = getStepList('Pending', false)
 
-    const stepListAfterBreakpoint = getStepList('Pending', true)
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(stepListAfterBreakpoint)
     when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
       _type: 'Ok'
     })
@@ -211,6 +184,8 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
@@ -229,22 +204,60 @@ describe('stepList table', () => {
     await waitFor(() => userEvent.click(insertBreakpoint))
 
     await screen.findByText('Successfully inserted breakpoint')
-
-    await waitFor(() => {
-      const menuItems = screen.queryAllByRole('menuitem')
-      expect(menuItems.length).to.equal(0)
+    const stepBeforeBreakpoint = screen.getByRole('button', {
+      name: /command-1/i
     })
 
-    const stepActions = await screen.findAllByRole('stepActions')
-    userEvent.click(stepActions[0])
-    await screen.findByText('Remove breakpoint')
+    expect(stepBeforeBreakpoint.style.borderLeft).to.equals(
+      '1px solid rgb(255, 197, 61)'
+    )
   })
 
-  it('should render duplicate table | ESW-462', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Pending'))
+  it('should hide stepActions menu after clicking menu | ESW-490', async () => {
+    const stepListAfterBreakpoint = new StepList([
+      {
+        hasBreakpoint: true,
+        status: { _type: 'Pending' },
+        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+        id: 'step1'
+      }
+    ])
+
+    when(sequencerServiceMock.removeBreakpoint('step1')).thenResolve({
+      _type: 'Ok'
+    })
+
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepListAfterBreakpoint}
+          sequencerPrefix={sequencerPrefix}
+          setSelectedStep={() => ({})}
+        />
+      )
+    })
+
+    const actions = await screen.findAllByRole('stepActions')
+    userEvent.click(actions[0])
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    // ESW-459
+    const removeBreakpoint = await screen.findByText('Remove breakpoint')
+
+    await waitFor(() => userEvent.click(removeBreakpoint))
+
+    await screen.findByText('Successfully removed breakpoint')
+  })
+
+  it('should render duplicate table | ESW-462', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
           selectedStep={undefined}
@@ -260,14 +273,14 @@ describe('stepList table', () => {
     await waitFor(() => userEvent.click(duplicate))
 
     expect(screen.getByRole('button', { name: /copy duplicate/i })).to.exist
-    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should render stepList table after cancel | ESW-462', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Pending'))
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
           selectedStep={undefined}
@@ -292,7 +305,6 @@ describe('stepList table', () => {
     await waitFor(() =>
       expect(screen.queryAllByRole('checkbox').length).to.equals(0)
     )
-    verify(sequencerServiceMock.getSequence()).called()
   })
 
   it('should duplicate selected commands | ESW-462', async () => {
@@ -304,10 +316,11 @@ describe('stepList table', () => {
         _type: 'Ok'
       }
     )
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepList}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
           selectedStep={undefined}
@@ -339,7 +352,6 @@ describe('stepList table', () => {
     await waitFor(() =>
       expect(screen.queryAllByRole('checkbox').length).to.equals(0)
     )
-    verify(sequencerServiceMock.getSequence()).called()
     verify(sequencerServiceMock.add(deepEqual([command1, command2]))).called()
   })
 
@@ -352,10 +364,11 @@ describe('stepList table', () => {
       messageType: 'Duplicate',
       state: 'Loaded'
     })
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Pending'))
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
           selectedStep={undefined}
@@ -391,20 +404,10 @@ describe('stepList table', () => {
     await waitFor(() =>
       expect(screen.queryAllByRole('checkbox').length).to.equals(0)
     )
-    verify(sequencerServiceMock.getSequence()).called()
     verify(sequencerServiceMock.add(deepEqual([command]))).called()
   })
 
   it('should add red border to step with breakpoint | ESW-459', async () => {
-    const stepList = new StepList([
-      {
-        hasBreakpoint: false,
-        status: { _type: 'Pending' },
-        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-        id: 'step1'
-      }
-    ])
-
     const stepListAfterBreakpoint = new StepList([
       {
         hasBreakpoint: true,
@@ -413,39 +416,17 @@ describe('stepList table', () => {
         id: 'step1'
       }
     ])
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(stepListAfterBreakpoint)
-
-    when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
-      _type: 'Ok'
-    })
 
     renderWithAuth({
       ui: (
         <StepListTable
+          isLoading={false}
+          stepList={stepListAfterBreakpoint}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
         />
       )
     })
-
-    const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
-
-    const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
-
-    const stepBeforeBreakpoint = screen.getByRole('button', {
-      name: /command-1/i
-    })
-
-    expect(stepBeforeBreakpoint.style.borderLeft).to.equals(
-      '1px solid rgb(255, 197, 61)'
-    )
-    // ESW-459
-    const insertBreakpoint = await screen.findByText('Insert breakpoint')
-    await waitFor(() => userEvent.click(insertBreakpoint))
 
     const stepAfterBreakpoint = screen.getByRole('button', {
       name: /command-1/i
@@ -456,69 +437,6 @@ describe('stepList table', () => {
     )
   })
 
-  it('add steps should add uploaded steps after the selected step | ESW-461', async () => {
-    const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
-
-    const file = new File(
-      [JSON.stringify({ commands: [commandToInsert] })],
-      'commands.json'
-    )
-
-    const stepList = getStepList('Pending', false)
-
-    const stepListAfterInsertion = new StepList([
-      {
-        hasBreakpoint: false,
-        status: { _type: 'Pending' },
-        command: new Setup(sequencerPrefix, 'Command-1'),
-        id: 'step1'
-      },
-      {
-        hasBreakpoint: false,
-        status: { _type: 'Pending' },
-        command: commandToInsert,
-        id: 'step2'
-      }
-    ])
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(stepListAfterInsertion)
-
-    when(sequencerServiceMock.insertAfter('step1', anything())).thenResolve({
-      _type: 'Ok'
-    })
-
-    renderWithAuth({
-      ui: (
-        <StepListTable
-          sequencerPrefix={sequencerPrefix}
-          setSelectedStep={() => ({})}
-        />
-      )
-    })
-
-    const actions = await screen.findAllByRole('stepActions')
-    await waitFor(() => userEvent.click(actions[0]))
-
-    const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
-
-    const addSteps = await screen.findByRole('button', { name: /add steps/i })
-    await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
-
-    // eslint-disable-next-line testing-library/no-node-access
-    const inputBox = addSteps.firstChild as HTMLInputElement
-    await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
-
-    await screen.findByText('Successfully added steps')
-    verify(
-      sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))
-    ).called()
-
-    // assert step is added
-    await screen.findByRole('row', { name: /1 command-1/i })
-    await screen.findByRole('row', { name: /2 command-2/i })
-  })
 })
 
 const findCell = (name: string) => screen.findByRole('cell', { name })

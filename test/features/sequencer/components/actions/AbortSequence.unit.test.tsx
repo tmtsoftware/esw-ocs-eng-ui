@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import {
   OkOrUnhandledResponse,
   Prefix,
-  SequencerStateResponse
+  SequencerState
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -127,7 +127,7 @@ describe('AbortSequence', () => {
     verify(sequencerServiceMock.abortSequence()).called()
   })
 
-  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+  const disabledStates: (SequencerState['_type'] | undefined)[] = [
     undefined,
     'Idle',
     'Loaded',

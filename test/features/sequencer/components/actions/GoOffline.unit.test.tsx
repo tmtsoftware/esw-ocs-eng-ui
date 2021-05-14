@@ -1,10 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  GoOfflineResponse,
-  Prefix,
-  SequencerStateResponse
-} from '@tmtsoftware/esw-ts'
+import { GoOfflineResponse, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
@@ -84,7 +80,7 @@ describe('GoOffline', () => {
     verify(sequencerServiceMock.goOffline()).called()
   })
 
-  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+  const disabledStates: (SequencerState['_type'] | undefined)[] = [
     undefined,
     'Running'
   ]

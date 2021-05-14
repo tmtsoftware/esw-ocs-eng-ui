@@ -47,15 +47,15 @@ const deriveStatus = (
 }
 
 export const getStepListStatus = (
-  stepList?: StepList,
-  isError?: boolean
+  stepList?: StepList
 ): SequencerInfo['stepListStatus'] => {
-  return isError
-    ? {
-        stepNumber: 0,
-        status: 'Failed to Fetch Status' as const
-      }
-    : deriveStatus(stepList)
+  return deriveStatus(stepList)
+  // isError
+  //   ? {
+  //       stepNumber: 0,
+  //       status: 'Failed to Fetch Status' as const
+  //     }
+  //   :
 }
 
 export const getCurrentStepCommandName = (

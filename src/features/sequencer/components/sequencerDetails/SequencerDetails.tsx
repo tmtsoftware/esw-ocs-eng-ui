@@ -8,7 +8,7 @@ import {
   Typography
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useGatewayLocation } from '../../../../contexts/GatewayServiceContext'
@@ -31,8 +31,7 @@ import type {
   Prefix,
   SequencerState,
   SequencerStateResponse,
-  Step,
-  Subscription
+  Step
 } from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout

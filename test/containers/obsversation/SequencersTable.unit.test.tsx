@@ -1,22 +1,20 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ObsMode, StepList, Subsystem } from '@tmtsoftware/esw-ts'
+import { StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { verify, when } from 'ts-mockito'
-import { MemoisedSequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
-import { step } from '../../utils/sequence-utils'
+import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import {
-  mockServices,
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../utils/test-utils'
+  getCurrentStepCommandName,
+  SequencerInfo,
+  StepListStatus
+} from '../../../src/features/sequencer/utils'
+import { step } from '../../utils/sequence-utils'
+import { renderWithAuth } from '../../utils/test-utils'
+import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
 
 describe('sequencer table', () => {
-  const locServiceMock = mockServices.mock.locationService
-  when(locServiceMock.listByComponentType('Sequencer')).thenResolve([])
-
   const stepList1: StepList = new StepList([
     step('Pending', 'command-11', true),
     step('Pending', 'command-12')
@@ -36,20 +34,28 @@ describe('sequencer table', () => {
   ])
 
   it('should be able to render SequencersTable successfully | ESW-451, ESW-496', async () => {
-    const obsMode: ObsMode = new ObsMode('DarkNight_1')
-    const sequencers: Subsystem[] = ['ESW', 'APS', 'DPS', 'CIS', 'AOESW']
+    const eswPrefix = 'ESW.DarkNight_1'
+    const apsPrefix = 'APS.DarkNight_1'
+    const dpsPrefix = 'DPS.DarkNight_1'
+    const cisPrefix = 'CIS.DarkNight_1'
 
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList1)
-      .thenResolve(stepList2)
-      .thenResolve(stepList3)
-      .thenResolve(stepList4)
-      .thenReject(Error())
+    const sequencersInfo: SequencerInfo[] = [
+      makeSequencerInfo(eswPrefix, stepList1, 'Paused', 1, 'Loaded'),
+      makeSequencerInfo(apsPrefix, stepList2, 'Failed', 2, 'Running'),
+      makeSequencerInfo(dpsPrefix, stepList3, 'In Progress', 1, 'Loaded'),
+      makeSequencerInfo(
+        cisPrefix,
+        stepList4,
+        'All Steps Completed',
+        0,
+        'Loaded'
+      )
+    ]
 
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <SequencersTable sequencersInfo={sequencersInfo} loading={false} />
         </BrowserRouter>
       )
     })
@@ -58,15 +64,21 @@ describe('sequencer table', () => {
   })
 
   it('should be able to render status NA if no sequence present | ESW-451', async () => {
-    const obsMode: ObsMode = new ObsMode('darknight')
-    const sequencers: Subsystem[] = ['ESW']
-
-    when(sequencerServiceMock.getSequence()).thenResolve(undefined)
+    const sequencersInfo: SequencerInfo[] = [
+      {
+        key: 'ESW.darknight',
+        prefix: 'ESW.darknight',
+        currentStepCommandName: getCurrentStepCommandName(undefined),
+        stepListStatus: { status: 'NA', stepNumber: 0 },
+        sequencerState: { _type: 'Idle' },
+        totalSteps: 0
+      }
+    ]
 
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <SequencersTable sequencersInfo={sequencersInfo} loading={false} />
         </BrowserRouter>
       )
     })
@@ -79,15 +91,21 @@ describe('sequencer table', () => {
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {
-    const obsMode: ObsMode = new ObsMode('darknight')
-    const sequencers: Subsystem[] = ['ESW']
-
-    when(sequencerServiceMock.getSequence()).thenResolve(undefined)
+    const sequencersInfo: SequencerInfo[] = [
+      {
+        key: 'ESW.darknight',
+        prefix: 'ESW.darknight',
+        currentStepCommandName: getCurrentStepCommandName(undefined),
+        stepListStatus: { status: 'NA', stepNumber: 0 },
+        sequencerState: { _type: 'Idle' },
+        totalSteps: 0
+      }
+    ]
 
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <MemoisedSequencersTable obsMode={obsMode} sequencers={sequencers} />
+          <SequencersTable sequencersInfo={sequencersInfo} loading={false} />
         </BrowserRouter>
       )
     })
@@ -97,8 +115,6 @@ describe('sequencer table', () => {
 
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darknight')
-
-    verify(sequencerServiceMock.getSequence()).called()
   })
 })
 
@@ -142,18 +158,6 @@ const assertTable = async () => {
     'All Steps Completed',
     '2'
   ])
-
-  const nonSpawnedSequencer: HTMLElement = screen.getByRole('row', {
-    name: /aoesw\.darknight_1/i
-  })
-
-  await assertCell(nonSpawnedSequencer, 'setting AOESW.DarkNight_1')
-  await assertCell(nonSpawnedSequencer, 'Failed to Fetch Status')
-  const cells = await within(nonSpawnedSequencer).findAllByRole('cell', {
-    name: 'NA'
-  })
-
-  expect(cells).to.length(2)
 }
 
 const assertHeader = async (colName: string) => {
@@ -176,4 +180,21 @@ const assertCell = async (row: HTMLElement, cellName: string) => {
   await within(row).findByRole('cell', {
     name: cellName
   })
+}
+
+const makeSequencerInfo = (
+  prefix: string,
+  stepList: StepList,
+  stepListState: StepListStatus,
+  stepNumber: number,
+  sequencerState: SequencerState['_type']
+): SequencerInfo => {
+  return {
+    key: prefix,
+    prefix: prefix,
+    currentStepCommandName: getCurrentStepCommandName(stepList),
+    stepListStatus: { status: stepListState, stepNumber },
+    sequencerState: { _type: sequencerState },
+    totalSteps: stepList.steps.length
+  }
 }

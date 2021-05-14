@@ -3,6 +3,7 @@ import { useStream } from '../../../hooks/useStream'
 import { useSequencerService } from './useSequencerService'
 import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 
+//TODO delete this file
 export const useSequencerDetails = (
   sequencerPrefix: Prefix
 ): [SequencerStateResponse | undefined, boolean] => {
@@ -13,7 +14,7 @@ export const useSequencerDetails = (
   const subscribeState = useCallback(
     (onEvent: (sequencerStateResponse: SequencerStateResponse) => void) =>
       sequencerService.subscribeSequencerState()(onEvent),
-    []
+    [sequencerService]
   )
 
   const onEvent = useCallback(

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import {
   Prefix,
   Result,
-  SequencerStateResponse,
+  SequencerState,
   SubmitResponse
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -104,7 +104,7 @@ describe('Start Sequence', () => {
     verify(sequencerServiceMock.startSequence()).called()
   })
 
-  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+  const disabledStates: (SequencerState['_type'] | undefined)[] = [
     undefined,
     'Running',
     'Processing',

@@ -4,7 +4,8 @@ import {
   ObsMode,
   ObsModeDetails,
   ObsModesDetailsResponseSuccess,
-  ObsModeStatus
+  ObsModeStatus,
+  StepList
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -112,9 +113,18 @@ describe('Observation page', () => {
   it('should render running obsModes | ESW-450', async () => {
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Loaded'
-    })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onEvent) => {
+        onEvent({
+          _type: 'SequencerStateResponse',
+          sequencerState: { _type: 'Loaded' },
+          stepList: new StepList([])
+        })
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: (
@@ -154,9 +164,6 @@ describe('Observation page', () => {
         seqCompsWithoutAgent: []
       })
       when(smService.getObsModesDetails()).thenResolve(data)
-      when(sequencerServiceMock.getSequencerState()).thenReject(
-        new Error('No sequencer present')
-      )
 
       renderWithAuth({
         ui: <Observations />
@@ -212,9 +219,18 @@ describe('Observation page', () => {
       _type: 'Success'
     })
 
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Loaded'
-    })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onEvent) => {
+        onEvent({
+          _type: 'SequencerStateResponse',
+          sequencerState: { _type: 'Loaded' },
+          stepList: new StepList([])
+        })
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: (

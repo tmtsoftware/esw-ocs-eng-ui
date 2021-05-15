@@ -25,6 +25,9 @@ describe('observation tabs', () => {
     reset(smService)
     reset(agentService)
     reset(sequencerServiceMock)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
+      return { cancel: () => undefined }
+    })
   })
   it('should be able to shutdown running observation | ESW-450, ESW-454', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)

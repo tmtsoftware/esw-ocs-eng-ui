@@ -10,12 +10,12 @@ import {
   Location,
   Parameter,
   Prefix,
+  SequencerStateResponse,
   Setup,
   StepList,
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
-import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -27,6 +27,7 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
+import type { SequencerState, Step } from '@tmtsoftware/esw-ts'
 
 const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   new StepList([
@@ -78,9 +79,16 @@ describe('sequencer details', () => {
   })
 
   it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Failure'))
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Offline', getStepList('Failure'))
+    )
     renderWithAuth({
-      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+      ui: (
+        <SequencerDetails
+          initialLoading={false}
+          prefix={sequencerLoc.connection.prefix}
+        />
+      )
     })
 
     const sequencerTitle = await screen.findByTestId('status-error')
@@ -99,13 +107,9 @@ describe('sequencer details', () => {
   })
 
   it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(
-      getStepList('InFlight')
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('InFlight'))
     )
-
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -133,7 +137,9 @@ describe('sequencer details', () => {
   })
 
   it('should render the sequence and show all steps completed | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Success'))
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('Success'))
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -146,15 +152,14 @@ describe('sequencer details', () => {
   })
 
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.isOnline()).thenResolve(true)
-    when(sequencerServiceMock.getSequence()).thenResolve(
-      getStepList('Pending', true)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('Pending', true))
     )
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    await screen.findByTestId('status-error')
     const sequencerTitle = await screen.findByTestId('status-success')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
@@ -208,7 +213,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -409,7 +416,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
 
     //Set bigger viewport so that values wont be elipsis
     await setViewport({ width: 1440, height: 900 })
@@ -468,8 +477,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
-
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
     //Set small viewport so that values will have elipsis
     await setViewport({ width: 1280, height: 800 })
 
@@ -541,3 +551,16 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('PauseSequence')).to.null
   })
 })
+
+const getEvent =
+  (seqState: SequencerState['_type'], stepList: StepList) =>
+  (onevent: (sequencerStateResponse: SequencerStateResponse) => void) => {
+    onevent({
+      _type: 'SequencerStateResponse',
+      sequencerState: { _type: seqState },
+      stepList
+    })
+    return {
+      cancel: () => undefined
+    }
+  }

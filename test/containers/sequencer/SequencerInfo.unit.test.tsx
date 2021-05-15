@@ -13,6 +13,18 @@ import {
 } from '../../utils/test-utils'
 
 describe('SequencerInfo ', () => {
+  beforeEach(() => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent) => {
+        onevent({
+          _type: 'SequencerStateResponse',
+          sequencerState: { _type: 'Idle' },
+          stepList: new StepList([])
+        })
+        return { cancel: () => undefined }
+      }
+    )
+  })
   const renderWithRouter = (ui: React.ReactElement, prefix: string) => {
     window.history.pushState({}, 'Home page', getSequencerPath(prefix))
     return renderWithAuth({
@@ -21,9 +33,6 @@ describe('SequencerInfo ', () => {
   }
   it('should render sequencer details for sequencer | ESW-492', async () => {
     const prefix = 'ESW.iris_DarkNight'
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Idle'
-    })
 
     when(sequencerServiceMock.getSequence()).thenResolve(new StepList([]))
 
@@ -55,12 +64,6 @@ describe('SequencerInfo ', () => {
 
   errorCases.forEach(([prefix, subtitle, title]) => {
     it(`should render ${subtitle} if ${title} | ESW-492`, async () => {
-      when(sequencerServiceMock.getSequencerState()).thenResolve({
-        _type: 'Idle'
-      })
-
-      when(sequencerServiceMock.getSequence()).thenResolve(new StepList([]))
-
       when(mockServices.mock.locationService.find(anything())).thenResolve(
         undefined
       )
@@ -74,12 +77,6 @@ describe('SequencerInfo ', () => {
 
   it(`should render Invalid sequencer prefix if prefix is not present | ESW-492`, async () => {
     window.history.pushState({}, 'Home page', '/sequencer?prefix=')
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Idle'
-    })
-
-    when(sequencerServiceMock.getSequence()).thenResolve(new StepList([]))
-
     when(mockServices.mock.locationService.find(anything())).thenResolve(
       undefined
     )

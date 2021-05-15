@@ -436,7 +436,6 @@ describe('stepList table', () => {
       expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red')
     )
   })
-
 })
 
 const findCell = (name: string) => screen.findByRole('cell', { name })

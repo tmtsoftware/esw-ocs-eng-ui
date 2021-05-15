@@ -1,8 +1,8 @@
-import type { TestSuiteResult } from '@web/test-runner'
 // eslint-disable-next-line import/no-nodejs-modules
 import * as fs from 'fs'
 // eslint-disable-next-line import/no-nodejs-modules
 import * as os from 'os'
+import type { TestSuiteResult } from '@web/test-runner'
 
 const PIPE = '|'
 const PIPE_WITH_SPACES = ' | '

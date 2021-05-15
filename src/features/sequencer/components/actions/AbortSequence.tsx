@@ -1,8 +1,3 @@
-import type {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
@@ -11,6 +6,11 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+import type {
+  OkOrUnhandledResponse,
+  Prefix,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
 const useAbortSequence = (
   prefix: Prefix

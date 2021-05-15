@@ -1,9 +1,4 @@
 import { PauseCircleOutlined } from '@ant-design/icons'
-import type {
-  PauseResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
@@ -12,6 +7,11 @@ import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type {
+  PauseResponse,
+  Prefix,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
 const usePauseSequence = (
   prefix: Prefix

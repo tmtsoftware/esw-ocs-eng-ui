@@ -1,7 +1,7 @@
-import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
+import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 export const useProvisionAction = <T>(
   mutationFn: (agent: SequenceManagerService) => Promise<T>,

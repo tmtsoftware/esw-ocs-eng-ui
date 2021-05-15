@@ -1,6 +1,5 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -8,6 +7,7 @@ import { anything, capture, when } from 'ts-mockito'
 import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButton'
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import type { HttpLocation } from '@tmtsoftware/esw-ts'
 
 describe('SpawnSMButton', () => {
   const locServiceMock = mockServices.mock.locationService

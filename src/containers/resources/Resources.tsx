@@ -1,6 +1,4 @@
-import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Card, Table, Typography } from 'antd'
-import type { ColumnsType } from 'antd/lib/table'
 import React from 'react'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import { HeaderTitle } from '../../components/table/HeaderTitle'
@@ -9,6 +7,8 @@ import {
   useObsModesDetails
 } from '../../features/sm/hooks/useObsModesDetails'
 import styles from './resources.module.css'
+import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
+import type { ColumnsType } from 'antd/lib/table'
 
 type ResourceType = 'InUse' | 'Available'
 

@@ -1,6 +1,5 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import {
   AgentProvisionConfig,
   ConfigData,
@@ -16,6 +15,7 @@ import {
   mockServices,
   renderWithAuth
 } from '../../../../../test/utils/test-utils'
+import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {

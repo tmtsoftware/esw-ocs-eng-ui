@@ -1,6 +1,5 @@
 import {
   OkOrUnhandledResponse,
-  Prefix,
   Sequence,
   SequenceCommand,
   SequencerService
@@ -9,12 +8,10 @@ import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
 const useLoadAction = (
-  prefix: Prefix,
   sequence?: SequenceCommand[]
 ): UseMutationResult<
   OkOrUnhandledResponse | undefined,
@@ -31,8 +28,7 @@ const useLoadAction = (
         return successMessage('Sequence has been loaded successfully')
       return errorMessage('Failed to load the sequence', Error(res?.msg))
     },
-    onError: (e) => errorMessage('errorMsg', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to load the sequence', e)
   })
 }
 
@@ -42,7 +38,7 @@ export const LoadSequence = ({
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const [sequence, setSequence] = useState<SequenceCommand[]>()
-  const loadSequenceAction = useLoadAction(prefix, sequence)
+  const loadSequenceAction = useLoadAction(sequence)
 
   const beforeUpload = (file: File): Promise<void> => {
     return new Promise((resolve) => {

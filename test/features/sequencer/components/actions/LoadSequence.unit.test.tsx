@@ -6,7 +6,7 @@ import {
   Prefix,
   Sequence,
   SequenceCommand,
-  SequencerStateResponse,
+  SequencerState,
   Setup
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -85,7 +85,7 @@ describe('LoadSequence', () => {
     })
   })
 
-  it('should show failed if error is returned | ESW-458', async () => {
+  it.only('should show failed if error is returned | ESW-458', async () => {
     when(sequencerServiceMock.loadSequence(anything())).thenReject(
       Error('error occurred')
     )
@@ -121,7 +121,7 @@ describe('LoadSequence', () => {
     )
   })
 
-  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+  const disabledStates: (SequencerState['_type'] | undefined)[] = [
     undefined,
     'Processing',
     'Offline',

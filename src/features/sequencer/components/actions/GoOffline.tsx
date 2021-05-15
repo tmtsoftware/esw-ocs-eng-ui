@@ -1,19 +1,16 @@
-import type {
-  GoOfflineResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STATUS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+import type { GoOfflineResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
-const useGoOfflineAction = (
-  prefix: Prefix
-): UseMutationResult<GoOfflineResponse, unknown, SequencerService> => {
+const useGoOfflineAction = (): UseMutationResult<
+  GoOfflineResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.goOffline()
 
@@ -27,8 +24,7 @@ const useGoOfflineAction = (
         Error(res._type === 'GoOfflineHookFailed' ? res._type : res.msg)
       )
     },
-    onError: (e) => errorMessage('Sequencer failed to go Offline', e),
-    invalidateKeysOnSuccess: [[SEQUENCER_STATUS.key, prefix.toJSON()]]
+    onError: (e) => errorMessage('Sequencer failed to go Offline', e)
   })
 }
 
@@ -37,7 +33,7 @@ export const GoOffline = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const goOfflineAction = useGoOfflineAction(prefix)
+  const goOfflineAction = useGoOfflineAction()
 
   const goOffline = () =>
     sequencerService && goOfflineAction.mutate(sequencerService)

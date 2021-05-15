@@ -12,7 +12,6 @@ import type {
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
@@ -57,15 +56,13 @@ export const BreakpointAction = ({
   const insertBreakpointAction = useMutation({
     mutationFn: insertAction(step.id),
     onSuccess: () => successMessage('Successfully inserted breakpoint'),
-    onError: (e) => errorMessage('Failed to insert breakpoint', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to insert breakpoint', e)
   })
 
   const removeBreakpointAction = useMutation({
     mutationFn: removeAction(step.id),
     onSuccess: () => successMessage('Successfully removed breakpoint'),
-    onError: (e) => errorMessage('Failed to remove breakpoint', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to remove breakpoint', e)
   })
 
   if (step.hasBreakpoint) {

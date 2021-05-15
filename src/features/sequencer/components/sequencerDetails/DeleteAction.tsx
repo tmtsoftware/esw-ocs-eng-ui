@@ -9,7 +9,6 @@ import { Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
@@ -66,8 +65,7 @@ export const DeleteAction = ({
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
     onSuccess: () => successMessage('Successfully deleted step'),
-    onError: (e) => errorMessage('Failed to delete step', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to delete step', e)
   })
 
   return (

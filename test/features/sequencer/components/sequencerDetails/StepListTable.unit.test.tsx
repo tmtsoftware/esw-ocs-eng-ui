@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, verify, when } from 'ts-mockito'
+import { deepEqual, verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/sequencerDetails/StepListTable'
 import {
   renderWithAuth,

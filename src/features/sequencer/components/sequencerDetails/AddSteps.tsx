@@ -10,7 +10,6 @@ import { Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
@@ -56,8 +55,7 @@ export const AddSteps = ({
   const addStepAction = useMutation({
     mutationFn: addSteps(stepId, commands),
     onError: (e) => errorMessage('Failed to add steps', e),
-    onSuccess: () => successMessage('Successfully added steps'),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onSuccess: () => successMessage('Successfully added steps')
   })
 
   const beforeUpload = (file: File): Promise<void> =>

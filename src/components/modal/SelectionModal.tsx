@@ -1,7 +1,7 @@
 import { Empty, Menu, Modal, ModalProps, Typography } from 'antd'
+import type { SelectInfo } from 'rc-menu/lib/interface'
 import React from 'react'
 import styles from './selectionModal.module.css'
-import type { SelectInfo } from 'rc-menu/lib/interface'
 
 interface SelectionModalProps extends ModalProps {
   selectedItem: string

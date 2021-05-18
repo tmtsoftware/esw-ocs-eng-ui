@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Result } from 'antd'
-import { Route, Switch } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { Route, Switch } from 'react-router-dom'
 import { Home } from '../containers/home/Home'
 import { Infrastructure } from '../containers/infrastructure/Infrastructure'
 import { Observations } from '../containers/observation/Observations'

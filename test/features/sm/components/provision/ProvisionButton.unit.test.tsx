@@ -6,6 +6,7 @@ import {
   Prefix,
   ProvisionConfig
 } from '@tmtsoftware/esw-ts'
+import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
@@ -15,7 +16,6 @@ import {
   mockServices,
   renderWithAuth
 } from '../../../../../test/utils/test-utils'
-import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {

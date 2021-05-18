@@ -1,4 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons'
+import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
@@ -7,7 +8,6 @@ import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './agentCards.module.css'
-import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 
 const killComponent =
   (componentId: ComponentId) => (agentService: AgentService) =>

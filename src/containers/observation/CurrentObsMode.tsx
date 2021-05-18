@@ -5,6 +5,7 @@ import {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
@@ -12,7 +13,6 @@ import { SequencersTable } from '../../features/sequencer/components/SequencersT
 import { useSequencerState } from '../../features/sequencer/hooks/useSequencerState'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
-import type { BaseType } from 'antd/lib/typography/Base'
 
 type CurrentObsModeProps = {
   currentTab: TabName

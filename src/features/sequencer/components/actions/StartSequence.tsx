@@ -1,4 +1,9 @@
 import { PlayCircleOutlined } from '@ant-design/icons'
+import type {
+  Prefix,
+  SequencerService,
+  SubmitResponse
+} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
@@ -7,11 +12,6 @@ import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import type {
-  Prefix,
-  SequencerService,
-  SubmitResponse
-} from '@tmtsoftware/esw-ts'
 
 const useStartSequence = (
   prefix: Prefix

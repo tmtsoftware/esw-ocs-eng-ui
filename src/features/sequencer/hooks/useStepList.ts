@@ -1,7 +1,7 @@
+import type { Prefix, StepList } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from 'react-query'
 import { GET_SEQUENCE } from '../../queryKeys'
 import { useSequencerService } from './useSequencerService'
-import type { Prefix, StepList } from '@tmtsoftware/esw-ts'
 
 export const useStepList = (
   sequencerPrefix: Prefix

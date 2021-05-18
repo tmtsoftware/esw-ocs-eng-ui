@@ -1,6 +1,6 @@
+import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { QueryErrorResetBoundary } from 'react-query'
-import React from 'react'
 import { ErrorFallback } from './ErrorFallback'
 
 export const CustomErrorBoundary = ({

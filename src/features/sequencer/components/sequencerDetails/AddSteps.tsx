@@ -5,6 +5,7 @@ import {
   SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
+import type { Prefix } from '@tmtsoftware/esw-ts/lib/src'
 import { Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -16,7 +17,6 @@ import {
   idDoesNotExistMsg
 } from '../sequencerResponsesMapping'
 import styles from './sequencerDetails.module.css'
-import type { Prefix } from '@tmtsoftware/esw-ts/lib/src'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {

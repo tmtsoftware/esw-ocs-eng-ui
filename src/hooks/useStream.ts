@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import type { Subscription } from '@tmtsoftware/esw-ts'
+import { useEffect, useState } from 'react'
 
 export type Mapper<I, O> = (event: I) => O
 export type Run<I> = (cb: Mapper<I, void>) => Subscription

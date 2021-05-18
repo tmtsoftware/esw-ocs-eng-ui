@@ -16,13 +16,6 @@ import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/conf
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
 import 'antd/dist/antd.css'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import React, { ReactElement } from 'react'
-import { anything, instance, mock, when } from 'ts-mockito'
-import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
-import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
-import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
-import { SMServiceProvider } from '../../src/contexts/SMContext'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -30,6 +23,13 @@ import type {
   KeycloakRoles,
   KeycloakTokenParsed
 } from 'keycloak-js'
+import React, { ReactElement } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { anything, instance, mock, when } from 'ts-mockito'
+import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
+import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
+import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
+import { SMServiceProvider } from '../../src/contexts/SMContext'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn

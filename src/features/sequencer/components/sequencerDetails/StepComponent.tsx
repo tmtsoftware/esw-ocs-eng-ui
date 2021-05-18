@@ -1,9 +1,9 @@
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
-import type { BaseType } from 'antd/lib/typography/Base'
 
 const color: { [stepStatus: string]: BaseType } = {
   Success: 'secondary',

@@ -1,3 +1,4 @@
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Card,
@@ -25,7 +26,6 @@ import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout
 

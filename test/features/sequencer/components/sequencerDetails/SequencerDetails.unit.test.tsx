@@ -15,6 +15,7 @@ import {
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
+import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -26,7 +27,6 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
-import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 
 const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   new StepList([

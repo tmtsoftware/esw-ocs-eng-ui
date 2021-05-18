@@ -265,6 +265,10 @@ describe('stepList table', () => {
 
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.greaterThan(0)
+
+    await waitFor(() =>
+      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
+    )
     verify(sequencerServiceMock.getSequence()).called()
   })
 
@@ -309,6 +313,9 @@ describe('stepList table', () => {
     userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
     await screen.findByText('Successfully duplicated steps')
+    await waitFor(() =>
+      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
+    )
     verify(sequencerServiceMock.getSequence()).called()
     verify(sequencerServiceMock.add(deepEqual([command1, command2]))).called()
   })
@@ -358,6 +365,9 @@ describe('stepList table', () => {
     await screen.findByText('Failed to duplicate steps, reason: error')
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.be.greaterThan(0)
+    await waitFor(() =>
+      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
+    )
     verify(sequencerServiceMock.getSequence()).called()
     verify(sequencerServiceMock.add(deepEqual([command]))).called()
   })

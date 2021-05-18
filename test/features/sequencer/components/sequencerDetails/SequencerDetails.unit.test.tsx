@@ -306,7 +306,7 @@ describe('sequencer details', () => {
     await screen.findByText('ESW.test3')
   })
 
-  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501', async () => {
+  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501, ESW-489', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('Success', '1'),
       stepUsingId('InFlight', '2'),
@@ -318,10 +318,16 @@ describe('sequencer details', () => {
       stepUsingId('InFlight', '2'),
       stepUsingId('Pending', '3')
     ])
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(stepListUpdated)
 
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (callback) => {
+        sendEvent(callback, 'Running', stepList)
+        sendEvent(callback, 'Running', stepListUpdated, 200)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -331,13 +337,6 @@ describe('sequencer details', () => {
     userEvent.click(step)
 
     await screen.findByText('ESW.test1')
-
-    await waitFor(
-      () => {
-        verify(sequencerServiceMock.getSequence()).times(2)
-      },
-      { timeout: 1200 }
-    )
 
     //when due to polling new call returns new steplist object with same data, UI should continue to show step1
     await screen.findByText('ESW.test1')

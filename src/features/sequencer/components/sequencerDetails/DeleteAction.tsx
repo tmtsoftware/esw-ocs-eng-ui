@@ -1,10 +1,4 @@
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import type {
-  GenericResponse,
-  Prefix,
-  SequencerService,
-  Step
-} from '@tmtsoftware/esw-ts'
 import { Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -14,6 +8,12 @@ import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
 } from '../sequencerResponsesMapping'
+import type {
+  GenericResponse,
+  Prefix,
+  SequencerService,
+  Step
+} from '@tmtsoftware/esw-ts'
 
 const handleDeleteResponse = (res: GenericResponse) => {
   switch (res._type) {

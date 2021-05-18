@@ -4,11 +4,6 @@
   color: var(--labelColor);
 }
 
-.disabled,
-.actionDisabled {
-  color: var(--disabledColor);
-}
-
 .danger {
   --labelColor: #ff4d4f;
   --activeColor: #ff4d4f;

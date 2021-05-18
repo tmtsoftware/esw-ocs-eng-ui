@@ -79,7 +79,9 @@ export const AddSteps = ({
       customRequest={() =>
         sequencerService && addStepAction.mutate(sequencerService)
       }>
-      <div className={disabled ? styles.disabled : undefined}>
+      <div
+        role='addSteps'
+        style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
         <PlusCircleOutlined />
         Add steps
       </div>

@@ -182,4 +182,32 @@ describe('StepActions', () => {
     expect(duplicateMenu.classList.contains('ant-menu-item-disabled')).to.be
       .true
   })
+
+  it.only('should disable add steps if step Status is completed | ESW-461', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListContextProvider
+          value={{
+            handleDuplicate: () => undefined,
+            isDuplicateEnabled: false,
+            stepListStatus: 'All Steps Completed'
+          }}>
+          <StepActions
+            sequencerPrefix={sequencerPrefix}
+            step={getStepWithBreakpoint(false, stepStatusSuccess)}
+          />
+        </StepListContextProvider>
+      )
+    })
+
+    userEvent.click(await screen.findByRole('stepActions'))
+
+    const addStepsMenu = (await screen.findByRole('menuitem', {
+      name: /add steps/i
+    })) as HTMLMenuElement
+    const addStepsDiv = (await screen.findByRole('addSteps')) as HTMLDivElement
+
+    expect(addStepsMenu.classList.contains('ant-menu-item-disabled')).to.be.true
+    expect(addStepsDiv.style.color).to.be.equal('var(--disabledColor)')
+  })
 })

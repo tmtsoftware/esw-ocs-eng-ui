@@ -47,7 +47,6 @@ export const useService = <T>(
   })
 
   useEffect(() => {
-    console.log('Location', connection)
     locationService.find(connection).finally(() => setLoading(false))
   }, [connection, locationService])
 

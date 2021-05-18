@@ -114,23 +114,29 @@ export const StepListTable = ({
   )
 
   useEffect(() => {
-    const currentStep = stepList?.steps.find(
+    const inFlightStep = stepList?.steps.find(
       (step) => step.status._type === 'InFlight'
     )
     if (
-      currentStep !== undefined &&
+      inFlightStep !== undefined &&
       selectedStep !== undefined &&
       stepList !== undefined
     ) {
-      const currentStepIndex = stepList.steps.findIndex(
-        (step) => step.id === currentStep.id
+      const inFlightStepIndex = stepList.steps.findIndex(
+        (step) => step.id === inFlightStep.id
       )
       const selectedStepIndex = stepList.steps.findIndex(
         (step) => step.id === selectedStep.id
       )
-      if (currentStepIndex - selectedStepIndex === 1)
-        setSelectedStep(currentStep)
+      const isSelectedStepPreviousOfInFlightStep =
+        inFlightStepIndex - selectedStepIndex === 1
+      const isSelectedStepIncomplete = selectedStep.status._type !== 'Success'
+
+      if (isSelectedStepIncomplete && isSelectedStepPreviousOfInFlightStep) {
+        setSelectedStep(inFlightStep)
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepList])
 
   return (

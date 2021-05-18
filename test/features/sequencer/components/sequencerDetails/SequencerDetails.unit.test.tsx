@@ -297,6 +297,43 @@ describe('sequencer details', () => {
     await screen.findByText('ESW.test3')
   })
 
+  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501', async () => {
+    const stepList: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('InFlight', '2'),
+      stepUsingId('Pending', '3')
+    ])
+
+    const stepListUpdated: StepList = new StepList([
+      stepUsingId('Success', '1'),
+      stepUsingId('InFlight', '2'),
+      stepUsingId('Pending', '3')
+    ])
+    when(sequencerServiceMock.getSequence())
+      .thenResolve(stepList)
+      .thenResolve(stepListUpdated)
+
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    const step = await screen.findByRole('button', { name: /command1/i })
+
+    userEvent.click(step)
+
+    await screen.findByText('ESW.test1')
+
+    await waitFor(
+      () => {
+        verify(sequencerServiceMock.getSequence()).times(2)
+      },
+      { timeout: 1200 }
+    )
+
+    //when due to polling new call returns new steplist object with same data, UI should continue to show step1
+    await screen.findByText('ESW.test1')
+  })
+
   it('should render step2 followed by step3 parameter table when step2 is clicked and sequence progress from step1, step2 and step3 | ESW-501', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('InFlight', '1'),

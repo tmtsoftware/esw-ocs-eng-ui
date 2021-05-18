@@ -73,6 +73,7 @@ export const AddSteps = ({
 
   return (
     <Upload
+      className={styles.upload}
       disabled={disabled}
       beforeUpload={beforeUpload}
       customRequest={() =>

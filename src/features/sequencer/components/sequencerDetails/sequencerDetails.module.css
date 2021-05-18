@@ -89,3 +89,11 @@ tr#selectedRow > td:last-child::after {
 .duplicateStepListTable {
   height: 90%;
 }
+
+.upload > div {
+  width: 100% ;
+}
+
+.upload :hover {
+  color: var(--activeColor);
+} 

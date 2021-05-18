@@ -85,7 +85,7 @@ describe('LoadSequence', () => {
     })
   })
 
-  it.only('should show failed if error is returned | ESW-458', async () => {
+  it('should show failed if error is returned | ESW-458', async () => {
     when(sequencerServiceMock.loadSequence(anything())).thenReject(
       Error('error occurred')
     )

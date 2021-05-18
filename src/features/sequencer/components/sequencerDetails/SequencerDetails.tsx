@@ -164,11 +164,9 @@ const EmptyStep = () => (
 )
 
 export const SequencerDetails = ({
-  prefix,
-  initialLoading = true
+  prefix
 }: {
   prefix: Prefix
-  initialLoading?: boolean
 }): JSX.Element => {
   const [sequencerStateResponse, setSequencerStateResponse] =
     useState<SequencerStateResponse | undefined>(undefined)
@@ -176,7 +174,7 @@ export const SequencerDetails = ({
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
-  const [loading, setLoading] = useState(initialLoading)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const seqService =

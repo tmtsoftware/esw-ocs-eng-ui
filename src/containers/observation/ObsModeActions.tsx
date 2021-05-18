@@ -8,7 +8,7 @@ import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 import type { TabName } from './ObservationTabs'
 
 type ObsModeActionsProps = {
-  tabName: TabName
+  tabName?: TabName
   obsMode: ObsMode
 }
 

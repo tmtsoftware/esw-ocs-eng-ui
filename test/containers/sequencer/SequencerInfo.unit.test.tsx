@@ -31,10 +31,8 @@ describe('SequencerInfo ', () => {
       ui: <BrowserRouter>{ui}</BrowserRouter>
     })
   }
-  it('should render sequencer details for sequencer | ESW-492', async () => {
+  it('should render sequencer details for sequencer | ESW-492, ESW-489', async () => {
     const prefix = 'ESW.iris_DarkNight'
-
-    when(sequencerServiceMock.getSequence()).thenResolve(new StepList([]))
 
     when(mockServices.mock.locationService.find(anything())).thenResolve({
       _type: 'HttpLocation',
@@ -63,7 +61,7 @@ describe('SequencerInfo ', () => {
   ]
 
   errorCases.forEach(([prefix, subtitle, title]) => {
-    it(`should render ${subtitle} if ${title} | ESW-492`, async () => {
+    it(`should render ${subtitle} if ${title} | ESW-492, ESW-489`, async () => {
       when(mockServices.mock.locationService.find(anything())).thenResolve(
         undefined
       )
@@ -75,7 +73,7 @@ describe('SequencerInfo ', () => {
     })
   })
 
-  it(`should render Invalid sequencer prefix if prefix is not present | ESW-492`, async () => {
+  it(`should render Invalid sequencer prefix if prefix is not present | ESW-492, ESW-489`, async () => {
     window.history.pushState({}, 'Home page', '/sequencer?prefix=')
     when(mockServices.mock.locationService.find(anything())).thenResolve(
       undefined

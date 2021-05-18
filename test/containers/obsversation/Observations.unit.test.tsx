@@ -9,6 +9,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 
@@ -110,7 +111,7 @@ describe('Observation page', () => {
     })
   })
 
-  it('should render running obsModes | ESW-450', async () => {
+  it('should render running obsModes | ESW-450, ESW-489', async () => {
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
@@ -208,7 +209,7 @@ describe('Observation page', () => {
       verify(smService.getObsModesDetails()).called()
     })
   })
-  it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450`, async () => {
+  it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
     const smService = mockServices.mock.smService
 
     when(smService.getObsModesDetails())

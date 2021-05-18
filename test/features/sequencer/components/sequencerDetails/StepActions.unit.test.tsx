@@ -183,7 +183,7 @@ describe('StepActions', () => {
       .true
   })
 
-  it.only('should disable add steps if step Status is completed | ESW-461', async () => {
+  it('should disable add steps if step Status is completed | ESW-461', async () => {
     renderWithAuth({
       ui: (
         <StepListContextProvider

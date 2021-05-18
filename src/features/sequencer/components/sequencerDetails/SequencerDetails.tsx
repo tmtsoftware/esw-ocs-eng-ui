@@ -119,10 +119,10 @@ const DescriptionItem = (label: string, item: string) => {
 
 const StepInfo = ({ step }: { step: Step }) => (
   <div className={styles.stepInfo}>
-    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 4 }}>
-      {DescriptionItem('Type', step.command._type.toString())}
+    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }}>
       {DescriptionItem('Command', step.command.commandName)}
       {DescriptionItem('Source', step.command.source.toJSON())}
+      {DescriptionItem('Command Type', step.command._type.toString())}
       {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
     </Descriptions>
     {<ParameterTable paramSet={step.command.paramSet} />}

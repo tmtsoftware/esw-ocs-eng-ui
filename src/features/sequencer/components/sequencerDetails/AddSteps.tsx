@@ -16,7 +16,6 @@ import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
 } from '../sequencerResponsesMapping'
-import styles from './sequencerDetails.module.css'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {

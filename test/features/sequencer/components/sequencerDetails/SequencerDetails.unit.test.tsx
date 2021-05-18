@@ -420,8 +420,8 @@ describe('sequencer details', () => {
 
     await screen.findAllByRole('table')
 
-    const typeKey = screen.getByLabelText('Type-Key')
-    const typeValue = screen.getByLabelText('Type-Value')
+    const typeKey = screen.getByLabelText('Command Type-Key')
+    const typeValue = screen.getByLabelText('Command Type-Value')
     const commandNameKey = screen.getByLabelText('Command-Key')
     const commandNameValue = screen.getByLabelText('Command-Value')
     const sourceKey = screen.getByLabelText('Source-Key')
@@ -429,7 +429,7 @@ describe('sequencer details', () => {
     const obsIdKey = screen.getByLabelText('Obs-Id-Key')
     const obsIdValue = screen.getByLabelText('Obs-Id-Value')
 
-    expect(typeKey.innerText).to.equals('Type')
+    expect(typeKey.innerText).to.equals('Command Type')
     expect(typeValue.innerText).to.equals('Setup')
     expect(commandNameKey.innerText).to.equals('Command')
     expect(commandNameValue.innerText).to.equals('Command-1')
@@ -441,7 +441,7 @@ describe('sequencer details', () => {
     const step = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step)
 
-    expect(typeKey.innerText).to.equals('Type')
+    expect(typeKey.innerText).to.equals('Command Type')
     expect(typeValue.innerText).to.equals('Setup')
     expect(commandNameKey.innerText).to.equals('Command')
     expect(commandNameValue.innerText).to.equals('Command-2')
@@ -457,7 +457,9 @@ describe('sequencer details', () => {
         hasBreakpoint: false,
         status: { _type: 'Success' },
         command: new Setup(
-          Prefix.fromString('ESW.ESW123456789123456'),
+          Prefix.fromString(
+            'ESW.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
+          ),
           'Command-1',
           [],
           '2020A-001-123'
@@ -482,7 +484,7 @@ describe('sequencer details', () => {
 
     expect(commandNameValue.innerText).to.equals('Command-1')
     // assert text to have ellipses at the end
-    expect(sourceValue.innerText).to.match(/...$/)
+    expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
   })
 
   it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497', async () => {

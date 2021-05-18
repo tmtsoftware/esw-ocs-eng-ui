@@ -1,4 +1,3 @@
-import type { AgentService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
@@ -7,6 +6,7 @@ import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { SM_COMPONENT_ID } from '../constants'
+import type { AgentService } from '@tmtsoftware/esw-ts'
 
 const shutdownSM = (agent: AgentService) =>
   agent.killComponent(SM_COMPONENT_ID).then((res) => {

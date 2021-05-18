@@ -1,7 +1,7 @@
-import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { SEQUENCER_STATE } from '../../queryKeys'
 import { useSequencerService } from './useSequencerService'
+import type { Prefix, SequencerStateResponse } from '@tmtsoftware/esw-ts'
 
 export const useSequencerState = <E>(
   sequencerPrefix: Prefix,

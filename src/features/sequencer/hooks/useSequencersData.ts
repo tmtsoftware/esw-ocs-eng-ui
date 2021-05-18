@@ -1,3 +1,10 @@
+import { message } from 'antd'
+import { useQuery, UseQueryResult } from 'react-query'
+import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
+import { useAuth } from '../../../hooks/useAuth'
+import { createTokenFactory } from '../../../utils/createTokenFactory'
+import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
+import { mkSequencerService } from './useSequencerService'
 import type {
   Option,
   Location,
@@ -6,13 +13,6 @@ import type {
   StepList,
   Step
 } from '@tmtsoftware/esw-ts'
-import { message } from 'antd'
-import { useQuery, UseQueryResult } from 'react-query'
-import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
-import { useAuth } from '../../../hooks/useAuth'
-import { createTokenFactory } from '../../../utils/createTokenFactory'
-import { OBS_MODE_SEQUENCERS } from '../../queryKeys'
-import { mkSequencerService } from './useSequencerService'
 
 export type StepListStatus =
   | 'All Steps Completed'

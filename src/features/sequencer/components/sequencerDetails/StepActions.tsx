@@ -1,5 +1,4 @@
 import { CopyOutlined, MoreOutlined } from '@ant-design/icons'
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu } from 'antd'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
@@ -7,6 +6,7 @@ import { AddSteps } from './AddSteps'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 import styles from './sequencerDetails.module.css'
+import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 type SequencerStepProps = {
   step: Step
   sequencerPrefix: Prefix

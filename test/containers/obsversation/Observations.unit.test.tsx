@@ -7,8 +7,8 @@ import {
   ObsModeStatus
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 
 import { Observations } from '../../../src/containers/observation/Observations'

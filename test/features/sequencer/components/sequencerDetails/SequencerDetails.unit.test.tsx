@@ -15,7 +15,6 @@ import {
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
-import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -27,6 +26,7 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
+import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 
 const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   new StepList([
@@ -297,7 +297,7 @@ describe('sequencer details', () => {
     await screen.findByText('ESW.test3')
   })
 
-  it.skip('should render step2 followed by step3 parameter table when step2 is clicked and sequence progress from step1, step2 and step3 | ESW-501', async () => {
+  it('should render step2 followed by step3 parameter table when step2 is clicked and sequence progress from step1, step2 and step3 | ESW-501', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('InFlight', '1'),
       stepUsingId('Pending', '2'),

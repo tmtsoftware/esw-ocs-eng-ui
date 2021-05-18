@@ -1,6 +1,6 @@
 import { Button, Result } from 'antd'
-import React from 'react'
 import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { HOME } from './RoutesConfig'
 
 export const NoMatch = (): JSX.Element => {

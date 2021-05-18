@@ -9,6 +9,11 @@ import { RTMReporter } from './dist/test/utils/RTMReporter.js'
 process.env.NODE_ENV = 'test'
 
 export default {
+  testFramework: {
+    config: {
+      timeout: '3000'
+    }
+  },
   plugins: [
     plugin(),
     importMapsPlugin({

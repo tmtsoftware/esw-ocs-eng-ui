@@ -1,9 +1,4 @@
 import { ScissorOutlined } from '@ant-design/icons'
-import type {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
@@ -13,6 +8,11 @@ import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type {
+  OkOrUnhandledResponse,
+  Prefix,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
 const useResetAction = (
   prefix: Prefix

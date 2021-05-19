@@ -153,7 +153,7 @@ const StepInfo = ({ step }: { step: Step }) => (
       {DescriptionItem('Command Type', step.command._type.toString())}
       {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
     </Descriptions>
-    {<ParameterTable paramSet={step.command.paramSet} />}
+    <ParameterTable paramSet={step.command.paramSet} />
   </div>
 )
 

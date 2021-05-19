@@ -18,7 +18,7 @@ export type SequencerInfo = {
   prefix: string
   currentStepCommandName: string
   stepListStatus: { stepNumber: number; status: StepListStatus }
-  totalSteps: number | 'NA'
+  totalSteps: number
   sequencerState: SequencerState
 }
 
@@ -28,16 +28,14 @@ const Status: { [key: string]: StepListStatus } = {
   InFlight: 'In Progress',
   Success: 'All Steps Completed'
 }
-const currentStep = (stepList: StepList): Option<Step> => {
-  return stepList.steps.find((e) => e.status._type !== 'Success')
-}
+const currentStep = (stepList: StepList): Option<Step> =>
+  stepList.steps.find((e) => e.status._type !== 'Success')
 
 // todo refactor this code if possible
 export const getStepListStatus = (
-  stepList: StepList | undefined
+  stepList: StepList
 ): SequencerInfo['stepListStatus'] => {
-  if (stepList === undefined || stepList.steps.length === 0)
-    return { stepNumber: 0, status: 'NA' as const }
+  if (stepList.steps.length === 0) return { stepNumber: 0, status: 'NA' }
   const step = currentStep(stepList)
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }

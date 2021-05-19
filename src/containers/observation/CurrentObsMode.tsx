@@ -143,7 +143,7 @@ export const CurrentObsMode = ({
         currentStepCommandName: getCurrentStepCommandName(stepList),
         stepListStatus,
         sequencerState: sequencerStatus.sequencerState,
-        totalSteps: stepList ? stepList.steps.length : 'NA'
+        totalSteps: stepList.steps.length
       }
     }
   )

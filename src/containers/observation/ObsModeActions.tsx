@@ -38,7 +38,7 @@ export const ObsModeActions = ({
   obsMode
 }: ObsModeActionsProps): JSX.Element =>
   tabName === 'Running' ? (
-    <RunningActions tabName={tabName} obsMode={obsMode} />
+    <RunningActions obsMode={obsMode} />
   ) : (
     <NonRunningActions tabName={tabName} obsMode={obsMode} />
   )

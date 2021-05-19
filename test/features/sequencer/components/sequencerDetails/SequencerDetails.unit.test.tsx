@@ -337,7 +337,7 @@ describe('sequencer details', () => {
     userEvent.click(step)
 
     await screen.findByText('ESW.test1')
-
+    //TODO: add css style assertions here
     //when due to polling new call returns new steplist object with same data, UI should continue to show step1
     await screen.findByText('ESW.test1')
   })
@@ -562,10 +562,17 @@ describe('sequencer details', () => {
         id: 'step2'
       }
     ])
+    let commandInserted = false
+
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
       (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
         sendEvent(onevent, 'Idle', stepList)
-        sendEvent(onevent, 'Idle', stepListAfterInsertion, 1)
+        setInterval(
+          () =>
+            commandInserted &&
+            sendEvent(onevent, 'Idle', stepListAfterInsertion),
+          1
+        )
         return {
           cancel: () => undefined
         }
@@ -590,7 +597,7 @@ describe('sequencer details', () => {
     expect(menuItems.length).to.equal(4)
 
     //asert step is not present before adding it
-    // expect(screen.getByRole('row', { name: /2 command-2/i })).to.null
+    expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null
 
     const addSteps = await screen.findByRole('button', { name: /add steps/i })
     await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
@@ -600,6 +607,7 @@ describe('sequencer details', () => {
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 
     await screen.findByText('Successfully added steps')
+    commandInserted = true
     verify(
       sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))
     ).called()

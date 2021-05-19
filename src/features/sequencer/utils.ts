@@ -12,6 +12,7 @@ export type StepListStatus =
   | 'Failed'
   | 'NA'
   | 'Failed to Fetch Status'
+  | 'Loaded'
 
 export type SequencerInfo = {
   key: string
@@ -40,7 +41,11 @@ export const getStepListStatus = (
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.steps.indexOf(step) + 1
-  return { stepNumber, status: Status[step.status._type] }
+  const status = Status[step.status._type]
+  return {
+    stepNumber,
+    status: status === 'Paused' && !stepList.isPaused() ? 'Loaded' : status
+  }
 }
 
 export const getCurrentStepCommandName = (

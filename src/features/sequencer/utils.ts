@@ -1,7 +1,5 @@
 import type {
-  Location,
   Option,
-  SequencerService,
   SequencerState,
   Step,
   StepList

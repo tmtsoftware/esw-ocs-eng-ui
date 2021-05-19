@@ -1,7 +1,7 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Space, Table, Tooltip, Typography } from 'antd'
-import { Link } from 'react-router-dom'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import type { SequencerInfo } from '../utils'

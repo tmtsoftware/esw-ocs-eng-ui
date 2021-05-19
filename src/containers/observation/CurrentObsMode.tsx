@@ -113,19 +113,15 @@ export const CurrentObsMode = ({
     [setLoading]
   )
 
-  const getSequencerService = (): [SequencerService, Prefix][] => {
-    return gatewayLocation
+  const services: [SequencerService, Prefix][] = useMemo(() => {
+    const sequencerServices: [SequencerService, Prefix][] = gatewayLocation
       ? sequencers.map((seq) => {
           const seqPrefix = new Prefix(seq, obsMode.name)
           return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
         })
       : []
-  }
-
-  const services: [SequencerService, Prefix][] = useMemo(
-    () => (currentTab === 'Running' ? getSequencerService() : []),
-    [currentTab, getSequencerService]
-  )
+    return currentTab === 'Running' ? sequencerServices : []
+  }, [currentTab, gatewayLocation, obsMode.name, sequencers, tf])
 
   useEffect(() => {
     const subscriptions = services.map(([sequencerService, sequencerPrefix]) =>

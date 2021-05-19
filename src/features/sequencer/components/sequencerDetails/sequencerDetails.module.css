@@ -35,6 +35,10 @@ tr.cellInDuplicate > th {
   padding-left: 0;
 }
 
+tr.cellInDuplicate > td > label {
+  padding-left: 8px;
+}
+
 tr#selectedRow > td {
   background: #e6f7ff;
   border-bottom: transparent;

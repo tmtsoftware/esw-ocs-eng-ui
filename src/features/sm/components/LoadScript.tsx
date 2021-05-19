@@ -4,7 +4,6 @@ import {
   SequenceManagerService,
   StartSequencerResponse
 } from '@tmtsoftware/esw-ts'
-import type { Subsystem } from '@tmtsoftware/esw-ts/lib/src'
 import { Button, Input, Popconfirm, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
@@ -12,6 +11,7 @@ import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './sm.module.css'
+import type { Subsystem } from '@tmtsoftware/esw-ts/lib/src'
 
 const handleResponse = (res: StartSequencerResponse) => {
   switch (res._type) {

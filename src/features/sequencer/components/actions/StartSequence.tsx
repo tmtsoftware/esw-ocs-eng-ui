@@ -1,21 +1,18 @@
 import { PlayCircleOutlined } from '@ant-design/icons'
-import type {
-  Prefix,
-  SequencerService,
-  SubmitResponse
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type { SequencerService, SubmitResponse } from '@tmtsoftware/esw-ts'
 
-const useStartSequence = (
-  prefix: Prefix
-): UseMutationResult<SubmitResponse, unknown, SequencerService> => {
+const useStartSequence = (): UseMutationResult<
+  SubmitResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.startSequence()
 
@@ -42,11 +39,7 @@ const useStartSequence = (
       errorMessage(
         'Failed to start the sequence',
         (e as Error).message ? e : Error((e as string).toString())
-      ),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [GET_SEQUENCE.key, prefix.toJSON()]
-    ]
+      )
   })
 }
 
@@ -55,7 +48,7 @@ export const StartSequence = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const startSequence = useStartSequence(prefix)
+  const startSequence = useStartSequence()
 
   const disabled = !sequencerState || sequencerState !== 'Loaded'
   return (

@@ -10,16 +10,17 @@ import {
   Location,
   Parameter,
   Prefix,
+  SequencerStateResponse,
   Setup,
   StepList,
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
-import type { Step } from '@tmtsoftware/esw-ts/lib/src'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
+import { BrowserRouter } from 'react-router-dom'
 import React from 'react'
-import { anything, reset, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { stepUsingId } from '../../../../utils/sequence-utils'
 import {
@@ -27,6 +28,7 @@ import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
+import type { SequencerState, Step } from '@tmtsoftware/esw-ts'
 
 const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
   new StepList([
@@ -77,8 +79,10 @@ describe('sequencer details', () => {
     }
   })
 
-  it('Should render the sequencerDetails | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Failure'))
+  it('Should render the sequencerDetails | ESW-455, ESW-456, ESW-489', async () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Offline', getStepList('Failure'))
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -98,14 +102,10 @@ describe('sequencer details', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nFailed`)
   })
 
-  it('should render the sequence and sequencer actions | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(
-      getStepList('InFlight')
+  it('should render the sequence and sequencer actions | ESW-455, ESW-456, ESW-489', async () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('InFlight'))
     )
-
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -132,8 +132,10 @@ describe('sequencer details', () => {
     )
   })
 
-  it('should render the sequence and show all steps completed | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.getSequence()).thenResolve(getStepList('Success'))
+  it('should render the sequence and show all steps completed | ESW-455, ESW-456, ESW-489', async () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('Success'))
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -145,16 +147,15 @@ describe('sequencer details', () => {
     )
   })
 
-  it('should render badge status as success if sequencer is online | ESW-455, ESW-456', async () => {
-    when(sequencerServiceMock.isOnline()).thenResolve(true)
-    when(sequencerServiceMock.getSequence()).thenResolve(
-      getStepList('Pending', true)
+  it('should render badge status as success if sequencer is online | ESW-455, ESW-456, ESW-489', async () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', getStepList('Pending', true))
     )
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    await screen.findByTestId('status-error')
     const sequencerTitle = await screen.findByTestId('status-success')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
     expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
@@ -169,7 +170,7 @@ describe('sequencer details', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nPaused`)
   })
 
-  it('should render parameter table when a Step is clicked from the StepList | ESW-457', async () => {
+  it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
       false
     ])
@@ -208,7 +209,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -234,7 +237,7 @@ describe('sequencer details', () => {
     ).to.exist
   })
 
-  it('should render step2 parameter table when a sequence progress from step1 to step2 | ESW-501', async () => {
+  it('should render step2 parameter table when a sequence progress from step1 to step2 | ESW-501, ESW-489', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('InFlight', '1'),
       stepUsingId('Pending', '2')
@@ -245,22 +248,27 @@ describe('sequencer details', () => {
       stepUsingId('InFlight', '2')
     ])
 
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(updatedStepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent) => {
+        sendEvent(onevent, 'Running', stepList)
+        sendEvent(onevent, 'Running', updatedStepList, 1000)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
-
+    // assert data of event 1
     await screen.findByText('ESW.test1')
 
-    //After 1 sec, polling is done, and step2 is InFlight
+    //After 1 milli second , a new event is received
     await screen.findByText('ESW.test2', undefined, { timeout: 1200 })
-    verify(sequencerServiceMock.getSequence()).times(2)
   })
 
-  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501', async () => {
+  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501, ESW-489', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('InFlight', '1'),
       stepUsingId('Pending', '2'),
@@ -273,9 +281,15 @@ describe('sequencer details', () => {
       stepUsingId('Pending', '3')
     ])
 
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(updatedStepListWithStep2InProgress)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (callback) => {
+        sendEvent(callback, 'Running', stepList)
+        sendEvent(callback, 'Running', updatedStepListWithStep2InProgress, 200)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -286,18 +300,13 @@ describe('sequencer details', () => {
 
     await screen.findByText('ESW.test3')
 
-    await waitFor(
-      () => {
-        verify(sequencerServiceMock.getSequence()).times(2)
-      },
-      { timeout: 1200 }
-    )
+    //TODO: add css style assertions here
 
     //even when step2 starts executing, ui should continue to show step3
     await screen.findByText('ESW.test3')
   })
 
-  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501', async () => {
+  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501, ESW-489', async () => {
     const stepList: StepList = new StepList([
       stepUsingId('Success', '1'),
       stepUsingId('InFlight', '2'),
@@ -309,10 +318,16 @@ describe('sequencer details', () => {
       stepUsingId('InFlight', '2'),
       stepUsingId('Pending', '3')
     ])
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(stepListUpdated)
 
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (callback) => {
+        sendEvent(callback, 'Running', stepList)
+        sendEvent(callback, 'Running', stepListUpdated, 200)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -322,14 +337,7 @@ describe('sequencer details', () => {
     userEvent.click(step)
 
     await screen.findByText('ESW.test1')
-
-    await waitFor(
-      () => {
-        verify(sequencerServiceMock.getSequence()).times(2)
-      },
-      { timeout: 1200 }
-    )
-
+    //TODO: add css style assertions here
     //when due to polling new call returns new steplist object with same data, UI should continue to show step1
     await screen.findByText('ESW.test1')
   })
@@ -353,10 +361,16 @@ describe('sequencer details', () => {
       stepUsingId('InFlight', '3')
     ])
 
-    when(sequencerServiceMock.getSequence())
-      .thenResolve(stepList)
-      .thenResolve(updatedStepListWithStep2InProgress)
-      .thenResolve(updatedStepListWithStep3InProgress)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendEvent(onevent, 'Idle', stepList)
+        sendEvent(onevent, 'Idle', updatedStepListWithStep2InProgress, 100)
+        sendEvent(onevent, 'Idle', updatedStepListWithStep3InProgress, 200)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -367,28 +381,10 @@ describe('sequencer details', () => {
 
     await screen.findByText('ESW.test2')
 
-    //wait for 1 sec, so that step2 starts executing
-    await waitFor(
-      () => {
-        verify(sequencerServiceMock.getSequence()).times(2)
-      },
-      { timeout: 1200 }
-    )
-
-    await screen.findByText('ESW.test2')
-
-    //wait for another 1 sec, so that step3 starts executing
-    await waitFor(
-      () => {
-        verify(sequencerServiceMock.getSequence()).times(3)
-      },
-      { timeout: 1200 }
-    )
-
     await screen.findByText('ESW.test3')
   })
 
-  it('should render Step details when a Step is clicked from the StepLists | ESW-457', async () => {
+  it('should render Step details when a Step is clicked from the StepLists | ESW-457, ESW-489', async () => {
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -409,7 +405,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
 
     //Set bigger viewport so that values wont be elipsis
     await setViewport({ width: 1440, height: 900 })
@@ -451,7 +449,7 @@ describe('sequencer details', () => {
     expect(obsIdValue.innerText).to.equals('2020A-001-123')
   })
 
-  it('should render step details with text data having elipsis when viewport size is small | ESW-457', async () => {
+  it('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -468,8 +466,9 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
-
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
     //Set small viewport so that values will have elipsis
     await setViewport({ width: 1280, height: 800 })
 
@@ -487,13 +486,11 @@ describe('sequencer details', () => {
     expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
   })
 
-  it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497', async () => {
+  it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497, ESW-489', async () => {
     const stepList = getStepList('InFlight')
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
-
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -505,12 +502,11 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('ResumeSequence')).to.null
   })
 
-  it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497', async () => {
+  it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497, ESW-489', async () => {
     const stepList = getStepList('Pending', true)
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Running'
-    })
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Running', stepList)
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -523,12 +519,12 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('PauseSequence')).to.null
   })
 
-  it('should show display Start action when sequencer is in Loaded state | ESW-497', async () => {
+  it('should show display Start action when sequencer is in Loaded state | ESW-497, ESW-489', async () => {
     const stepList = getStepList('Pending')
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Loaded'
-    })
-    when(sequencerServiceMock.getSequence()).thenResolve(stepList)
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      getEvent('Loaded', stepList)
+    )
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -540,4 +536,113 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('ResumeSequence')).to.null
     expect(screen.queryByRole('PauseSequence')).to.null
   })
+
+  it('add steps should add uploaded steps after the selected step | ESW-461, ESW-489', async () => {
+    const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
+    const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
+
+    const file = new File(
+      [JSON.stringify({ commands: [commandToInsert] })],
+      'commands.json'
+    )
+
+    const stepList = getStepList('Pending', false)
+
+    const stepListAfterInsertion = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: new Setup(sequencerPrefix, 'Command-1'),
+        id: 'step1'
+      },
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: commandToInsert,
+        id: 'step2'
+      }
+    ])
+    let commandInserted = false
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendEvent(onevent, 'Idle', stepList)
+        setInterval(
+          () =>
+            commandInserted &&
+            sendEvent(onevent, 'Idle', stepListAfterInsertion),
+          1
+        )
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
+
+    when(sequencerServiceMock.insertAfter('step1', anything())).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <SequencerDetails prefix={sequencerPrefix} />
+        </BrowserRouter>
+      )
+    })
+    const actions = await screen.findAllByRole('stepActions')
+    await waitFor(() => userEvent.click(actions[0]))
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(4)
+
+    //asert step is not present before adding it
+    expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null
+
+    const addSteps = await screen.findByRole('button', { name: /add steps/i })
+    await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const inputBox = addSteps.firstChild as HTMLInputElement
+    await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
+
+    await screen.findByText('Successfully added steps')
+    commandInserted = true
+    verify(
+      sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))
+    ).called()
+
+    // assert step is added
+    await screen.findByRole('row', { name: /1 command-1/i })
+    await screen.findByRole('row', { name: /2 command-2/i })
+  })
 })
+
+const getEvent =
+  (seqState: SequencerState['_type'], stepList: StepList) =>
+  (onevent: (sequencerStateResponse: SequencerStateResponse) => void) => {
+    onevent(makeSeqStateResponse(seqState, stepList))
+    return {
+      cancel: () => undefined
+    }
+  }
+
+const makeSeqStateResponse = (
+  seqState: SequencerState['_type'],
+  stepList: StepList
+): SequencerStateResponse => ({
+  _type: 'SequencerStateResponse',
+  sequencerState: { _type: seqState },
+  stepList
+})
+
+const sendEvent = (
+  onevent: (sequencerStateResponse: SequencerStateResponse) => void,
+  state: SequencerState['_type'],
+  stepList: StepList,
+  timeout?: number | undefined
+) => {
+  timeout
+    ? setTimeout(() => onevent(makeSeqStateResponse(state, stepList)), timeout)
+    : onevent(makeSeqStateResponse(state, stepList))
+}

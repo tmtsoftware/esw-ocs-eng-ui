@@ -1,4 +1,3 @@
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
 import {
   Badge,
   Card,
@@ -9,12 +8,14 @@ import {
   Typography
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
+import { useGatewayLocation } from '../../../../contexts/GatewayServiceContext'
+import { useAuth } from '../../../../hooks/useAuth'
+import { createTokenFactory } from '../../../../utils/createTokenFactory'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
-import { useSequencerState } from '../../hooks/useSequencerState'
-import { useSequencerStatus } from '../../hooks/useSequencerStatus'
+import { mkSequencerService } from '../../hooks/useSequencerService'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -26,6 +27,12 @@ import { SequencerError } from '../SequencerError'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 import { StepListTable } from './StepListTable'
+import type {
+  Prefix,
+  SequencerState,
+  SequencerStateResponse,
+  Step
+} from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout
 
@@ -35,11 +42,18 @@ type DescriptionProps = {
 
 const SequencerActions = ({
   prefix,
-  sequencerState
-}: SequencerProps): JSX.Element => {
+  sequencerState,
+  isPaused
+}: SequencerProps & {
+  isPaused: boolean
+}): JSX.Element => {
   return (
     <Space size={15}>
-      <PlayPauseSequence prefix={prefix} sequencerState={sequencerState} />
+      <PlayPauseSequence
+        prefix={prefix}
+        sequencerState={sequencerState}
+        isPaused={isPaused}
+      />
       <ResetSequence prefix={prefix} sequencerState={sequencerState} />
       <StopSequence prefix={prefix} sequencerState={sequencerState} />
     </Space>
@@ -56,10 +70,18 @@ const SequenceActions = ({
   </Space>
 )
 
-const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+const Actions = ({
+  prefix,
+  sequencerState,
+  isPaused
+}: SequencerProps & { isPaused: boolean }): JSX.Element => {
   return (
     <Space size={20}>
-      <SequencerActions prefix={prefix} sequencerState={sequencerState} />
+      <SequencerActions
+        prefix={prefix}
+        sequencerState={sequencerState}
+        isPaused={isPaused}
+      />
       <SequenceActions prefix={prefix} sequencerState={sequencerState} />
     </Space>
   )
@@ -84,8 +106,14 @@ const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
   )
 }
 
-const SequencerTitle = ({ prefix }: { prefix: Prefix }): JSX.Element => {
-  const { data: isOnline } = useSequencerStatus(prefix)
+const SequencerTitle = ({
+  sequencerState,
+  prefix
+}: {
+  sequencerState: SequencerState
+  prefix: Prefix
+}): JSX.Element => {
+  const isOnline = sequencerState._type !== 'Offline'
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
       <Badge status={isOnline ? 'success' : 'error'} className={styles.badge} />
@@ -125,7 +153,7 @@ const StepInfo = ({ step }: { step: Step }) => (
       {DescriptionItem('Command Type', step.command._type.toString())}
       {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
     </Descriptions>
-    {<ParameterTable paramSet={step.command.paramSet} />}
+    <ParameterTable paramSet={step.command.paramSet} />
   </div>
 )
 
@@ -140,30 +168,59 @@ export const SequencerDetails = ({
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  const sequencerState = useSequencerState(prefix)
+  const [sequencerStateResponse, setSequencerStateResponse] =
+    useState<SequencerStateResponse | undefined>(undefined)
+
+  const [gatewayLocation] = useGatewayLocation()
+  const { auth } = useAuth()
+  const tf = createTokenFactory(auth)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const seqService =
+      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
+
+    const subscription = seqService?.subscribeSequencerState()(
+      (sequencerStateResponse: SequencerStateResponse) => {
+        setLoading(false)
+        setSequencerStateResponse(sequencerStateResponse)
+      }
+    )
+    return subscription?.cancel
+  }, [gatewayLocation, setLoading, prefix, tf])
+
   const seqLocation = useSequencerLocation(prefix)
+
   const [selectedStep, setSelectedStep] = useState<Step>()
 
-  if (seqLocation.isLoading) return <Spinner />
+  if (seqLocation.isLoading || loading) return <Spinner />
 
-  if (!seqLocation.data)
+  // sequencerStateResponse will always be received atleast once on subscription
+  if (!seqLocation.data || !sequencerStateResponse) {
     return (
       <SequencerError
         title='404'
         subtitle={`Sequencer ${prefix.toJSON()} : Not found`}
       />
     )
+  }
 
   return (
     <>
       <PageHeader
-        title={<SequencerTitle prefix={prefix} />}
+        title={
+          <SequencerTitle
+            prefix={prefix}
+            sequencerState={sequencerStateResponse.sequencerState}
+          />
+        }
         ghost={false}
         className={styles.headerBox}
         extra={
           <Actions
             prefix={prefix}
-            sequencerState={sequencerState.data?._type}
+            isPaused={sequencerStateResponse.stepList.isPaused()}
+            sequencerState={sequencerStateResponse.sequencerState._type}
           />
         }>
         <SequencerDescription prefix={prefix} />
@@ -172,6 +229,8 @@ export const SequencerDetails = ({
         style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
         <Sider theme='light' width={'18rem'}>
           <StepListTable
+            stepList={sequencerStateResponse.stepList}
+            isLoading={loading}
             sequencerPrefix={prefix}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}

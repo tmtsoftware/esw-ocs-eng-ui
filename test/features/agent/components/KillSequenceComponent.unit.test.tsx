@@ -7,7 +7,7 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
-describe('Kill sequence component button | ESW-446', () => {
+describe('Kill sequence component button', () => {
   const prefix = new Prefix('ESW', 'ESW_1')
   const sequenceComponentID = new ComponentId(prefix, 'SequenceComponent')
 

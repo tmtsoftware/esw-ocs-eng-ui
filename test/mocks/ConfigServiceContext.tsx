@@ -1,6 +1,6 @@
-import type { ConfigService } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { mockServices } from '../utils/test-utils'
+import type { ConfigService } from '@tmtsoftware/esw-ts'
 
 const useCtx = (): [ConfigService, boolean] => [
   mockServices.instance.configService,

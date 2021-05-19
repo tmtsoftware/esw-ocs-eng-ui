@@ -1,22 +1,22 @@
 import { StopOutlined } from '@ant-design/icons'
-import type {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE, SEQUENCER_STATE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type {
+  OkOrUnhandledResponse,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
-const useStopAction = (
-  prefix: Prefix
-): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
+const useStopAction = (): UseMutationResult<
+  OkOrUnhandledResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.stop()
 
@@ -27,12 +27,7 @@ const useStopAction = (
         return successMessage('Successfully stop the Sequence')
       return errorMessage('Failed to stop the Sequence', Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to stop the Sequence', e),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [GET_SEQUENCE.key, prefix.toJSON()]
-    ],
-    useErrorBoundary: false
+    onError: (e) => errorMessage('Failed to stop the Sequence', e)
   })
 }
 
@@ -41,7 +36,7 @@ export const StopSequence = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const stopAction = useStopAction(prefix)
+  const stopAction = useStopAction()
   const disabled = !sequencerState || sequencerState !== 'Running'
 
   const onClick = () =>

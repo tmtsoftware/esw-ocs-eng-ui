@@ -1,7 +1,7 @@
 import { ComponentId, Location, Prefix } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Typography } from 'antd'
-import React from 'react'
 import { useHistory } from 'react-router-dom'
+import React from 'react'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import { LoadScript } from '../../sm/components/LoadScript'
 import { UnloadScript } from '../../sm/components/UnloadScript'

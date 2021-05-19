@@ -2,8 +2,8 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { obsModesData } from '../../jsons/obsmodes'
@@ -25,8 +25,11 @@ describe('observation tabs', () => {
     reset(smService)
     reset(agentService)
     reset(sequencerServiceMock)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
+      return { cancel: () => undefined }
+    })
   })
-  it('should be able to shutdown running observation | ESW-450, ESW-454', async () => {
+  it('should be able to shutdown running observation | ESW-450, ESW-454, ESW-489', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
     const modalMessage = `Do you want to shutdown Observation DarkNight_1?`
@@ -67,7 +70,7 @@ describe('observation tabs', () => {
     await waitFor(() => expect(screen.queryByText(modalMessage)).to.null)
   })
 
-  it('should be able to configure a configurable observation | ESW-450', async () => {
+  it('should be able to configure a configurable observation | ESW-450, ESW-489', async () => {
     // mock setup starts here
     const agentStatus: AgentStatus = {
       agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
@@ -136,7 +139,7 @@ describe('observation tabs', () => {
     })
   })
 
-  it('should not be able to configure on non-configurable observation tab | ESW-450', async () => {
+  it('should not be able to configure on non-configurable observation tab | ESW-450, ESW-489', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -159,7 +162,7 @@ describe('observation tabs', () => {
     })
   })
 
-  it('should render sequencer & resources table with all resources as in use on running tab | ESW-451, ESW-453', async () => {
+  it('should render sequencer & resources table with all resources as in use on running tab | ESW-451, ESW-453, ESW-489', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -188,7 +191,7 @@ describe('observation tabs', () => {
     ).to.have.length(2)
   })
 
-  it(`should render only resources with available status on configurable tab| ESW-451, ESW-453`, async () => {
+  it(`should render only resources with available status on configurable tab| ESW-451, ESW-453, ESW-489`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -213,7 +216,7 @@ describe('observation tabs', () => {
     ).to.have.length(0)
   })
 
-  it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453`, async () => {
+  it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453, ESW-489`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({

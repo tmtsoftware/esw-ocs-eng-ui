@@ -1,21 +1,18 @@
 import { PauseCircleOutlined } from '@ant-design/icons'
-import type {
-  PauseResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type { PauseResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
-const usePauseSequence = (
-  prefix: Prefix
-): UseMutationResult<PauseResponse, unknown, SequencerService> => {
+const usePauseSequence = (): UseMutationResult<
+  PauseResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.pause()
 
@@ -33,8 +30,7 @@ const usePauseSequence = (
         )
       )
     },
-    onError: (e) => errorMessage('Failed to pause the sequence', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to pause the sequence', e)
   })
 }
 
@@ -43,7 +39,7 @@ export const PauseSequence = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const pauseSequence = usePauseSequence(prefix)
+  const pauseSequence = usePauseSequence()
 
   const onClick = () =>
     sequencerService && pauseSequence.mutate(sequencerService)

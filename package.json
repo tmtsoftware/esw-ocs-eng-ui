@@ -5,7 +5,7 @@
   "license": "Apache License, Version 2.0",
   "type": "module",
   "dependencies": {
-    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#2a03d094a7439b4f21bd262c10f13d9f2ef76033",
+    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#c87ada9dbfa58967cc05461b954d60c1fadaaaf4",
     "antd": "^4.15.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -42,7 +42,7 @@
     "@testing-library/react-hooks": "^5.1.2",
     "@testing-library/user-event": "^13.1.8",
     "@types/chai": "^4.2.17",
-    "@types/react": "^17.0.4",
+    "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
     "@types/react-router-dom": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.22.0",

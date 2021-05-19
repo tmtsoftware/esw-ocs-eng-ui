@@ -1,8 +1,8 @@
 import { InputNumber, Table } from 'antd'
-import type { ColumnsType } from 'antd/lib/table/interface'
 import React from 'react'
 import { HeaderTitle } from '../../../../components/table/HeaderTitle'
 import styles from './provision.module.css'
+import type { ColumnsType } from 'antd/lib/table/interface'
 
 type ProvisionProps = {
   provisionRecord: Record<string, number>

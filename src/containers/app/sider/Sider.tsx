@@ -1,6 +1,6 @@
 import { Layout, Menu } from 'antd'
-import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import {
   InfraIcon,
   ResourceIcon,

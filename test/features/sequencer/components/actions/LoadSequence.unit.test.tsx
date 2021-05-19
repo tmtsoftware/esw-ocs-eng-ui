@@ -6,7 +6,7 @@ import {
   Prefix,
   Sequence,
   SequenceCommand,
-  SequencerStateResponse,
+  SequencerState,
   Setup
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -121,7 +121,7 @@ describe('LoadSequence', () => {
     )
   })
 
-  const disabledStates: (SequencerStateResponse['_type'] | undefined)[] = [
+  const disabledStates: (SequencerState['_type'] | undefined)[] = [
     undefined,
     'Processing',
     'Offline',

@@ -5,18 +5,17 @@ import {
   SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import type { Prefix } from '@tmtsoftware/esw-ts/lib/src'
 import { Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
 } from '../sequencerResponsesMapping'
 import styles from './sequencerDetails.module.css'
+import type { Prefix } from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -56,8 +55,7 @@ export const AddSteps = ({
   const addStepAction = useMutation({
     mutationFn: addSteps(stepId, commands),
     onError: (e) => errorMessage('Failed to add steps', e),
-    onSuccess: () => successMessage('Successfully added steps'),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onSuccess: () => successMessage('Successfully added steps')
   })
 
   const beforeUpload = (file: File): Promise<void> =>

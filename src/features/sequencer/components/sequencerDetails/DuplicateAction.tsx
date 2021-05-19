@@ -1,15 +1,14 @@
 import { CopyOutlined } from '@ant-design/icons'
+import { Button, Row, Space } from 'antd'
+import React from 'react'
+import { useMutation } from '../../../../hooks/useMutation'
+import { errorMessage, successMessage } from '../../../../utils/message'
+import { useSequencerService } from '../../hooks/useSequencerService'
 import type {
   Prefix,
   SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Button, Row, Space } from 'antd'
-import React from 'react'
-import { useMutation } from '../../../../hooks/useMutation'
-import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
-import { useSequencerService } from '../../hooks/useSequencerService'
 
 const addCommands =
   (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
@@ -37,8 +36,7 @@ export const DuplicateAction = ({
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),
     onError: (e) => errorMessage('Failed to duplicate steps', e),
-    onSuccess: () => successMessage('Successfully duplicated steps'),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, sequencerPrefix.toJSON()]]
+    onSuccess: () => successMessage('Successfully duplicated steps')
   })
 
   return (

@@ -1,3 +1,11 @@
+import { Space, Table, Typography } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { StepListContextProvider } from '../../hooks/useStepListContext'
+import { getStepListStatus, StepListStatus } from '../../utils'
+import { typeStatus } from '../SequencersTable'
+import { DuplicateAction } from './DuplicateAction'
+import styles from './sequencerDetails.module.css'
+import { StepComponent } from './StepComponent'
 import type {
   Prefix,
   SequenceCommand,
@@ -5,19 +13,7 @@ import type {
   StepList,
   StepStatus
 } from '@tmtsoftware/esw-ts'
-import { Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
-import React, { useEffect, useState } from 'react'
-import {
-  getStepListStatus,
-  StepListStatus
-} from '../../hooks/useSequencersData'
-import { useStepList } from '../../hooks/useStepList'
-import { StepListContextProvider } from '../../hooks/useStepListContext'
-import { typeStatus } from '../SequencersTable'
-import { DuplicateAction } from './DuplicateAction'
-import styles from './sequencerDetails.module.css'
-import { StepComponent } from './StepComponent'
 
 type StepData = {
   id: string
@@ -88,16 +84,19 @@ const StepListTitle = ({
 export const StepListTable = ({
   sequencerPrefix,
   selectedStep,
-  setSelectedStep
+  setSelectedStep,
+  stepList,
+  isLoading
 }: {
   sequencerPrefix: Prefix
   selectedStep?: Step
+  stepList: StepList
+  isLoading: boolean
   setSelectedStep: (_: Step | undefined) => void
 }): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
-  const { isLoading, data: stepList, isError } = useStepList(sequencerPrefix)
-  const stepListStatus = getStepListStatus(stepList, isError).status
+  const stepListStatus = getStepListStatus(stepList).status
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
@@ -165,7 +164,10 @@ export const StepListTable = ({
           }))}
           columns={columns(sequencerPrefix, setSelectedStep)}
           onRow={(step) => ({
-            id: step.id === selectedStep?.id && styles.selectedRow,
+            id:
+              selectedStep && step.id === selectedStep.id
+                ? styles.selectedRow
+                : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
           })}
           sticky

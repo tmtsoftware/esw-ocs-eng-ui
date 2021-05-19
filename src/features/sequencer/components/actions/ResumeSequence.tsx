@@ -1,21 +1,21 @@
 import { PlayCircleOutlined } from '@ant-design/icons'
-import type {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { GET_SEQUENCE } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type {
+  OkOrUnhandledResponse,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
-const useResumeSequence = (
-  prefix: Prefix
-): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
+const useResumeSequence = (): UseMutationResult<
+  OkOrUnhandledResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.resume()
 
@@ -26,8 +26,7 @@ const useResumeSequence = (
         return successMessage('Sequence is resumed successfully')
       return errorMessage('Failed to resume the sequence', Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to resume the sequence', e),
-    invalidateKeysOnSuccess: [[GET_SEQUENCE.key, prefix.toJSON()]]
+    onError: (e) => errorMessage('Failed to resume the sequence', e)
   })
 }
 
@@ -36,7 +35,7 @@ export const ResumeSequence = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const resumeSequence = useResumeSequence(prefix)
+  const resumeSequence = useResumeSequence()
 
   const disabled = !sequencerState || sequencerState !== 'Running'
   return (

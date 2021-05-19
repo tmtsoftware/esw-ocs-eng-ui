@@ -1,8 +1,8 @@
-import type { ResourceStatus } from '@tmtsoftware/esw-ts'
 import { Table } from 'antd'
 import React from 'react'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { resourceStatusCol } from '../../../containers/resources/Resources'
+import type { ResourceStatus } from '@tmtsoftware/esw-ts'
 
 export type ResourceTableStatus = {
   key: string

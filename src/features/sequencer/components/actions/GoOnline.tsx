@@ -1,19 +1,16 @@
-import type {
-  GoOnlineResponse,
-  Prefix,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { SEQUENCER_STATE, SEQUENCER_STATUS } from '../../../queryKeys'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+import type { GoOnlineResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
-const useGoOnlineAction = (
-  prefix: Prefix
-): UseMutationResult<GoOnlineResponse, unknown, SequencerService> => {
+const useGoOnlineAction = (): UseMutationResult<
+  GoOnlineResponse,
+  unknown,
+  SequencerService
+> => {
   const mutationFn = (sequencerService: SequencerService) =>
     sequencerService.goOnline()
 
@@ -27,11 +24,7 @@ const useGoOnlineAction = (
         Error(res._type === 'GoOnlineHookFailed' ? res._type : res.msg)
       )
     },
-    onError: (e) => errorMessage('Sequencer failed to go Online', e),
-    invalidateKeysOnSuccess: [
-      [SEQUENCER_STATE.key, prefix.toJSON()],
-      [SEQUENCER_STATUS.key, prefix.toJSON()]
-    ]
+    onError: (e) => errorMessage('Sequencer failed to go Online', e)
   })
 }
 
@@ -40,7 +33,7 @@ export const GoOnline = ({
   sequencerState
 }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const goOnlineAction = useGoOnlineAction(prefix)
+  const goOnlineAction = useGoOnlineAction()
 
   const goOnline = () =>
     sequencerService && goOnlineAction.mutate(sequencerService)

@@ -4,11 +4,13 @@ import {
   ObsMode,
   ObsModeDetails,
   ObsModesDetailsResponseSuccess,
-  ObsModeStatus
+  ObsModeStatus,
+  StepList
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
+
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 
 import { Observations } from '../../../src/containers/observation/Observations'
@@ -109,12 +111,21 @@ describe('Observation page', () => {
     })
   })
 
-  it('should render running obsModes | ESW-450', async () => {
+  it('should render running obsModes | ESW-450, ESW-489', async () => {
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Loaded'
-    })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onEvent) => {
+        onEvent({
+          _type: 'SequencerStateResponse',
+          sequencerState: { _type: 'Loaded' },
+          stepList: new StepList([])
+        })
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: (
@@ -154,9 +165,6 @@ describe('Observation page', () => {
         seqCompsWithoutAgent: []
       })
       when(smService.getObsModesDetails()).thenResolve(data)
-      when(sequencerServiceMock.getSequencerState()).thenReject(
-        new Error('No sequencer present')
-      )
 
       renderWithAuth({
         ui: <Observations />
@@ -201,7 +209,7 @@ describe('Observation page', () => {
       verify(smService.getObsModesDetails()).called()
     })
   })
-  it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450`, async () => {
+  it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
     const smService = mockServices.mock.smService
 
     when(smService.getObsModesDetails())
@@ -212,9 +220,18 @@ describe('Observation page', () => {
       _type: 'Success'
     })
 
-    when(sequencerServiceMock.getSequencerState()).thenResolve({
-      _type: 'Loaded'
-    })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onEvent) => {
+        onEvent({
+          _type: 'SequencerStateResponse',
+          sequencerState: { _type: 'Loaded' },
+          stepList: new StepList([])
+        })
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
 
     renderWithAuth({
       ui: (

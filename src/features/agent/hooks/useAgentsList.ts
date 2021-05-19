@@ -1,7 +1,7 @@
-import type { Prefix } from '@tmtsoftware/esw-ts'
 import { useLocationService } from '../../../contexts/LocationServiceContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { LIST_AGENTS } from '../../queryKeys'
+import type { Prefix } from '@tmtsoftware/esw-ts'
 
 export const useAgentsList = (): UseQueryResult<Prefix[]> => {
   const locationService = useLocationService()

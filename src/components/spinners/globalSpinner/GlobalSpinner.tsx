@@ -1,6 +1,6 @@
 import { Spin } from 'antd'
-import React from 'react'
 import { useIsFetching } from 'react-query'
+import React from 'react'
 import styles from './globalSpinner.module.css'
 
 export const GlobalSpinner = (): JSX.Element => {

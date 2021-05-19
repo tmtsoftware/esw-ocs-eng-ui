@@ -1,14 +1,13 @@
 import { SettingOutlined } from '@ant-design/icons'
-import { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
 import { Space, Table, Tooltip, Typography } from 'antd'
-import type { ColumnsType } from 'antd/lib/table/interface'
-import type { BaseType } from 'antd/lib/typography/Base'
-import React from 'react'
 import { Link } from 'react-router-dom'
+import React from 'react'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
-import { SequencerInfo, useSequencersData } from '../hooks/useSequencersData'
+import type { SequencerInfo } from '../utils'
 import styles from './sequencerTable.module.css'
+import type { ColumnsType } from 'antd/lib/table/interface'
+import type { BaseType } from 'antd/lib/typography/Base'
 
 const getPrefixColumn = (record: SequencerInfo) => (
   <Space>
@@ -57,40 +56,28 @@ const columns: ColumnsType<SequencerInfo> = [
   {
     title: <HeaderTitle title='Total Steps' />,
     dataIndex: 'totalSteps',
-    key: 'totalSteps'
+    key: 'totalSteps',
+    render: (steps) => (steps === 0 ? 'NA' : steps)
   }
 ]
 
 type ObsModeSeqTableProps = {
-  obsMode: ObsMode
-  sequencers: Subsystem[]
+  sequencersInfo: SequencerInfo[]
+  loading: boolean
 }
 
 export const SequencersTable = ({
-  obsMode,
-  sequencers
-}: ObsModeSeqTableProps): JSX.Element => {
-  const sortedSequencers: Prefix[] = sequencers.reduce(
-    (acc: Prefix[], elem) => {
-      const sequencer = new Prefix(elem, obsMode.name)
-      if (elem === 'ESW') return [sequencer].concat(acc)
-      return acc.concat(sequencer)
-    },
-    []
-  )
-
-  const sequencerStatus = useSequencersData(sortedSequencers)
-
-  return (
-    <Table
-      rowKey={(record) => record.prefix}
-      style={{ paddingBottom: '1.5rem' }}
-      pagination={false}
-      loading={sequencerStatus.isLoading || sequencerStatus.isError}
-      columns={columns}
-      dataSource={sequencerStatus.data}
-      onRow={() => ({ style: { fontSize: '1rem' } })}
-      bordered
-    />
-  )
-}
+  sequencersInfo,
+  loading
+}: ObsModeSeqTableProps): JSX.Element => (
+  <Table
+    rowKey={(record) => record.prefix}
+    style={{ paddingBottom: '1.5rem' }}
+    pagination={false}
+    loading={loading}
+    columns={columns}
+    dataSource={sequencersInfo}
+    onRow={() => ({ style: { fontSize: '1rem' } })}
+    bordered
+  />
+)

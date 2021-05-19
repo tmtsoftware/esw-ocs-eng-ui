@@ -101,30 +101,30 @@ export const CurrentObsMode = ({
   )
 
   const handleSequencerStateChange = useCallback(
-    (prefix: string, sequencerStateResponse: SequencerStateResponse) => {
+    (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
-        const filterArray = previousMap.filter(
-          ([sequencerPrefix]) => sequencerPrefix !== prefix
+        const filteredSequencers = previousMap.filter(
+          ([sequencerPrefix]) => sequencerPrefix !== currentPrefix
         )
-        return [...filterArray, [prefix, sequencerStateResponse]]
+        return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
       })
     },
     [setLoading]
   )
 
+  const getSequencerService = (): [SequencerService, Prefix][] => {
+    return gatewayLocation
+      ? sequencers.map((seq) => {
+          const seqPrefix = new Prefix(seq, obsMode.name)
+          return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
+        })
+      : []
+  }
+
   const services: [SequencerService, Prefix][] = useMemo(
-    () =>
-      currentTab === 'Running' && gatewayLocation
-        ? sequencers.map((seq) => {
-            const seqPrefix = new Prefix(seq, obsMode.name)
-            return [
-              mkSequencerService(seqPrefix, gatewayLocation, tf),
-              seqPrefix
-            ]
-          })
-        : [],
-    [currentTab, gatewayLocation, obsMode.name, sequencers, tf]
+    () => (currentTab === 'Running' ? getSequencerService() : []),
+    [currentTab, getSequencerService]
   )
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export const CurrentObsMode = ({
         currentStepCommandName: getCurrentStepCommandName(stepList),
         stepListStatus,
         sequencerState: sequencerStatus.sequencerState,
-        totalSteps: stepList ? stepList.steps.length : ('NA' as const)
+        totalSteps: stepList ? stepList.steps.length : 'NA'
       }
     }
   )
@@ -155,6 +155,12 @@ export const CurrentObsMode = ({
   const sortedSequencers = sortSequencers(sequencersInfo)
 
   const isRunningTab = currentTab === 'Running'
+
+  const sequencerState: SequencerState =
+    sortedSequencers && sortedSequencers[0]
+      ? sortedSequencers[0].sequencerState
+      : { _type: 'Idle' }
+
   return (
     <Card
       style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
@@ -163,14 +169,7 @@ export const CurrentObsMode = ({
       title={
         <>
           <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-          <Status
-            sequencerState={
-              !!sortedSequencers[0]
-                ? sortedSequencers[0].sequencerState
-                : { _type: 'Idle' }
-            }
-            isRunning={isRunningTab}
-          />
+          <Status sequencerState={sequencerState} isRunning={isRunningTab} />
         </>
       }
       extra={

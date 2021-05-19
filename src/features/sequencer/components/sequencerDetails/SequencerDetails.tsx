@@ -195,6 +195,7 @@ export const SequencerDetails = ({
 
   if (seqLocation.isLoading || loading) return <Spinner />
 
+  // sequencerStateResponse will always be received atleast once on subscription
   if (!seqLocation.data || !sequencerStateResponse) {
     return (
       <SequencerError

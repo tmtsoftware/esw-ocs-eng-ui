@@ -1,7 +1,7 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Space, Table, Tooltip, Typography } from 'antd'
-import React from 'react'
 import { Link } from 'react-router-dom'
+import React from 'react'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import type { SequencerInfo } from '../utils'
@@ -56,7 +56,8 @@ const columns: ColumnsType<SequencerInfo> = [
   {
     title: <HeaderTitle title='Total Steps' />,
     dataIndex: 'totalSteps',
-    key: 'totalSteps'
+    key: 'totalSteps',
+    render: (steps) => (steps === 0 ? 'NA' : steps)
   }
 ]
 

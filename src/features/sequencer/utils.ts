@@ -34,7 +34,8 @@ const currentStep = (stepList: StepList): Option<Step> => {
   return stepList.steps.find((e) => e.status._type !== 'Success')
 }
 
-const deriveStatus = (
+// todo refactor this code if possible
+export const getStepListStatus = (
   stepList: StepList | undefined
 ): SequencerInfo['stepListStatus'] => {
   if (stepList === undefined || stepList.steps.length === 0)
@@ -44,18 +45,6 @@ const deriveStatus = (
     return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.steps.indexOf(step) + 1
   return { stepNumber, status: Status[step.status._type] }
-}
-
-export const getStepListStatus = (
-  stepList?: StepList
-): SequencerInfo['stepListStatus'] => {
-  return deriveStatus(stepList)
-  // isError
-  //   ? {
-  //       stepNumber: 0,
-  //       status: 'Failed to Fetch Status' as const
-  //     }
-  //   :
 }
 
 export const getCurrentStepCommandName = (
@@ -72,5 +61,3 @@ export const getCurrentStepCommandName = (
   }
   return step.command.commandName
 }
-
-export type SequencerLocation = [Location, SequencerService]

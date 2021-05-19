@@ -91,9 +91,9 @@ tr#selectedRow > td:last-child::after {
 }
 
 .upload > div {
-  width: 100% ;
+  width: 100%;
 }
 
 .upload :hover {
   color: var(--activeColor);
-} 
+}

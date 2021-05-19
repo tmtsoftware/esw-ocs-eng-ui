@@ -38,23 +38,44 @@ describe('stepList table', () => {
     }
   ])
 
-  const testData: [Step['status']['_type'], string, string, string][] = [
+  const testData: [Step['status']['_type'], boolean, string, string, string][] =
     [
-      'Success',
-      'All Steps Completed',
-      'ant-typography-secondary',
-      'rgba(0, 0, 0, 0.45)'
-    ],
-    ['Failure', 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
-    ['InFlight', 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
-    ['Pending', 'Paused', 'ant-typography-warning', 'rgb(255, 197, 61)']
-  ]
+      [
+        'Success',
+        false,
+        'All Steps Completed',
+        'ant-typography-secondary',
+        'rgba(0, 0, 0, 0.45)'
+      ],
+      ['Failure', false, 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
+      [
+        'InFlight',
+        false,
+        'In Progress',
+        'ant-typography-success',
+        'rgb(82, 196, 26)'
+      ],
+      [
+        'Pending',
+        true,
+        'Paused',
+        'ant-typography-warning',
+        'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'
+      ],
+      [
+        'Pending',
+        false,
+        'Loaded',
+        'ant-typography-warning',
+        'rgb(255, 197, 61)'
+      ]
+    ]
 
   testData.forEach(
-    ([lastStepStatus, stepListStatus, className, borderColor]) => {
+    ([lastStepStatus, breakpoint, stepListStatus, className, borderColor]) => {
       it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
         when(sequencerServiceMock.getSequence()).thenResolve(
-          getStepList(lastStepStatus)
+          getStepList(lastStepStatus, breakpoint)
         )
 
         renderWithAuth({
@@ -78,6 +99,8 @@ describe('stepList table', () => {
         expect(stepButton.style.borderColor).to.equal(borderColor)
         // eslint-disable-next-line testing-library/no-node-access
         const spanElement = stepButton.firstChild as HTMLSpanElement
+
+        console.log(spanElement)
 
         expect(spanElement.classList.contains(className)).true
 

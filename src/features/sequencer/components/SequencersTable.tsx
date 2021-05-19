@@ -25,6 +25,7 @@ export const typeStatus: { [stepStatus: string]: BaseType } = {
   'All Steps Completed': 'secondary',
   'In Progress': 'success',
   Paused: 'warning',
+  Loaded: 'warning',
   Failed: 'danger',
   'Failed to Fetch Status': 'danger'
 }

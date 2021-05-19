@@ -1,10 +1,10 @@
 import type {
-  Option,
   Location,
+  Option,
   Prefix,
   SequencerService,
-  StepList,
-  Step
+  Step,
+  StepList
 } from '@tmtsoftware/esw-ts'
 import { message } from 'antd'
 import { useQuery, UseQueryResult } from 'react-query'
@@ -21,6 +21,7 @@ export type StepListStatus =
   | 'Failed'
   | 'NA'
   | 'Failed to Fetch Status'
+  | 'Loaded'
 
 export type SequencerInfo = {
   key: string
@@ -36,6 +37,7 @@ const Status: { [key: string]: StepListStatus } = {
   InFlight: 'In Progress',
   Success: 'All Steps Completed'
 }
+
 const currentStep = (stepList: StepList): Option<Step> => {
   return stepList.steps.find((e) => e.status._type !== 'Success')
 }
@@ -49,7 +51,11 @@ const deriveStatus = (
   if (step === undefined)
     return { stepNumber: 0, status: 'All Steps Completed' }
   const stepNumber = stepList.steps.indexOf(step) + 1
-  return { stepNumber, status: Status[step.status._type] }
+  const status = Status[step.status._type]
+  return {
+    stepNumber,
+    status: status === 'Paused' && !stepList.isPaused() ? 'Loaded' : status
+  }
 }
 
 export const getStepListStatus = (

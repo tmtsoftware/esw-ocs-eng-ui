@@ -147,8 +147,8 @@ const assertTable = async () => {
     name: /aoesw\.darknight_1/i
   })
 
-  assertCell(nonSpawnedSequencer, 'setting AOESW.DarkNight_1')
-  assertCell(nonSpawnedSequencer, 'Failed to Fetch Status')
+  await assertCell(nonSpawnedSequencer, 'setting AOESW.DarkNight_1')
+  await assertCell(nonSpawnedSequencer, 'Failed to Fetch Status')
   const cells = await within(nonSpawnedSequencer).findAllByRole('cell', {
     name: 'NA'
   })

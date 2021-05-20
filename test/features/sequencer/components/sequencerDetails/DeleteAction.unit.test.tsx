@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { GenericResponse, Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import { DeleteAction } from '../../../../../src/features/sequencer/components/sequencerDetails/DeleteAction'
+import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
 import {
   renderWithAuth,
   sequencerServiceMock

@@ -2,9 +2,9 @@ import { Space, Table, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { getStepListStatus, StepListStatus } from '../../utils'
+import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { typeStatus } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
-import styles from './sequencerDetails.module.css'
 import { StepComponent } from './StepComponent'
 import type {
   Prefix,

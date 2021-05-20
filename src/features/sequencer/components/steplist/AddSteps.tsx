@@ -10,11 +10,11 @@ import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import styles from '../sequencerDetails/sequencerDetails.module.css'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
 } from '../sequencerResponsesMapping'
-import styles from './sequencerDetails.module.css'
 import type { Prefix } from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {

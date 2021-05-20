@@ -8,11 +8,11 @@ import {
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { anything, deepEqual, verify, when } from 'ts-mockito'
-import { AddSteps } from '../../../../../src/features/sequencer/components/sequencerDetails/AddSteps'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
 } from '../../../../../src/features/sequencer/components/sequencerResponsesMapping'
+import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
 import {
   renderWithAuth,
   sequencerServiceMock

@@ -24,9 +24,9 @@ import { ResetSequence } from '../actions/ResetSequence'
 import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
+import { StepListTable } from '../steplist/StepListTable'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
-import { StepListTable } from './StepListTable'
 import type {
   Prefix,
   SequencerState,

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, Step, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { StepActions } from '../../../../../src/features/sequencer/components/sequencerDetails/StepActions'
+import { StepActions } from '../../../../../src/features/sequencer/components/steplist/StepActions'
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
 import { renderWithAuth } from '../../../../utils/test-utils'
 

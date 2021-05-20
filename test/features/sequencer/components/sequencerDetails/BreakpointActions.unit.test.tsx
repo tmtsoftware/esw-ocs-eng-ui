@@ -9,7 +9,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
-import { BreakpointAction } from '../../../../../src/features/sequencer/components/sequencerDetails/BreakpointActions'
+import { BreakpointAction } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
 import {
   renderWithAuth,
   sequencerServiceMock

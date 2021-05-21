@@ -69,7 +69,7 @@ describe('sequencer table', () => {
         key: 'ESW.darknight',
         prefix: 'ESW.darknight',
         currentStepCommandName: getCurrentStepCommandName(undefined),
-        stepListStatus: { status: 'NA', stepNumber: 0 },
+        stepListInfo: { status: 'NA', currentStepNumber: 0 },
         sequencerState: { _type: 'Idle' },
         totalSteps: 0
       }
@@ -96,7 +96,7 @@ describe('sequencer table', () => {
         key: 'ESW.darknight',
         prefix: 'ESW.darknight',
         currentStepCommandName: getCurrentStepCommandName(undefined),
-        stepListStatus: { status: 'NA', stepNumber: 0 },
+        stepListInfo: { status: 'NA', currentStepNumber: 0 },
         sequencerState: { _type: 'Idle' },
         totalSteps: 0
       }
@@ -160,11 +160,8 @@ const assertTable = async () => {
   ])
 }
 
-const assertHeader = async (colName: string) => {
-  await screen.findByRole('columnheader', {
-    name: colName
-  })
-}
+const assertHeader = (colName: string) =>
+  screen.findByRole('columnheader', { name: colName })
 
 const assertRow = async (rowName: RegExp, cells: string[]) => {
   const row: HTMLElement = screen.getByRole('row', {
@@ -186,14 +183,14 @@ const makeSequencerInfo = (
   prefix: string,
   stepList: StepList,
   stepListState: StepListStatus,
-  stepNumber: number,
+  currentStepNumber: number,
   sequencerState: SequencerState['_type']
 ): SequencerInfo => {
   return {
     key: prefix,
     prefix: prefix,
     currentStepCommandName: getCurrentStepCommandName(stepList),
-    stepListStatus: { status: stepListState, stepNumber },
+    stepListInfo: { status: stepListState, currentStepNumber },
     sequencerState: { _type: sequencerState },
     totalSteps: stepList.steps.length
   }

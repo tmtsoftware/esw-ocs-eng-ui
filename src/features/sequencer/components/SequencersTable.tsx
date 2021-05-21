@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import React from 'react'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
-import type { SequencerInfo } from '../utils'
+import type { SequencerInfo, StepListInfo } from '../utils'
 import styles from './sequencerTable.module.css'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
@@ -20,7 +20,7 @@ const getPrefixColumn = (record: SequencerInfo) => (
   </Space>
 )
 
-export const typeStatus: { [stepStatus: string]: BaseType } = {
+export const statusTextType: { [stepStatus: string]: BaseType } = {
   'All Steps Completed': 'secondary',
   'In Progress': 'success',
   Paused: 'warning',
@@ -29,11 +29,11 @@ export const typeStatus: { [stepStatus: string]: BaseType } = {
   'Failed to Fetch Status': 'danger'
 }
 
-const getStepColumn = (status: SequencerInfo['stepListStatus']) => (
-  <Typography.Text type={typeStatus[status.status]}>
-    {status.stepNumber
-      ? `Step ${status.stepNumber} ${status.status}`
-      : status.status}
+const getStepColumn = (stepListInfo: StepListInfo) => (
+  <Typography.Text type={statusTextType[stepListInfo.status]}>
+    {stepListInfo.currentStepNumber
+      ? `Step ${stepListInfo.currentStepNumber} ${stepListInfo.status}`
+      : stepListInfo.status}
   </Typography.Text>
 )
 
@@ -49,7 +49,7 @@ const columns: ColumnsType<SequencerInfo> = [
   },
   {
     title: <HeaderTitle title='Sequence Status' />,
-    dataIndex: 'stepListStatus',
+    dataIndex: 'stepListInfo',
     key: 'status',
     render: (value) => getStepColumn(value)
   },

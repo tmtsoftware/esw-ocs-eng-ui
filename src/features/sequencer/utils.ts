@@ -14,11 +14,16 @@ export type StepListStatus =
   | 'Failed to Fetch Status'
   | 'Loaded'
 
+export type StepListInfo = {
+  currentStepNumber: number
+  status: StepListStatus
+}
+
 export type SequencerInfo = {
   key: string
   prefix: string
   currentStepCommandName: string
-  stepListStatus: { stepNumber: number; status: StepListStatus }
+  stepListInfo: StepListInfo
   totalSteps: number
   sequencerState: SequencerState
 }
@@ -33,17 +38,15 @@ const currentStep = (stepList: StepList): Option<Step> =>
   stepList.steps.find((e) => e.status._type !== 'Success')
 
 // todo refactor this code if possible
-export const getStepListStatus = (
-  stepList: StepList
-): SequencerInfo['stepListStatus'] => {
-  if (stepList.steps.length === 0) return { stepNumber: 0, status: 'NA' }
+export const getStepListInfo = (stepList: StepList): StepListInfo => {
+  if (stepList.steps.length === 0) return { currentStepNumber: 0, status: 'NA' }
   const step = currentStep(stepList)
   if (step === undefined)
-    return { stepNumber: 0, status: 'All Steps Completed' }
-  const stepNumber = stepList.steps.indexOf(step) + 1
+    return { currentStepNumber: 0, status: 'All Steps Completed' }
+  const currentStepNumber = stepList.steps.indexOf(step) + 1
   const status = Status[step.status._type]
   return {
-    stepNumber,
+    currentStepNumber,
     status: status === 'Paused' && !stepList.isPaused() ? 'Loaded' : status
   }
 }
@@ -51,14 +54,7 @@ export const getStepListStatus = (
 export const getCurrentStepCommandName = (
   stepList: Option<StepList>
 ): string => {
-  if (stepList === undefined) {
-    return 'NA'
-  }
-
+  if (stepList === undefined) return 'NA'
   const step = currentStep(stepList)
-
-  if (step === undefined) {
-    return 'NA'
-  }
-  return step.command.commandName
+  return step === undefined ? 'NA' : step.command.commandName
 }

@@ -8,8 +8,8 @@ import {
   StepList
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
-import { BrowserRouter } from 'react-router-dom'
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 

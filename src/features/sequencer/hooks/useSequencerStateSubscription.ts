@@ -22,7 +22,8 @@ export const useSequencerStateSubscription = (
 
   useEffect(() => {
     const seqService =
-      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tokenFactory)
+      gatewayLocation &&
+      mkSequencerService(prefix, gatewayLocation, tokenFactory)
 
     const subscription = seqService?.subscribeSequencerState()(
       (sequencerStateResponse: SequencerStateResponse) => {

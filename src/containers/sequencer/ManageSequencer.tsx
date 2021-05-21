@@ -1,6 +1,6 @@
 import { Prefix } from '@tmtsoftware/esw-ts'
-import { useLocation } from 'react-router'
 import React from 'react'
+import { useLocation } from 'react-router'
 import { SequencerDetails } from '../../features/sequencer/components/sequencerDetails/SequencerDetails'
 import { SequencerError } from '../../features/sequencer/components/SequencerError'
 import { prefixKey } from '../../routes/RoutesConfig'

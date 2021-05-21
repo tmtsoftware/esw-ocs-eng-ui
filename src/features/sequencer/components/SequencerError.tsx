@@ -1,6 +1,6 @@
 import { Button, Result } from 'antd'
-import { Link } from 'react-router-dom'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { HOME } from '../../../routes/RoutesConfig'
 
 type ErrorProps = {

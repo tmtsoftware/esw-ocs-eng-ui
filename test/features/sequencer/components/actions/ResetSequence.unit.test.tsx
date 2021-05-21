@@ -20,11 +20,11 @@ describe('ResetSequence', () => {
     [
       {
         _type: 'Unhandled',
-        msg: 'ResetSequence message is not handled in Idle state',
+        msg: 'ResetSequence message is not handled in Processing state',
         messageType: 'ResetSequence',
-        state: 'Idle'
+        state: 'Processing'
       },
-      'Failed to reset the Sequence, reason: ResetSequence message is not handled in Idle state',
+      'Failed to reset the Sequence, reason: ResetSequence message is not handled in Processing state',
       'failed'
     ]
   ]
@@ -71,7 +71,7 @@ describe('ResetSequence', () => {
     })
   })
 
-  it(`should be failed if resetSequence call fails | ESW-500`, async () => {
+  it.only(`should be failed if resetSequence call fails | ESW-500`, async () => {
     when(sequencerServiceMock.reset()).thenReject(Error('error occurred'))
 
     renderWithAuth({

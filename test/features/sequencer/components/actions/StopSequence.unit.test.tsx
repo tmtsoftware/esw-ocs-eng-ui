@@ -16,15 +16,15 @@ import {
 
 describe('StopSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Successfully stop the Sequence', 'successful'],
+    [{ _type: 'Ok' }, 'Successfully stopped the Sequence', 'successful'],
     [
       {
         _type: 'Unhandled',
-        msg: 'StopSequence message is not handled in Idle state',
+        msg: 'StopSequence message is not handled in Processing state',
         messageType: 'StopSequence',
-        state: 'Idle'
+        state: 'Processing'
       },
-      'Failed to stop the Sequence, reason: StopSequence message is not handled in Idle state',
+      'Failed to stop the Sequence, reason: StopSequence message is not handled in Processing state',
       'failed'
     ]
   ]

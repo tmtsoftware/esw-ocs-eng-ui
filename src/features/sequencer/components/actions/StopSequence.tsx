@@ -24,7 +24,7 @@ const useStopAction = (): UseMutationResult<
     mutationFn,
     onSuccess: (res) => {
       if (res._type === 'Ok')
-        return successMessage('Successfully stop the Sequence')
+        return successMessage('Successfully stopped the Sequence')
       return errorMessage('Failed to stop the Sequence', Error(res.msg))
     },
     onError: (e) => errorMessage('Failed to stop the Sequence', e)

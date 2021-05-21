@@ -102,7 +102,7 @@ describe('sequencer details', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nFailed`)
   })
 
-  it('should render the sequence and sequencer actions | ESW-455, ESW-456, ESW-489', async () => {
+  it('should render the sequence and sequencer actions | ESW-455, ESW-456, ESW-489, ESW-500', async () => {
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
       getEvent('Running', getStepList('InFlight'))
     )

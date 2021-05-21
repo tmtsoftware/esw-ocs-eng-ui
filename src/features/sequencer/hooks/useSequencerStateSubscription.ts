@@ -20,10 +20,10 @@ export const useSequencerStateSubscription = (
   const tokenFactory = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
-  const seqService =
-    gatewayLocation && mkSequencerService(prefix, gatewayLocation, tokenFactory)
-
   useEffect(() => {
+    const seqService =
+      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tokenFactory)
+
     const subscription = seqService?.subscribeSequencerState()(
       (sequencerStateResponse: SequencerStateResponse) => {
         setLoading(false)
@@ -31,7 +31,7 @@ export const useSequencerStateSubscription = (
       }
     )
     return subscription?.cancel
-  }, [seqService, setLoading])
+  }, [gatewayLocation, prefix, tokenFactory, setLoading])
 
   return { sequencerStateResponse, loading }
 }

@@ -27,7 +27,7 @@ export const useStream = <I, O>({
     const sub = run(mappedCallback)
     setLoading(false)
     return sub.cancel
-  }, [loading, mapper, run])
+  }, [mapper, run])
 
   return [value, loading]
 }

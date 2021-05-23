@@ -11,6 +11,8 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 
+const errorMessagePrefix = 'Failed to load the sequence'
+
 const useLoadAction = (
   sequence?: SequenceCommand[]
 ): UseMutationResult<
@@ -26,9 +28,9 @@ const useLoadAction = (
     onSuccess: (res) => {
       if (res?._type === 'Ok')
         return successMessage('Sequence has been loaded successfully')
-      return errorMessage('Failed to load the sequence', Error(res?.msg))
+      return errorMessage(errorMessagePrefix, Error(res?.msg))
     },
-    onError: (e) => errorMessage('Failed to load the sequence', e)
+    onError: (e) => errorMessage(errorMessagePrefix, e)
   })
 }
 
@@ -44,10 +46,16 @@ export const LoadSequence = ({
     return new Promise((resolve) => {
       const reader = new FileReader()
       reader.readAsText(file)
+      reader.onerror = () => errorMessage(errorMessagePrefix, reader.error)
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          setSequence(Sequence.fromString(reader.result).commands)
-          resolve()
+          try {
+            const sequence = Sequence.fromString(reader.result)
+            setSequence(sequence.commands)
+            resolve()
+          } catch (e) {
+            errorMessage(errorMessagePrefix, e).then(resolve)
+          }
         }
       }
     })

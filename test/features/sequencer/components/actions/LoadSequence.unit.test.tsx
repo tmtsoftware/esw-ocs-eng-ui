@@ -11,7 +11,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import {
   renderWithAuth,
@@ -19,6 +19,10 @@ import {
 } from '../../../../utils/test-utils'
 
 describe('LoadSequence', () => {
+  afterEach(async () => {
+    reset(sequencerServiceMock)
+  })
+
   const command1: SequenceCommand = new Setup(
     Prefix.fromString('CSW.ncc.trombone'),
     'move',
@@ -83,6 +87,36 @@ describe('LoadSequence', () => {
         ).called()
       )
     })
+  })
+
+  it('should show error if the sequence is not valid | ESW-458', async () => {
+    const file0 = new File([], 'sequence.json')
+
+    renderWithAuth({
+      ui: (
+        <LoadSequence
+          prefix={Prefix.fromString('ESW.darknight')}
+          sequencerState={'Idle'}
+        />
+      )
+    })
+
+    const button: HTMLElement[] = screen.getAllByRole('button', {
+      name: 'Load Sequence'
+    })
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const input: HTMLInputElement = button[0].querySelector(
+      'input'
+    ) as HTMLInputElement
+
+    userEvent.upload(input, file0)
+
+    await screen.findByText(/failed to load the sequence, reason: /i)
+
+    await waitFor(() =>
+      verify(sequencerServiceMock.loadSequence(anything())).never()
+    )
   })
 
   it('should show failed if error is returned | ESW-458', async () => {

@@ -8,14 +8,11 @@ import {
   Typography
 } from 'antd'
 import { Content } from 'antd/es/layout/layout'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import { useGatewayLocation } from '../../../../contexts/GatewayServiceContext'
-import { useAuth } from '../../../../hooks/useAuth'
-import { createTokenFactory } from '../../../../utils/createTokenFactory'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
-import { mkSequencerService } from '../../hooks/useSequencerService'
+import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubscription'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -29,15 +26,11 @@ import styles from './sequencerDetails.module.css'
 import type {
   Prefix,
   SequencerState,
-  SequencerStateResponse,
+  Location,
   Step
 } from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout
-
-type DescriptionProps = {
-  prefix: Prefix
-}
 
 const SequencerActions = ({
   prefix,
@@ -94,12 +87,12 @@ const Actions = ({
   )
 }
 
-const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
-  const { data: seqLocation } = useSequencerLocation(prefix)
-
-  const componentName = seqLocation
-    ? seqLocation.metadata.sequenceComponentPrefix
-    : 'Loading...'
+const SequenceComponentInfo = ({
+  seqLocation
+}: {
+  seqLocation: Location
+}): JSX.Element => {
+  const componentName = seqLocation.metadata.sequenceComponentPrefix
 
   return (
     <Space>
@@ -113,23 +106,7 @@ const SequencerDescription = ({ prefix }: DescriptionProps): JSX.Element => {
   )
 }
 
-const SequencerTitle = ({
-  sequencerState,
-  prefix
-}: {
-  sequencerState: SequencerState
-  prefix: Prefix
-}): JSX.Element => {
-  const isOnline = sequencerState._type !== 'Offline'
-  return (
-    <div data-testid={isOnline ? 'status-success' : 'status-error'}>
-      <Badge status={isOnline ? 'success' : 'error'} className={styles.badge} />
-      {prefix.toJSON()}
-    </div>
-  )
-}
-
-const DescriptionItem = (label: string, item: string) => {
+const StepItem = (label: string, item: string) => {
   return (
     <Descriptions.Item
       label={
@@ -155,10 +132,10 @@ const DescriptionItem = (label: string, item: string) => {
 const StepInfo = ({ step }: { step: Step }) => (
   <div className={styles.stepInfo}>
     <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }}>
-      {DescriptionItem('Command', step.command.commandName)}
-      {DescriptionItem('Source', step.command.source.toJSON())}
-      {DescriptionItem('Command Type', step.command._type.toString())}
-      {DescriptionItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
+      {StepItem('Command', step.command.commandName)}
+      {StepItem('Source', step.command.source.toJSON())}
+      {StepItem('Command Type', step.command._type.toString())}
+      {StepItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
     </Descriptions>
     <ParameterTable paramSet={step.command.paramSet} />
   </div>
@@ -170,32 +147,28 @@ const EmptyStep = () => (
   </Card>
 )
 
+const SequencerTitle = ({
+  sequencerState,
+  prefix
+}: {
+  sequencerState: SequencerState
+  prefix: Prefix
+}): JSX.Element => {
+  const isOnline = sequencerState._type !== 'Offline'
+  return (
+    <div data-testid={isOnline ? 'status-success' : 'status-error'}>
+      <Badge status={isOnline ? 'success' : 'error'} className={styles.badge} />
+      {prefix.toJSON()}
+    </div>
+  )
+}
 export const SequencerDetails = ({
   prefix
 }: {
   prefix: Prefix
 }): JSX.Element => {
-  const [sequencerStateResponse, setSequencerStateResponse] =
-    useState<SequencerStateResponse | undefined>(undefined)
-
-  const [gatewayLocation] = useGatewayLocation()
-  const { auth } = useAuth()
-  const tf = createTokenFactory(auth)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const seqService =
-      gatewayLocation && mkSequencerService(prefix, gatewayLocation, tf)
-
-    const subscription = seqService?.subscribeSequencerState()(
-      (sequencerStateResponse: SequencerStateResponse) => {
-        setLoading(false)
-        setSequencerStateResponse(sequencerStateResponse)
-      }
-    )
-    return subscription?.cancel
-  }, [gatewayLocation, setLoading, prefix, tf])
-
+  const { sequencerStateResponse, loading } =
+    useSequencerStateSubscription(prefix)
   const seqLocation = useSequencerLocation(prefix)
 
   const [selectedStep, setSelectedStep] = useState<Step>()
@@ -230,7 +203,7 @@ export const SequencerDetails = ({
             sequencerState={sequencerStateResponse.sequencerState._type}
           />
         }>
-        <SequencerDescription prefix={prefix} />
+        <SequenceComponentInfo seqLocation={seqLocation.data} />
       </PageHeader>
       <Layout
         style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>

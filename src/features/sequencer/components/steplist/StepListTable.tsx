@@ -1,9 +1,9 @@
 import { Space, Table, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
-import { getStepListStatus, StepListStatus } from '../../utils'
+import { getStepListInfo, StepListStatus } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import { typeStatus } from '../SequencersTable'
+import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { StepComponent } from './StepComponent'
 import type {
@@ -74,12 +74,20 @@ const StepListTitle = ({
     </Typography.Title>
     <Space>
       <Typography.Text type={'secondary'}>Status:</Typography.Text>
-      <Typography.Text type={typeStatus[stepListStatus]}>
+      <Typography.Text type={statusTextType[stepListStatus]}>
         {stepListStatus}
       </Typography.Text>
     </Space>
   </div>
 )
+
+export type StepListTableProps = {
+  sequencerPrefix: Prefix
+  selectedStep?: Step
+  stepList: StepList
+  isLoading: boolean
+  setSelectedStep: (_: Step | undefined) => void
+}
 
 export const StepListTable = ({
   sequencerPrefix,
@@ -87,16 +95,10 @@ export const StepListTable = ({
   setSelectedStep,
   stepList,
   isLoading
-}: {
-  sequencerPrefix: Prefix
-  selectedStep?: Step
-  stepList: StepList
-  isLoading: boolean
-  setSelectedStep: (_: Step | undefined) => void
-}): JSX.Element => {
+}: StepListTableProps): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
-  const stepListStatus = getStepListStatus(stepList).status
+  const stepListStatus = getStepListInfo(stepList).status
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {

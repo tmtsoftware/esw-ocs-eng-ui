@@ -43,15 +43,11 @@ const columns: ColumnsType<ParameterDataType> = [
 const commaSeparator = ', '
 
 const createDataSource = (paramSet: Parameter<Key>[]): ParameterDataType[] =>
-  paramSet.map((parameter) => {
-    return {
-      parameter: parameter.keyName.toString(),
-      unit: parameter.units.toString(),
-      values: parameter.values
-        .map((v) => JSON.stringify(v))
-        .join(commaSeparator)
-    }
-  })
+  paramSet.map((parameter) => ({
+    parameter: parameter.keyName,
+    unit: parameter.units.toString(),
+    values: parameter.values.map((v) => JSON.stringify(v)).join(commaSeparator)
+  }))
 
 export const ParameterTable = ({
   paramSet

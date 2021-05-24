@@ -15,7 +15,7 @@ import { SequencersTable } from '../../features/sequencer/components/SequencersT
 import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
 import {
   getCurrentStepCommandName,
-  getStepListStatus,
+  getStepListInfo,
   SequencerInfo
 } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
@@ -135,13 +135,13 @@ export const CurrentObsMode = ({
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(
     ([prefix, sequencerStatus]) => {
       const stepList = sequencerStatus.stepList
-      const stepListStatus = getStepListStatus(stepList)
+      const stepListInfo = getStepListInfo(stepList)
 
       return {
         key: prefix,
         prefix: prefix,
         currentStepCommandName: getCurrentStepCommandName(stepList),
-        stepListStatus,
+        stepListInfo,
         sequencerState: sequencerStatus.sequencerState,
         totalSteps: stepList.steps.length
       }

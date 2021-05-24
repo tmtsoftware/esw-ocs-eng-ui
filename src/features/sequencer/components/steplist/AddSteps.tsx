@@ -13,12 +13,11 @@ import { useSequencerService } from '../../hooks/useSequencerService'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
-  idDoesNotExistMsg
-} from '../sequencerResponsesMapping'
+  idDoesNotExistMsg,
+  addStepsErrorPrefix,
+  addStepsSuccessMsg
+} from '../sequencerMessageConstants'
 import type { Prefix } from '@tmtsoftware/esw-ts'
-
-const addStepsErrorPrefix = 'Failed to add steps'
-const addStepsSuccessMsg = 'Successfully added steps'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {

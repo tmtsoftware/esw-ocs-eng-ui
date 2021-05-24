@@ -10,10 +10,13 @@ import { Menu } from 'antd'
 import React from 'react'
 import { anything, deepEqual, verify, when } from 'ts-mockito'
 import {
+  addStepsErrorPrefix,
+  addStepsSuccessMsg,
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
-} from '../../../../../src/features/sequencer/components/sequencerResponsesMapping'
+} from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
+import { _createErrorMsg } from '../../../../../src/utils/message'
 import {
   renderWithAuth,
   sequencerServiceMock
@@ -37,17 +40,20 @@ describe('AddSteps', () => {
     {
       testName: 'should add uploaded steps | ESW-461',
       response: { _type: 'Ok' },
-      message: 'Successfully added steps'
+      message: addStepsSuccessMsg
     },
     {
       testName: 'should show error if step id does not exist | ESW-461',
       response: { _type: 'IdDoesNotExist', id },
-      message: `Failed to add steps, reason: ${idDoesNotExistMsg(id)}`
+      message: _createErrorMsg(addStepsErrorPrefix, idDoesNotExistMsg(id))
     },
     {
       testName: 'should show error if the step is finished | ESW-461',
       response: { _type: 'CannotOperateOnAnInFlightOrFinishedStep' },
-      message: `Failed to add steps, reason: ${cannotOperateOnAnInFlightOrFinishedStepMsg}`
+      message: _createErrorMsg(
+        addStepsErrorPrefix,
+        cannotOperateOnAnInFlightOrFinishedStepMsg
+      )
     },
     {
       testName:
@@ -58,7 +64,7 @@ describe('AddSteps', () => {
         state: 'idle',
         messageType: 'InsertAfter'
       },
-      message: `Failed to add steps, reason: ${unhandledMsg}`
+      message: _createErrorMsg(addStepsErrorPrefix, unhandledMsg)
     }
   ]
 

@@ -10,7 +10,7 @@ import { useSequencerService } from '../../hooks/useSequencerService'
 import {
   cannotOperateOnAnInFlightOrFinishedStepMsg,
   idDoesNotExistMsg
-} from '../sequencerResponsesMapping'
+} from '../sequencerMessageConstants'
 import type {
   GenericResponse,
   Prefix,

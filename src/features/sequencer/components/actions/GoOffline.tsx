@@ -40,7 +40,7 @@ export const GoOffline = ({
 
   return (
     <Button
-      disabled={!sequencerState || sequencerState === 'Running'}
+      disabled={sequencerState === 'Running'}
       loading={goOfflineAction.isLoading}
       onClick={() => goOffline()}>
       Go offline

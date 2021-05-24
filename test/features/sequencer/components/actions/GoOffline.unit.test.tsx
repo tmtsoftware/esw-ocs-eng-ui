@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GoOfflineResponse, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import { GoOfflineResponse, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
@@ -80,27 +80,20 @@ describe('GoOffline', () => {
     verify(sequencerServiceMock.goOffline()).called()
   })
 
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
-    'Running'
-  ]
-
-  disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state} | ESW-493`, async () => {
-      renderWithAuth({
-        ui: (
-          <GoOffline
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={state}
-          />
-        )
-      })
-
-      const offlineButton = (await screen.findByRole('button', {
-        name: 'Go offline'
-      })) as HTMLButtonElement
-
-      expect(offlineButton.disabled).true
+  it(`should be disabled if sequencer is running | ESW-493`, async () => {
+    renderWithAuth({
+      ui: (
+        <GoOffline
+          prefix={new Prefix('ESW', 'darknight')}
+          sequencerState={'Running'}
+        />
+      )
     })
+
+    const offlineButton = (await screen.findByRole('button', {
+      name: 'Go offline'
+    })) as HTMLButtonElement
+
+    expect(offlineButton.disabled).true
   })
 })

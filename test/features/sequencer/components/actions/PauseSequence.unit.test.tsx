@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { PauseResponse, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
-import { expect } from 'chai'
+import { PauseResponse, Prefix } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/actions/PauseSequence'
@@ -38,7 +37,7 @@ describe('Pause Sequence', () => {
         ui: (
           <PauseSequence
             prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={'Running'}
+            isSequencerRunning
           />
         )
       })
@@ -60,7 +59,7 @@ describe('Pause Sequence', () => {
       ui: (
         <PauseSequence
           prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Running'}
+          isSequencerRunning
         />
       )
     })
@@ -74,32 +73,5 @@ describe('Pause Sequence', () => {
     )
 
     verify(sequencerServiceMock.pause()).called()
-  })
-
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
-    'Loaded',
-    'Processing',
-    'Offline',
-    'Idle'
-  ]
-
-  disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state} | ESW-497`, async () => {
-      renderWithAuth({
-        ui: (
-          <PauseSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={state}
-          />
-        )
-      })
-
-      const button = (await screen.findByRole(
-        'PauseSequence'
-      )) as HTMLButtonElement
-
-      expect(button.disabled).true
-    })
   })
 })

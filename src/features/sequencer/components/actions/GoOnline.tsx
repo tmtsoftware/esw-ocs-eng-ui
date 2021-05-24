@@ -40,7 +40,7 @@ export const GoOnline = ({
 
   return (
     <Button
-      disabled={!sequencerState || sequencerState === 'Running'}
+      disabled={sequencerState === 'Running'}
       loading={goOnlineAction.isLoading}
       onClick={() => goOnline()}>
       Go online

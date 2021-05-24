@@ -1,10 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerState
-} from '@tmtsoftware/esw-ts'
+import { OkOrUnhandledResponse, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
@@ -41,7 +37,7 @@ describe('AbortSequence', () => {
         ui: (
           <AbortSequence
             prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={'Running'}
+            isSequencerRunning
           />
         )
       })
@@ -82,7 +78,7 @@ describe('AbortSequence', () => {
       ui: (
         <AbortSequence
           prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Running'}
+          isSequencerRunning
         />
       )
     })
@@ -127,30 +123,20 @@ describe('AbortSequence', () => {
     verify(sequencerServiceMock.abortSequence()).called()
   })
 
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
-    'Idle',
-    'Loaded',
-    'Offline',
-    'Processing'
-  ]
-
-  disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state} | ESW-494`, async () => {
-      renderWithAuth({
-        ui: (
-          <AbortSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={state}
-          />
-        )
-      })
-
-      const abortSeqButton = (await screen.findByRole('button', {
-        name: 'Abort sequence'
-      })) as HTMLButtonElement
-
-      expect(abortSeqButton.disabled).true
+  it(`should be disabled if sequencer is not running | ESW-494`, async () => {
+    renderWithAuth({
+      ui: (
+        <AbortSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          isSequencerRunning={false}
+        />
+      )
     })
+
+    const abortSeqButton = (await screen.findByRole('button', {
+      name: 'Abort sequence'
+    })) as HTMLButtonElement
+
+    expect(abortSeqButton.disabled).true
   })
 })

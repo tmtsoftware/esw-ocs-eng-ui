@@ -155,8 +155,7 @@ describe('LoadSequence', () => {
     )
   })
 
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
+  const disabledStates: SequencerState['_type'][] = [
     'Processing',
     'Offline',
     'Running'

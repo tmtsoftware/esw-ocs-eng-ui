@@ -34,29 +34,22 @@ const usePauseSequence = (): UseMutationResult<
   })
 }
 
-export const PauseSequence = ({
-  prefix,
-  sequencerState
-}: SequencerProps): JSX.Element => {
+type PauseSequenceProps = Omit<SequencerProps, 'sequencerState'>
+
+export const PauseSequence = ({ prefix }: PauseSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const pauseSequence = usePauseSequence()
 
   const onClick = () =>
     sequencerService && pauseSequence.mutate(sequencerService)
 
-  const disabled = !sequencerState || sequencerState !== 'Running'
   return (
     <Tooltip placement='bottom' title={'Pause sequence'}>
       <Button
         onClick={onClick}
         type={'text'}
         shape={'circle'}
-        icon={
-          <PauseCircleOutlined
-            className={disabled ? styles.actionDisabled : styles.actionEnabled}
-          />
-        }
-        disabled={disabled}
+        icon={<PauseCircleOutlined className={styles.actionEnabled} />}
         role='PauseSequence'
       />
     </Tooltip>

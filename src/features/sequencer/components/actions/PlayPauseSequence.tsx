@@ -5,14 +5,19 @@ import { PlaySequence } from './PlaySequence'
 
 export const PlayPauseSequence = ({
   prefix,
+  isSequencerRunning,
   sequencerState,
   isPaused
 }: SequencerProps & { isPaused: boolean }): JSX.Element => {
-  const canBePaused = sequencerState === 'Running' && !isPaused
+  const canBePaused = isSequencerRunning && !isPaused
 
   return canBePaused ? (
-    <PauseSequence prefix={prefix} sequencerState={sequencerState} />
+    <PauseSequence prefix={prefix} />
   ) : (
-    <PlaySequence prefix={prefix} sequencerState={sequencerState} />
+    <PlaySequence
+      prefix={prefix}
+      isSequencerRunning={isSequencerRunning}
+      sequencerState={sequencerState}
+    />
   )
 }

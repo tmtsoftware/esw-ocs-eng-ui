@@ -104,8 +104,7 @@ describe('Start Sequence', () => {
     verify(sequencerServiceMock.startSequence()).called()
   })
 
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
+  const disabledStates: SequencerState['_type'][] = [
     'Running',
     'Processing',
     'Offline',

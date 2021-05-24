@@ -29,10 +29,12 @@ const useAbortSequence = (): UseMutationResult<
   })
 }
 
+type AbortSequenceProps = Omit<SequencerProps, 'sequencerState'>
+
 export const AbortSequence = ({
   prefix,
-  sequencerState
-}: SequencerProps): JSX.Element => {
+  isSequencerRunning
+}: AbortSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const abortAction = useAbortSequence()
 
@@ -50,7 +52,7 @@ export const AbortSequence = ({
           'Abort'
         )
       }
-      disabled={!sequencerState || sequencerState !== 'Running'}>
+      disabled={!isSequencerRunning}>
       Abort sequence
     </Button>
   )

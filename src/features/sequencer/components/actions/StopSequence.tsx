@@ -31,13 +31,15 @@ const useStopAction = (): UseMutationResult<
   })
 }
 
+type StopSequenceProps = Omit<SequencerProps, 'sequencerState'>
+
 export const StopSequence = ({
   prefix,
-  sequencerState
-}: SequencerProps): JSX.Element => {
+  isSequencerRunning
+}: StopSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const stopAction = useStopAction()
-  const disabled = !sequencerState || sequencerState !== 'Running'
+  const disabled = !isSequencerRunning
 
   const onClick = () =>
     sequencerService &&

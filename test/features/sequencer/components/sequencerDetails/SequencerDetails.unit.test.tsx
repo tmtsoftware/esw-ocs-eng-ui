@@ -123,7 +123,6 @@ describe('sequencer details', () => {
 
     expect(await screen.findByRole('PauseSequence')).to.exist
     expect(await screen.findByRole('StopSequence')).to.exist
-    expect(await screen.findByRole('ResetSequence')).to.exist
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
@@ -615,6 +614,91 @@ describe('sequencer details', () => {
     // assert step is added
     await screen.findByRole('row', { name: /1 command-1/i })
     await screen.findByRole('row', { name: /2 command-2/i })
+  })
+
+  const disabledStatesForStopAndAbort: SequencerState['_type'][] = [
+    'Loaded',
+    'Processing',
+    'Offline',
+    'Idle'
+  ]
+
+  disabledStatesForStopAndAbort.forEach((state) => {
+    it(`should show stop, abort disabled when sequencer is in ${state} state | ESW-500, ESW-494`, async () => {
+      const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
+
+      const stepList = getStepList('Pending', false)
+
+      when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+        (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+          sendEvent(onevent, state, stepList)
+          return {
+            cancel: () => undefined
+          }
+        }
+      )
+
+      renderWithAuth({
+        ui: (
+          <BrowserRouter>
+            <SequencerDetails prefix={sequencerPrefix} />
+          </BrowserRouter>
+        )
+      })
+      const abortSeqButton = (await screen.findByRole('button', {
+        name: 'Abort sequence'
+      })) as HTMLButtonElement
+
+      expect(abortSeqButton.disabled).true
+
+      const stopSeqButton = (await screen.findByRole(
+        'StopSequence'
+      )) as HTMLButtonElement
+
+      expect(stopSeqButton.disabled).true
+    })
+  })
+  const disabledStatesForResume: SequencerState['_type'][] = [
+    'Processing',
+    'Offline',
+    'Idle'
+  ]
+  disabledStatesForResume.forEach((state) => {
+    it(`should show resume disabled when sequencer is in ${state} state | ESW-500, ESW-494`, async () => {
+      const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
+
+      const stepList = new StepList([
+        {
+          hasBreakpoint: false,
+          status: { _type: 'Pending' },
+          command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+          id: 'step1'
+        }
+      ])
+
+      when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+        (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+          sendEvent(onevent, state, stepList)
+          return {
+            cancel: () => undefined
+          }
+        }
+      )
+
+      renderWithAuth({
+        ui: (
+          <BrowserRouter>
+            <SequencerDetails prefix={sequencerPrefix} />
+          </BrowserRouter>
+        )
+      })
+
+      const resumeSeqButton = (await screen.findByRole(
+        'ResumeSequence'
+      )) as HTMLButtonElement
+
+      expect(resumeSeqButton.disabled).true
+    })
   })
 })
 

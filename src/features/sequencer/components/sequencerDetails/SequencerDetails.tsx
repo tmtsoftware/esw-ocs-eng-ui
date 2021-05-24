@@ -20,7 +20,6 @@ import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
 import { PlayPauseSequence } from '../actions/PlayPauseSequence'
-import { ResetSequence } from '../actions/ResetSequence'
 import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
@@ -42,8 +41,9 @@ type DescriptionProps = {
 
 const SequencerActions = ({
   prefix,
-  sequencerState,
-  isPaused
+  isSequencerRunning,
+  isPaused,
+  sequencerState
 }: SequencerProps & {
   isPaused: boolean
 }): JSX.Element => {
@@ -52,21 +52,22 @@ const SequencerActions = ({
       <PlayPauseSequence
         prefix={prefix}
         sequencerState={sequencerState}
+        isSequencerRunning={isSequencerRunning}
         isPaused={isPaused}
       />
-      <ResetSequence prefix={prefix} sequencerState={sequencerState} />
-      <StopSequence prefix={prefix} sequencerState={sequencerState} />
+      <StopSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
     </Space>
   )
 }
 const SequenceActions = ({
   prefix,
+  isSequencerRunning,
   sequencerState
 }: SequencerProps): JSX.Element => (
   <Space>
     <LoadSequence prefix={prefix} sequencerState={sequencerState} />
     <LifecycleState prefix={prefix} sequencerState={sequencerState} />
-    <AbortSequence prefix={prefix} sequencerState={sequencerState} />
+    <AbortSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
   </Space>
 )
 
@@ -75,14 +76,20 @@ const Actions = ({
   sequencerState,
   isPaused
 }: SequencerProps & { isPaused: boolean }): JSX.Element => {
+  const isSequencerRunning = sequencerState === 'Running'
   return (
     <Space size={20}>
       <SequencerActions
         prefix={prefix}
-        sequencerState={sequencerState}
+        isSequencerRunning={isSequencerRunning}
         isPaused={isPaused}
+        sequencerState={sequencerState}
       />
-      <SequenceActions prefix={prefix} sequencerState={sequencerState} />
+      <SequenceActions
+        prefix={prefix}
+        isSequencerRunning={isSequencerRunning}
+        sequencerState={sequencerState}
+      />
     </Space>
   )
 }

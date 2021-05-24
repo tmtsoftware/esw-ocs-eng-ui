@@ -1,10 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  OkOrUnhandledResponse,
-  Prefix,
-  SequencerState
-} from '@tmtsoftware/esw-ts'
+import { OkOrUnhandledResponse, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
@@ -37,7 +33,7 @@ describe('Resume Sequence', () => {
         ui: (
           <ResumeSequence
             prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={'Running'}
+            isSequencerRunning
           />
         )
       })
@@ -61,7 +57,7 @@ describe('Resume Sequence', () => {
       ui: (
         <ResumeSequence
           prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Running'}
+          isSequencerRunning
         />
       )
     })
@@ -77,30 +73,20 @@ describe('Resume Sequence', () => {
     verify(sequencerServiceMock.resume()).called()
   })
 
-  const disabledStates: (SequencerState['_type'] | undefined)[] = [
-    undefined,
-    'Loaded',
-    'Processing',
-    'Offline',
-    'Idle'
-  ]
-
-  disabledStates.forEach((state) => {
-    it(`should be disabled if sequencer in ${state} | ESW-497`, async () => {
-      renderWithAuth({
-        ui: (
-          <ResumeSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={state}
-          />
-        )
-      })
-
-      const button = (await screen.findByRole(
-        'ResumeSequence'
-      )) as HTMLButtonElement
-
-      expect(button.disabled).true
+  it(`should be disabled if sequencer is not running | ESW-497`, async () => {
+    renderWithAuth({
+      ui: (
+        <ResumeSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          isSequencerRunning={false}
+        />
+      )
     })
+
+    const button = (await screen.findByRole(
+      'ResumeSequence'
+    )) as HTMLButtonElement
+
+    expect(button.disabled).true
   })
 })

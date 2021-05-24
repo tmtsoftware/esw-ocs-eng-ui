@@ -33,11 +33,12 @@ const useLoadAction = (
     onError: (e) => errorMessage(errorMessagePrefix, e)
   })
 }
+type LoadSequenceProps = Omit<SequencerProps, 'isSequencerRunning'>
 
 export const LoadSequence = ({
   prefix,
   sequencerState
-}: SequencerProps): JSX.Element => {
+}: LoadSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const [sequence, setSequence] = useState<SequenceCommand[]>()
   const loadSequenceAction = useLoadAction(sequence)

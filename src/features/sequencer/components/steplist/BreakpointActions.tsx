@@ -2,6 +2,7 @@ import {
   VerticalAlignMiddleOutlined,
   CloseCircleOutlined
 } from '@ant-design/icons'
+import { Menu } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -65,29 +66,30 @@ export const BreakpointAction = ({
     onError: (e) => errorMessage('Failed to remove breakpoint', e)
   })
 
-  if (step.hasBreakpoint) {
-    return (
-      <div
-        onClick={() => {
-          !isDisabled &&
-            sequencerService &&
-            removeBreakpointAction.mutate(sequencerService)
-        }}>
-        <CloseCircleOutlined />
-        Remove breakpoint
-      </div>
-    )
+  const handleOnClick = () => {
+    if (step.hasBreakpoint) {
+      sequencerService && removeBreakpointAction.mutate(sequencerService)
+    } else {
+      sequencerService && insertBreakpointAction.mutate(sequencerService)
+    }
   }
+  const icon = step.hasBreakpoint ? (
+    <CloseCircleOutlined />
+  ) : (
+    <VerticalAlignMiddleOutlined />
+  )
+
+  const itemText = step.hasBreakpoint
+    ? 'Remove breakpoint'
+    : 'Insert breakpoint'
 
   return (
-    <div
-      onClick={() => {
-        !isDisabled &&
-          sequencerService &&
-          insertBreakpointAction.mutate(sequencerService)
-      }}>
-      <VerticalAlignMiddleOutlined />
-      Insert breakpoint
-    </div>
+    <Menu.Item
+      key='BreakpointAction'
+      disabled={isDisabled}
+      icon={icon}
+      onClick={handleOnClick}>
+      {itemText}
+    </Menu.Item>
   )
 }

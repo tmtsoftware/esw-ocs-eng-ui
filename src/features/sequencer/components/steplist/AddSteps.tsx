@@ -5,7 +5,7 @@ import {
   SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
-import { Upload } from 'antd'
+import { Menu, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -71,19 +71,24 @@ export const AddSteps = ({
     })
 
   return (
-    <Upload
-      className={styles.upload}
-      disabled={disabled}
-      beforeUpload={beforeUpload}
-      customRequest={() =>
-        sequencerService && addStepAction.mutate(sequencerService)
-      }>
-      <div
-        role='addSteps'
-        style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
-        <PlusCircleOutlined />
-        Add steps
-      </div>
-    </Upload>
+    <Menu.Item key='AddSteps' disabled={disabled}>
+      <Upload
+        className={styles.upload}
+        disabled={disabled}
+        showUploadList={false}
+        beforeUpload={beforeUpload}
+        customRequest={() =>
+          sequencerService && addStepAction.mutate(sequencerService)
+        }>
+        <div
+          role='addSteps'
+          style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
+          <PlusCircleOutlined
+            style={{ fontSize: '12px', marginRight: '8px' }}
+          />
+          Add steps
+        </div>
+      </Upload>
+    </Menu.Item>
   )
 }

@@ -70,8 +70,10 @@ describe('StepActions', () => {
       name: /delete/i
     })) as HTMLMenuElement
 
-    expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.true
-    expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.true
+    expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
+    expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
   })
 
   it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459, ESW-490', async () => {
@@ -96,9 +98,12 @@ describe('StepActions', () => {
       name: /add steps/i
     })) as HTMLMenuElement
 
-    expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.true
-    expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.true
-    expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be.true
+    expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
+    expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
+    expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled'))
+      .to.be.true
   })
 
   it('should disable delete, insert breakpoint and add a step when status is success | ESW-459 ESW-490', async () => {
@@ -123,9 +128,12 @@ describe('StepActions', () => {
       name: /add steps/i
     })) as HTMLMenuElement
 
-    expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.true
-    expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.true
-    expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be.true
+    expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
+    expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.true
+    expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled'))
+      .to.be.true
   })
 
   it('should enable every menu item when status is pending | ESW-459, ESW-490', async () => {
@@ -150,10 +158,12 @@ describe('StepActions', () => {
       name: /add steps/i
     })) as HTMLMenuElement
 
-    expect(insertMenu.classList.contains('ant-menu-item-disabled')).to.be.false
-    expect(deleteMenu.classList.contains('ant-menu-item-disabled')).to.be.false
-    expect(addAStepMenu.classList.contains('ant-menu-item-disabled')).to.be
-      .false
+    expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.false
+    expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to
+      .be.false
+    expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled'))
+      .to.be.false
   })
 
   it('should disable duplicate if stepListStatus is completed | ESW-462', async () => {
@@ -179,8 +189,8 @@ describe('StepActions', () => {
       name: /duplicate/i
     })) as HTMLMenuElement
 
-    expect(duplicateMenu.classList.contains('ant-menu-item-disabled')).to.be
-      .true
+    expect(duplicateMenu.classList.contains('ant-dropdown-menu-item-disabled'))
+      .to.be.true
   })
 
   it('should disable add steps if step Status is completed | ESW-461', async () => {
@@ -207,7 +217,8 @@ describe('StepActions', () => {
     })) as HTMLMenuElement
     const addStepsDiv = (await screen.findByRole('addSteps')) as HTMLDivElement
 
-    expect(addStepsMenu.classList.contains('ant-menu-item-disabled')).to.be.true
+    expect(addStepsMenu.classList.contains('ant-dropdown-menu-item-disabled'))
+      .to.be.true
     expect(addStepsDiv.style.color).to.be.equal('var(--disabledColor)')
   })
 })

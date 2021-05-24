@@ -1,5 +1,5 @@
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { Modal } from 'antd'
+import { Menu, Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -52,15 +52,17 @@ const showConfirmModal = (stepName: string, onYes: () => void): void => {
   })
 }
 
+type DeleteActionProps = {
+  step: Step
+  sequencerPrefix: Prefix
+  isDisabled: boolean
+}
+
 export const DeleteAction = ({
   step,
   sequencerPrefix,
   isDisabled
-}: {
-  step: Step
-  sequencerPrefix: Prefix
-  isDisabled: boolean
-}): JSX.Element => {
+}: DeleteActionProps): JSX.Element => {
   const sequencerService = useSequencerService(sequencerPrefix)
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
@@ -69,15 +71,17 @@ export const DeleteAction = ({
   })
 
   return (
-    <div
+    <Menu.Item
+      key='Delete'
+      disabled={isDisabled}
+      danger={!isDisabled}
+      icon={<DeleteOutlined />}
       onClick={() =>
-        !isDisabled &&
         showConfirmModal(step.command.commandName, () => {
           sequencerService && deleteAction.mutateAsync(sequencerService)
         })
       }>
-      <DeleteOutlined />
       Delete
-    </div>
+    </Menu.Item>
   )
 }

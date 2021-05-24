@@ -1,6 +1,6 @@
 import { CopyOutlined, MoreOutlined } from '@ant-design/icons'
 import { Dropdown, Menu } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { AddSteps } from './AddSteps'
@@ -14,12 +14,10 @@ type SequencerStepProps = {
 
 const StepActionsMenu = ({
   step,
-  sequencerPrefix,
-  hideMenu
+  sequencerPrefix
 }: {
   step: Step
   sequencerPrefix: Prefix
-  hideMenu: () => void
 }): JSX.Element => {
   const status = step.status._type
   const isFinished = status === 'Failure' || status === 'Success'
@@ -28,35 +26,32 @@ const StepActionsMenu = ({
   const { handleDuplicate, stepListStatus } = useStepListContext()
 
   return (
-    <Menu onClick={hideMenu} className={styles.menu} selectedKeys={[]}>
-      <Menu.Item key='1' disabled={isInProgressOrIsFinished}>
-        <BreakpointAction
-          step={step}
-          sequencerPrefix={sequencerPrefix}
-          isDisabled={isInProgressOrIsFinished}
-        />
-      </Menu.Item>
-      <Menu.Item key='2' disabled={isFinished}>
-        <AddSteps
-          disabled={isFinished}
-          stepId={step.id}
-          sequencerPrefix={sequencerPrefix}
-        />
-      </Menu.Item>
+    <Menu className={styles.menu} selectedKeys={[]}>
+      {BreakpointAction({
+        step,
+        sequencerPrefix,
+        isDisabled: isInProgressOrIsFinished
+      })}
+
+      {AddSteps({
+        disabled: isFinished,
+        stepId: step.id,
+        sequencerPrefix: sequencerPrefix
+      })}
+
       <Menu.Item
-        key='3'
+        key='Duplicate'
         onClick={handleDuplicate}
         disabled={stepListStatus === 'All Steps Completed'}>
         <CopyOutlined />
         Duplicate
       </Menu.Item>
-      <Menu.Item key='4' disabled={isInProgressOrIsFinished} danger>
-        <DeleteAction
-          step={step}
-          sequencerPrefix={sequencerPrefix}
-          isDisabled={isInProgressOrIsFinished}
-        />
-      </Menu.Item>
+
+      {DeleteAction({
+        step,
+        sequencerPrefix,
+        isDisabled: isInProgressOrIsFinished
+      })}
     </Menu>
   )
 }
@@ -64,22 +59,13 @@ const StepActionsMenu = ({
 export const StepActions = ({
   sequencerPrefix,
   step
-}: SequencerStepProps): JSX.Element => {
-  const [isOverlayVisible, toggleOverlayVisibility] = useState<boolean>(false)
-
-  return (
-    <Dropdown
-      overlay={
-        <StepActionsMenu
-          sequencerPrefix={sequencerPrefix}
-          step={step}
-          hideMenu={() => toggleOverlayVisibility(false)}
-        />
-      }
-      trigger={['click']}
-      onVisibleChange={toggleOverlayVisibility}
-      visible={isOverlayVisible}>
-      <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
-    </Dropdown>
-  )
-}
+}: SequencerStepProps): JSX.Element => (
+  <Dropdown
+    overlay={StepActionsMenu({
+      sequencerPrefix,
+      step
+    })}
+    trigger={['click']}>
+    <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
+  </Dropdown>
+)

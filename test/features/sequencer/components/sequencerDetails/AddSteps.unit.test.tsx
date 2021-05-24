@@ -6,6 +6,7 @@ import {
   SequenceCommand,
   Setup
 } from '@tmtsoftware/esw-ts'
+import { Menu } from 'antd'
 import React from 'react'
 import { anything, deepEqual, verify, when } from 'ts-mockito'
 import {
@@ -66,11 +67,17 @@ describe('AddSteps', () => {
       when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(
         response
       )
-
+      const AddStepsComponent = () => (
+        <Menu>
+          {AddSteps({
+            disabled: false,
+            sequencerPrefix: seqPrefix,
+            stepId: id
+          })}
+        </Menu>
+      )
       renderWithAuth({
-        ui: (
-          <AddSteps disabled={false} sequencerPrefix={seqPrefix} stepId={id} />
-        )
+        ui: <AddStepsComponent />
       })
 
       const upload = await screen.findByRole('button', { name: /add steps/i })

@@ -7,6 +7,7 @@ import {
   Setup,
   Step
 } from '@tmtsoftware/esw-ts'
+import { Menu } from 'antd'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
@@ -66,14 +67,18 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
+      const BreakpointActionComponent = () => (
+        <Menu>
+          {BreakpointAction({
+            sequencerPrefix: sequencerPrefix,
+            step: step,
+            isDisabled: false
+          })}
+        </Menu>
+      )
+
       renderWithAuth({
-        ui: (
-          <BreakpointAction
-            sequencerPrefix={sequencerPrefix}
-            step={step}
-            isDisabled={false}
-          />
-        )
+        ui: <BreakpointActionComponent />
       })
 
       const insertBreakpoint = await screen.findByText('Insert breakpoint')
@@ -124,14 +129,18 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
+      const BreakpointActionComponent = () => (
+        <Menu>
+          {BreakpointAction({
+            sequencerPrefix: sequencerPrefix,
+            step: step,
+            isDisabled: false
+          })}
+        </Menu>
+      )
+
       renderWithAuth({
-        ui: (
-          <BreakpointAction
-            sequencerPrefix={sequencerPrefix}
-            step={step}
-            isDisabled={false}
-          />
-        )
+        ui: <BreakpointActionComponent />
       })
 
       const removeBreakpoint = await screen.findByText('Remove breakpoint')

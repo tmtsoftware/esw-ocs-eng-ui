@@ -17,6 +17,9 @@ import {
 } from '../sequencerResponsesMapping'
 import type { Prefix } from '@tmtsoftware/esw-ts'
 
+const addStepsErrorPrefix = 'Failed to add steps'
+const addStepsSuccessMsg = 'Successfully added steps'
+
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
     case 'Ok':
@@ -54,18 +57,23 @@ export const AddSteps = ({
 
   const addStepAction = useMutation({
     mutationFn: addSteps(stepId, commands),
-    onError: (e) => errorMessage('Failed to add steps', e),
-    onSuccess: () => successMessage('Successfully added steps')
+    onError: (e) => errorMessage(addStepsErrorPrefix, e),
+    onSuccess: () => successMessage(addStepsSuccessMsg)
   })
 
   const beforeUpload = (file: File): Promise<void> =>
     new Promise<void>((resolve) => {
       const reader = new FileReader()
       reader.readAsText(file)
+      reader.onerror = () => errorMessage(addStepsErrorPrefix, reader.error)
       reader.onload = () => {
         if (typeof reader.result === 'string') {
-          setCommands(Sequence.fromString(reader.result).commands)
-          resolve()
+          try {
+            setCommands(Sequence.fromString(reader.result).commands)
+            resolve()
+          } catch (e) {
+            errorMessage(addStepsErrorPrefix, e).then(resolve)
+          }
         }
       }
     })

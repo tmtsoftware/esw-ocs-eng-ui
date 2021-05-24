@@ -542,7 +542,8 @@ describe('sequencer details', () => {
 
     const file = new File(
       [JSON.stringify({ commands: [commandToInsert] })],
-      'commands.json'
+      'commands.json',
+      { type: 'application/json' }
     )
 
     const stepList = getStepList('Pending', false)

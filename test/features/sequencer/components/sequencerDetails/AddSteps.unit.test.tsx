@@ -8,11 +8,12 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
-import { anything, deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import {
   addStepsErrorPrefix,
   addStepsSuccessMsg,
   cannotOperateOnAnInFlightOrFinishedStepMsg,
+  couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
@@ -28,6 +29,10 @@ type TestData = {
   message: string
 }
 
+afterEach(async () => {
+  reset(sequencerServiceMock)
+})
+
 describe('AddSteps', () => {
   const unhandledMsg = 'unhandled'
   const id = 'step_1'
@@ -35,7 +40,9 @@ describe('AddSteps', () => {
   const commands: SequenceCommand[] = [
     new Setup(seqPrefix, 'move', [], '2020A-001-123')
   ]
-  const file = new File([JSON.stringify({ commands })], 'commands.json')
+  const file = new File([JSON.stringify({ commands })], 'commands.json', {
+    type: 'application/json'
+  })
   const testCases: TestData[] = [
     {
       testName: 'should add uploaded steps | ESW-461',
@@ -86,15 +93,51 @@ describe('AddSteps', () => {
         ui: <AddStepsComponent />
       })
 
-      const upload = await screen.findByRole('button', { name: /add steps/i })
-      userEvent.click(upload)
+      const addStepsButton = await screen.findByRole('button', {
+        name: /add steps/i
+      })
+      userEvent.click(addStepsButton)
 
       // eslint-disable-next-line testing-library/no-node-access
-      const inputBox = upload.firstChild as HTMLInputElement
+      const inputBox = addStepsButton.firstChild as HTMLInputElement
       userEvent.upload(inputBox, file)
 
       await screen.findByText(message)
       verify(sequencerServiceMock.insertAfter(id, deepEqual(commands))).called()
     })
+  })
+
+  it('should show error if file content is not valid ', async () => {
+    const file = new File(
+      [JSON.stringify({ invalidCommands: 'invalidCommands' })],
+      'commands.json',
+      { type: 'application/json' }
+    )
+    const AddStepsComponent = () => (
+      <Menu>
+        {AddSteps({
+          disabled: false,
+          sequencerPrefix: seqPrefix,
+          stepId: id
+        })}
+      </Menu>
+    )
+    renderWithAuth({
+      ui: <AddStepsComponent />
+    })
+
+    const addStepsButton = await screen.findByRole('button', {
+      name: /add steps/i
+    })
+    userEvent.click(addStepsButton)
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const inputBox = addStepsButton.firstChild as HTMLInputElement
+    userEvent.upload(inputBox, file)
+
+    await screen.findByText(
+      _createErrorMsg(addStepsErrorPrefix, couldNotDeserialiseSequenceMsg)
+    )
+    verify(sequencerServiceMock.insertAfter(anything(), anything())).never()
   })
 })

@@ -37,7 +37,9 @@ describe('LoadSequence', () => {
   )
   const sequence = new Sequence([command1, command2])
 
-  const file = new File([JSON.stringify(sequence)], 'sequence.json')
+  const file = new File([JSON.stringify(sequence)], 'sequence.json', {
+    type: 'application/json'
+  })
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, 'Sequence has been loaded successfully', 'successful'],
     [
@@ -90,7 +92,7 @@ describe('LoadSequence', () => {
   })
 
   it('should show error if the sequence is not valid | ESW-458', async () => {
-    const file0 = new File([], 'sequence.json')
+    const file0 = new File([], 'sequence.json', { type: 'application/json' })
 
     renderWithAuth({
       ui: (

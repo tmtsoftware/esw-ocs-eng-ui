@@ -10,6 +10,7 @@ import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
+import { couldNotDeserialiseSequenceMsg } from '../sequencerMessageConstants'
 
 const errorMessagePrefix = 'Failed to load the sequence'
 
@@ -44,7 +45,7 @@ export const LoadSequence = ({
   const loadSequenceAction = useLoadAction(sequence)
 
   const beforeUpload = (file: File): Promise<void> => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsText(file)
       reader.onerror = () => errorMessage(errorMessagePrefix, reader.error)
@@ -55,7 +56,10 @@ export const LoadSequence = ({
             setSequence(sequence.commands)
             resolve()
           } catch (e) {
-            errorMessage(errorMessagePrefix, e).then(resolve)
+            errorMessage(
+              errorMessagePrefix,
+              Error(couldNotDeserialiseSequenceMsg)
+            ).then(reject)
           }
         }
       }
@@ -70,7 +74,8 @@ export const LoadSequence = ({
     <Upload
       beforeUpload={beforeUpload}
       customRequest={request}
-      showUploadList={false}>
+      showUploadList={false}
+      accept={'application/json'}>
       <Button
         type='primary'
         loading={loadSequenceAction.isLoading}

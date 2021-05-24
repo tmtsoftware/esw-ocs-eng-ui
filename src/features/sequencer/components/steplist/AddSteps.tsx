@@ -12,10 +12,11 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import {
-  cannotOperateOnAnInFlightOrFinishedStepMsg,
-  idDoesNotExistMsg,
   addStepsErrorPrefix,
-  addStepsSuccessMsg
+  addStepsSuccessMsg,
+  cannotOperateOnAnInFlightOrFinishedStepMsg,
+  couldNotDeserialiseSequenceMsg,
+  idDoesNotExistMsg
 } from '../sequencerMessageConstants'
 import type { Prefix } from '@tmtsoftware/esw-ts'
 
@@ -61,7 +62,7 @@ export const AddSteps = ({
   })
 
   const beforeUpload = (file: File): Promise<void> =>
-    new Promise<void>((resolve) => {
+    new Promise<void>((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsText(file)
       reader.onerror = () => errorMessage(addStepsErrorPrefix, reader.error)
@@ -71,7 +72,10 @@ export const AddSteps = ({
             setCommands(Sequence.fromString(reader.result).commands)
             resolve()
           } catch (e) {
-            errorMessage(addStepsErrorPrefix, e).then(resolve)
+            errorMessage(
+              addStepsErrorPrefix,
+              Error(couldNotDeserialiseSequenceMsg)
+            ).then(reject)
           }
         }
       }
@@ -86,7 +90,8 @@ export const AddSteps = ({
         beforeUpload={beforeUpload}
         customRequest={() =>
           sequencerService && addStepAction.mutate(sequencerService)
-        }>
+        }
+        accept='application/json'>
         <div
           role='addSteps'
           style={disabled ? { color: 'var(--disabledColor)' } : undefined}>

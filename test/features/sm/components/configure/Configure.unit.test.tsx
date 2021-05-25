@@ -11,7 +11,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { Configure } from '../../../../../src/features/sm/components/Configure'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
@@ -44,11 +44,8 @@ const obsModesDetails: ObsModesDetailsResponse = {
     }
   ]
 }
-afterEach(() => {
-  cleanup()
-})
 
-let smService: SequenceManagerService
+const smService: SequenceManagerService = mockServices.mock.smService
 
 const darkNight = new ObsMode('ESW_DARKNIGHT')
 
@@ -96,7 +93,7 @@ const failedResponse: FailedResponse = {
 
 describe('Configure button', () => {
   beforeEach(() => {
-    smService = mockServices.mock.smService
+    reset(smService)
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
   })
   afterEach(() => {
@@ -120,30 +117,42 @@ describe('Configure button', () => {
     verify(smService.getObsModesDetails()).called()
   })
 
-  it('should be enabled when sequence manager is spawned | ESW-445', async () => {
-    when(smService.configure(deepEqual(darkNight))).thenResolve(successResponse)
+  it('on click should show only configurable obsmodes in modal| ESW-445', async () => {
     renderWithAuth({
       ui: <Configure disabled={false} />
     })
-    await openConfigureModalAndClickConfigureButton()
-    //verify only configurable obsmodes are shown in the list
+    const button = await screen.findByRole('button', { name: 'Configure' })
+    userEvent.click(button)
+
     const dialog = await screen.findByRole('dialog', {
       name: 'Select an Observation Mode to configure:'
     })
+
+    await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
     expect(within(dialog).queryByRole('menuitem', { name: 'ESW_RANDOM' })).to
       .null
     expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to
       .null
 
-    await assertDialog()
-    //verify obsModesDetails are fetched when dialog is opened
-    verify(smService.getObsModesDetails()).called()
+    await within(dialog).findByRole('button', { name: 'Configure' })
+    await within(dialog).findByRole('button', { name: 'Cancel' })
 
-    verify(smService.configure(deepEqual(darkNight))).called()
+    verify(smService.getObsModesDetails()).called()
+  })
+
+  it('should configure obsmode successfully | ESW-445', async () => {
+    when(smService.configure(anything())).thenResolve(successResponse)
+    renderWithAuth({
+      ui: <Configure disabled={false} />
+    })
+
+    await openConfigureModalAndClickConfigureButton()
+
     expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
       .exist
 
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
+    verify(smService.configure(deepEqual(darkNight))).called()
     verify(smService.getObsModesDetails()).called()
   })
 
@@ -191,24 +200,9 @@ describe('Configure button', () => {
   })
 })
 
-const assertDialog = async () => {
-  await screen.findByRole('dialog', {
-    name: 'Select an Observation Mode to configure:'
-  })
-
-  const dialog = screen.getByRole('dialog', {
-    name: 'Select an Observation Mode to configure:'
-  })
-
-  await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
-  await within(dialog).findByRole('button', { name: 'Configure' })
-  await within(dialog).findByRole('button', { name: 'Cancel' })
-}
 const openConfigureModalAndClickConfigureButton = async () => {
   const button = await screen.findByRole('button', { name: 'Configure' })
-  userEvent.click(button, { button: 1 })
-
-  //verify only configurable obsmodes are shown in the list
+  userEvent.click(button)
   const dialog = screen.getByRole('dialog', {
     name: 'Select an Observation Mode to configure:'
   })

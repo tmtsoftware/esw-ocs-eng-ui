@@ -22,23 +22,13 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { stepUsingId } from '../../../../utils/sequence-utils'
+import { getStepList, stepUsingId } from '../../../../utils/sequence-utils'
 import {
   mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
-import type { SequencerState, Step } from '@tmtsoftware/esw-ts'
-
-const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
-  new StepList([
-    {
-      hasBreakpoint: hasBreakpoint,
-      status: { _type: status, message: '' },
-      command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-      id: 'step1'
-    }
-  ])
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 
 describe('sequencer details', () => {
   let windowWidth: number
@@ -700,6 +690,21 @@ describe('sequencer details', () => {
 
       expect(resumeSeqButton.disabled).true
     })
+  })
+
+  it('should not call cancel subscription on unmount | ESW-489', async (done) => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
+      // done() is to assert that cancel is getting called on unmount, whenever it happens
+      return {
+        cancel: () => done()
+      }
+    })
+
+    const { unmount } = renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    unmount()
   })
 })
 

@@ -1,4 +1,4 @@
-import { Prefix, Setup, Step, StepStatus } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 
 export const step = (
   stepStatus: StepStatus['_type'],
@@ -24,3 +24,16 @@ export const stepUsingId = (
     id: id
   }
 }
+
+export const getStepList = (
+  status: Step['status']['_type'],
+  hasBreakpoint = false
+): StepList =>
+  new StepList([
+    {
+      hasBreakpoint: hasBreakpoint,
+      status: { _type: status, message: '' },
+      command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
+      id: 'step1'
+    }
+  ])

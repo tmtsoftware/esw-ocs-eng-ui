@@ -2,48 +2,25 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   ObsMode,
-  ObsModeDetails,
   ObsModesDetailsResponseSuccess,
-  ObsModeStatus,
   StepList
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
-
 import { Observations } from '../../../src/containers/observation/Observations'
 import {
   configurableObsModesData,
   nonConfigurableObsModesData,
   obsModesData
 } from '../../jsons/obsmodes'
+import { getObsModes } from '../../utils/observationUtils'
 import {
   mockServices,
   renderWithAuth,
   sequencerServiceMock
 } from '../../utils/test-utils'
-
-const getObsModes = (
-  status: ObsModeStatus['_type']
-): ObsModesDetailsResponseSuccess => {
-  const obsModes: ObsModeDetails[] = [
-    {
-      obsMode: new ObsMode('DarkNight_1'),
-      status: {
-        _type: status
-      },
-      resources: ['ESW', 'TCS'],
-      sequencers: ['ESW', 'TCS']
-    }
-  ]
-  const obsModesData: ObsModesDetailsResponseSuccess = {
-    _type: 'Success',
-    obsModes: obsModes
-  }
-  return obsModesData
-}
 
 describe('Observation page', () => {
   beforeEach(() => resetCalls(sequencerServiceMock))

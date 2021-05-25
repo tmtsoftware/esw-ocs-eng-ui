@@ -5,20 +5,11 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
+import { getStepList } from '../../../../utils/sequence-utils'
 import {
   renderWithAuth,
   sequencerServiceMock
 } from '../../../../utils/test-utils'
-
-const getStepList = (status: Step['status']['_type'], hasBreakpoint = false) =>
-  new StepList([
-    {
-      hasBreakpoint: hasBreakpoint,
-      status: { _type: status, message: '' },
-      command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-      id: 'step1'
-    }
-  ])
 
 describe('stepList table', () => {
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')

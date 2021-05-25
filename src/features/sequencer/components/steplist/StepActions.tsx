@@ -14,7 +14,8 @@ type SequencerStepProps = {
 
 const StepActionsMenu = ({
   step,
-  sequencerPrefix
+  sequencerPrefix,
+  ...restProps
 }: {
   step: Step
   sequencerPrefix: Prefix
@@ -26,7 +27,7 @@ const StepActionsMenu = ({
   const { handleDuplicate, stepListStatus } = useStepListContext()
 
   return (
-    <Menu className={styles.menu} selectedKeys={[]}>
+    <Menu {...restProps} className={styles.menu}>
       {BreakpointAction({
         step,
         sequencerPrefix,
@@ -61,10 +62,9 @@ export const StepActions = ({
   step
 }: SequencerStepProps): JSX.Element => (
   <Dropdown
-    overlay={StepActionsMenu({
-      sequencerPrefix,
-      step
-    })}
+    overlay={() => (
+      <StepActionsMenu sequencerPrefix={sequencerPrefix} step={step} />
+    )}
     trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
   </Dropdown>

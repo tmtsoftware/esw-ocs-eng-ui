@@ -17,6 +17,8 @@ const shutdownAllSequenceComps = (
         throw Error(res.msg)
       case 'Success':
         return res
+      case 'FailedResponse':
+        throw new Error(res.reason)
     }
   })
 

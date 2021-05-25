@@ -10,6 +10,7 @@ import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { UnloadScript } from '../../../../src/features/sm/components/UnloadScript'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+
 describe('UnloadScript Icon', () => {
   beforeEach(() => reset(mockServices.mock.smService))
   const obsMode = new ObsMode('DarkNight')
@@ -40,6 +41,14 @@ describe('UnloadScript Icon', () => {
         messageType: 'Unhandled'
       },
       'Failed to unload sequencer, reason: ShutdownSequencer message type is not supported in Processing state'
+    ],
+    [
+      'FailedResponse',
+      {
+        _type: 'FailedResponse',
+        reason: 'Unload message timed out'
+      },
+      'Failed to unload sequencer, reason: Unload message timed out'
     ]
   ]
 

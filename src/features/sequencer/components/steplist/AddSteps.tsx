@@ -1,10 +1,6 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
-import {
-  GenericResponse,
-  Sequence,
-  SequenceCommand,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
+import { SequenceCommandsD } from '@tmtsoftware/esw-ts/lib/dist/src/decoders/CommandDecoders'
+import { getOrThrow } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { Menu, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -18,7 +14,12 @@ import {
   couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../sequencerMessageConstants'
-import type { Prefix } from '@tmtsoftware/esw-ts'
+import type {
+  GenericResponse,
+  Prefix,
+  SequenceCommand,
+  SequencerService
+} from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -69,7 +70,9 @@ export const AddSteps = ({
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           try {
-            setCommands(Sequence.fromString(reader.result).commands)
+            setCommands(
+              getOrThrow(SequenceCommandsD.decode(JSON.parse(reader.result)))
+            )
             resolve()
           } catch (e) {
             errorMessage(

@@ -32,6 +32,9 @@ const handleResponse = (res: StartSequencerResponse) => {
 
     case 'Unhandled':
       throw new Error(res.msg)
+
+    case 'FailedResponse':
+      throw new Error(res.reason)
   }
 }
 

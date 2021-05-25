@@ -36,6 +36,14 @@ describe('Shutdown button for Sequencer ', () => {
         messageType: 'Unhandled'
       },
       'Failed to shutdown Observation ESW.DarkNight, reason: Shutdown message type is not supported in Processing state'
+    ],
+    [
+      'FailedResponse',
+      {
+        _type: 'FailedResponse',
+        reason: 'Shutdown message timed out'
+      },
+      'Failed to shutdown Observation ESW.DarkNight, reason: Shutdown message timed out'
     ]
   ]
 

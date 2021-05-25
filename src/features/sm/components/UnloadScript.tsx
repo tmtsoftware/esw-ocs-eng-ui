@@ -25,6 +25,9 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
 
     case 'Unhandled':
       throw new Error(res.msg)
+
+    case 'FailedResponse':
+      throw new Error(res.reason)
   }
 }
 

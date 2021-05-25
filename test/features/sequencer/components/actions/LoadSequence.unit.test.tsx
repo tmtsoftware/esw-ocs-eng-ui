@@ -84,9 +84,7 @@ describe('LoadSequence', () => {
       await screen.findByText(msg)
 
       await waitFor(() =>
-        verify(
-          sequencerServiceMock.loadSequence(deepEqual(sequence.commands))
-        ).called()
+        verify(sequencerServiceMock.loadSequence(deepEqual(sequence))).called()
       )
     })
   })
@@ -151,9 +149,7 @@ describe('LoadSequence', () => {
     )
 
     await waitFor(() =>
-      verify(
-        sequencerServiceMock.loadSequence(deepEqual(sequence.commands))
-      ).called()
+      verify(sequencerServiceMock.loadSequence(deepEqual(sequence))).called()
     )
   })
 

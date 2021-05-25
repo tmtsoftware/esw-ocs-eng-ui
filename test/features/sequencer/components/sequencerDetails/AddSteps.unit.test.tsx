@@ -40,7 +40,7 @@ describe('AddSteps', () => {
   const commands: SequenceCommand[] = [
     new Setup(seqPrefix, 'move', [], '2020A-001-123')
   ]
-  const file = new File([JSON.stringify({ commands })], 'commands.json', {
+  const file = new File([JSON.stringify(commands)], 'commands.json', {
     type: 'application/json'
   })
   const testCases: TestData[] = [

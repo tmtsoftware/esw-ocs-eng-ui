@@ -22,6 +22,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
+import { addStepsSuccessMsg } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { getStepList, stepUsingId } from '../../../../utils/sequence-utils'
 import {
   mockServices,
@@ -531,9 +532,11 @@ describe('sequencer details', () => {
     const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
 
     const file = new File(
-      [JSON.stringify({ commands: [commandToInsert] })],
+      [JSON.stringify([commandToInsert])],
       'commands.json',
-      { type: 'application/json' }
+      {
+        type: 'application/json'
+      }
     )
 
     const stepList = getStepList('Pending', false)
@@ -596,7 +599,7 @@ describe('sequencer details', () => {
     const inputBox = addSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 
-    await screen.findByText('Successfully added steps')
+    await screen.findByText(addStepsSuccessMsg)
     commandInserted = true
     verify(
       sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))

@@ -67,6 +67,14 @@ describe('LoadScript Icon', () => {
         subsystems: []
       },
       'Failed to load script, reason: Sequencer component not found'
+    ],
+    [
+      'FailedResponse',
+      {
+        _type: 'FailedResponse',
+        reason: 'LoadScript message timed out'
+      },
+      'Failed to load script, reason: LoadScript message timed out'
     ]
   ]
 

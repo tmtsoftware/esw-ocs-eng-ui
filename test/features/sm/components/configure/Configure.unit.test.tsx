@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import {
   ComponentId,
   ConfigureResponse,
+  FailedResponse,
   ObsMode,
   ObsModesDetailsResponse,
   Prefix,
@@ -88,6 +89,11 @@ const unhandled: ConfigureResponse = {
   messageType: 'TransportError',
   state: ''
 }
+const failedResponse: FailedResponse = {
+  _type: 'FailedResponse',
+  reason: 'Configure message timed out'
+}
+
 describe('Configure button', () => {
   beforeEach(() => {
     smService = mockServices.mock.smService
@@ -162,7 +168,11 @@ describe('Configure button', () => {
       sequenceComponentNotAvailable,
       'Failed to configure ESW_DARKNIGHT, reason: Not Available'
     ],
-    [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request']
+    [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request'],
+    [
+      failedResponse,
+      'Failed to configure ESW_DARKNIGHT, reason: Configure message timed out'
+    ]
   ]
 
   testcases.map(([response, message]) => {

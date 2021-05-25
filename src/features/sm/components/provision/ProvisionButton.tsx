@@ -45,6 +45,9 @@ const provision =
             .map((x) => x.toJSON())
             .join(',')}`
         )
+
+      case 'FailedResponse':
+        throw new Error(res.reason)
     }
   }
 

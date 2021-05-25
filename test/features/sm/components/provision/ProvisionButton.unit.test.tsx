@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
   ConfigData,
+  FailedResponse,
   Prefix,
   ProvisionConfig
 } from '@tmtsoftware/esw-ts'
@@ -188,6 +189,11 @@ describe('ProvisionButton component', () => {
     prefix: [Prefix.fromString('esw.esw_machine')]
   }
 
+  const failedResponse: FailedResponse = {
+    _type: 'FailedResponse',
+    reason: 'Provision message timed out'
+  }
+
   const provisionErrorTestData: [string, Promise<ProvisionResponse>, string][] =
     [
       [
@@ -209,6 +215,11 @@ describe('ProvisionButton component', () => {
         'CouldNotFindMachines',
         Promise.resolve(couldNotFindMachine),
         'Failed to provision, reason: Could not find following machine: ESW.esw_machine'
+      ],
+      [
+        'FailedResponse',
+        Promise.resolve(failedResponse),
+        'Failed to provision, reason: Provision message timed out'
       ],
       [
         'Exception',

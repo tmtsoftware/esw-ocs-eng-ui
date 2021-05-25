@@ -30,6 +30,8 @@ const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
       throw Error(res.reason)
     case 'Unhandled':
       throw Error(res.msg)
+    case 'FailedResponse':
+      throw new Error(res.reason)
   }
 }
 

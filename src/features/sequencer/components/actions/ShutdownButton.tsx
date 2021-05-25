@@ -17,6 +17,8 @@ const shutdown =
         throw new Error(res.reason)
       case 'Unhandled':
         throw new Error(res.msg)
+      case 'FailedResponse':
+        throw new Error(res.reason)
     }
   }
 

@@ -1,7 +1,6 @@
 import {
   OkOrUnhandledResponse,
   Sequence,
-  SequenceCommand,
   SequencerService
 } from '@tmtsoftware/esw-ts'
 import { Button, Upload } from 'antd'
@@ -15,7 +14,7 @@ import { couldNotDeserialiseSequenceMsg } from '../sequencerMessageConstants'
 const errorMessagePrefix = 'Failed to load the sequence'
 
 const useLoadAction = (
-  sequence?: SequenceCommand[]
+  sequence?: Sequence
 ): UseMutationResult<
   OkOrUnhandledResponse | undefined,
   unknown,
@@ -41,7 +40,7 @@ export const LoadSequence = ({
   sequencerState
 }: LoadSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
-  const [sequence, setSequence] = useState<SequenceCommand[]>()
+  const [sequence, setSequence] = useState<Sequence>()
   const loadSequenceAction = useLoadAction(sequence)
 
   const beforeUpload = (file: File): Promise<void> => {
@@ -52,8 +51,7 @@ export const LoadSequence = ({
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           try {
-            const sequence = Sequence.fromString(reader.result)
-            setSequence(sequence.commands)
+            setSequence(Sequence.from(JSON.parse(reader.result)))
             resolve()
           } catch (e) {
             errorMessage(

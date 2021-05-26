@@ -195,7 +195,7 @@ describe('ProvisionButton component', () => {
   ]
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
-    it(`should be able to show error log if provision return ${name} | ESW-444`, async () => {
+    it(`should be able to show error log if provision return ${name} | ESW-444, ESW-507`, async () => {
       const smService = mockServices.mock.smService
       const configService = mockServices.mock.configService
 

@@ -49,7 +49,7 @@ describe('UnloadScript Icon', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname} | ESW-447`, async () => {
+    it(`should return ${testname} | ESW-447, ESW-507`, async () => {
       when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({

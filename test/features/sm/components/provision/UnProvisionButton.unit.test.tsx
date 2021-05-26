@@ -28,7 +28,7 @@ describe('UnProvision button', () => {
 
   const failedResponse: FailedResponse = {
     _type: 'FailedResponse',
-    reason: 'Unprovision message timed out'
+    reason: 'UnProvision message timed out'
   }
 
   const shutdownRes: ShutdownSequenceComponentResponse = {
@@ -53,12 +53,12 @@ describe('UnProvision button', () => {
       'error',
       'FailedResponse',
       Promise.resolve(failedResponse),
-      'Failed to shutdown all Sequence Components, reason: Unprovision message timed out'
+      'Failed to shutdown all Sequence Components, reason: UnProvision message timed out'
     ]
   ]
 
   unProvisionTestData.forEach(([type, name, shutdownRes, errMsg]) => {
-    it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name} | ESW-444`, async () => {
+    it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name} | ESW-444, ESW-507`, async () => {
       const smService = mockServices.mock.smService
 
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)

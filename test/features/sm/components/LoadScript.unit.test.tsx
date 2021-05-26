@@ -71,7 +71,7 @@ describe('LoadScript Icon', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname} | ESW-447`, async () => {
+    it(`should return ${testname} | ESW-447, ESW-507`, async () => {
       when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({

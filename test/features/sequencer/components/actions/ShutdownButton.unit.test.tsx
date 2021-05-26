@@ -49,7 +49,7 @@ describe('Shutdown button for Sequencer ', () => {
 
   tests.forEach(([testname, response, message]) => {
     const modalMessage = 'Do you want to shutdown Observation ESW.DarkNight?'
-    it(`should return ${testname} | ESW-454`, async () => {
+    it(`should return ${testname} | ESW-454, ESW-507`, async () => {
       when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({

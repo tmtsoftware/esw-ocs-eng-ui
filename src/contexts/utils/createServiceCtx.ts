@@ -4,12 +4,7 @@ import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { useLocationService } from '../LocationServiceContext'
 import { createCtx, CtxType } from './createCtx'
-import type {
-  Location,
-  Connection,
-  TokenFactory,
-  TrackingEvent
-} from '@tmtsoftware/esw-ts'
+import type { Location, Connection, TokenFactory, TrackingEvent } from '@tmtsoftware/esw-ts'
 
 export const createServiceCtx = <T>(
   connection: Connection,
@@ -36,10 +31,7 @@ export const useService = <T>(
     [auth, factory]
   )
 
-  const track = useCallback(
-    (onEvent) => locationService.track(connection)(onEvent),
-    [connection, locationService]
-  )
+  const track = useCallback((onEvent) => locationService.track(connection)(onEvent), [connection, locationService])
 
   const [value] = useStream({
     mapper: onEventCallback,

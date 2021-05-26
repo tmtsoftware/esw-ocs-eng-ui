@@ -28,9 +28,7 @@ describe('Spawn sequence component icon', () => {
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, ' primary21 ')
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
-    await screen.findByText(
-      'component name has leading and trailing whitespaces'
-    )
+    await screen.findByText('component name has leading and trailing whitespaces')
   })
 
   it("should show validation error on invalid component name with '-' | ESW-446", async function () {
@@ -46,12 +44,9 @@ describe('Spawn sequence component icon', () => {
   })
 
   it('should spawn sequence component on a agent | ESW-446', async function () {
-    when(
-      agentService.spawnSequenceComponent(
-        deepEqual(agentPrefix),
-        deepEqual(seqCompName)
-      )
-    ).thenResolve({ _type: 'Spawned' })
+    when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve({
+      _type: 'Spawned'
+    })
 
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
@@ -62,18 +57,11 @@ describe('Spawn sequence component icon', () => {
     userEvent.type(textBox, seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
-    await screen.findByText(
-      `Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`
-    )
+    await screen.findByText(`Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`)
   })
 
   it('should fail to spawn sequence component on a agent | ESW-446', async function () {
-    when(
-      agentService.spawnSequenceComponent(
-        deepEqual(agentPrefix),
-        deepEqual(seqCompName)
-      )
-    ).thenResolve({
+    when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve({
       _type: 'Failed',
       msg: 'Failed to spawn Sequence Component'
     })
@@ -89,9 +77,7 @@ describe('Spawn sequence component icon', () => {
     userEvent.type(textBox, seqCompName)
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
-    await screen.findByText(
-      'Sequence Component could not be spawned, reason: Failed to spawn Sequence Component'
-    )
+    await screen.findByText('Sequence Component could not be spawned, reason: Failed to spawn Sequence Component')
   })
 
   const assertPopup = async () => {

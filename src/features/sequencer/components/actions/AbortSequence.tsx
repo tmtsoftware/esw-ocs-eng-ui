@@ -5,24 +5,15 @@ import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-import type {
-  OkOrUnhandledResponse,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
-const useAbortSequence = (): UseMutationResult<
-  OkOrUnhandledResponse,
-  unknown,
-  SequencerService
-> => {
-  const mutationFn = (sequencerService: SequencerService) =>
-    sequencerService.abortSequence()
+const useAbortSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
+  const mutationFn = (sequencerService: SequencerService) => sequencerService.abortSequence()
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok')
-        return successMessage('Successfully aborted the Sequence')
+      if (res._type === 'Ok') return successMessage('Successfully aborted the Sequence')
       return errorMessage('Failed to abort the Sequence', Error(res.msg))
     },
     onError: (e) => errorMessage('Failed to abort the Sequence', e)
@@ -31,10 +22,7 @@ const useAbortSequence = (): UseMutationResult<
 
 type AbortSequenceProps = Omit<SequencerProps, 'sequencerState'>
 
-export const AbortSequence = ({
-  prefix,
-  isSequencerRunning
-}: AbortSequenceProps): JSX.Element => {
+export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const abortAction = useAbortSequence()
 

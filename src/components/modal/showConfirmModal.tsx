@@ -2,11 +2,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Modal } from 'antd'
 import React from 'react'
 
-export const showConfirmModal = (
-  onYes: () => void,
-  title: string,
-  okText: string
-): void => {
+export const showConfirmModal = (onYes: () => void, title: string, okText: string): void => {
   Modal.confirm({
     title,
     icon: <ExclamationCircleOutlined />,

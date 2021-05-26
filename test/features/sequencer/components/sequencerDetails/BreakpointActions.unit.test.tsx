@@ -1,20 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  GenericResponse,
-  Prefix,
-  RemoveBreakpointResponse,
-  Setup,
-  Step
-} from '@tmtsoftware/esw-ts'
+import { GenericResponse, Prefix, RemoveBreakpointResponse, Setup, Step } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Breakpoint actions', () => {
   beforeEach(() => reset(sequencerServiceMock))

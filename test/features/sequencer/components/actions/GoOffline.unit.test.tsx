@@ -5,19 +5,12 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOffline } from '../../../../../src/features/sequencer/components/actions/GoOffline'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOffline', () => {
   const testData: [GoOfflineResponse, string, string][] = [
     [{ _type: 'Ok' }, 'Sequencer is offline successfully', 'successful'],
-    [
-      { _type: 'GoOfflineHookFailed' },
-      'Sequencer failed to go Offline, reason: GoOfflineHookFailed',
-      'failed'
-    ],
+    [{ _type: 'GoOfflineHookFailed' }, 'Sequencer failed to go Offline, reason: GoOfflineHookFailed', 'failed'],
     [
       {
         _type: 'Unhandled',
@@ -35,12 +28,7 @@ describe('GoOffline', () => {
       when(sequencerServiceMock.goOffline()).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <GoOffline
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={'Loaded'}
-          />
-        )
+        ui: <GoOffline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Loaded'} />
       })
 
       const offlineButton = await screen.findByRole('button', {
@@ -59,12 +47,7 @@ describe('GoOffline', () => {
     when(sequencerServiceMock.goOffline()).thenReject(Error('error occurred'))
 
     renderWithAuth({
-      ui: (
-        <GoOffline
-          prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Idle'}
-        />
-      )
+      ui: <GoOffline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Idle'} />
     })
 
     const offlineButton = await screen.findByRole('button', {
@@ -73,21 +56,14 @@ describe('GoOffline', () => {
 
     userEvent.click(offlineButton, { button: 0 })
 
-    await screen.findByText(
-      'Sequencer failed to go Offline, reason: error occurred'
-    )
+    await screen.findByText('Sequencer failed to go Offline, reason: error occurred')
 
     verify(sequencerServiceMock.goOffline()).called()
   })
 
   it(`should be disabled if sequencer is running | ESW-493`, async () => {
     renderWithAuth({
-      ui: (
-        <GoOffline
-          prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Running'}
-        />
-      )
+      ui: <GoOffline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Running'} />
     })
 
     const offlineButton = (await screen.findByRole('button', {

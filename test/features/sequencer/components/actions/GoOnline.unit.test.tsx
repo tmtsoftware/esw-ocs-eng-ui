@@ -5,19 +5,12 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOnline } from '../../../../../src/features/sequencer/components/actions/GoOnline'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOnline', () => {
   const testData: [GoOnlineResponse, string, string][] = [
     [{ _type: 'Ok' }, 'Sequencer is online successfully', 'successful'],
-    [
-      { _type: 'GoOnlineHookFailed' },
-      'Sequencer failed to go Online, reason: GoOnlineHookFailed',
-      'failed'
-    ],
+    [{ _type: 'GoOnlineHookFailed' }, 'Sequencer failed to go Online, reason: GoOnlineHookFailed', 'failed'],
     [
       {
         _type: 'Unhandled',
@@ -35,12 +28,7 @@ describe('GoOnline', () => {
       when(sequencerServiceMock.goOnline()).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <GoOnline
-            prefix={new Prefix('ESW', 'darknight')}
-            sequencerState={'Idle'}
-          />
-        )
+        ui: <GoOnline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Idle'} />
       })
 
       const onlineButton = await screen.findByRole('button', {
@@ -59,12 +47,7 @@ describe('GoOnline', () => {
     when(sequencerServiceMock.goOnline()).thenReject(Error('error occurred'))
 
     renderWithAuth({
-      ui: (
-        <GoOnline
-          prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Idle'}
-        />
-      )
+      ui: <GoOnline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Idle'} />
     })
 
     const onlineButton = await screen.findByRole('button', {
@@ -73,21 +56,14 @@ describe('GoOnline', () => {
 
     userEvent.click(onlineButton, { button: 0 })
 
-    await screen.findByText(
-      'Sequencer failed to go Online, reason: error occurred'
-    )
+    await screen.findByText('Sequencer failed to go Online, reason: error occurred')
 
     verify(sequencerServiceMock.goOnline()).called()
   })
 
   it(`should be disabled if sequencer is running | ESW-493`, async () => {
     renderWithAuth({
-      ui: (
-        <GoOnline
-          prefix={new Prefix('ESW', 'darknight')}
-          sequencerState={'Running'}
-        />
-      )
+      ui: <GoOnline prefix={new Prefix('ESW', 'darknight')} sequencerState={'Running'} />
     })
 
     const onlineButton = (await screen.findByRole('button', {

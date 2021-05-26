@@ -10,13 +10,7 @@ import type { BaseType } from 'antd/lib/typography/Base'
 const { Meta } = Card
 
 const SMHeader = (): JSX.Element => {
-  return (
-    <Card
-      title={<SmStatusCard />}
-      bodyStyle={{ display: 'none' }}
-      extra={<SmActions />}
-    />
-  )
+  return <Card title={<SmStatusCard />} bodyStyle={{ display: 'none' }} extra={<SmActions />} />
 }
 
 const SMStatus = (): JSX.Element => {
@@ -35,9 +29,7 @@ const SMStatus = (): JSX.Element => {
 const SmStatusCard = (): JSX.Element => {
   return (
     <Space direction='vertical' size={3}>
-      <Typography.Text className={styles.pageTitle}>
-        Sequence Manager
-      </Typography.Text>
+      <Typography.Text className={styles.pageTitle}>Sequence Manager</Typography.Text>
       <Meta
         description={
           <>

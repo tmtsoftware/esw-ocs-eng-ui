@@ -24,11 +24,7 @@ import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { addStepsSuccessMsg } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { getStepList, stepUsingId } from '../../../../utils/sequence-utils'
-import {
-  mockServices,
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 import type { SequencerState } from '@tmtsoftware/esw-ts'
 
 describe('sequencer details', () => {
@@ -71,9 +67,7 @@ describe('sequencer details', () => {
   })
 
   it('Should render the sequencerDetails | ESW-455, ESW-456, ESW-489', async () => {
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Offline', getStepList('Failure'))
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Offline', getStepList('Failure')))
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -81,12 +75,8 @@ describe('sequencer details', () => {
     const sequencerTitle = await screen.findByTestId('status-error')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
 
-    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
-      'Sequence Component:'
-    )
-    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
-      sequenceComponentPrefix
-    )
+    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal('Sequence Component:')
+    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(sequenceComponentPrefix)
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
@@ -94,9 +84,7 @@ describe('sequencer details', () => {
   })
 
   it('should render the sequence and sequencer actions | ESW-455, ESW-456, ESW-489, ESW-500', async () => {
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', getStepList('InFlight'))
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', getStepList('InFlight')))
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -117,30 +105,22 @@ describe('sequencer details', () => {
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
-    expect(stepListTitle.innerText).to.equals(
-      `Sequence Steps\nStatus:\nIn Progress`
-    )
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nIn Progress`)
   })
 
   it('should render the sequence and show all steps completed | ESW-455, ESW-456, ESW-489', async () => {
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', getStepList('Success'))
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', getStepList('Success')))
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
-    expect(stepListTitle.innerText).to.equals(
-      `Sequence Steps\nStatus:\nAll Steps Completed`
-    )
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nAll Steps Completed`)
   })
 
   it('should render badge status as success if sequencer is online | ESW-455, ESW-456, ESW-489', async () => {
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', getStepList('Pending', true))
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', getStepList('Pending', true)))
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -148,12 +128,8 @@ describe('sequencer details', () => {
 
     const sequencerTitle = await screen.findByTestId('status-success')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
-    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal(
-      'Sequence Component:'
-    )
-    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(
-      sequenceComponentPrefix
-    )
+    expect(screen.getByLabelText('SeqCompLabel').innerText).to.equal('Sequence Component:')
+    expect(screen.getByLabelText(`SeqCompValue`).innerText).to.equal(sequenceComponentPrefix)
 
     //check for sequence execution table
     const stepListTitle = await screen.findByRole('stepListTitle')
@@ -161,18 +137,14 @@ describe('sequencer details', () => {
   })
 
   it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489', async () => {
-    const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([
-      false
-    ])
+    const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
     const filterKey = intArrayKey('filter')
     const filterParam: Parameter<IntArrayKey> = filterKey.set([
       [1, 2, 3],
       [4, 5, 6]
     ])
-    const stringParam: Parameter<StringKey> = stringKey('ra').set([
-      '12:13:14.1'
-    ])
+    const stringParam: Parameter<StringKey> = stringKey('ra').set(['12:13:14.1'])
 
     const paramSet1 = [booleanParam, intParam]
     const paramSet2 = [filterParam, stringParam]
@@ -180,28 +152,18 @@ describe('sequencer details', () => {
       {
         hasBreakpoint: false,
         status: { _type: 'Success' },
-        command: new Setup(
-          Prefix.fromString('ESW.ESW1'),
-          'Command-1',
-          paramSet1
-        ),
+        command: new Setup(Prefix.fromString('ESW.ESW1'), 'Command-1', paramSet1),
         id: '1'
       },
       {
         hasBreakpoint: false,
         status: { _type: 'InFlight' },
-        command: new Setup(
-          Prefix.fromString('ESW.ESW1'),
-          'Command-2',
-          paramSet2
-        ),
+        command: new Setup(Prefix.fromString('ESW.ESW1'), 'Command-2', paramSet2),
         id: '2'
       }
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -228,25 +190,17 @@ describe('sequencer details', () => {
   })
 
   it('should render step2 parameter table when a sequence progress from step1 to step2 | ESW-501, ESW-489', async () => {
-    const stepList: StepList = new StepList([
-      stepUsingId('InFlight', '1'),
-      stepUsingId('Pending', '2')
-    ])
+    const stepList: StepList = new StepList([stepUsingId('InFlight', '1'), stepUsingId('Pending', '2')])
 
-    const updatedStepList: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('InFlight', '2')
-    ])
+    const updatedStepList: StepList = new StepList([stepUsingId('Success', '1'), stepUsingId('InFlight', '2')])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (onevent) => {
-        sendEvent(onevent, 'Running', stepList)
-        sendEvent(onevent, 'Running', updatedStepList, 1000)
-        return {
-          cancel: () => undefined
-        }
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onevent) => {
+      sendEvent(onevent, 'Running', stepList)
+      sendEvent(onevent, 'Running', updatedStepList, 1000)
+      return {
+        cancel: () => undefined
       }
-    )
+    })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -271,15 +225,13 @@ describe('sequencer details', () => {
       stepUsingId('Pending', '3')
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (callback) => {
-        sendEvent(callback, 'Running', stepList)
-        sendEvent(callback, 'Running', updatedStepListWithStep2InProgress, 200)
-        return {
-          cancel: () => undefined
-        }
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
+      sendEvent(callback, 'Running', stepList)
+      sendEvent(callback, 'Running', updatedStepListWithStep2InProgress, 200)
+      return {
+        cancel: () => undefined
       }
-    )
+    })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -309,15 +261,13 @@ describe('sequencer details', () => {
       stepUsingId('Pending', '3')
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (callback) => {
-        sendEvent(callback, 'Running', stepList)
-        sendEvent(callback, 'Running', stepListUpdated, 200)
-        return {
-          cancel: () => undefined
-        }
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
+      sendEvent(callback, 'Running', stepList)
+      sendEvent(callback, 'Running', stepListUpdated, 200)
+      return {
+        cancel: () => undefined
       }
-    )
+    })
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -385,19 +335,12 @@ describe('sequencer details', () => {
       {
         hasBreakpoint: false,
         status: { _type: 'InFlight' },
-        command: new Setup(
-          Prefix.fromString('ESW.ESW2'),
-          'Command-2',
-          [],
-          '2020A-001-123'
-        ),
+        command: new Setup(Prefix.fromString('ESW.ESW2'), 'Command-2', [], '2020A-001-123'),
         id: '2'
       }
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
     //Set bigger viewport so that values wont be elipsis
     await setViewport({ width: 1440, height: 900 })
@@ -445,9 +388,7 @@ describe('sequencer details', () => {
         hasBreakpoint: false,
         status: { _type: 'Success' },
         command: new Setup(
-          Prefix.fromString(
-            'ESW.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'
-          ),
+          Prefix.fromString('ESW.abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'),
           'Command-1',
           [],
           '2020A-001-123'
@@ -456,9 +397,7 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
     //Set small viewport so that values will have elipsis
     await setViewport({ width: 1280, height: 800 })
 
@@ -478,9 +417,7 @@ describe('sequencer details', () => {
 
   it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497, ESW-489', async () => {
     const stepList = getStepList('InFlight')
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -494,9 +431,7 @@ describe('sequencer details', () => {
 
   it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497, ESW-489', async () => {
     const stepList = getStepList('Pending', true)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Running', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -512,9 +447,7 @@ describe('sequencer details', () => {
   it('should show display Start action when sequencer is in Loaded state | ESW-497, ESW-489', async () => {
     const stepList = getStepList('Pending')
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      getEvent('Loaded', stepList)
-    )
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Loaded', stepList))
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -531,13 +464,9 @@ describe('sequencer details', () => {
     const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
     const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
 
-    const file = new File(
-      [JSON.stringify([commandToInsert])],
-      'commands.json',
-      {
-        type: 'application/json'
-      }
-    )
+    const file = new File([JSON.stringify([commandToInsert])], 'commands.json', {
+      type: 'application/json'
+    })
 
     const stepList = getStepList('Pending', false)
 
@@ -560,12 +489,7 @@ describe('sequencer details', () => {
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
       (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
         sendEvent(onevent, 'Idle', stepList)
-        setInterval(
-          () =>
-            commandInserted &&
-            sendEvent(onevent, 'Idle', stepListAfterInsertion),
-          1
-        )
+        setInterval(() => commandInserted && sendEvent(onevent, 'Idle', stepListAfterInsertion), 1)
         return {
           cancel: () => undefined
         }
@@ -601,21 +525,14 @@ describe('sequencer details', () => {
 
     await screen.findByText(addStepsSuccessMsg)
     commandInserted = true
-    verify(
-      sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))
-    ).called()
+    verify(sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))).called()
 
     // assert step is added
     await screen.findByRole('row', { name: /1 command-1/i })
     await screen.findByRole('row', { name: /2 command-2/i })
   })
 
-  const disabledStatesForStopAndAbort: SequencerState['_type'][] = [
-    'Loaded',
-    'Processing',
-    'Offline',
-    'Idle'
-  ]
+  const disabledStatesForStopAndAbort: SequencerState['_type'][] = ['Loaded', 'Processing', 'Offline', 'Idle']
 
   disabledStatesForStopAndAbort.forEach((state) => {
     it(`should show stop, abort disabled when sequencer is in ${state} state | ESW-500, ESW-494`, async () => {
@@ -645,18 +562,12 @@ describe('sequencer details', () => {
 
       expect(abortSeqButton.disabled).true
 
-      const stopSeqButton = (await screen.findByRole(
-        'StopSequence'
-      )) as HTMLButtonElement
+      const stopSeqButton = (await screen.findByRole('StopSequence')) as HTMLButtonElement
 
       expect(stopSeqButton.disabled).true
     })
   })
-  const disabledStatesForResume: SequencerState['_type'][] = [
-    'Processing',
-    'Offline',
-    'Idle'
-  ]
+  const disabledStatesForResume: SequencerState['_type'][] = ['Processing', 'Offline', 'Idle']
   disabledStatesForResume.forEach((state) => {
     it(`should show resume disabled when sequencer is in ${state} state | ESW-500, ESW-494`, async () => {
       const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
@@ -687,9 +598,7 @@ describe('sequencer details', () => {
         )
       })
 
-      const resumeSeqButton = (await screen.findByRole(
-        'ResumeSequence'
-      )) as HTMLButtonElement
+      const resumeSeqButton = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement
 
       expect(resumeSeqButton.disabled).true
     })
@@ -720,10 +629,7 @@ const getEvent =
     }
   }
 
-const makeSeqStateResponse = (
-  seqState: SequencerState['_type'],
-  stepList: StepList
-): SequencerStateResponse => ({
+const makeSeqStateResponse = (seqState: SequencerState['_type'], stepList: StepList): SequencerStateResponse => ({
   _type: 'SequencerStateResponse',
   sequencerState: { _type: seqState },
   stepList

@@ -51,10 +51,7 @@ const darkNight = new ObsMode('ESW_DARKNIGHT')
 
 const successResponse: ConfigureResponse = {
   _type: 'Success',
-  masterSequencerComponentId: new ComponentId(
-    Prefix.fromString('ESW.primary'),
-    'Sequencer'
-  )
+  masterSequencerComponentId: new ComponentId(Prefix.fromString('ESW.primary'), 'Sequencer')
 }
 const configurationMissingResponse: ConfigureResponse = {
   _type: 'ConfigurationMissing',
@@ -129,10 +126,8 @@ describe('Configure button', () => {
     })
 
     await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
-    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_RANDOM' })).to
-      .null
-    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to
-      .null
+    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_RANDOM' })).to.null
+    expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to.null
 
     await within(dialog).findByRole('button', { name: 'Configure' })
     await within(dialog).findByRole('button', { name: 'Cancel' })
@@ -148,8 +143,7 @@ describe('Configure button', () => {
 
     await openConfigureModalAndClickConfigureButton()
 
-    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
-      .exist
+    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to.exist
 
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
     verify(smService.configure(deepEqual(darkNight))).called()
@@ -157,31 +151,19 @@ describe('Configure button', () => {
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [
-    [
-      locationServiceError,
-      'Failed to configure ESW_DARKNIGHT, reason: LocationNotFound'
-    ],
+    [locationServiceError, 'Failed to configure ESW_DARKNIGHT, reason: LocationNotFound'],
     [
       conflictingResourcesResponse,
       'Failed to configure ESW_DARKNIGHT, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY'
     ],
-    [
-      configurationMissingResponse,
-      'Failed to configure ESW_DARKNIGHT, reason: ConfigurationMissing for ESW_DARKNIGHT'
-    ],
+    [configurationMissingResponse, 'Failed to configure ESW_DARKNIGHT, reason: ConfigurationMissing for ESW_DARKNIGHT'],
     [
       failedToStartSequencersResponse,
       'Failed to configure ESW_DARKNIGHT, reason: Failed to start Sequencers. Reason: sequence component not found'
     ],
-    [
-      sequenceComponentNotAvailable,
-      'Failed to configure ESW_DARKNIGHT, reason: Not Available'
-    ],
+    [sequenceComponentNotAvailable, 'Failed to configure ESW_DARKNIGHT, reason: Not Available'],
     [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request'],
-    [
-      failedResponse,
-      'Failed to configure ESW_DARKNIGHT, reason: Configure message timed out'
-    ]
+    [failedResponse, 'Failed to configure ESW_DARKNIGHT, reason: Configure message timed out']
   ]
 
   testcases.map(([response, message]) => {

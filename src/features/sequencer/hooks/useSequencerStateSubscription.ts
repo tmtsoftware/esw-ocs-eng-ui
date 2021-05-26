@@ -10,27 +10,20 @@ export type SequencerStateSubscriptionResponse = {
   loading: boolean
 }
 
-export const useSequencerStateSubscription = (
-  prefix: Prefix
-): SequencerStateSubscriptionResponse => {
-  const [sequencerStateResponse, setSequencerStateResponse] =
-    useState<SequencerStateResponse | undefined>(undefined)
+export const useSequencerStateSubscription = (prefix: Prefix): SequencerStateSubscriptionResponse => {
+  const [sequencerStateResponse, setSequencerStateResponse] = useState<SequencerStateResponse | undefined>(undefined)
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
   const tokenFactory = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const seqService =
-      gatewayLocation &&
-      mkSequencerService(prefix, gatewayLocation, tokenFactory)
+    const seqService = gatewayLocation && mkSequencerService(prefix, gatewayLocation, tokenFactory)
 
-    const subscription = seqService?.subscribeSequencerState()(
-      (sequencerStateResponse: SequencerStateResponse) => {
-        setLoading(false)
-        setSequencerStateResponse(sequencerStateResponse)
-      }
-    )
+    const subscription = seqService?.subscribeSequencerState()((sequencerStateResponse: SequencerStateResponse) => {
+      setLoading(false)
+      setSequencerStateResponse(sequencerStateResponse)
+    })
     return subscription?.cancel
   }, [gatewayLocation, prefix, tokenFactory, setLoading])
 

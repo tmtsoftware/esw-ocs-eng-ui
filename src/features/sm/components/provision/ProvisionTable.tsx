@@ -15,9 +15,7 @@ type ProvisionDataType = {
   numOfSequenceComps: number
 }
 
-const columns = (
-  func: (numOfSeqComp: number, record: ProvisionDataType) => void
-): ColumnsType<ProvisionDataType> => [
+const columns = (func: (numOfSeqComp: number, record: ProvisionDataType) => void): ColumnsType<ProvisionDataType> => [
   {
     title: <HeaderTitle title='Agent' />,
     width: 230,
@@ -37,9 +35,7 @@ const columns = (
         min={0}
         max={5}
         defaultValue={value}
-        onChange={(value: string | number | null | undefined) =>
-          func(value ? Number(value) : 0, record)
-        }
+        onChange={(value: string | number | null | undefined) => func(value ? Number(value) : 0, record)}
       />
     )
   }
@@ -54,10 +50,7 @@ const createColumnData = (provisionRecord: Record<string, number>) =>
     }
   })
 
-export const ProvisionTable = ({
-  provisionRecord,
-  setProvisionRecord
-}: ProvisionProps): JSX.Element => {
+export const ProvisionTable = ({ provisionRecord, setProvisionRecord }: ProvisionProps): JSX.Element => {
   const data = createColumnData(provisionRecord)
 
   return (

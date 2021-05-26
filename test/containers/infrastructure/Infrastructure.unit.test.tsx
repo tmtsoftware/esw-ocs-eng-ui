@@ -44,10 +44,7 @@ const agentStatus: AgentStatus = {
   agentId: new ComponentId(new Prefix('APS', 'jdks'), 'Machine'),
   seqCompsStatus: [
     {
-      seqCompId: new ComponentId(
-        new Prefix('ESW', 'DARKNIGHT'),
-        'SequenceComponent'
-      ),
+      seqCompId: new ComponentId(new Prefix('ESW', 'DARKNIGHT'), 'SequenceComponent'),
       sequencerLocation: []
     }
   ]
@@ -55,10 +52,7 @@ const agentStatus: AgentStatus = {
 
 const successResponse: ConfigureResponse = {
   _type: 'Success',
-  masterSequencerComponentId: new ComponentId(
-    Prefix.fromString('ESW.primary'),
-    'Sequencer'
-  )
+  masterSequencerComponentId: new ComponentId(Prefix.fromString('ESW.primary'), 'Sequencer')
 }
 
 describe('Infrastructure page', () => {
@@ -143,11 +137,7 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        <SMServiceProvider
-          initialValue={[
-            { smService: mockServices.instance.smService, smLocation },
-            false
-          ]}>
+        <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
           <Infrastructure />
         </SMServiceProvider>
       )
@@ -199,8 +189,7 @@ describe('Infrastructure page', () => {
     verify(smService.getObsModesDetails()).called()
 
     verify(smService.configure(deepEqual(darkNight))).called()
-    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to
-      .exist
+    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to.exist
     verify(agentService.getAgentStatus()).called()
     expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
   })
@@ -228,9 +217,7 @@ describe('Infrastructure page', () => {
       agentStatus: [],
       seqCompsWithoutAgent: []
     })
-    when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(
-      ConfigData.fromString(JSON.stringify(confData))
-    )
+    when(configService.getActive(PROVISION_CONF_PATH)).thenResolve(ConfigData.fromString(JSON.stringify(confData)))
 
     when(smService.provision(deepEqual(provisionConfig))).thenResolve({
       _type: 'Success'

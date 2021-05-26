@@ -16,10 +16,7 @@ const agentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
   seqCompsStatus: [
     {
-      seqCompId: new ComponentId(
-        Prefix.fromString('ESW.ESW1'),
-        'SequenceComponent'
-      ),
+      seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
       sequencerLocation: [
         {
           _type: 'AkkaLocation',
@@ -34,10 +31,7 @@ const agentStatus: AgentStatus = {
       ]
     },
     {
-      seqCompId: new ComponentId(
-        Prefix.fromString('ESW.ESW2'),
-        'SequenceComponent'
-      ),
+      seqCompId: new ComponentId(Prefix.fromString('ESW.ESW2'), 'SequenceComponent'),
       sequencerLocation: []
     }
   ]
@@ -105,10 +99,7 @@ describe('Agents Grid View', () => {
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: [
         {
-          seqCompId: new ComponentId(
-            Prefix.fromString('IRIS.comp1'),
-            'SequenceComponent'
-          ),
+          seqCompId: new ComponentId(Prefix.fromString('IRIS.comp1'), 'SequenceComponent'),
           sequencerLocation: [
             {
               _type: 'AkkaLocation',
@@ -123,10 +114,7 @@ describe('Agents Grid View', () => {
           ]
         },
         {
-          seqCompId: new ComponentId(
-            Prefix.fromString('TCS.comp1'),
-            'SequenceComponent'
-          ),
+          seqCompId: new ComponentId(Prefix.fromString('TCS.comp1'), 'SequenceComponent'),
           sequencerLocation: []
         }
       ]
@@ -189,10 +177,7 @@ describe('Agents Grid View', () => {
 
   it('should add sequence components on agent| ESW-446', async () => {
     when(
-      agentService.spawnSequenceComponent(
-        deepEqual(Prefix.fromString('ESW.machine1')),
-        deepEqual('ESW_1')
-      )
+      agentService.spawnSequenceComponent(deepEqual(Prefix.fromString('ESW.machine1')), deepEqual('ESW_1'))
     ).thenResolve({ _type: 'Spawned' })
 
     when(agentService.getAgentStatus()).thenResolve({
@@ -219,20 +204,16 @@ describe('Agents Grid View', () => {
     userEvent.type(textbox, 'ESW_1')
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
-    await screen.findByText(
-      'Successfully spawned Sequence Component: ESW.ESW_1'
-    )
+    await screen.findByText('Successfully spawned Sequence Component: ESW.ESW_1')
 
     verify(agentService.getAgentStatus()).called()
   })
 
   it('should kill sequence components on agent| ESW-446', async () => {
     const seqCompPrefix = new Prefix('ESW', 'ESW1')
-    when(
-      agentService.killComponent(
-        deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent'))
-      )
-    ).thenResolve({ _type: 'Killed' })
+    when(agentService.killComponent(deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent')))).thenResolve({
+      _type: 'Killed'
+    })
 
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
@@ -250,9 +231,7 @@ describe('Agents Grid View', () => {
     const [deleteIcon] = await screen.findAllByRole('deleteSeqCompIcon')
     userEvent.click(deleteIcon)
 
-    await screen.findByText(
-      `Do you want to delete ${seqCompPrefix.toJSON()} sequence component?`
-    )
+    await screen.findByText(`Do you want to delete ${seqCompPrefix.toJSON()} sequence component?`)
 
     const document = screen.getByRole('document')
     const confirm = within(document).getByRole('button', { name: /delete/i })

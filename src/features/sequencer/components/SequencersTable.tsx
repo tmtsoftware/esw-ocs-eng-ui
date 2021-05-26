@@ -66,10 +66,7 @@ type ObsModeSeqTableProps = {
   loading: boolean
 }
 
-export const SequencersTable = ({
-  sequencersInfo,
-  loading
-}: ObsModeSeqTableProps): JSX.Element => (
+export const SequencersTable = ({ sequencersInfo, loading }: ObsModeSeqTableProps): JSX.Element => (
   <Table
     rowKey={(record) => record.prefix}
     style={{ paddingBottom: '1.5rem' }}

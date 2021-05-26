@@ -1,27 +1,13 @@
-import {
-  VerticalAlignMiddleOutlined,
-  CloseCircleOutlined
-} from '@ant-design/icons'
+import { VerticalAlignMiddleOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { Menu } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import {
-  cannotOperateOnAnInFlightOrFinishedStepMsg,
-  idDoesNotExistMsg
-} from '../sequencerMessageConstants'
-import type {
-  GenericResponse,
-  Prefix,
-  RemoveBreakpointResponse,
-  SequencerService,
-  Step
-} from '@tmtsoftware/esw-ts'
+import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
+import type { GenericResponse, Prefix, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
-const handleActionResponse = (
-  res: GenericResponse | RemoveBreakpointResponse
-) => {
+const handleActionResponse = (res: GenericResponse | RemoveBreakpointResponse) => {
   switch (res._type) {
     case 'Ok':
       return res
@@ -73,22 +59,12 @@ export const BreakpointAction = ({
       sequencerService && insertBreakpointAction.mutate(sequencerService)
     }
   }
-  const icon = step.hasBreakpoint ? (
-    <CloseCircleOutlined />
-  ) : (
-    <VerticalAlignMiddleOutlined />
-  )
+  const icon = step.hasBreakpoint ? <CloseCircleOutlined /> : <VerticalAlignMiddleOutlined />
 
-  const itemText = step.hasBreakpoint
-    ? 'Remove breakpoint'
-    : 'Insert breakpoint'
+  const itemText = step.hasBreakpoint ? 'Remove breakpoint' : 'Insert breakpoint'
 
   return (
-    <Menu.Item
-      key='BreakpointAction'
-      disabled={isDisabled}
-      icon={icon}
-      onClick={handleOnClick}>
+    <Menu.Item key='BreakpointAction' disabled={isDisabled} icon={icon} onClick={handleOnClick}>
       {itemText}
     </Menu.Item>
   )

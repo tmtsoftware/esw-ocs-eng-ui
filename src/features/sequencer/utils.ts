@@ -1,9 +1,4 @@
-import type {
-  Option,
-  SequencerState,
-  Step,
-  StepList
-} from '@tmtsoftware/esw-ts'
+import type { Option, SequencerState, Step, StepList } from '@tmtsoftware/esw-ts'
 
 export type StepListStatus =
   | 'All Steps Completed'
@@ -34,15 +29,13 @@ const Status: { [key: string]: StepListStatus } = {
   InFlight: 'In Progress',
   Success: 'All Steps Completed'
 }
-const currentStep = (stepList: StepList): Option<Step> =>
-  stepList.steps.find((e) => e.status._type !== 'Success')
+const currentStep = (stepList: StepList): Option<Step> => stepList.steps.find((e) => e.status._type !== 'Success')
 
 // todo refactor this code if possible
 export const getStepListInfo = (stepList: StepList): StepListInfo => {
   if (stepList.steps.length === 0) return { currentStepNumber: 0, status: 'NA' }
   const step = currentStep(stepList)
-  if (step === undefined)
-    return { currentStepNumber: 0, status: 'All Steps Completed' }
+  if (step === undefined) return { currentStepNumber: 0, status: 'All Steps Completed' }
   const currentStepNumber = stepList.steps.indexOf(step) + 1
   const status = Status[step.status._type]
   return {
@@ -51,9 +44,7 @@ export const getStepListInfo = (stepList: StepList): StepListInfo => {
   }
 }
 
-export const getCurrentStepCommandName = (
-  stepList: Option<StepList>
-): string => {
+export const getCurrentStepCommandName = (stepList: Option<StepList>): string => {
   if (stepList === undefined) return 'NA'
   const step = currentStep(stepList)
   return step === undefined ? 'NA' : step.command.commandName

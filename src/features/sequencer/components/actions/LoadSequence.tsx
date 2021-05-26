@@ -1,8 +1,4 @@
-import {
-  OkOrUnhandledResponse,
-  Sequence,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
+import { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
@@ -15,19 +11,14 @@ const errorMessagePrefix = 'Failed to load the sequence'
 
 const useLoadAction = (
   sequence?: Sequence
-): UseMutationResult<
-  OkOrUnhandledResponse | undefined,
-  unknown,
-  SequencerService
-> => {
+): UseMutationResult<OkOrUnhandledResponse | undefined, unknown, SequencerService> => {
   const mutationFn = async (sequencerService: SequencerService) =>
     sequence && (await sequencerService.loadSequence(sequence))
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res?._type === 'Ok')
-        return successMessage('Sequence has been loaded successfully')
+      if (res?._type === 'Ok') return successMessage('Sequence has been loaded successfully')
       return errorMessage(errorMessagePrefix, Error(res?.msg))
     },
     onError: (e) => errorMessage(errorMessagePrefix, e)
@@ -35,10 +26,7 @@ const useLoadAction = (
 }
 type LoadSequenceProps = Omit<SequencerProps, 'isSequencerRunning'>
 
-export const LoadSequence = ({
-  prefix,
-  sequencerState
-}: LoadSequenceProps): JSX.Element => {
+export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const [sequence, setSequence] = useState<Sequence>()
   const loadSequenceAction = useLoadAction(sequence)
@@ -54,10 +42,7 @@ export const LoadSequence = ({
             setSequence(Sequence.from(JSON.parse(reader.result)))
             resolve()
           } catch (e) {
-            errorMessage(
-              errorMessagePrefix,
-              Error(couldNotDeserialiseSequenceMsg)
-            ).then(reject)
+            errorMessage(errorMessagePrefix, Error(couldNotDeserialiseSequenceMsg)).then(reject)
           }
         }
       }
@@ -69,19 +54,12 @@ export const LoadSequence = ({
   }
 
   return (
-    <Upload
-      beforeUpload={beforeUpload}
-      customRequest={request}
-      showUploadList={false}
-      accept={'application/json'}>
+    <Upload beforeUpload={beforeUpload} customRequest={request} showUploadList={false} accept={'application/json'}>
       <Button
         type='primary'
         loading={loadSequenceAction.isLoading}
         role={'LoadSequence'}
-        disabled={
-          !sequencerState ||
-          !(sequencerState === 'Idle' || sequencerState === 'Loaded')
-        }>
+        disabled={!sequencerState || !(sequencerState === 'Idle' || sequencerState === 'Loaded')}>
         Load Sequence
       </Button>
     </Upload>

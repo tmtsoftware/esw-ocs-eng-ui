@@ -28,11 +28,7 @@ export const StepComponent = (
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
     width: '10.9rem',
-    borderLeft: `${
-      step.hasBreakpoint
-        ? '1rem solid red'
-        : `1px solid ${baseTypeColorCode[color[step.status._type]]}`
-    }`
+    borderLeft: `${step.hasBreakpoint ? '1rem solid red' : `1px solid ${baseTypeColorCode[color[step.status._type]]}`}`
   }
 
   const { isDuplicateEnabled } = useStepListContext()
@@ -60,9 +56,7 @@ export const StepComponent = (
           </Typography.Text>
         </Button>
       </Tooltip>
-      {!isDuplicateEnabled && (
-        <StepActions step={step} sequencerPrefix={sequencerPrefix} />
-      )}
+      {!isDuplicateEnabled && <StepActions step={step} sequencerPrefix={sequencerPrefix} />}
     </Space>
   )
 }

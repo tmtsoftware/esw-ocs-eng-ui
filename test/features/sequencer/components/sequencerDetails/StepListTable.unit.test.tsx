@@ -6,10 +6,7 @@ import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { StepListTable } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
 import { getStepList } from '../../../../utils/sequence-utils'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('stepList table', () => {
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
@@ -29,72 +26,45 @@ describe('stepList table', () => {
     }
   ])
 
-  const testData: [Step['status']['_type'], boolean, string, string, string][] =
-    [
-      [
-        'Success',
-        false,
-        'All Steps Completed',
-        'ant-typography-secondary',
-        'rgba(0, 0, 0, 0.45)'
-      ],
-      ['Failure', false, 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
-      [
-        'InFlight',
-        false,
-        'In Progress',
-        'ant-typography-success',
-        'rgb(82, 196, 26)'
-      ],
-      [
-        'Pending',
-        true,
-        'Paused',
-        'ant-typography-warning',
-        'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'
-      ],
-      [
-        'Pending',
-        false,
-        'Loaded',
-        'ant-typography-warning',
-        'rgb(255, 197, 61)'
-      ]
-    ]
+  const testData: [Step['status']['_type'], boolean, string, string, string][] = [
+    ['Success', false, 'All Steps Completed', 'ant-typography-secondary', 'rgba(0, 0, 0, 0.45)'],
+    ['Failure', false, 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
+    ['InFlight', false, 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
+    ['Pending', true, 'Paused', 'ant-typography-warning', 'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'],
+    ['Pending', false, 'Loaded', 'ant-typography-warning', 'rgb(255, 197, 61)']
+  ]
 
-  testData.forEach(
-    ([lastStepStatus, breakpoint, stepListStatus, className, borderColor]) => {
-      it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
-        renderWithAuth({
-          ui: (
-            <StepListTable
-              isLoading={false}
-              stepList={getStepList(lastStepStatus, breakpoint)}
-              sequencerPrefix={sequencerPrefix}
-              setSelectedStep={() => ({})}
-            />
-          )
-        })
-
-        const title = `Sequence Steps\nStatus:\n${stepListStatus}`
-
-        const stepListTitle = await screen.findByRole('stepListTitle')
-        expect(stepListTitle.innerText).to.equals(title)
-
-        const htmlElement = await findCell('1 Command-1 more')
-
-        const stepButton = within(htmlElement).getByRole('button')
-
-        expect(stepButton.style.borderColor).to.equal(borderColor)
-        // eslint-disable-next-line testing-library/no-node-access
-        const spanElement = stepButton.firstChild as HTMLSpanElement
-
-        console.log(spanElement)
-
-        expect(spanElement.classList.contains(className)).true
+  testData.forEach(([lastStepStatus, breakpoint, stepListStatus, className, borderColor]) => {
+    it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
+      renderWithAuth({
+        ui: (
+          <StepListTable
+            isLoading={false}
+            stepList={getStepList(lastStepStatus, breakpoint)}
+            sequencerPrefix={sequencerPrefix}
+            setSelectedStep={() => ({})}
+          />
+        )
       })
-    }
-  )
+
+      const title = `Sequence Steps\nStatus:\n${stepListStatus}`
+
+      const stepListTitle = await screen.findByRole('stepListTitle')
+      expect(stepListTitle.innerText).to.equals(title)
+
+      const htmlElement = await findCell('1 Command-1 more')
+
+      const stepButton = within(htmlElement).getByRole('button')
+
+      expect(stepButton.style.borderColor).to.equal(borderColor)
+      // eslint-disable-next-line testing-library/no-node-access
+      const spanElement = stepButton.firstChild as HTMLSpanElement
+
+      console.log(spanElement)
+
+      expect(spanElement.classList.contains(className)).true
+    })
+  })
 
   it('should show all the steps within a column | ESW-456', async () => {
     renderWithAuth({
@@ -109,9 +79,7 @@ describe('stepList table', () => {
     })
 
     const stepListTitle = await screen.findByRole('stepListTitle')
-    expect(stepListTitle.innerText).to.equals(
-      `Sequence Steps\nStatus:\nIn Progress`
-    )
+    expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nIn Progress`)
 
     await findCell('1 Command-1 more')
     await findCell('2 Command-2 more')
@@ -199,9 +167,7 @@ describe('stepList table', () => {
       name: /command-1/i
     })
 
-    expect(stepBeforeBreakpoint.style.borderLeft).to.equals(
-      '1px solid rgb(255, 197, 61)'
-    )
+    expect(stepBeforeBreakpoint.style.borderLeft).to.equals('1px solid rgb(255, 197, 61)')
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
@@ -293,20 +259,16 @@ describe('stepList table', () => {
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.greaterThan(0)
 
-    await waitFor(() =>
-      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
-    )
+    await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
   })
 
   it('should duplicate selected commands | ESW-462', async () => {
     const command1 = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
     const command2 = new Setup(Prefix.fromString('ESW.test'), 'Command-2')
 
-    when(sequencerServiceMock.add(deepEqual([command1, command2]))).thenResolve(
-      {
-        _type: 'Ok'
-      }
-    )
+    when(sequencerServiceMock.add(deepEqual([command1, command2]))).thenResolve({
+      _type: 'Ok'
+    })
     renderWithAuth({
       ui: (
         <StepListTable
@@ -340,9 +302,7 @@ describe('stepList table', () => {
     userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
     await screen.findByText('Successfully duplicated steps')
-    await waitFor(() =>
-      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
-    )
+    await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
     verify(sequencerServiceMock.add(deepEqual([command1, command2]))).called()
   })
 
@@ -392,9 +352,7 @@ describe('stepList table', () => {
     await screen.findByText('Failed to duplicate steps, reason: error')
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.be.greaterThan(0)
-    await waitFor(() =>
-      expect(screen.queryAllByRole('checkbox').length).to.equals(0)
-    )
+    await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
     verify(sequencerServiceMock.add(deepEqual([command]))).called()
   })
 
@@ -423,9 +381,7 @@ describe('stepList table', () => {
       name: /command-1/i
     })
 
-    await waitFor(() =>
-      expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red')
-    )
+    await waitFor(() => expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red'))
   })
 })
 

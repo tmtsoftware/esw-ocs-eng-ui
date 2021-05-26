@@ -48,8 +48,7 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
       } as KeycloakTokenParsed),
     realmAccess: () => [''] as unknown as KeycloakRoles,
     resourceAccess: () => [''] as unknown as KeycloakResourceAccess,
-    loadUserProfile: () =>
-      Promise.resolve({}) as KeycloakPromise<KeycloakProfile, void>
+    loadUserProfile: () => Promise.resolve({}) as KeycloakPromise<KeycloakProfile, void>
   }
 }
 
@@ -66,8 +65,7 @@ type MockServices = {
 }
 
 export const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
-export const sequencerServiceInstance =
-  instance<SequencerService>(sequencerServiceMock)
+export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
 
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(AgentServiceImpl)
@@ -105,11 +103,7 @@ const getMockServices: () => MockServices = () => {
 
 export const mockServices = getMockServices()
 
-const getContextProvider = (
-  loggedIn: boolean,
-  loginFunc: () => void,
-  logoutFunc: () => void
-) => {
+const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc: () => void) => {
   const auth = getMockAuth(loggedIn)
   const smLocation: HttpLocation = {
     _type: 'HttpLocation',
@@ -132,16 +126,10 @@ const getContextProvider = (
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <LocationServiceProvider
-        initialValue={mockServices.instance.locationService}>
+      <LocationServiceProvider initialValue={mockServices.instance.locationService}>
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
-          <AgentServiceProvider
-            initialValue={[mockServices.instance.agentService, false]}>
-            <SMServiceProvider
-              initialValue={[
-                { smService: mockServices.instance.smService, smLocation },
-                false
-              ]}>
+          <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
+            <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
               {children}
             </SMServiceProvider>
           </AgentServiceProvider>
@@ -181,11 +169,9 @@ const renderWithAuth = (
   options?: Omit<RenderOptions, 'queries'>
 ): RenderResult => {
   return render(ui, {
-    wrapper: getContextWithQueryClientProvider(
-      loggedIn,
-      loginFunc,
-      logoutFunc
-    ) as React.FunctionComponent<Record<string, unknown>>,
+    wrapper: getContextWithQueryClientProvider(loggedIn, loginFunc, logoutFunc) as React.FunctionComponent<
+      Record<string, unknown>
+    >,
     ...options
   })
 }

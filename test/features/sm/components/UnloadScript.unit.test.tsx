@@ -1,10 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  ObsMode,
-  Prefix,
-  ShutdownSequencersResponse
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
@@ -54,26 +50,20 @@ describe('UnloadScript Icon', () => {
 
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447`, async () => {
-      when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(
-        response
-      )
+      when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
         ui: <UnloadScript sequencerPrefix={seqPrefix} />
       })
 
-      const unloadScriptButton = screen.getByRole(
-        'unloadScriptIcon'
-      ) as HTMLButtonElement
+      const unloadScriptButton = screen.getByRole('unloadScriptIcon') as HTMLButtonElement
 
       await waitFor(() => expect(unloadScriptButton.disabled).false)
 
       userEvent.click(unloadScriptButton, { button: 0 })
 
       // expect modal to be visible
-      const modalTitle = await screen.findByText(
-        `Do you want to unload the sequencer ${seqPrefix.toJSON()}?`
-      )
+      const modalTitle = await screen.findByText(`Do you want to unload the sequencer ${seqPrefix.toJSON()}?`)
       expect(modalTitle).to.exist
 
       const confirmButton = screen.getByRole('button', {
@@ -85,12 +75,7 @@ describe('UnloadScript Icon', () => {
 
       verify(smService.shutdownSequencer('ESW', deepEqual(obsMode))).called()
       await waitFor(
-        () =>
-          expect(
-            screen.queryByText(
-              `Do you want to unload the sequencer ${seqPrefix.toJSON()}?`
-            )
-          ).to.null
+        () => expect(screen.queryByText(`Do you want to unload the sequencer ${seqPrefix.toJSON()}?`)).to.null
       )
     })
   })

@@ -5,10 +5,7 @@ import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
-import type {
-  FailedResponse,
-  ShutdownSequenceComponentResponse
-} from '@tmtsoftware/esw-ts'
+import type { FailedResponse, ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts'
 
 describe('UnProvision button', () => {
   const modalTitle = 'Do you want to shutdown all the Sequence Components?'
@@ -38,12 +35,7 @@ describe('UnProvision button', () => {
     _type: 'Success'
   }
 
-  const unProvisionTestData: [
-    string,
-    string,
-    Promise<ShutdownSequenceComponentResponse>,
-    string
-  ][] = [
+  const unProvisionTestData: [string, string, Promise<ShutdownSequenceComponentResponse>, string][] = [
     [
       'error',
       'Unhandled',
@@ -56,12 +48,7 @@ describe('UnProvision button', () => {
       Promise.resolve(locServiceError),
       'Failed to shutdown all Sequence Components, reason: ESW.sequence_manager is not found'
     ],
-    [
-      'success',
-      'Success',
-      Promise.resolve(shutdownRes),
-      'Successfully shutdown all the Sequence Components'
-    ],
+    ['success', 'Success', Promise.resolve(shutdownRes), 'Successfully shutdown all the Sequence Components'],
     [
       'error',
       'FailedResponse',

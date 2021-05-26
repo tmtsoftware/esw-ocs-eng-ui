@@ -13,26 +13,13 @@ type AgentCardProps = {
   seqCompsStatus: SequenceComponentStatus[]
 }
 
-const AgentCard = ({
-  agentPrefix,
-  seqCompsStatus
-}: AgentCardProps): JSX.Element => {
-  const bodyStyle =
-    seqCompsStatus.length === 0
-      ? { display: 'none' }
-      : { padding: '1.5rem 1rem 1rem' }
+const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element => {
+  const bodyStyle = seqCompsStatus.length === 0 ? { display: 'none' } : { padding: '1.5rem 1rem 1rem' }
 
-  const agentName =
-    agentPrefix === UNKNOWN_AGENT.prefix
-      ? UNKNOWN_AGENT.prefix.componentName
-      : agentPrefix.toJSON()
+  const agentName = agentPrefix === UNKNOWN_AGENT.prefix ? UNKNOWN_AGENT.prefix.componentName : agentPrefix.toJSON()
 
   const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => (
-    <SequenceComponentCard
-      key={index}
-      seqCompId={seqCompStatus.seqCompId}
-      location={seqCompStatus.sequencerLocation}
-    />
+    <SequenceComponentCard key={index} seqCompId={seqCompStatus.seqCompId} location={seqCompStatus.sequencerLocation} />
   ))
 
   return (
@@ -59,11 +46,7 @@ export const AgentCards = (): JSX.Element => {
   const screen = useBreakpoint()
 
   const agentCards = data?.map((agentStatus, index) => (
-    <AgentCard
-      key={index}
-      agentPrefix={agentStatus.agentId.prefix}
-      seqCompsStatus={agentStatus.seqCompsStatus}
-    />
+    <AgentCard key={index} agentPrefix={agentStatus.agentId.prefix} seqCompsStatus={agentStatus.seqCompsStatus} />
   ))
 
   const [columnCount, span] = screen.xl ? [4, 6] : screen.lg ? [3, 8] : [2, 12]

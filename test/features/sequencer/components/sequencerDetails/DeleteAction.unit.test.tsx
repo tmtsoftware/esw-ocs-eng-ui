@@ -5,10 +5,7 @@ import { Menu } from 'antd'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')

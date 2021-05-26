@@ -22,9 +22,7 @@ describe('SMCard', () => {
       )
     })
 
-    await waitFor(
-      () => expect(screen.queryByRole('button', { name: 'Shutdown' })).to.null
-    )
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Shutdown' })).to.null)
 
     await screen.findByRole('button', { name: 'Spawn' })
   })
@@ -39,19 +37,13 @@ describe('SMCard', () => {
 
     renderWithAuth({
       ui: (
-        <SMServiceProvider
-          initialValue={[
-            { smService: mockServices.instance.smService, smLocation },
-            false
-          ]}>
+        <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
           <SMCard />
         </SMServiceProvider>
       )
     })
 
-    await waitFor(
-      () => expect(screen.queryByRole('button', { name: 'Spawn' })).to.null
-    )
+    await waitFor(() => expect(screen.queryByRole('button', { name: 'Spawn' })).to.null)
 
     await screen.findByRole('button', { name: 'Shutdown' })
   })

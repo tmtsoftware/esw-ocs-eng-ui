@@ -4,10 +4,7 @@ import { PauseResponse, Prefix } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/actions/PauseSequence'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Pause Sequence', () => {
   const testData: [PauseResponse, string, string][] = [
@@ -34,12 +31,7 @@ describe('Pause Sequence', () => {
       when(sequencerServiceMock.pause()).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <PauseSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            isSequencerRunning
-          />
-        )
+        ui: <PauseSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
       })
 
       const button = await screen.findByRole('PauseSequence')
@@ -56,21 +48,14 @@ describe('Pause Sequence', () => {
     when(sequencerServiceMock.pause()).thenReject(Error('Something went wrong'))
 
     renderWithAuth({
-      ui: (
-        <PauseSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning
-        />
-      )
+      ui: <PauseSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
     })
 
     const button = await screen.findByRole('PauseSequence')
 
     userEvent.click(button)
 
-    await screen.findByText(
-      'Failed to pause the sequence, reason: Something went wrong'
-    )
+    await screen.findByText('Failed to pause the sequence, reason: Something went wrong')
 
     verify(sequencerServiceMock.pause()).called()
   })

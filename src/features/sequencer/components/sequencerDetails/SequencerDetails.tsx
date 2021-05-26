@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Card,
-  Descriptions,
-  Empty,
-  Layout,
-  Space,
-  Typography
-} from 'antd'
+import { Badge, Card, Descriptions, Empty, Layout, Space, Typography } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
@@ -23,12 +15,7 @@ import { SequencerError } from '../SequencerError'
 import { StepListTable } from '../steplist/StepListTable'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
-import type {
-  Prefix,
-  SequencerState,
-  Location,
-  Step
-} from '@tmtsoftware/esw-ts'
+import type { Prefix, SequencerState, Location, Step } from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout
 
@@ -52,11 +39,7 @@ const SequencerActions = ({
     </Space>
   )
 }
-const SequenceActions = ({
-  prefix,
-  isSequencerRunning,
-  sequencerState
-}: SequencerProps): JSX.Element => (
+const SequenceActions = ({ prefix, isSequencerRunning, sequencerState }: SequencerProps): JSX.Element => (
   <Space>
     <LoadSequence prefix={prefix} sequencerState={sequencerState} />
     <LifecycleState prefix={prefix} sequencerState={sequencerState} />
@@ -64,11 +47,7 @@ const SequenceActions = ({
   </Space>
 )
 
-const Actions = ({
-  prefix,
-  sequencerState,
-  isPaused
-}: SequencerProps & { isPaused: boolean }): JSX.Element => {
+const Actions = ({ prefix, sequencerState, isPaused }: SequencerProps & { isPaused: boolean }): JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   return (
     <Space size={20}>
@@ -78,20 +57,12 @@ const Actions = ({
         isPaused={isPaused}
         sequencerState={sequencerState}
       />
-      <SequenceActions
-        prefix={prefix}
-        isSequencerRunning={isSequencerRunning}
-        sequencerState={sequencerState}
-      />
+      <SequenceActions prefix={prefix} isSequencerRunning={isSequencerRunning} sequencerState={sequencerState} />
     </Space>
   )
 }
 
-const SequenceComponentInfo = ({
-  seqLocation
-}: {
-  seqLocation: Location
-}): JSX.Element => {
+const SequenceComponentInfo = ({ seqLocation }: { seqLocation: Location }): JSX.Element => {
   const componentName = seqLocation.metadata.sequenceComponentPrefix
 
   return (
@@ -99,9 +70,7 @@ const SequenceComponentInfo = ({
       <Typography.Text type='secondary' strong aria-label='SeqCompLabel'>
         Sequence Component:
       </Typography.Text>
-      <Typography.Text aria-label='SeqCompValue'>
-        {componentName}
-      </Typography.Text>
+      <Typography.Text aria-label='SeqCompValue'>{componentName}</Typography.Text>
     </Space>
   )
 }
@@ -110,18 +79,12 @@ const StepItem = (label: string, item: string) => {
   return (
     <Descriptions.Item
       label={
-        <Typography.Title
-          aria-label={`${label}-Key`}
-          type={'secondary'}
-          level={5}>
+        <Typography.Title aria-label={`${label}-Key`} type={'secondary'} level={5}>
           {label}
         </Typography.Title>
       }>
       {
-        <Typography.Title
-          aria-label={`${label}-Value`}
-          ellipsis={{ tooltip: true }}
-          level={5}>
+        <Typography.Title aria-label={`${label}-Value`} ellipsis={{ tooltip: true }} level={5}>
           {item}
         </Typography.Title>
       }
@@ -162,13 +125,8 @@ const SequencerTitle = ({
     </div>
   )
 }
-export const SequencerDetails = ({
-  prefix
-}: {
-  prefix: Prefix
-}): JSX.Element => {
-  const { sequencerStateResponse, loading } =
-    useSequencerStateSubscription(prefix)
+export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element => {
+  const { sequencerStateResponse, loading } = useSequencerStateSubscription(prefix)
   const seqLocation = useSequencerLocation(prefix)
 
   const [selectedStep, setSelectedStep] = useState<Step>()
@@ -177,23 +135,13 @@ export const SequencerDetails = ({
 
   // sequencerStateResponse will always be received atleast once on subscription
   if (!seqLocation.data || !sequencerStateResponse) {
-    return (
-      <SequencerError
-        title='404'
-        subtitle={`Sequencer ${prefix.toJSON()} : Not found`}
-      />
-    )
+    return <SequencerError title='404' subtitle={`Sequencer ${prefix.toJSON()} : Not found`} />
   }
 
   return (
     <>
       <PageHeader
-        title={
-          <SequencerTitle
-            prefix={prefix}
-            sequencerState={sequencerStateResponse.sequencerState}
-          />
-        }
+        title={<SequencerTitle prefix={prefix} sequencerState={sequencerStateResponse.sequencerState} />}
         ghost={false}
         className={styles.headerBox}
         extra={
@@ -205,8 +153,7 @@ export const SequencerDetails = ({
         }>
         <SequenceComponentInfo seqLocation={seqLocation.data} />
       </PageHeader>
-      <Layout
-        style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
+      <Layout style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
         <Sider theme='light' width={'18rem'}>
           <StepListTable
             stepList={sequencerStateResponse.stepList}
@@ -216,9 +163,7 @@ export const SequencerDetails = ({
             setSelectedStep={setSelectedStep}
           />
         </Sider>
-        <Content>
-          {selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}
-        </Content>
+        <Content>{selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}</Content>
       </Layout>
     </>
   )

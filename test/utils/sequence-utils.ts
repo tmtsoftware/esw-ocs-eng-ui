@@ -1,10 +1,6 @@
 import { Prefix, Setup, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 
-export const step = (
-  stepStatus: StepStatus['_type'],
-  commandName = 'command-1',
-  hasBreakpoint = false
-): Step => {
+export const step = (stepStatus: StepStatus['_type'], commandName = 'command-1', hasBreakpoint = false): Step => {
   return {
     hasBreakpoint: hasBreakpoint,
     status: { _type: stepStatus, message: '' },
@@ -13,10 +9,7 @@ export const step = (
   }
 }
 
-export const stepUsingId = (
-  stepStatus: StepStatus['_type'],
-  id: string
-): Step => {
+export const stepUsingId = (stepStatus: StepStatus['_type'], id: string): Step => {
   return {
     hasBreakpoint: false,
     status: { _type: stepStatus, message: '' },
@@ -25,10 +18,7 @@ export const stepUsingId = (
   }
 }
 
-export const getStepList = (
-  status: Step['status']['_type'],
-  hasBreakpoint = false
-): StepList =>
+export const getStepList = (status: Step['status']['_type'], hasBreakpoint = false): StepList =>
   new StepList([
     {
       hasBreakpoint: hasBreakpoint,

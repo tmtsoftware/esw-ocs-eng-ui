@@ -17,21 +17,14 @@ const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
   const history = useHistory()
   const Title = () => (
     <Space direction='vertical' size={1}>
-      <Typography.Text style={{ color: '#237804' }}>
-        [{obsMode}]
-      </Typography.Text>
-      <Typography.Text type='secondary'>
-        {seqCompPrefix.toJSON()}
-      </Typography.Text>
+      <Typography.Text style={{ color: '#237804' }}>[{obsMode}]</Typography.Text>
+      <Typography.Text type='secondary'>{seqCompPrefix.toJSON()}</Typography.Text>
     </Space>
   )
 
   return (
     <Row className={styles.sequencerComp}>
-      <Col
-        flex='auto'
-        className={styles.sequencerTitle}
-        onClick={() => history.push(getSequencerPath(obsMode))}>
+      <Col flex='auto' className={styles.sequencerTitle} onClick={() => history.push(getSequencerPath(obsMode))}>
         <Title />
       </Col>
       <Col className={styles.iconBoxSequencer}>
@@ -41,18 +34,12 @@ const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
   )
 }
 
-const SequenceComponent = ({
-  seqCompPrefix,
-  obsMode
-}: TitleProps): JSX.Element => {
-  if (obsMode)
-    return <Sequencer seqCompPrefix={seqCompPrefix} obsMode={obsMode} />
+const SequenceComponent = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
+  if (obsMode) return <Sequencer seqCompPrefix={seqCompPrefix} obsMode={obsMode} />
 
   const Title = () => (
     <Space direction='vertical' size={1}>
-      <Typography.Text style={{ color: 'var(--labelColor)' }}>
-        {seqCompPrefix.toJSON()}
-      </Typography.Text>
+      <Typography.Text style={{ color: 'var(--labelColor)' }}>{seqCompPrefix.toJSON()}</Typography.Text>
     </Space>
   )
 
@@ -73,16 +60,10 @@ type SequenceComponentProps = {
   location: Location[]
 }
 
-export const SequenceComponentCard = ({
-  seqCompId,
-  location
-}: SequenceComponentProps): JSX.Element => (
+export const SequenceComponentCard = ({ seqCompId, location }: SequenceComponentProps): JSX.Element => (
   <Row style={{ paddingBottom: '1rem' }}>
     <Col flex='auto'>
-      <SequenceComponent
-        seqCompPrefix={seqCompId.prefix}
-        obsMode={location[0]?.connection.prefix.toJSON()}
-      />
+      <SequenceComponent seqCompPrefix={seqCompId.prefix} obsMode={location[0]?.connection.prefix.toJSON()} />
     </Col>
     <Col className={styles.iconBox}>
       <KillSequenceComponent componentId={seqCompId} />

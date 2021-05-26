@@ -14,12 +14,7 @@ import {
   couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../sequencerMessageConstants'
-import type {
-  GenericResponse,
-  Prefix,
-  SequenceCommand,
-  SequencerService
-} from '@tmtsoftware/esw-ts'
+import type { GenericResponse, Prefix, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -37,10 +32,8 @@ const handleResponse = (res: GenericResponse) => {
   }
 }
 
-const addSteps =
-  (id: string, commands: SequenceCommand[]) =>
-  (sequencerService: SequencerService) =>
-    sequencerService.insertAfter(id, commands).then(handleResponse)
+const addSteps = (id: string, commands: SequenceCommand[]) => (sequencerService: SequencerService) =>
+  sequencerService.insertAfter(id, commands).then(handleResponse)
 
 type AddStepsProps = {
   disabled: boolean
@@ -48,11 +41,7 @@ type AddStepsProps = {
   sequencerPrefix: Prefix
 }
 
-export const AddSteps = ({
-  disabled,
-  stepId,
-  sequencerPrefix
-}: AddStepsProps): JSX.Element => {
+export const AddSteps = ({ disabled, stepId, sequencerPrefix }: AddStepsProps): JSX.Element => {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const sequencerService = useSequencerService(sequencerPrefix)
 
@@ -70,15 +59,10 @@ export const AddSteps = ({
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           try {
-            setCommands(
-              getOrThrow(SequenceCommandsD.decode(JSON.parse(reader.result)))
-            )
+            setCommands(getOrThrow(SequenceCommandsD.decode(JSON.parse(reader.result))))
             resolve()
           } catch (e) {
-            errorMessage(
-              addStepsErrorPrefix,
-              Error(couldNotDeserialiseSequenceMsg)
-            ).then(reject)
+            errorMessage(addStepsErrorPrefix, Error(couldNotDeserialiseSequenceMsg)).then(reject)
           }
         }
       }
@@ -91,16 +75,10 @@ export const AddSteps = ({
         disabled={disabled}
         showUploadList={false}
         beforeUpload={beforeUpload}
-        customRequest={() =>
-          sequencerService && addStepAction.mutate(sequencerService)
-        }
+        customRequest={() => sequencerService && addStepAction.mutate(sequencerService)}
         accept='application/json'>
-        <div
-          role='addSteps'
-          style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
-          <PlusCircleOutlined
-            style={{ fontSize: '12px', marginRight: '8px' }}
-          />
+        <div role='addSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
+          <PlusCircleOutlined style={{ fontSize: '12px', marginRight: '8px' }} />
           Add steps
         </div>
       </Upload>

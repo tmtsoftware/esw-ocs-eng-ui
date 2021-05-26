@@ -40,10 +40,7 @@ const StepActionsMenu = ({
         sequencerPrefix: sequencerPrefix
       })}
 
-      <Menu.Item
-        key='Duplicate'
-        onClick={handleDuplicate}
-        disabled={stepListStatus === 'All Steps Completed'}>
+      <Menu.Item key='Duplicate' onClick={handleDuplicate} disabled={stepListStatus === 'All Steps Completed'}>
         <CopyOutlined />
         Duplicate
       </Menu.Item>
@@ -57,15 +54,8 @@ const StepActionsMenu = ({
   )
 }
 
-export const StepActions = ({
-  sequencerPrefix,
-  step
-}: SequencerStepProps): JSX.Element => (
-  <Dropdown
-    overlay={() => (
-      <StepActionsMenu sequencerPrefix={sequencerPrefix} step={step} />
-    )}
-    trigger={['click']}>
+export const StepActions = ({ sequencerPrefix, step }: SequencerStepProps): JSX.Element => (
+  <Dropdown overlay={() => <StepActionsMenu sequencerPrefix={sequencerPrefix} step={step} />} trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
   </Dropdown>
 )

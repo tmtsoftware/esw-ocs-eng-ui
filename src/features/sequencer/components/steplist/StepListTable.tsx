@@ -6,13 +6,7 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { StepComponent } from './StepComponent'
-import type {
-  Prefix,
-  SequenceCommand,
-  Step,
-  StepList,
-  StepStatus
-} from '@tmtsoftware/esw-ts'
+import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import type { ColumnsType } from 'antd/lib/table'
 
 type StepData = {
@@ -36,47 +30,32 @@ const setStepToDisplayParameters = (
   }
 }
 
-const validStepChecker = (
-  setSelectedStep: (_: Step | undefined) => void,
-  stepList: StepList,
-  selectedStep?: Step
-) => {
+const validStepChecker = (setSelectedStep: (_: Step | undefined) => void, stepList: StepList, selectedStep?: Step) => {
   if (!selectedStep) {
     // will be set for the first time
     setSelectedStep(stepList.steps[0])
   } else {
     // will check if selected step is always in the step-list for cases like abort sequence
-    !stepList.steps.find((step) => step.id === selectedStep.id) &&
-      setSelectedStep(stepList.steps[0])
+    !stepList.steps.find((step) => step.id === selectedStep.id) && setSelectedStep(stepList.steps[0])
   }
 }
 
-const columns = (
-  sequencerPrefix: Prefix,
-  setSelectedStep: (_: Step) => void
-): ColumnsType<StepData> => [
+const columns = (sequencerPrefix: Prefix, setSelectedStep: (_: Step) => void): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) =>
-      StepComponent(record, record.index + 1, setSelectedStep, sequencerPrefix)
+    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, sequencerPrefix)
   }
 ]
 
-const StepListTitle = ({
-  stepListStatus
-}: {
-  stepListStatus: StepListStatus
-}): JSX.Element => (
+const StepListTitle = ({ stepListStatus }: { stepListStatus: StepListStatus }): JSX.Element => (
   <div style={{ margin: '1rem 2rem' }} role='stepListTitle'>
     <Typography.Title level={5} style={{ marginBottom: 0 }}>
       Sequence Steps
     </Typography.Title>
     <Space>
       <Typography.Text type={'secondary'}>Status:</Typography.Text>
-      <Typography.Text type={statusTextType[stepListStatus]}>
-        {stepListStatus}
-      </Typography.Text>
+      <Typography.Text type={statusTextType[stepListStatus]}>{stepListStatus}</Typography.Text>
     </Space>
   </div>
 )
@@ -115,22 +94,11 @@ export const StepListTable = ({
   )
 
   useEffect(() => {
-    const inFlightStep = stepList?.steps.find(
-      (step) => step.status._type === 'InFlight'
-    )
-    if (
-      inFlightStep !== undefined &&
-      selectedStep !== undefined &&
-      stepList !== undefined
-    ) {
-      const inFlightStepIndex = stepList.steps.findIndex(
-        (step) => step.id === inFlightStep.id
-      )
-      const selectedStepIndex = stepList.steps.findIndex(
-        (step) => step.id === selectedStep.id
-      )
-      const isSelectedStepPreviousOfInFlightStep =
-        inFlightStepIndex - selectedStepIndex === 1
+    const inFlightStep = stepList?.steps.find((step) => step.status._type === 'InFlight')
+    if (inFlightStep !== undefined && selectedStep !== undefined && stepList !== undefined) {
+      const inFlightStepIndex = stepList.steps.findIndex((step) => step.id === inFlightStep.id)
+      const selectedStepIndex = stepList.steps.findIndex((step) => step.id === selectedStep.id)
+      const isSelectedStepPreviousOfInFlightStep = inFlightStepIndex - selectedStepIndex === 1
       const isSelectedStepIncomplete = selectedStep.status._type !== 'Success'
 
       if (isSelectedStepIncomplete && isSelectedStepPreviousOfInFlightStep) {
@@ -151,11 +119,7 @@ export const StepListTable = ({
         <StepListTitle stepListStatus={stepListStatus} />
         <Table
           showHeader={false}
-          className={
-            isDuplicateEnabled
-              ? styles.duplicateStepListTable
-              : styles.stepListTable
-          }
+          className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
           rowKey={(step) => step.id}
           pagination={false}
@@ -166,10 +130,7 @@ export const StepListTable = ({
           }))}
           columns={columns(sequencerPrefix, setSelectedStep)}
           onRow={(step) => ({
-            id:
-              selectedStep && step.id === selectedStep.id
-                ? styles.selectedRow
-                : undefined,
+            id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
           })}
           sticky
@@ -179,9 +140,7 @@ export const StepListTable = ({
         <DuplicateAction
           commands={commands}
           sequencerPrefix={sequencerPrefix}
-          toggleDuplicateEnabled={() =>
-            toggleDuplicateEnabled(!isDuplicateEnabled)
-          }
+          toggleDuplicateEnabled={() => toggleDuplicateEnabled(!isDuplicateEnabled)}
         />
       )}
     </StepListContextProvider>

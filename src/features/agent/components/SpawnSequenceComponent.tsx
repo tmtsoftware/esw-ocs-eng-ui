@@ -8,32 +8,20 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './agentCards.module.css'
 
-const spawnSequenceComponent =
-  (agentPrefix: Prefix, componentName: string) =>
-  (agentService: AgentService) =>
-    agentService
-      .spawnSequenceComponent(agentPrefix, componentName)
-      .then((res) => {
-        if (res._type === 'Failed') throw new Error(res.msg)
-        return res
-      })
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
+  agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+    if (res._type === 'Failed') throw new Error(res.msg)
+    return res
+  })
 
-const requirement = (predicate: boolean, msg: string) =>
-  predicate && errorMessage(msg)
+const requirement = (predicate: boolean, msg: string) => predicate && errorMessage(msg)
 
 const validateComponentName = (componentName: string) => {
-  requirement(
-    componentName !== componentName.trim(),
-    'component name has leading and trailing whitespaces'
-  )
+  requirement(componentName !== componentName.trim(), 'component name has leading and trailing whitespaces')
   requirement(componentName.includes('-'), "component name has '-'")
 }
 
-export const SpawnSequenceComponent = ({
-  agentPrefix
-}: {
-  agentPrefix: Prefix
-}): JSX.Element => {
+export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
   const [agentService, isLoading] = useAgentService()
@@ -42,10 +30,7 @@ export const SpawnSequenceComponent = ({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
     onSuccess: () =>
       successMessage(
-        `Successfully spawned Sequence Component: ${new Prefix(
-          agentPrefix.subsystem,
-          componentName
-        ).toJSON()}`
+        `Successfully spawned Sequence Component: ${new Prefix(agentPrefix.subsystem, componentName).toJSON()}`
       ),
     onError: (e) => errorMessage('Sequence Component could not be spawned', e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
@@ -85,12 +70,7 @@ export const SpawnSequenceComponent = ({
         okText='Confirm'>
         <Button
           type='text'
-          icon={
-            <PlusCircleOutlined
-              className={styles.commonIcon}
-              role='addSeqCompIcon'
-            />
-          }
+          icon={<PlusCircleOutlined className={styles.commonIcon} role='addSeqCompIcon' />}
           loading={isLoading || spawnSequenceComponentAction.isLoading}
         />
       </Popconfirm>

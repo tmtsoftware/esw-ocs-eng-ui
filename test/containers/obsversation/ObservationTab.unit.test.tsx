@@ -7,15 +7,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { obsModesData } from '../../jsons/obsmodes'
-import {
-  assertTableHeader,
-  assertTableHeaderNotPresent
-} from '../../utils/tableTestUtils'
-import {
-  mockServices,
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../utils/test-utils'
+import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
@@ -60,12 +53,8 @@ describe('observation tabs', () => {
 
     userEvent.click(modalShutdownButton)
 
-    await screen.findByText(
-      'DarkNight_1 Observation has been shutdown and moved to Configurable.'
-    )
-    await waitFor(() =>
-      verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()
-    )
+    await screen.findByText('DarkNight_1 Observation has been shutdown and moved to Configurable.')
+    await waitFor(() => verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called())
 
     await waitFor(() => expect(screen.queryByText(modalMessage)).to.null)
   })
@@ -76,10 +65,7 @@ describe('observation tabs', () => {
       agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
       seqCompsStatus: [
         {
-          seqCompId: new ComponentId(
-            Prefix.fromString('ESW.ESW1'),
-            'SequenceComponent'
-          ),
+          seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
           sequencerLocation: [
             {
               _type: 'AkkaLocation',
@@ -94,10 +80,7 @@ describe('observation tabs', () => {
           ]
         },
         {
-          seqCompId: new ComponentId(
-            Prefix.fromString('ESW.ESW2'),
-            'SequenceComponent'
-          ),
+          seqCompId: new ComponentId(Prefix.fromString('ESW.ESW2'), 'SequenceComponent'),
           sequencerLocation: []
         }
       ]
@@ -107,10 +90,7 @@ describe('observation tabs', () => {
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
     })
-    const sequencerId = new ComponentId(
-      Prefix.fromString('ESW.SeqComp1'),
-      'Sequencer'
-    )
+    const sequencerId = new ComponentId(Prefix.fromString('ESW.SeqComp1'), 'Sequencer')
     const darkNight2 = new ObsMode('DarkNight_2')
     when(smService.configure(deepEqual(darkNight2))).thenResolve({
       _type: 'Success',
@@ -143,12 +123,7 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName='Non-configurable'
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Non-configurable' setObservation={() => ({})} />
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -173,8 +148,7 @@ describe('observation tabs', () => {
       )
     })
     await screen.findAllByRole('table')
-    const [sequencerTable, resourcesTable, resourcesBodyTable] =
-      screen.queryAllByRole('table')
+    const [sequencerTable, resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
 
     assertTableHeader(sequencerTable, 'Sequencers')
     assertTableHeader(sequencerTable, 'Sequence Status')
@@ -183,12 +157,8 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(
-      within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })
-    ).to.have.length(0)
-    expect(
-      within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })
-    ).to.have.length(2)
+    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })).to.have.length(0)
+    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(2)
   })
 
   it(`should render only resources with available status on configurable tab| ESW-451, ESW-453, ESW-489`, async () => {
@@ -208,24 +178,15 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(
-      within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })
-    ).to.have.length(2)
-    expect(
-      within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })
-    ).to.have.length(0)
+    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })).to.have.length(2)
+    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(0)
   })
 
   it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453, ESW-489`, async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: (
-        <ObservationTab
-          tabName='Non-configurable'
-          setObservation={() => ({})}
-        />
-      )
+      ui: <ObservationTab tabName='Non-configurable' setObservation={() => ({})} />
     })
 
     await screen.findAllByRole('table')
@@ -238,13 +199,8 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(
-      within(resourcesBodyTable).getByRole('row', { name: 'IRIS Available' })
-    ).to.exist
-    expect(
-      within(resourcesBodyTable).getByRole('row', { name: 'WFOS Available' })
-    ).to.exist
-    expect(within(resourcesBodyTable).getByRole('row', { name: 'ESW InUse' }))
-      .to.exist
+    expect(within(resourcesBodyTable).getByRole('row', { name: 'IRIS Available' })).to.exist
+    expect(within(resourcesBodyTable).getByRole('row', { name: 'WFOS Available' })).to.exist
+    expect(within(resourcesBodyTable).getByRole('row', { name: 'ESW InUse' })).to.exist
   })
 })

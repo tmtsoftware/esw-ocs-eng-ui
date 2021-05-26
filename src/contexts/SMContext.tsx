@@ -16,7 +16,4 @@ const mkSMContext = (location: Location, tf: TokenFactory): SMContext => ({
   smLocation: location
 })
 
-export const [useSMService, SMServiceProvider] = createServiceCtx(
-  SEQUENCE_MANAGER_CONNECTION,
-  mkSMContext
-)
+export const [useSMService, SMServiceProvider] = createServiceCtx(SEQUENCE_MANAGER_CONNECTION, mkSMContext)

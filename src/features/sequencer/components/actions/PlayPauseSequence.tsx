@@ -14,10 +14,6 @@ export const PlayPauseSequence = ({
   return canBePaused ? (
     <PauseSequence prefix={prefix} />
   ) : (
-    <PlaySequence
-      prefix={prefix}
-      isSequencerRunning={isSequencerRunning}
-      sequencerState={sequencerState}
-    />
+    <PlaySequence prefix={prefix} isSequencerRunning={isSequencerRunning} sequencerState={sequencerState} />
   )
 }

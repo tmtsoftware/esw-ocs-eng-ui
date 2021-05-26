@@ -27,16 +27,9 @@ export const ObservationTabs = (): JSX.Element => {
         marginBottom: '1.5rem'
       }}>
       {tabNames.map((tabName) => (
-        <TabPane
-          key={tabName}
-          tab={tabName}
-          style={{ marginLeft: '1.5rem', width: '99%' }}>
+        <TabPane key={tabName} tab={tabName} style={{ marginLeft: '1.5rem', width: '99%' }}>
           {selectedTab === tabName && (
-            <ObservationTab
-              tabName={tabName}
-              selected={selectedObservation}
-              setObservation={setSelectedObservation}
-            />
+            <ObservationTab tabName={tabName} selected={selectedObservation} setObservation={setSelectedObservation} />
           )}
         </TabPane>
       ))}

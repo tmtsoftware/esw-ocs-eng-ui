@@ -6,9 +6,7 @@ import { useSMService } from '../../../../contexts/SMContext'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 
-const shutdownAllSequenceComps = (
-  sequenceManagerService: SequenceManagerService
-) =>
+const shutdownAllSequenceComps = (sequenceManagerService: SequenceManagerService) =>
   sequenceManagerService.shutdownAllSequenceComponents().then((res) => {
     switch (res._type) {
       case 'LocationServiceError':
@@ -22,11 +20,7 @@ const shutdownAllSequenceComps = (
     }
   })
 
-export const UnProvisionButton = ({
-  disabled = false
-}: {
-  disabled?: boolean
-}): JSX.Element => {
+export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
   const useErrorBoundary = false
   const [smContext, isLoading] = useSMService()
   const smService = smContext?.smService

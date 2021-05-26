@@ -12,10 +12,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
-import {
-  assertTableBody,
-  assertTableHeader
-} from '../../../../utils/tableTestUtils'
+import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestUtils'
 import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Parameters Table', () => {
@@ -27,9 +24,7 @@ describe('Parameters Table', () => {
       [1, 2, 3],
       [4, 5, 6]
     ])
-    const stringParam: Parameter<StringKey> = stringKey('ra').set([
-      '12:13:14.1'
-    ])
+    const stringParam: Parameter<StringKey> = stringKey('ra').set(['12:13:14.1'])
 
     const paramSet = [booleanParam, intParam, filterParam, stringParam]
     renderWithAuth({ ui: <ParameterTable paramSet={paramSet} /> })

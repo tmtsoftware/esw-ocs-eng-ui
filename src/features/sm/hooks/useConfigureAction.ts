@@ -1,12 +1,7 @@
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS, OBS_MODES_DETAILS } from '../../queryKeys'
-import type {
-  ConfigureResponse,
-  ConfigureSuccess,
-  ObsMode,
-  SequenceManagerService
-} from '@tmtsoftware/esw-ts'
+import type { ConfigureResponse, ConfigureSuccess, ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
   switch (res._type) {
@@ -35,21 +30,12 @@ const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
   }
 }
 
-const configureObsMode = (
-  sequenceManagerService: SequenceManagerService,
-  obsMode: ObsMode
-) =>
-  sequenceManagerService
-    .configure(obsMode)
-    .then((res) => handleConfigureResponse(res, obsMode))
+const configureObsMode = (sequenceManagerService: SequenceManagerService, obsMode: ObsMode) =>
+  sequenceManagerService.configure(obsMode).then((res) => handleConfigureResponse(res, obsMode))
 
 export const useConfigureAction = (
   obsMode: ObsMode | undefined
-): UseMutationResult<
-  ConfigureSuccess | undefined,
-  unknown,
-  SequenceManagerService
-> => {
+): UseMutationResult<ConfigureSuccess | undefined, unknown, SequenceManagerService> => {
   const configure = async (sequenceManagerService: SequenceManagerService) =>
     obsMode && (await configureObsMode(sequenceManagerService, obsMode))
 

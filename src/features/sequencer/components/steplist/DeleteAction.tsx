@@ -4,16 +4,8 @@ import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import {
-  cannotOperateOnAnInFlightOrFinishedStepMsg,
-  idDoesNotExistMsg
-} from '../sequencerMessageConstants'
-import type {
-  GenericResponse,
-  Prefix,
-  SequencerService,
-  Step
-} from '@tmtsoftware/esw-ts'
+import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
+import type { GenericResponse, Prefix, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
 const handleDeleteResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -58,11 +50,7 @@ type DeleteActionProps = {
   isDisabled: boolean
 }
 
-export const DeleteAction = ({
-  step,
-  sequencerPrefix,
-  isDisabled
-}: DeleteActionProps): JSX.Element => {
+export const DeleteAction = ({ step, sequencerPrefix, isDisabled }: DeleteActionProps): JSX.Element => {
   const sequencerService = useSequencerService(sequencerPrefix)
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),

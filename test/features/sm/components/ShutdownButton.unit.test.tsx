@@ -72,9 +72,7 @@ describe('ShutdownSMButton', () => {
 
     //User clicks modal's shutdown button
     userEvent.click(modalShutdownButton)
-    await screen.findByText(
-      'Failed to shutdown Sequence Manager, reason: Cant kill'
-    )
+    await screen.findByText('Failed to shutdown Sequence Manager, reason: Cant kill')
 
     verify(agentServiceMock.killComponent(SM_COMPONENT_ID)).called()
   })

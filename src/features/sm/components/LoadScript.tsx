@@ -1,9 +1,5 @@
 import { FileAddOutlined } from '@ant-design/icons'
-import {
-  ObsMode,
-  SequenceManagerService,
-  StartSequencerResponse
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, SequenceManagerService, StartSequencerResponse } from '@tmtsoftware/esw-ts'
 import { Button, Input, Popconfirm, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
@@ -38,16 +34,10 @@ const handleResponse = (res: StartSequencerResponse) => {
   }
 }
 
-const loadScript =
-  (subsystem: Subsystem, obsMode: ObsMode) =>
-  (smService: SequenceManagerService) =>
-    smService.startSequencer(subsystem, obsMode).then(handleResponse)
+const loadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
+  smService.startSequencer(subsystem, obsMode).then(handleResponse)
 
-export const LoadScript = ({
-  subsystem
-}: {
-  subsystem: Subsystem
-}): JSX.Element => {
+export const LoadScript = ({ subsystem }: { subsystem: Subsystem }): JSX.Element => {
   const [obsMode, setObsMode] = useState<string>('')
   const resetObsMode = () => setObsMode('')
   const [data, isLoading] = useSMService()
@@ -65,10 +55,7 @@ export const LoadScript = ({
         title={
           <>
             Observation Mode:
-            <Input
-              value={obsMode}
-              onChange={(e) => setObsMode(e.target.value)}
-            />
+            <Input value={obsMode} onChange={(e) => setObsMode(e.target.value)} />
           </>
         }
         icon={<></>}

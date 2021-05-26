@@ -1,16 +1,8 @@
-import {
-  ObsMode,
-  ObsModeDetails,
-  ObsModesDetailsResponseSuccess
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, ObsModeDetails, ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { when } from 'ts-mockito'
 import { CurrentObsMode } from '../../../src/containers/observation/CurrentObsMode'
-import {
-  mockServices,
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../utils/test-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 describe('CurrentObsMode', () => {
   it.only(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
@@ -40,10 +32,7 @@ describe('CurrentObsMode', () => {
       ui: (
         <CurrentObsMode
           resources={[]}
-          sequencers={
-            obsModes.find((x) => x.obsMode.name === 'DarkNight_1')
-              ?.sequencers ?? []
-          }
+          sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
           currentTab='Running'
           obsMode={new ObsMode('DarkNight_1')}
         />

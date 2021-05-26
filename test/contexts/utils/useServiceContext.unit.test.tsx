@@ -47,14 +47,12 @@ describe('Service context helper', () => {
   })
 
   it('returns instance of a provided factory with use hook', async () => {
-    when(mockServices.mock.locationService.track(anything())).thenReturn(
-      (cb) => {
-        cb({ _type: 'LocationUpdated', location: gatewayLocation })
-        return {
-          cancel: () => ({})
-        }
+    when(mockServices.mock.locationService.track(anything())).thenReturn((cb) => {
+      cb({ _type: 'LocationUpdated', location: gatewayLocation })
+      return {
+        cancel: () => ({})
       }
-    )
+    })
 
     renderWithAuth({
       ui: (

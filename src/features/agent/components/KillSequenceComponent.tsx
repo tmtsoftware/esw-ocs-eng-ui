@@ -9,26 +9,18 @@ import { AGENTS_STATUS } from '../../queryKeys'
 import styles from './agentCards.module.css'
 import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
 
-const killComponent =
-  (componentId: ComponentId) => (agentService: AgentService) =>
-    agentService.killComponent(componentId).then((res) => {
-      if (res._type === 'Failed') throw new Error(res.msg)
-      return res
-    })
+const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
+  agentService.killComponent(componentId).then((res) => {
+    if (res._type === 'Failed') throw new Error(res.msg)
+    return res
+  })
 
-export const KillSequenceComponent = ({
-  componentId
-}: {
-  componentId: ComponentId
-}): JSX.Element => {
+export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): JSX.Element => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
-    onSuccess: () =>
-      successMessage(
-        `Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`
-      ),
+    onSuccess: () => successMessage(`Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`),
     onError: (e) => errorMessage('Sequence Component could not be killed', e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })

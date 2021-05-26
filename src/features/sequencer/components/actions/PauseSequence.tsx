@@ -8,26 +8,16 @@ import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import type { PauseResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
-const usePauseSequence = (): UseMutationResult<
-  PauseResponse,
-  unknown,
-  SequencerService
-> => {
-  const mutationFn = (sequencerService: SequencerService) =>
-    sequencerService.pause()
+const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, SequencerService> => {
+  const mutationFn = (sequencerService: SequencerService) => sequencerService.pause()
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok')
-        return successMessage('Sequence is paused successfully')
+      if (res._type === 'Ok') return successMessage('Sequence is paused successfully')
       return errorMessage(
         'Failed to pause the sequence',
-        Error(
-          res._type === 'CannotOperateOnAnInFlightOrFinishedStep'
-            ? res._type
-            : res.msg
-        )
+        Error(res._type === 'CannotOperateOnAnInFlightOrFinishedStep' ? res._type : res.msg)
       )
     },
     onError: (e) => errorMessage('Failed to pause the sequence', e)
@@ -40,8 +30,7 @@ export const PauseSequence = ({ prefix }: PauseSequenceProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const pauseSequence = usePauseSequence()
 
-  const onClick = () =>
-    sequencerService && pauseSequence.mutate(sequencerService)
+  const onClick = () => sequencerService && pauseSequence.mutate(sequencerService)
 
   return (
     <Tooltip placement='bottom' title={'Pause sequence'}>

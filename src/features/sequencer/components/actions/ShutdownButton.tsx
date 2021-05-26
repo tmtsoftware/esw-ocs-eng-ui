@@ -7,20 +7,19 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 
-const shutdown =
-  (obsMode: ObsMode) => async (smService: SequenceManagerService) => {
-    const res = await smService.shutdownObsModeSequencers(obsMode)
-    switch (res._type) {
-      case 'Success':
-        return res
-      case 'LocationServiceError':
-        throw new Error(res.reason)
-      case 'Unhandled':
-        throw new Error(res.msg)
-      case 'FailedResponse':
-        throw new Error(res.reason)
-    }
+const shutdown = (obsMode: ObsMode) => async (smService: SequenceManagerService) => {
+  const res = await smService.shutdownObsModeSequencers(obsMode)
+  switch (res._type) {
+    case 'Success':
+      return res
+    case 'LocationServiceError':
+      throw new Error(res.reason)
+    case 'Unhandled':
+      throw new Error(res.msg)
+    case 'FailedResponse':
+      throw new Error(res.reason)
   }
+}
 
 const ShutdownButtonAction = <QResult, MResult>(
   obsMode: ObsMode,
@@ -29,25 +28,15 @@ const ShutdownButtonAction = <QResult, MResult>(
 ): UseMutationResult<MResult, unknown, QResult> =>
   useMutation({
     mutationFn: onClick,
-    onSuccess: () =>
-      successMessage(
-        `${obsMode.name} Observation has been shutdown and moved to Configurable.`
-      ),
-    onError: (e) =>
-      errorMessage(`Failed to shutdown Observation ${obsMode.name}`, e),
+    onSuccess: () => successMessage(`${obsMode.name} Observation has been shutdown and moved to Configurable.`),
+    onError: (e) => errorMessage(`Failed to shutdown Observation ${obsMode.name}`, e),
     invalidateKeysOnSuccess: invalidateKeysOnSuccess
   })
 
-export const ShutdownButton = ({
-  obsMode
-}: {
-  obsMode: ObsMode
-}): JSX.Element => {
+export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
-  const shutdownAction = ShutdownButtonAction(obsMode, shutdown(obsMode), [
-    OBS_MODES_DETAILS.key
-  ])
+  const shutdownAction = ShutdownButtonAction(obsMode, shutdown(obsMode), [OBS_MODES_DETAILS.key])
 
   return (
     <Button

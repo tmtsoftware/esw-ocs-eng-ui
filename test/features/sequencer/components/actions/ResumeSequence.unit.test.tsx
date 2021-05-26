@@ -5,10 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { ResumeSequence } from '../../../../../src/features/sequencer/components/actions/ResumeSequence'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Resume Sequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
@@ -30,12 +27,7 @@ describe('Resume Sequence', () => {
       when(sequencerServiceMock.resume()).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <ResumeSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            isSequencerRunning
-          />
-        )
+        ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
       })
 
       const button = await screen.findByRole('ResumeSequence')
@@ -49,43 +41,27 @@ describe('Resume Sequence', () => {
   })
 
   it('should show failed if error is returned | ESW-497', async () => {
-    when(sequencerServiceMock.resume()).thenReject(
-      Error('Something went wrong')
-    )
+    when(sequencerServiceMock.resume()).thenReject(Error('Something went wrong'))
 
     renderWithAuth({
-      ui: (
-        <ResumeSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning
-        />
-      )
+      ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
     })
 
     const button = await screen.findByRole('ResumeSequence')
 
     userEvent.click(button)
 
-    await screen.findByText(
-      'Failed to resume the sequence, reason: Something went wrong'
-    )
+    await screen.findByText('Failed to resume the sequence, reason: Something went wrong')
 
     verify(sequencerServiceMock.resume()).called()
   })
 
   it(`should be disabled if sequencer is not running | ESW-497`, async () => {
     renderWithAuth({
-      ui: (
-        <ResumeSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning={false}
-        />
-      )
+      ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning={false} />
     })
 
-    const button = (await screen.findByRole(
-      'ResumeSequence'
-    )) as HTMLButtonElement
+    const button = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement
 
     expect(button.disabled).true
   })

@@ -37,9 +37,7 @@ describe('Auth hook', () => {
     })
 
     expect(result.current.auth).exist
-    expect(result.current.auth?.tokenParsed()?.preferred_username).to.equal(
-      'esw-user'
-    )
+    expect(result.current.auth?.tokenParsed()?.preferred_username).to.equal('esw-user')
   })
 
   it('Auth should return undefined when logged out', async () => {

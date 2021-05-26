@@ -1,26 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  ObsMode,
-  ObsModesDetailsResponseSuccess,
-  StepList
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, ObsModesDetailsResponseSuccess, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
-import {
-  configurableObsModesData,
-  nonConfigurableObsModesData,
-  obsModesData
-} from '../../jsons/obsmodes'
+import { configurableObsModesData, nonConfigurableObsModesData, obsModesData } from '../../jsons/obsmodes'
 import { getObsModes } from '../../utils/observationUtils'
-import {
-  mockServices,
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../utils/test-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 describe('Observation page', () => {
   beforeEach(() => resetCalls(sequencerServiceMock))
@@ -91,18 +79,16 @@ describe('Observation page', () => {
   it('should render running obsModes | ESW-450, ESW-489', async () => {
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (onEvent) => {
-        onEvent({
-          _type: 'SequencerStateResponse',
-          sequencerState: { _type: 'Loaded' },
-          stepList: new StepList([])
-        })
-        return {
-          cancel: () => undefined
-        }
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
+      onEvent({
+        _type: 'SequencerStateResponse',
+        sequencerState: { _type: 'Loaded' },
+        stepList: new StepList([])
+      })
+      return {
+        cancel: () => undefined
       }
-    )
+    })
 
     renderWithAuth({
       ui: (
@@ -123,11 +109,7 @@ describe('Observation page', () => {
   })
 
   const tabTests: [string, string[], ObsModesDetailsResponseSuccess][] = [
-    [
-      'Non-configurable',
-      ['DarkNight_3', 'DarkNight_5'],
-      nonConfigurableObsModesData
-    ],
+    ['Non-configurable', ['DarkNight_3', 'DarkNight_5'], nonConfigurableObsModesData],
     ['Configurable', ['DarkNight_2', 'DarkNight_6'], configurableObsModesData]
   ]
 
@@ -189,26 +171,22 @@ describe('Observation page', () => {
   it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
     const smService = mockServices.mock.smService
 
-    when(smService.getObsModesDetails())
-      .thenResolve(getObsModes('Configured'))
-      .thenResolve(getObsModes('Configurable'))
+    when(smService.getObsModesDetails()).thenResolve(getObsModes('Configured')).thenResolve(getObsModes('Configurable'))
     const obsMode = new ObsMode('DarkNight_1')
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'
     })
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (onEvent) => {
-        onEvent({
-          _type: 'SequencerStateResponse',
-          sequencerState: { _type: 'Loaded' },
-          stepList: new StepList([])
-        })
-        return {
-          cancel: () => undefined
-        }
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
+      onEvent({
+        _type: 'SequencerStateResponse',
+        sequencerState: { _type: 'Loaded' },
+        stepList: new StepList([])
+      })
+      return {
+        cancel: () => undefined
       }
-    )
+    })
 
     renderWithAuth({
       ui: (
@@ -237,9 +215,7 @@ describe('Observation page', () => {
       name: 'Configurable'
     })
     userEvent.click(configurableTab)
-    await screen.findByText(
-      'DarkNight_1 Observation has been shutdown and moved to Configurable.'
-    )
+    await screen.findByText('DarkNight_1 Observation has been shutdown and moved to Configurable.')
 
     const configurableTabPanel = await screen.findByRole('tabpanel')
     await within(configurableTabPanel).findByText('NA')

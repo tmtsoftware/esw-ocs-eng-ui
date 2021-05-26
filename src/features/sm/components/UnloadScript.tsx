@@ -1,11 +1,5 @@
 import { FileExcelOutlined } from '@ant-design/icons'
-import {
-  ObsMode,
-  Prefix,
-  SequenceManagerService,
-  ShutdownSequencersResponse,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix, SequenceManagerService, ShutdownSequencersResponse, Subsystem } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
@@ -31,23 +25,14 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
   }
 }
 
-const unloadScript =
-  (subsystem: Subsystem, obsMode: ObsMode) =>
-  (smService: SequenceManagerService) =>
-    smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
+const unloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
+  smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
-export const UnloadScript = ({
-  sequencerPrefix
-}: {
-  sequencerPrefix: Prefix
-}): JSX.Element => {
+export const UnloadScript = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
   const [data, isLoading] = useSMService()
 
   const unloadAction = useMutation({
-    mutationFn: unloadScript(
-      sequencerPrefix.subsystem,
-      new ObsMode(sequencerPrefix.componentName)
-    ),
+    mutationFn: unloadScript(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
     onError: (e) => errorMessage('Failed to unload sequencer', e),
     onSuccess: () => successMessage('Successfully unloaded sequencer'),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

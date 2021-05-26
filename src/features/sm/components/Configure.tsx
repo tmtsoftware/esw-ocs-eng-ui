@@ -59,9 +59,7 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
         visible={modalVisibility}
         onOk={handleModalOk}
         onCancel={handleCancel}
-        data={obsModesDetails.map(
-          (obsModeDetail) => obsModeDetail.obsMode.name
-        )}
+        data={obsModesDetails.map((obsModeDetail) => obsModeDetail.obsMode.name)}
         selectedItem={obsMode?.name ?? ''}
         onChange={(value: string) => setObsMode(new ObsMode(value))}
       />

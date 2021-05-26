@@ -12,9 +12,7 @@ type ObsModeActionsProps = {
   obsMode: ObsMode
 }
 
-const RunningActions = ({ obsMode }: ObsModeActionsProps) => (
-  <ShutdownButton obsMode={obsMode} />
-)
+const RunningActions = ({ obsMode }: ObsModeActionsProps) => <ShutdownButton obsMode={obsMode} />
 
 const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
   const configureAction = useConfigureAction(obsMode)
@@ -33,10 +31,7 @@ const NonRunningActions = ({ tabName, obsMode }: ObsModeActionsProps) => {
 }
 
 // TODO memoise these components  to avoid unnecessary renders
-export const ObsModeActions = ({
-  tabName,
-  obsMode
-}: ObsModeActionsProps): JSX.Element =>
+export const ObsModeActions = ({ tabName, obsMode }: ObsModeActionsProps): JSX.Element =>
   tabName === 'Running' ? (
     <RunningActions obsMode={obsMode} />
   ) : (

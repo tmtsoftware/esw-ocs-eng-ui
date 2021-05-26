@@ -13,11 +13,7 @@ import type { ResourceTableStatus } from '../../features/sequencer/components/Re
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
-import {
-  getCurrentStepCommandName,
-  getStepListInfo,
-  SequencerInfo
-} from '../../features/sequencer/utils'
+import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import type { TabName } from './ObservationTabs'
@@ -38,8 +34,7 @@ type SequencerInfoMap = [string, SequencerStateResponse][]
 
 const masterSequencer = (sequencersInfo: SequencerInfo[]): SequencerInfo[] => {
   const mayBeMaster = sequencersInfo.find(
-    (sequencerInfo) =>
-      Prefix.fromString(sequencerInfo.prefix).subsystem === 'ESW'
+    (sequencerInfo) => Prefix.fromString(sequencerInfo.prefix).subsystem === 'ESW'
   )
   return mayBeMaster ? [mayBeMaster] : []
 }
@@ -49,9 +44,7 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
     .filter((x) => Prefix.fromString(x.prefix).subsystem !== 'ESW')
     .sort((a, b) => (a.prefix > b.prefix ? 1 : -1))
 
-  return masterSequencer(sequencerInfo).concat(
-    sortedSequencersWithoutMasterSequencer
-  )
+  return masterSequencer(sequencerInfo).concat(sortedSequencersWithoutMasterSequencer)
 }
 
 const Text = ({ content, type }: { content: string; type: BaseType }) => (
@@ -64,13 +57,7 @@ const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
 
-const Status = ({
-  isRunning,
-  sequencerState
-}: {
-  isRunning: boolean
-  sequencerState: SequencerState
-}) => {
+const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerState: SequencerState }) => {
   const status = isRunning ? (
     <Text content={sequencerState._type} type={getTextType(sequencerState)} />
   ) : (
@@ -85,28 +72,19 @@ const Status = ({
   )
 }
 
-export const CurrentObsMode = ({
-  currentTab,
-  obsMode,
-  sequencers,
-  resources
-}: CurrentObsModeProps): JSX.Element => {
+export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: CurrentObsModeProps): JSX.Element => {
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
-  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
-    []
-  )
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>([])
 
   const handleSequencerStateChange = useCallback(
     (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
-        const filteredSequencers = previousMap.filter(
-          ([sequencerPrefix]) => sequencerPrefix !== currentPrefix
-        )
+        const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
         return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
       })
     },
@@ -132,30 +110,26 @@ export const CurrentObsMode = ({
     return () => subscriptions.forEach((x) => x.cancel())
   }, [handleSequencerStateChange, services])
 
-  const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(
-    ([prefix, sequencerStatus]) => {
-      const stepList = sequencerStatus.stepList
-      const stepListInfo = getStepListInfo(stepList)
+  const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
+    const stepList = sequencerStatus.stepList
+    const stepListInfo = getStepListInfo(stepList)
 
-      return {
-        key: prefix,
-        prefix: prefix,
-        currentStepCommandName: getCurrentStepCommandName(stepList),
-        stepListInfo,
-        sequencerState: sequencerStatus.sequencerState,
-        totalSteps: stepList.steps.length
-      }
+    return {
+      key: prefix,
+      prefix: prefix,
+      currentStepCommandName: getCurrentStepCommandName(stepList),
+      stepListInfo,
+      sequencerState: sequencerStatus.sequencerState,
+      totalSteps: stepList.steps.length
     }
-  )
+  })
 
   const sortedSequencers = sortSequencers(sequencersInfo)
 
   const isRunningTab = currentTab === 'Running'
 
   const sequencerState: SequencerState =
-    sortedSequencers && sortedSequencers[0]
-      ? sortedSequencers[0].sequencerState
-      : { _type: 'Idle' }
+    sortedSequencers && sortedSequencers[0] ? sortedSequencers[0].sequencerState : { _type: 'Idle' }
 
   return (
     <Card
@@ -173,9 +147,7 @@ export const CurrentObsMode = ({
           <ObsModeActions tabName={currentTab} obsMode={obsMode} />
         </Space>
       }>
-      {isRunningTab && (
-        <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />
-      )}
+      {isRunningTab && <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />}
       <ResourcesTable resources={resources} />
     </Card>
   )

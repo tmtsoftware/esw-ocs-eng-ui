@@ -1,11 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  ComponentId,
-  ObsMode,
-  Prefix,
-  StartSequencerResponse
-} from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
@@ -15,10 +10,7 @@ describe('LoadScript Icon', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
   const smService = mockServices.mock.smService
 
-  const componentId = new ComponentId(
-    Prefix.fromString(obsMode.name),
-    'Sequencer'
-  )
+  const componentId = new ComponentId(Prefix.fromString(obsMode.name), 'Sequencer')
   const tests: [string, StartSequencerResponse, string][] = [
     [
       'success',
@@ -80,17 +72,13 @@ describe('LoadScript Icon', () => {
 
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447`, async () => {
-      when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(
-        response
-      )
+      when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
         ui: <LoadScript subsystem={'ESW'} />
       })
 
-      const loadScriptButton = screen.getByRole(
-        'loadScript'
-      ) as HTMLButtonElement
+      const loadScriptButton = screen.getByRole('loadScript') as HTMLButtonElement
 
       await waitFor(() => expect(loadScriptButton.disabled).false)
 

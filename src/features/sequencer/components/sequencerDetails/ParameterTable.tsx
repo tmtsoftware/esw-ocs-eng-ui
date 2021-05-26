@@ -24,9 +24,7 @@ const columns: ColumnsType<ParameterDataType> = [
     // eslint-disable-next-line react/display-name
     render: (values: string): JSX.Element => {
       return (
-        <Typography.Paragraph
-          copyable
-          ellipsis={{ expandable: true, rows: 2, tooltip: true }}>
+        <Typography.Paragraph copyable ellipsis={{ expandable: true, rows: 2, tooltip: true }}>
           {values}
         </Typography.Paragraph>
       )
@@ -49,11 +47,7 @@ const createDataSource = (paramSet: Parameter<Key>[]): ParameterDataType[] =>
     values: parameter.values.map((v) => JSON.stringify(v)).join(commaSeparator)
   }))
 
-export const ParameterTable = ({
-  paramSet
-}: {
-  paramSet: Parameter<Key>[]
-}): JSX.Element => (
+export const ParameterTable = ({ paramSet }: { paramSet: Parameter<Key>[] }): JSX.Element => (
   <div style={{ height: '100%', overflowY: 'scroll' }}>
     <Table
       sticky

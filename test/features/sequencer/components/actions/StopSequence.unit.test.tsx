@@ -5,10 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { StopSequence } from '../../../../../src/features/sequencer/components/actions/StopSequence'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('StopSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
@@ -34,12 +31,7 @@ describe('StopSequence', () => {
       when(sequencerServiceMock.stop()).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <StopSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            isSequencerRunning
-          />
-        )
+        ui: <StopSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
       })
 
       const stopSeqButton = await screen.findByRole('StopSequence')
@@ -47,9 +39,7 @@ describe('StopSequence', () => {
       userEvent.click(stopSeqButton, { button: 0 })
 
       await screen.findByText('Do you want to stop the sequence?')
-      const modalConfirmButton = await within(
-        screen.getByRole('document')
-      ).findByRole('button', {
+      const modalConfirmButton = await within(screen.getByRole('document')).findByRole('button', {
         name: 'Stop'
       })
 
@@ -59,11 +49,7 @@ describe('StopSequence', () => {
 
       verify(sequencerServiceMock.stop()).called()
 
-      await waitFor(
-        () =>
-          expect(screen.queryByText('Do you want to stop the sequence?')).to.not
-            .exist
-      )
+      await waitFor(() => expect(screen.queryByText('Do you want to stop the sequence?')).to.not.exist)
     })
   })
 
@@ -71,12 +57,7 @@ describe('StopSequence', () => {
     when(sequencerServiceMock.stop()).thenReject(Error('error occurred'))
 
     renderWithAuth({
-      ui: (
-        <StopSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning
-        />
-      )
+      ui: <StopSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
     })
 
     //*********testing cancel button ***********************
@@ -84,12 +65,9 @@ describe('StopSequence', () => {
 
     userEvent.click(stopSeqButton1, { button: 0 })
     await screen.findByText('Do you want to stop the sequence?')
-    const modalCancelButton = within(screen.getByRole('document')).getByRole(
-      'button',
-      {
-        name: 'Cancel'
-      }
-    )
+    const modalCancelButton = within(screen.getByRole('document')).getByRole('button', {
+      name: 'Cancel'
+    })
     userEvent.click(modalCancelButton)
 
     verify(sequencerServiceMock.stop()).never()
@@ -99,35 +77,23 @@ describe('StopSequence', () => {
 
     userEvent.click(stopSeqButton2, { button: 0 })
     await screen.findByText('Do you want to stop the sequence?')
-    const modalConfirmButton = within(screen.getByRole('document')).getByRole(
-      'button',
-      {
-        name: 'Stop'
-      }
-    )
+    const modalConfirmButton = within(screen.getByRole('document')).getByRole('button', {
+      name: 'Stop'
+    })
 
     userEvent.click(modalConfirmButton)
 
-    await screen.findByText(
-      'Failed to stop the Sequence, reason: error occurred'
-    )
+    await screen.findByText('Failed to stop the Sequence, reason: error occurred')
 
     verify(sequencerServiceMock.stop()).called()
   })
 
   it(`should be disabled if sequencer is not running | ESW-500`, async () => {
     renderWithAuth({
-      ui: (
-        <StopSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning={false}
-        />
-      )
+      ui: <StopSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning={false} />
     })
 
-    const stopSeqButton = (await screen.findByRole(
-      'StopSequence'
-    )) as HTMLButtonElement
+    const stopSeqButton = (await screen.findByRole('StopSequence')) as HTMLButtonElement
 
     expect(stopSeqButton.disabled).true
   })

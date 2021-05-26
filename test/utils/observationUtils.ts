@@ -1,13 +1,6 @@
-import {
-  ObsMode,
-  ObsModeDetails,
-  ObsModesDetailsResponseSuccess,
-  ObsModeStatus
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, ObsModeDetails, ObsModesDetailsResponseSuccess, ObsModeStatus } from '@tmtsoftware/esw-ts'
 
-export const getObsModes = (
-  status: ObsModeStatus['_type']
-): ObsModesDetailsResponseSuccess => {
+export const getObsModes = (status: ObsModeStatus['_type']): ObsModesDetailsResponseSuccess => {
   const obsModes: ObsModeDetails[] = [
     {
       obsMode: new ObsMode('DarkNight_1'),

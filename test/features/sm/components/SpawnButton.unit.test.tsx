@@ -26,13 +26,9 @@ describe('SpawnSMButton', () => {
       metadata: {}
     }
 
-    when(locServiceMock.listByComponentType('Machine')).thenResolve([
-      agentLocation
-    ])
+    when(locServiceMock.listByComponentType('Machine')).thenResolve([agentLocation])
 
-    when(
-      agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)
-    ).thenResolve({ _type: 'Spawned' })
+    when(agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)).thenResolve({ _type: 'Spawned' })
 
     renderWithAuth({
       ui: <SpawnSMButton />
@@ -62,9 +58,7 @@ describe('SpawnSMButton', () => {
 
     await screen.findByText('Successfully spawned Sequence Manager')
 
-    const [prefix, expectedConfig, isLocal] = capture(
-      agentServiceMock.spawnSequenceManager
-    ).first()
+    const [prefix, expectedConfig, isLocal] = capture(agentServiceMock.spawnSequenceManager).first()
 
     expect(prefix.toJSON()).eq(agentPrefix.toJSON())
     expect(expectedConfig).eq(OBS_MODE_CONFIG)
@@ -82,16 +76,9 @@ describe('SpawnSMButton', () => {
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
     userEvent.click(spawnButton)
 
-    await screen.findByText(
-      'Agents are not running. Please start an agent first.'
-    )
+    await screen.findByText('Agents are not running. Please start an agent first.')
 
-    await waitFor(
-      () =>
-        expect(
-          screen.queryByText('Choose an agent to spawn the Sequence Manager')
-        ).not.exist
-    )
+    await waitFor(() => expect(screen.queryByText('Choose an agent to spawn the Sequence Manager')).not.exist)
   })
 
   it('should show notification if spawning sequence manager fails | ESW-441', async () => {
@@ -105,13 +92,12 @@ describe('SpawnSMButton', () => {
       metadata: {}
     }
 
-    when(locServiceMock.listByComponentType('Machine')).thenResolve([
-      agentLocation
-    ])
+    when(locServiceMock.listByComponentType('Machine')).thenResolve([agentLocation])
 
-    when(
-      agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)
-    ).thenResolve({ _type: 'Failed', msg: 'Config file not found' })
+    when(agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)).thenResolve({
+      _type: 'Failed',
+      msg: 'Config file not found'
+    })
 
     renderWithAuth({
       ui: <SpawnSMButton />
@@ -139,8 +125,6 @@ describe('SpawnSMButton', () => {
     //User clicks modal's spawn button
     userEvent.click(modalSpawnButton)
 
-    await screen.findByText(
-      'Sequence Manager could not be spawned. Please try again., reason: Config file not found'
-    )
+    await screen.findByText('Sequence Manager could not be spawned. Please try again., reason: Config file not found')
   })
 })

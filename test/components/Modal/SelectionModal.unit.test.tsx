@@ -126,9 +126,6 @@ describe('SelectionModal', () => {
 
     expect(screen.getByText('No Data')).to.exist
     expect(screen.queryByRole('menuitem')).to.null
-    expect(
-      (screen.queryByRole('button', { name: 'Start' }) as HTMLButtonElement)
-        .disabled
-    ).to.true
+    expect((screen.queryByRole('button', { name: 'Start' }) as HTMLButtonElement).disabled).to.true
   })
 })

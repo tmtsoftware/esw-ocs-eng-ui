@@ -9,14 +9,7 @@ import { Resources } from '../containers/resources/Resources'
 import { ManageSequencer } from '../containers/sequencer/ManageSequencer'
 import { useAuth } from '../hooks/useAuth'
 import { NoMatch } from './NoMatch'
-import {
-  HOME,
-  INFRASTRUCTURE,
-  NO_MATCH,
-  OBSERVATIONS,
-  RESOURCES,
-  SEQUENCER_PATH
-} from './RoutesConfig'
+import { HOME, INFRASTRUCTURE, NO_MATCH, OBSERVATIONS, RESOURCES, SEQUENCER_PATH } from './RoutesConfig'
 
 const RedirectToLogin = ({ login }: { login: () => void }) => {
   useEffect(() => {

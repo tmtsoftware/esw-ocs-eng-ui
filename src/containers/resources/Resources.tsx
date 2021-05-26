@@ -2,10 +2,7 @@ import { Card, Table, Typography } from 'antd'
 import React from 'react'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import { HeaderTitle } from '../../components/table/HeaderTitle'
-import {
-  GroupedObsModeDetails,
-  useObsModesDetails
-} from '../../features/sm/hooks/useObsModesDetails'
+import { GroupedObsModeDetails, useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import styles from './resources.module.css'
 import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import type { ColumnsType } from 'antd/lib/table'
@@ -18,25 +15,16 @@ type ResourceData = {
   usedBy: string
 }
 
-const byStatus = (fst: ResourceData, snd: ResourceData) =>
-  snd.status > fst.status ? 1 : -1
+const byStatus = (fst: ResourceData, snd: ResourceData) => (snd.status > fst.status ? 1 : -1)
 
-const mkResourceData = (
-  key: string,
-  status: ResourceType,
-  usedBy: string
-): ResourceData => ({ key, status, usedBy })
+const mkResourceData = (key: string, status: ResourceType, usedBy: string): ResourceData => ({ key, status, usedBy })
 
-const getResources = (details: ObsModeDetails[]) => [
-  ...new Set(details.flatMap((om) => om.resources))
-]
+const getResources = (details: ObsModeDetails[]) => [...new Set(details.flatMap((om) => om.resources))]
 
-const groupByResourceStatus = (
-  groupedObsModes: GroupedObsModeDetails
-): ResourceData[] => {
+const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): ResourceData[] => {
   const availableResources = getResources(groupedObsModes.Configurable)
-  const availableResourceData: ResourceData[] = availableResources.map(
-    (resource) => mkResourceData(resource, 'Available', 'NA')
+  const availableResourceData: ResourceData[] = availableResources.map((resource) =>
+    mkResourceData(resource, 'Available', 'NA')
   )
 
   const inUseResources = [
@@ -49,33 +37,24 @@ const groupByResourceStatus = (
     )
   ]
 
-  const inUseResourceData: ResourceData[] = inUseResources.map(
-    ([obsModeName, resource]) => mkResourceData(resource, 'InUse', obsModeName)
+  const inUseResourceData: ResourceData[] = inUseResources.map(([obsModeName, resource]) =>
+    mkResourceData(resource, 'InUse', obsModeName)
   )
 
-  const nonConfigurableResources = getResources(
-    groupedObsModes['Non-configurable']
-  )
-  const nonConfigurableResourceData: ResourceData[] =
-    nonConfigurableResources.flatMap((resource) => {
-      const found = inUseResourceData.find((data) => data.key === resource)
-      return found ? [] : [mkResourceData(resource, 'Available', 'NA')]
-    })
+  const nonConfigurableResources = getResources(groupedObsModes['Non-configurable'])
+  const nonConfigurableResourceData: ResourceData[] = nonConfigurableResources.flatMap((resource) => {
+    const found = inUseResourceData.find((data) => data.key === resource)
+    return found ? [] : [mkResourceData(resource, 'Available', 'NA')]
+  })
 
-  return [
-    ...inUseResourceData,
-    ...availableResourceData,
-    ...nonConfigurableResourceData
-  ].sort(byStatus)
+  return [...inUseResourceData, ...availableResourceData, ...nonConfigurableResourceData].sort(byStatus)
 }
 
 export const resourceStatusCol = (status: ResourceType): JSX.Element => (
   <Typography.Text
     strong
     style={{
-      color: `${
-        status === 'Available' ? 'var(--purple)' : 'var(--successColor)'
-      }`
+      color: `${status === 'Available' ? 'var(--purple)' : 'var(--successColor)'}`
     }}>
     {status}
   </Typography.Text>

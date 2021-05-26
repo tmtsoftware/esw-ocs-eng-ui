@@ -1,11 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  GenericResponse,
-  Prefix,
-  SequenceCommand,
-  Setup
-} from '@tmtsoftware/esw-ts'
+import { GenericResponse, Prefix, SequenceCommand, Setup } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
@@ -18,10 +13,7 @@ import {
 } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
 import { _createErrorMsg } from '../../../../../src/utils/message'
-import {
-  renderWithAuth,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 type TestData = {
   testName: string
@@ -37,9 +29,7 @@ describe('AddSteps', () => {
   const unhandledMsg = 'unhandled'
   const id = 'step_1'
   const seqPrefix = Prefix.fromString('ESW.darknight')
-  const commands: SequenceCommand[] = [
-    new Setup(seqPrefix, 'move', [], '2020A-001-123')
-  ]
+  const commands: SequenceCommand[] = [new Setup(seqPrefix, 'move', [], '2020A-001-123')]
   const file = new File([JSON.stringify(commands)], 'commands.json', {
     type: 'application/json'
   })
@@ -57,14 +47,10 @@ describe('AddSteps', () => {
     {
       testName: 'should show error if the step is finished | ESW-461',
       response: { _type: 'CannotOperateOnAnInFlightOrFinishedStep' },
-      message: _createErrorMsg(
-        addStepsErrorPrefix,
-        cannotOperateOnAnInFlightOrFinishedStepMsg
-      )
+      message: _createErrorMsg(addStepsErrorPrefix, cannotOperateOnAnInFlightOrFinishedStepMsg)
     },
     {
-      testName:
-        'should show error if unhandled response is given by sequencer | ESW-461',
+      testName: 'should show error if unhandled response is given by sequencer | ESW-461',
       response: {
         _type: 'Unhandled',
         msg: unhandledMsg,
@@ -77,9 +63,7 @@ describe('AddSteps', () => {
 
   testCases.forEach(({ testName, response, message }) => {
     it(testName, async () => {
-      when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(
-        response
-      )
+      when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(response)
       const AddStepsComponent = () => (
         <Menu>
           {AddSteps({
@@ -108,11 +92,9 @@ describe('AddSteps', () => {
   })
 
   it('should show error if file content is not valid ', async () => {
-    const file = new File(
-      [JSON.stringify({ invalidCommands: 'invalidCommands' })],
-      'commands.json',
-      { type: 'application/json' }
-    )
+    const file = new File([JSON.stringify({ invalidCommands: 'invalidCommands' })], 'commands.json', {
+      type: 'application/json'
+    })
     const AddStepsComponent = () => (
       <Menu>
         {AddSteps({
@@ -135,9 +117,7 @@ describe('AddSteps', () => {
     const inputBox = addStepsButton.firstChild as HTMLInputElement
     userEvent.upload(inputBox, file)
 
-    await screen.findByText(
-      _createErrorMsg(addStepsErrorPrefix, couldNotDeserialiseSequenceMsg)
-    )
+    await screen.findByText(_createErrorMsg(addStepsErrorPrefix, couldNotDeserialiseSequenceMsg))
     verify(sequencerServiceMock.insertAfter(anything(), anything())).never()
   })
 })

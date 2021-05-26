@@ -8,16 +8,10 @@ import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import type { SequencerService, SubmitResponse } from '@tmtsoftware/esw-ts'
 
-const useStartSequence = (): UseMutationResult<
-  SubmitResponse,
-  unknown,
-  SequencerService
-> => {
-  const mutationFn = (sequencerService: SequencerService) =>
-    sequencerService.startSequence()
+const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, SequencerService> => {
+  const mutationFn = (sequencerService: SequencerService) => sequencerService.startSequence()
 
-  const showError = (str: string) =>
-    errorMessage('Failed to start the sequence', Error(str))
+  const showError = (str: string) => errorMessage('Failed to start the sequence', Error(str))
 
   return useMutation({
     mutationFn,
@@ -36,17 +30,11 @@ const useStartSequence = (): UseMutationResult<
       }
     },
     onError: (e) =>
-      errorMessage(
-        'Failed to start the sequence',
-        (e as Error).message ? e : Error((e as string).toString())
-      )
+      errorMessage('Failed to start the sequence', (e as Error).message ? e : Error((e as string).toString()))
   })
 }
 
-export const StartSequence = ({
-  prefix,
-  sequencerState
-}: SequencerProps): JSX.Element => {
+export const StartSequence = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const startSequence = useStartSequence()
 
@@ -54,16 +42,10 @@ export const StartSequence = ({
   return (
     <Tooltip placement='bottom' title={'Start sequence'}>
       <Button
-        onClick={() =>
-          sequencerService && startSequence.mutate(sequencerService)
-        }
+        onClick={() => sequencerService && startSequence.mutate(sequencerService)}
         type={'text'}
         shape={'circle'}
-        icon={
-          <PlayCircleOutlined
-            className={disabled ? styles.actionDisabled : styles.actionEnabled}
-          />
-        }
+        icon={<PlayCircleOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}
         disabled={disabled}
         role='StartSequence'
       />

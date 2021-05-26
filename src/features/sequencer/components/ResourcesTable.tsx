@@ -26,9 +26,7 @@ const columns = [
   }
 ]
 
-export const ResourcesTable = ({
-  resources
-}: ResourcesTableProps): JSX.Element => {
+export const ResourcesTable = ({ resources }: ResourcesTableProps): JSX.Element => {
   return (
     <div style={{ height: '100%', overflowY: 'scroll' }}>
       <Table

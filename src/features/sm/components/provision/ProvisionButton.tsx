@@ -21,73 +21,51 @@ type ProvisionRecord = Record<string, number>
 const sanitiseErrorMsg = (res: SpawningSequenceComponentsFailed) =>
   res.failureResponses.map((x) => x.split('reason')[0].split(':')[1]).join('\n')
 
-const provision =
-  (provisionRecord: ProvisionRecord) =>
-  async (sequenceManagerService: SequenceManagerService) => {
-    const provisionConfig = parseProvisionConf(provisionRecord)
-    const res = await sequenceManagerService.provision(provisionConfig)
-    switch (res._type) {
-      case 'Success':
-        return res
-      case 'LocationServiceError':
-        throw Error(res.reason)
-      case 'Unhandled':
-        throw Error(res.msg)
-      case 'SpawningSequenceComponentsFailed':
-        throw Error(
-          `Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(
-            res
-          )}`
-        )
-      case 'CouldNotFindMachines':
-        throw Error(
-          `Could not find following machine: ${res.prefix
-            .map((x) => x.toJSON())
-            .join(',')}`
-        )
+const provision = (provisionRecord: ProvisionRecord) => async (sequenceManagerService: SequenceManagerService) => {
+  const provisionConfig = parseProvisionConf(provisionRecord)
+  const res = await sequenceManagerService.provision(provisionConfig)
+  switch (res._type) {
+    case 'Success':
+      return res
+    case 'LocationServiceError':
+      throw Error(res.reason)
+    case 'Unhandled':
+      throw Error(res.msg)
+    case 'SpawningSequenceComponentsFailed':
+      throw Error(`Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(res)}`)
+    case 'CouldNotFindMachines':
+      throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
 
-      case 'FailedResponse':
-        throw new Error(res.reason)
-    }
+    case 'FailedResponse':
+      throw new Error(res.reason)
   }
+}
 
 const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
-  const agentProvisionConfigs = Object.entries(provisionRecord).map(
-    ([prefixStr, num]) => {
-      return new AgentProvisionConfig(Prefix.fromString(prefixStr), num)
-    }
-  )
+  const agentProvisionConfigs = Object.entries(provisionRecord).map(([prefixStr, num]) => {
+    return new AgentProvisionConfig(Prefix.fromString(prefixStr), num)
+  })
   return new ProvisionConfig(agentProvisionConfigs)
 }
 
-const validateProvisionConf = (
-  provisionRecord: ProvisionRecord
-): ProvisionRecord => {
+const validateProvisionConf = (provisionRecord: ProvisionRecord): ProvisionRecord => {
   Object.entries(provisionRecord).forEach(([key, value]) => {
     if (!Number.isInteger(value)) {
-      throw Error(
-        `value of number of sequence components for ${key} is not an Integer`
-      )
+      throw Error(`value of number of sequence components for ${key} is not an Integer`)
     }
     Prefix.fromString(key)
   })
   return provisionRecord
 }
 
-const fetchProvisionConf = async (
-  configService: ConfigService
-): Promise<ProvisionRecord> => {
+const fetchProvisionConf = async (configService: ConfigService): Promise<ProvisionRecord> => {
   const confOption = await configService.getActive(PROVISION_CONF_PATH)
   if (!confOption) throw Error('Provision conf is not present')
   const provisionConfRecord = await confOption.fileContentAsString()
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
-export const ProvisionButton = ({
-  disabled = false
-}: {
-  disabled?: boolean
-}): JSX.Element => {
+export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
   const useErrorBoundary = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
@@ -151,10 +129,7 @@ export const ProvisionButton = ({
         bodyStyle={{ padding: 0 }}
         onOk={handleModalOk}
         onCancel={handleModalCancel}>
-        <ProvisionTable
-          provisionRecord={provisionRecord}
-          setProvisionRecord={setProvisionRecord}
-        />
+        <ProvisionTable provisionRecord={provisionRecord} setProvisionRecord={setProvisionRecord} />
       </Modal>
     </>
   )

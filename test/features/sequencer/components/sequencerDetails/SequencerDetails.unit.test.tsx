@@ -23,7 +23,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { addStepsSuccessMsg } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
-import { getStepList, stepUsingId } from '../../../../utils/sequence-utils'
+import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 import type { SequencerState } from '@tmtsoftware/esw-ts'
 
@@ -165,6 +165,8 @@ describe('sequencer details', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
+    await setViewport({ width: 1440, height: 900 })
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -189,14 +191,14 @@ describe('sequencer details', () => {
     ).to.exist
   })
 
-  it('should render step2 parameter table when a sequence progress from step1 to step2 | ESW-501, ESW-489', async () => {
-    const stepList: StepList = new StepList([stepUsingId('InFlight', '1'), stepUsingId('Pending', '2')])
+  it('should follow step list progress by default when no user action | ESW-501, ESW-489', async () => {
+    const stepListWithStep1InProgress: StepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2')])
 
-    const updatedStepList: StepList = new StepList([stepUsingId('Success', '1'), stepUsingId('InFlight', '2')])
+    const stepListWithStep2InProgress: StepList = new StepList([getStep('Success', '1'), getStep('InFlight', '2')])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onevent) => {
-      sendEvent(onevent, 'Running', stepList)
-      sendEvent(onevent, 'Running', updatedStepList, 1000)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
+      sendEvent(callback, 'Running', stepListWithStep1InProgress)
+      sendEvent(callback, 'Running', stepListWithStep2InProgress, 100)
       return {
         cancel: () => undefined
       }
@@ -205,29 +207,37 @@ describe('sequencer details', () => {
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
-    // assert data of event 1
+    // step1 in executng, ui should show step1
+    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
+    const stepButton = within(htmlElement).getByRole('button')
+    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
     await screen.findByText('ESW.test1')
 
-    //After 1 milli second , a new event is received
-    await screen.findByText('ESW.test2', undefined, { timeout: 1200 })
+    await new Promise((r) => setTimeout(r, 100))
+
+    //After some time , a new event is received, step2 in executng, ui should show step2
+    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
+    const stepButton2 = within(htmlElement2).getByRole('button')
+    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test2', undefined, { timeout: 120 })
   })
 
-  it('should keep rendering step3 parameter table when step3 is clicked and sequence progress from step1 to step2 | ESW-501, ESW-489', async () => {
-    const stepList: StepList = new StepList([
-      stepUsingId('InFlight', '1'),
-      stepUsingId('Pending', '2'),
-      stepUsingId('Pending', '3')
+  it('should not follow step list progress when user selects step other than in-flight step | ESW-501, ESW-489', async () => {
+    const stepListWithStep1InProgress: StepList = new StepList([
+      getStep('InFlight', '1'),
+      getStep('Pending', '2'),
+      getStep('Pending', '3')
     ])
 
-    const updatedStepListWithStep2InProgress: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('InFlight', '2'),
-      stepUsingId('Pending', '3')
+    const stepListWithStep2InProgress: StepList = new StepList([
+      getStep('Success', '1'),
+      getStep('InFlight', '2'),
+      getStep('Pending', '3')
     ])
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
-      sendEvent(callback, 'Running', stepList)
-      sendEvent(callback, 'Running', updatedStepListWithStep2InProgress, 200)
+      sendEvent(callback, 'Running', stepListWithStep1InProgress)
+      sendEvent(callback, 'Running', stepListWithStep2InProgress, 400)
       return {
         cancel: () => undefined
       }
@@ -237,90 +247,145 @@ describe('sequencer details', () => {
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    const step = await screen.findByRole('button', { name: /command3/i })
-    userEvent.click(step)
+    //User clicks step3
+    const step3 = await screen.findByRole('button', { name: /Command-3/i })
+    userEvent.click(step3)
 
+    //step1 is executing, but ui should show step3(which was clicked by user)
+    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
+    const stepButton = within(htmlElement).getByRole('button')
+    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
     await screen.findByText('ESW.test3')
 
-    //TODO: add css style assertions here
+    await new Promise((r) => setTimeout(r, 400))
 
-    //even when step2 starts executing, ui should continue to show step3
+    //step2 is executing, ui should continue to show step3(which was clicked by user)
+    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
+    const stepButton2 = within(htmlElement2).getByRole('button')
+    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
     await screen.findByText('ESW.test3')
   })
 
-  it('should keep rendering step1(completed step) parameter table when step1 is clicked and steplist polling continues | ESW-501, ESW-489', async () => {
-    const stepList: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('InFlight', '2'),
-      stepUsingId('Pending', '3')
+  it('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
+    const stepListWithStep1InProgress: StepList = new StepList([
+      getStep('InFlight', '1'),
+      getStep('Pending', '2'),
+      getStep('Pending', '3')
     ])
 
-    const stepListUpdated: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('InFlight', '2'),
-      stepUsingId('Pending', '3')
+    const stepListWithStep2InProgress: StepList = new StepList([
+      getStep('Success', '1'),
+      getStep('InFlight', '2'),
+      getStep('Pending', '3')
     ])
+
+    //this simulates abort sequence action, and removes step3 from stepList which was not executed
+    const stepListWithStep3Removed: StepList = new StepList([getStep('Success', '1'), getStep('Success', '2')])
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
-      sendEvent(callback, 'Running', stepList)
-      sendEvent(callback, 'Running', stepListUpdated, 200)
+      sendEvent(callback, 'Running', stepListWithStep1InProgress)
+      sendEvent(callback, 'Running', stepListWithStep2InProgress, 400)
+      sendEvent(callback, 'Running', stepListWithStep3Removed, 800)
       return {
         cancel: () => undefined
       }
     })
+
+    await setViewport({ width: 1440, height: 900 })
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    const step = await screen.findByRole('button', { name: /command1/i })
+    //user clicks step3
+    const step3 = await screen.findByRole('button', { name: /Command-3/i })
+    userEvent.click(step3)
 
-    userEvent.click(step)
+    //step1 is executing, ui should show step3(which was clicked by user)
+    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
+    const stepButton = within(htmlElement).getByRole('button')
+    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test3')
 
-    await screen.findByText('ESW.test1')
-    //TODO: add css style assertions here
-    //when due to polling new call returns new steplist object with same data, UI should continue to show step1
-    await screen.findByText('ESW.test1')
+    await new Promise((r) => setTimeout(r, 400))
+
+    //step2 is executing
+    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
+    const stepButton2 = within(htmlElement2).getByRole('button')
+    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+
+    await new Promise((r) => setTimeout(r, 400))
+
+    //ui should show step2 as step3 got removed
+    await screen.findByText('ESW.test2')
   })
 
-  it('should render step2 followed by step3 parameter table when step2 is clicked and sequence progress from step1, step2 and step3 | ESW-501', async () => {
+  it('should start following step list progress again when user selects in-flight step | ESW-501', async () => {
     const stepList: StepList = new StepList([
-      stepUsingId('InFlight', '1'),
-      stepUsingId('Pending', '2'),
-      stepUsingId('Pending', '3')
+      getStep('InFlight', '1'),
+      getStep('Pending', '2'),
+      getStep('Pending', '3')
     ])
 
     const updatedStepListWithStep2InProgress: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('InFlight', '2'),
-      stepUsingId('Pending', '3')
+      getStep('Success', '1'),
+      getStep('InFlight', '2'),
+      getStep('Pending', '3')
     ])
 
     const updatedStepListWithStep3InProgress: StepList = new StepList([
-      stepUsingId('Success', '1'),
-      stepUsingId('Success', '2'),
-      stepUsingId('InFlight', '3')
+      getStep('Success', '1'),
+      getStep('Success', '2'),
+      getStep('InFlight', '3')
     ])
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
-      (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
-        sendEvent(onevent, 'Idle', stepList)
-        sendEvent(onevent, 'Idle', updatedStepListWithStep2InProgress, 100)
-        sendEvent(onevent, 'Idle', updatedStepListWithStep3InProgress, 200)
+      (callback: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendEvent(callback, 'Running', stepList)
+        sendEvent(callback, 'Running', updatedStepListWithStep2InProgress, 400)
+        sendEvent(callback, 'Running', updatedStepListWithStep3InProgress, 800)
         return {
           cancel: () => undefined
         }
       }
     )
 
+    await setViewport({ width: 1440, height: 900 })
+
     renderWithAuth({
-      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+      ui: (
+        <BrowserRouter>
+          <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+        </BrowserRouter>
+      )
     })
 
-    const step2 = await screen.findByRole('button', { name: /command2/i })
-    userEvent.click(step2)
+    //user clicks step3
+    const step3 = await screen.findByRole('button', { name: /Command-3/i })
+    userEvent.click(step3)
 
+    //step1 is executing, ui should show step3(which was clicked by user) i.e. user goes to non-follow mode
+    const htmlElement1 = await screen.findByRole('cell', { name: /Command-1/i })
+    const stepButton1 = within(htmlElement1).getByRole('button')
+    expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test3')
+
+    await new Promise((r) => setTimeout(r, 400))
+
+    //step2 is executing, ui should show step3(which was clicked by user) i.e. user is still in non-follow mode
+    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
+    const stepButton2 = within(htmlElement2).getByRole('button')
+    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test3')
+
+    //user clicks step2, which is in progress to go in follow mode again, and now ui should show step2
+    const step2 = await screen.findByRole('button', { name: /Command-2/i })
+    userEvent.click(step2)
     await screen.findByText('ESW.test2')
 
+    await new Promise((r) => setTimeout(r, 400))
+
+    //as user is in follow mode, and after some time ui should show step3 as steplist progress
     await screen.findByText('ESW.test3')
   })
 
@@ -360,6 +425,9 @@ describe('sequencer details', () => {
     const obsIdKey = screen.getByLabelText('Obs-Id-Key')
     const obsIdValue = screen.getByLabelText('Obs-Id-Value')
 
+    const step1 = screen.getByRole('button', { name: /Command-1/i })
+    userEvent.click(step1)
+
     expect(typeKey.innerText).to.equals('Command Type')
     expect(typeValue.innerText).to.equals('Setup')
     expect(commandNameKey.innerText).to.equals('Command')
@@ -369,8 +437,8 @@ describe('sequencer details', () => {
     expect(obsIdKey.innerText).to.equals('Obs-Id')
     expect(obsIdValue.innerText).to.equals('NA')
 
-    const step = screen.getByRole('button', { name: /Command-2/i })
-    userEvent.click(step)
+    const step2 = screen.getByRole('button', { name: /Command-2/i })
+    userEvent.click(step2)
 
     expect(typeKey.innerText).to.equals('Command Type')
     expect(typeValue.innerText).to.equals('Setup')

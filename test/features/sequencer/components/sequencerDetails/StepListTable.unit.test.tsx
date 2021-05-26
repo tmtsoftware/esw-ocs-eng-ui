@@ -4,8 +4,8 @@ import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import { StepListTable } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
-import { getStepList } from '../../../../utils/sequence-utils'
+import { getRunningStep, StepListTable } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
+import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('stepList table', () => {
@@ -386,3 +386,40 @@ describe('stepList table', () => {
 })
 
 const findCell = (name: string) => screen.findByRole('cell', { name })
+
+describe('getRunningStep', () => {
+  it('should return first step when step is in Loaded state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Pending', '1'), getStep('Pending', '2')])
+    expect(getRunningStep(stepList, 'Loaded')?.id).to.equals('1')
+  })
+
+  it('should return last step when step is in All Steps Completed state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1'), getStep('Success', '2')])
+    expect(getRunningStep(stepList, 'All Steps Completed')?.id).to.equals('2')
+  })
+
+  it('should return Failure step when step is in Failed state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1'), getStep('Failure', '2'), getStep('Pending', '3')])
+    expect(getRunningStep(stepList, 'Failed')?.id).to.equals('2')
+  })
+
+  it('should return first Pending step when step is in Paused state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1'), getStep('Pending', '2'), getStep('Pending', '3')])
+    expect(getRunningStep(stepList, 'Paused')?.id).to.equals('2')
+  })
+
+  it('should return InFlight step when step is In Progress state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1'), getStep('InFlight', '2'), getStep('Pending', '3')])
+    expect(getRunningStep(stepList, 'In Progress')?.id).to.equals('2')
+  })
+
+  it('should return undefined step when step is in Failed to Fetch Status state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1')])
+    expect(getRunningStep(stepList, 'Failed to Fetch Status')?.id).to.equals(undefined)
+  })
+
+  it('should return undefined step when step is in NA state | ESW-501 ', () => {
+    const stepList = new StepList([getStep('Success', '1')])
+    expect(getRunningStep(stepList, 'NA')?.id).to.equals(undefined)
+  })
+})

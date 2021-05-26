@@ -6,19 +6,19 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import { getCurrentStepCommandName, SequencerInfo, StepListStatus } from '../../../src/features/sequencer/utils'
-import { getSequencersInfo, step } from '../../utils/sequence-utils'
+import { getSequencersInfo, getStep } from '../../utils/sequence-utils'
 import { renderWithAuth } from '../../utils/test-utils'
 import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
 
 describe('sequencer table', () => {
-  const stepList1: StepList = new StepList([step('Pending', 'command-11', true), step('Pending', 'command-12')])
+  const stepList1: StepList = new StepList([getStep('Pending', '11', true), getStep('Pending', '12')])
   const stepList2: StepList = new StepList([
-    step('Success', 'command-21'),
-    step('Failure', 'command-22'),
-    step('Pending', 'command-23')
+    getStep('Success', '21'),
+    getStep('Failure', '22'),
+    getStep('Pending', '23')
   ])
-  const stepList3: StepList = new StepList([step('InFlight', 'command-31'), step('Pending', 'command-32')])
-  const stepList4: StepList = new StepList([step('Success', 'command-41'), step('Success', 'command-42')])
+  const stepList3: StepList = new StepList([getStep('InFlight', '31'), getStep('Pending', '32')])
+  const stepList4: StepList = new StepList([getStep('Success', '41'), getStep('Success', '42')])
 
   it('should be able to render SequencersTable successfully | ESW-451, ESW-496', async () => {
     const eswPrefix = 'ESW.DarkNight_1'
@@ -94,11 +94,11 @@ const assertTable = async () => {
 
   await assertHeaders()
 
-  await assertRow(/setting esw\.darknight_1/i, ['setting ESW.DarkNight_1', 'command-11', 'Step 1 Paused', '2'])
+  await assertRow(/setting esw\.darknight_1/i, ['setting ESW.DarkNight_1', 'Command-11', 'Step 1 Paused', '2'])
 
-  await assertRow(/aps\.darknight_1/i, ['setting APS.DarkNight_1', 'command-22', 'Step 2 Failed', '3'])
+  await assertRow(/aps\.darknight_1/i, ['setting APS.DarkNight_1', 'Command-22', 'Step 2 Failed', '3'])
 
-  await assertRow(/dps\.darknight_1/i, ['setting DPS.DarkNight_1', 'command-31', 'Step 1 In Progress', '2'])
+  await assertRow(/dps\.darknight_1/i, ['setting DPS.DarkNight_1', 'Command-31', 'Step 1 In Progress', '2'])
 
   await assertRow(/cis\.darknight_1/i, ['setting CIS.DarkNight_1', 'NA', 'All Steps Completed', '2'])
 }

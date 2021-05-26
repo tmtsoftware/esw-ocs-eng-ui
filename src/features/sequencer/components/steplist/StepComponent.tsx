@@ -23,6 +23,7 @@ export const StepComponent = (
   step: Step,
   stepNumber: number,
   setSelectedStep: (_: Step) => void,
+  setFollowProgress: (_: boolean) => void,
   sequencerPrefix: Prefix
 ): JSX.Element => {
   const stepsStyle = {
@@ -46,6 +47,7 @@ export const StepComponent = (
           shape={'round'}
           onClick={() => {
             setSelectedStep(step)
+            step.status._type === 'InFlight' ? setFollowProgress(true) : setFollowProgress(false)
           }}>
           <Typography.Text
             type={color[step.status._type]}

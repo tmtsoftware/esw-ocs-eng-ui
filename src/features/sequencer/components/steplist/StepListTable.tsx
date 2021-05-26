@@ -17,34 +17,36 @@ type StepData = {
   index: number
 }
 
-const setStepToDisplayParameters = (
-  setSelectedStep: (_: Step | undefined) => void,
-  stepList?: StepList,
-  selectedStep?: Step
-) => {
-  if (stepList) {
-    validStepChecker(setSelectedStep, stepList, selectedStep)
-  } else {
-    // no step-list
-    setSelectedStep(undefined)
+const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
+  return !stepList?.steps.find((step) => step.id === selectedStep.id)
+}
+
+export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatus): Step | undefined => {
+  switch (stepListStatus) {
+    case 'Loaded':
+      return stepList.steps[0]
+    case 'All Steps Completed':
+      return stepList.steps[stepList.steps.length - 1]
+    case 'Failed':
+      return stepList.steps.find((step) => step.status._type === 'Failure')
+    case 'Paused':
+      return stepList.steps.find((step) => step.status._type === 'Pending')
+    case 'In Progress':
+      return stepList.steps.find((step) => step.status._type === 'InFlight')
+    default:
+      return undefined
   }
 }
 
-const validStepChecker = (setSelectedStep: (_: Step | undefined) => void, stepList: StepList, selectedStep?: Step) => {
-  if (!selectedStep) {
-    // will be set for the first time
-    setSelectedStep(stepList.steps[0])
-  } else {
-    // will check if selected step is always in the step-list for cases like abort sequence
-    !stepList.steps.find((step) => step.id === selectedStep.id) && setSelectedStep(stepList.steps[0])
-  }
-}
-
-const columns = (sequencerPrefix: Prefix, setSelectedStep: (_: Step) => void): ColumnsType<StepData> => [
+const columns = (
+  sequencerPrefix: Prefix,
+  setSelectedStep: (_: Step) => void,
+  setFollowProgress: (_: boolean) => void
+): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, sequencerPrefix)
+    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress, sequencerPrefix)
   }
 ]
 
@@ -77,7 +79,19 @@ export const StepListTable = ({
 }: StepListTableProps): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
-  const stepListStatus = getStepListInfo(stepList).status
+  const [followProgress, setFollowProgress] = useState(true)
+  const stepListInfo = getStepListInfo(stepList)
+
+  useEffect(() => {
+    if (followProgress === true) {
+      const runningStep = getRunningStep(stepList, stepListInfo.status)
+      setSelectedStep(runningStep)
+    }
+    //fallback to follow progress mode for cases like abort sequence, load sequence(twice) when user selected step does not exist in stepList anymore
+    else if (selectedStep && isSelectedStepNotPresentInStepList(stepList, selectedStep)) {
+      setFollowProgress(true)
+    }
+  }, [followProgress, selectedStep, stepList, stepListInfo.status, setSelectedStep])
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
@@ -87,36 +101,15 @@ export const StepListTable = ({
     hideSelectAll: true
   }
 
-  //Both useEffect can be be moved to parent component
-  useEffect(
-    () => setStepToDisplayParameters(setSelectedStep, stepList, selectedStep),
-    [stepList, selectedStep, setSelectedStep]
-  )
-
-  useEffect(() => {
-    const inFlightStep = stepList?.steps.find((step) => step.status._type === 'InFlight')
-    if (inFlightStep !== undefined && selectedStep !== undefined && stepList !== undefined) {
-      const inFlightStepIndex = stepList.steps.findIndex((step) => step.id === inFlightStep.id)
-      const selectedStepIndex = stepList.steps.findIndex((step) => step.id === selectedStep.id)
-      const isSelectedStepPreviousOfInFlightStep = inFlightStepIndex - selectedStepIndex === 1
-      const isSelectedStepIncomplete = selectedStep.status._type !== 'Success'
-
-      if (isSelectedStepIncomplete && isSelectedStepPreviousOfInFlightStep) {
-        setSelectedStep(inFlightStep)
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stepList])
-
   return (
     <StepListContextProvider
       value={{
         handleDuplicate: () => toggleDuplicateEnabled(!isDuplicateEnabled),
         isDuplicateEnabled,
-        stepListStatus
+        stepListStatus: stepListInfo.status
       }}>
       <div style={{ height: '90%' }}>
-        <StepListTitle stepListStatus={stepListStatus} />
+        <StepListTitle stepListStatus={stepListInfo.status} />
         <Table
           showHeader={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
@@ -128,7 +121,7 @@ export const StepListTable = ({
             ...step,
             index
           }))}
-          columns={columns(sequencerPrefix, setSelectedStep)}
+          columns={columns(sequencerPrefix, setSelectedStep, setFollowProgress)}
           onRow={(step) => ({
             id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell

@@ -5,7 +5,7 @@ import { CurrentObsMode } from '../../../src/containers/observation/CurrentObsMo
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 describe('CurrentObsMode', () => {
-  it.only(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
+  it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
     const smService = mockServices.mock.smService
 
     const obsModes: ObsModeDetails[] = [

@@ -8,7 +8,7 @@ import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { obsModesData } from '../../jsons/obsmodes'
 import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
-import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
@@ -61,33 +61,10 @@ describe('observation tabs', () => {
 
   it('should be able to configure a configurable observation | ESW-450, ESW-489', async () => {
     // mock setup starts here
-    const agentStatus: AgentStatus = {
-      agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
-      seqCompsStatus: [
-        {
-          seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
-          sequencerLocation: [
-            {
-              _type: 'AkkaLocation',
-              connection: {
-                componentType: 'Sequencer',
-                connectionType: 'akka',
-                prefix: Prefix.fromString('ESW.darkNight')
-              },
-              metadata: {},
-              uri: ''
-            }
-          ]
-        },
-        {
-          seqCompId: new ComponentId(Prefix.fromString('ESW.ESW2'), 'SequenceComponent'),
-          sequencerLocation: []
-        }
-      ]
-    }
+    const agentStatusMock: AgentStatus = getAgentStatusMock()
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
-      agentStatus: [agentStatus],
+      agentStatus: [agentStatusMock],
       seqCompsWithoutAgent: []
     })
     const sequencerId = new ComponentId(Prefix.fromString('ESW.SeqComp1'), 'Sequencer')

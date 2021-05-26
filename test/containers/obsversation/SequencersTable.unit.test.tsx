@@ -6,7 +6,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { SequencersTable } from '../../../src/features/sequencer/components/SequencersTable'
 import { getCurrentStepCommandName, SequencerInfo, StepListStatus } from '../../../src/features/sequencer/utils'
-import { step } from '../../utils/sequence-utils'
+import { getSequencersInfo, step } from '../../utils/sequence-utils'
 import { renderWithAuth } from '../../utils/test-utils'
 import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
 
@@ -45,16 +45,7 @@ describe('sequencer table', () => {
   })
 
   it('should be able to render status NA if no sequence present | ESW-451', async () => {
-    const sequencersInfo: SequencerInfo[] = [
-      {
-        key: 'ESW.darknight',
-        prefix: 'ESW.darknight',
-        currentStepCommandName: getCurrentStepCommandName(undefined),
-        stepListInfo: { status: 'NA', currentStepNumber: 0 },
-        sequencerState: { _type: 'Idle' },
-        totalSteps: 0
-      }
-    ]
+    const sequencersInfo = getSequencersInfo()
 
     renderWithAuth({
       ui: (
@@ -72,16 +63,7 @@ describe('sequencer table', () => {
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {
-    const sequencersInfo: SequencerInfo[] = [
-      {
-        key: 'ESW.darknight',
-        prefix: 'ESW.darknight',
-        currentStepCommandName: getCurrentStepCommandName(undefined),
-        stepListInfo: { status: 'NA', currentStepNumber: 0 },
-        sequencerState: { _type: 'Idle' },
-        totalSteps: 0
-      }
-    ]
+    const sequencersInfo = getSequencersInfo()
 
     renderWithAuth({
       ui: (

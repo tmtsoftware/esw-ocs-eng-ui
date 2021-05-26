@@ -79,16 +79,7 @@ describe('Observation page', () => {
   it('should render running obsModes | ESW-450, ESW-489', async () => {
     const smService = mockServices.mock.smService
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
-      onEvent({
-        _type: 'SequencerStateResponse',
-        sequencerState: { _type: 'Loaded' },
-        stepList: new StepList([])
-      })
-      return {
-        cancel: () => undefined
-      }
-    })
+    setSequencerServiceMockForLoadedState()
 
     renderWithAuth({
       ui: (
@@ -177,16 +168,7 @@ describe('Observation page', () => {
       _type: 'Success'
     })
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
-      onEvent({
-        _type: 'SequencerStateResponse',
-        sequencerState: { _type: 'Loaded' },
-        stepList: new StepList([])
-      })
-      return {
-        cancel: () => undefined
-      }
-    })
+    setSequencerServiceMockForLoadedState()
 
     renderWithAuth({
       ui: (
@@ -240,4 +222,17 @@ describe('Observation page', () => {
       verify(smService.getObsModesDetails()).called()
     })
   })
+
+  const setSequencerServiceMockForLoadedState = () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
+      onEvent({
+        _type: 'SequencerStateResponse',
+        sequencerState: { _type: 'Loaded' },
+        stepList: new StepList([])
+      })
+      return {
+        cancel: () => undefined
+      }
+    })
+  }
 })

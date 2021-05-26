@@ -6,36 +6,14 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
-import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { getAgentStatusMock, mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
   seqCompsStatus: []
 }
-const agentStatus: AgentStatus = {
-  agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
-  seqCompsStatus: [
-    {
-      seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
-      sequencerLocation: [
-        {
-          _type: 'AkkaLocation',
-          connection: {
-            componentType: 'Sequencer',
-            connectionType: 'akka',
-            prefix: Prefix.fromString('ESW.darkNight')
-          },
-          metadata: {},
-          uri: ''
-        }
-      ]
-    },
-    {
-      seqCompId: new ComponentId(Prefix.fromString('ESW.ESW2'), 'SequenceComponent'),
-      sequencerLocation: []
-    }
-  ]
-}
+const agentStatus: AgentStatus = getAgentStatusMock()
+
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
   afterEach(() => {

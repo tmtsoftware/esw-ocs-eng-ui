@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix } from '@tmtsoftware/esw-ts'
+import { Prefix, SpawnResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, when } from 'ts-mockito'
@@ -43,41 +43,33 @@ describe('Spawn sequence component icon', () => {
     await screen.findByText("component name has '-'")
   })
 
-  it('should spawn sequence component on a agent | ESW-446', async function () {
-    when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve({
-      _type: 'Spawned'
+  const tests: [string, SpawnResponse, string][] = [
+    ['spawn', { _type: 'Spawned' }, `Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`],
+    [
+      'fail to spawn',
+      {
+        _type: 'Failed',
+        msg: 'Failed to spawn Sequence Component'
+      },
+      'Sequence Component could not be spawned, reason: Failed to spawn Sequence Component'
+    ]
+  ]
+
+  tests.forEach(([testname, response, message]) => {
+    it(`should ${testname} sequence component on a agent | ESW-446`, async function () {
+      when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve(response)
+
+      renderWithAuth({
+        ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
+      })
+      await assertPopup()
+      const textBox = screen.getByRole('textbox')
+      await waitFor(() => userEvent.click(textBox))
+      userEvent.type(textBox, seqCompName)
+      userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
+
+      await screen.findByText(message)
     })
-
-    renderWithAuth({
-      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
-    })
-    await assertPopup()
-    const textBox = screen.getByRole('textbox')
-    await waitFor(() => userEvent.click(textBox))
-    userEvent.type(textBox, seqCompName)
-    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
-
-    await screen.findByText(`Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`)
-  })
-
-  it('should fail to spawn sequence component on a agent | ESW-446', async function () {
-    when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve({
-      _type: 'Failed',
-      msg: 'Failed to spawn Sequence Component'
-    })
-
-    renderWithAuth({
-      ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
-    })
-
-    await assertPopup()
-    const textBox = screen.getByRole('textbox')
-
-    await waitFor(() => userEvent.click(textBox))
-    userEvent.type(textBox, seqCompName)
-    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
-
-    await screen.findByText('Sequence Component could not be spawned, reason: Failed to spawn Sequence Component')
   })
 
   const assertPopup = async () => {

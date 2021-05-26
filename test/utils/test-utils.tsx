@@ -9,7 +9,10 @@ import {
   SequenceManagerService,
   SequencerService,
   GATEWAY_CONNECTION,
-  SEQUENCE_MANAGER_CONNECTION
+  SEQUENCE_MANAGER_CONNECTION,
+  ComponentId,
+  Prefix,
+  AgentStatus
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
@@ -65,6 +68,7 @@ type MockServices = {
 }
 
 export const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
+
 export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
 
 const getMockServices: () => MockServices = () => {
@@ -102,6 +106,33 @@ const getMockServices: () => MockServices = () => {
 }
 
 export const mockServices = getMockServices()
+
+export const getAgentStatusMock = (): AgentStatus => {
+  return {
+    agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
+    seqCompsStatus: [
+      {
+        seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
+        sequencerLocation: [
+          {
+            _type: 'AkkaLocation',
+            connection: {
+              componentType: 'Sequencer',
+              connectionType: 'akka',
+              prefix: Prefix.fromString('ESW.darkNight')
+            },
+            metadata: {},
+            uri: ''
+          }
+        ]
+      },
+      {
+        seqCompId: new ComponentId(Prefix.fromString('ESW.ESW2'), 'SequenceComponent'),
+        sequencerLocation: []
+      }
+    ]
+  }
+}
 
 const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc: () => void) => {
   const auth = getMockAuth(loggedIn)

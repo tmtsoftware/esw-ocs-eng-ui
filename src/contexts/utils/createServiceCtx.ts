@@ -1,3 +1,4 @@
+import type { Location, Connection, TokenFactory, TrackingEvent, ServiceError } from '@tmtsoftware/esw-ts'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
@@ -5,7 +6,6 @@ import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
 import { createCtx, CtxType } from './createCtx'
-import type { Location, Connection, TokenFactory, TrackingEvent, ServiceError } from '@tmtsoftware/esw-ts'
 
 export const createServiceCtx = <T>(
   connection: Connection,

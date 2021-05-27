@@ -1,4 +1,5 @@
 import { StopOutlined } from '@ant-design/icons'
+import type { OkOrUnhandledResponse, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
@@ -7,7 +8,6 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import type { OkOrUnhandledResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
 const useStopAction = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
   const mutationFn = (sequencerService: SequencerService) => sequencerService.stop()

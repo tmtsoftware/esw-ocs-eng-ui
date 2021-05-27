@@ -1,10 +1,10 @@
+import type { GoOnlineResponse, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-import type { GoOnlineResponse, SequencerService } from '@tmtsoftware/esw-ts'
 
 const useGoOnlineAction = (): UseMutationResult<GoOnlineResponse, unknown, SequencerService> => {
   const mutationFn = (sequencerService: SequencerService) => sequencerService.goOnline()

@@ -1,11 +1,11 @@
 import { VerticalAlignMiddleOutlined, CloseCircleOutlined } from '@ant-design/icons'
+import type { GenericResponse, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-import type { GenericResponse, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
 const handleActionResponse = (res: GenericResponse | RemoveBreakpointResponse) => {
   switch (res._type) {

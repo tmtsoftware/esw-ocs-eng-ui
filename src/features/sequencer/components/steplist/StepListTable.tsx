@@ -1,4 +1,6 @@
+import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import { Space, Table, Typography } from 'antd'
+import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useState } from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
@@ -7,8 +9,6 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { StepComponent } from './StepComponent'
-import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
-import type { ColumnsType } from 'antd/lib/table'
 
 type StepData = {
   id: string

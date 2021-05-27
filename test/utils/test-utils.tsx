@@ -20,6 +20,13 @@ import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/se
 import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
 import 'antd/dist/antd.css'
 import { Menu } from 'antd'
+import type {
+  KeycloakProfile,
+  KeycloakPromise,
+  KeycloakResourceAccess,
+  KeycloakRoles,
+  KeycloakTokenParsed
+} from 'keycloak-js'
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
@@ -31,13 +38,6 @@ import {
   StepListContextProvider,
   StepListTableContextType
 } from '../../src/features/sequencer/hooks/useStepListContext'
-import type {
-  KeycloakProfile,
-  KeycloakPromise,
-  KeycloakResourceAccess,
-  KeycloakRoles,
-  KeycloakTokenParsed
-} from 'keycloak-js'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn

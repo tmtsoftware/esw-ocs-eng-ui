@@ -1,10 +1,10 @@
+import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
-import type { SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 const shutdownAllSequenceComps = (sequenceManagerService: SequenceManagerService) =>
   sequenceManagerService.shutdownAllSequenceComponents().then((res) => {

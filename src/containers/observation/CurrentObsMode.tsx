@@ -8,6 +8,7 @@ import {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
@@ -17,10 +18,9 @@ import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerS
 import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
+import { errorMessage } from '../../utils/message'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
-import type { BaseType } from 'antd/lib/typography/Base'
-import { errorMessage } from '../../utils/message'
 
 type CurrentObsModeProps = {
   currentTab: TabName

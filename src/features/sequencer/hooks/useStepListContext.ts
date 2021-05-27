@@ -1,6 +1,6 @@
+import type { SequencerService, Option } from '@tmtsoftware/esw-ts'
 import { createContext, useContext } from 'react'
 import type { StepListStatus } from '../utils'
-import type { SequencerService, Option } from '@tmtsoftware/esw-ts'
 
 export type StepListTableContextType = {
   handleDuplicate: () => void

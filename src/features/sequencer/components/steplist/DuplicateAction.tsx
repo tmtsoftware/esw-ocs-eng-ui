@@ -1,10 +1,10 @@
 import { CopyOutlined } from '@ant-design/icons'
+import type { Prefix, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button, Row, Space } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
-import type { Prefix, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 
 const addCommands = (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
   return sequencerService.add(commands).then((res) => {

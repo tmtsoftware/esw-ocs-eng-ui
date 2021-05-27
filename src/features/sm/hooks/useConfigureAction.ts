@@ -1,7 +1,7 @@
+import type { ConfigureResponse, ConfigureSuccess, ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS, OBS_MODES_DETAILS } from '../../queryKeys'
-import type { ConfigureResponse, ConfigureSuccess, ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
   switch (res._type) {

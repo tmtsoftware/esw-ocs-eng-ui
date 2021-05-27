@@ -5,7 +5,7 @@ import React from 'react'
 import { anything, verify, when } from 'ts-mockito'
 import { LocationServiceProvider } from '../../../src/contexts/LocationServiceContext'
 import { createServiceCtx } from '../../../src/contexts/utils/createServiceCtx'
-import { mockServices, renderWithAuth } from '../../utils/test-utils'
+import { mockServices } from '../../utils/test-utils'
 const gatewayLocation: HttpLocation = {
   _type: 'HttpLocation',
   connection: GATEWAY_CONNECTION,

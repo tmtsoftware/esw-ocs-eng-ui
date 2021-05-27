@@ -1,3 +1,4 @@
+import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
@@ -5,7 +6,6 @@ import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
-import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 const shutdown = (obsMode: ObsMode) => async (smService: SequenceManagerService) => {
   const res = await smService.shutdownObsModeSequencers(obsMode)

@@ -1,11 +1,11 @@
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import type { GenericResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 import { Menu, Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-import type { GenericResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
 const handleDeleteResponse = (res: GenericResponse) => {
   switch (res._type) {

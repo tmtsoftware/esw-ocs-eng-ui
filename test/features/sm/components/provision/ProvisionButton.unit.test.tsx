@@ -1,13 +1,13 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AgentProvisionConfig, ConfigData, FailedResponse, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
+import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import { mockServices, renderWithAuth } from '../../../../../test/utils/test-utils'
-import type { ProvisionResponse } from '@tmtsoftware/esw-ts'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {

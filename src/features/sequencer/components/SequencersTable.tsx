@@ -1,13 +1,13 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Space, Table, Tooltip, Typography } from 'antd'
+import type { ColumnsType } from 'antd/lib/table/interface'
+import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import type { SequencerInfo, StepListInfo } from '../utils'
 import styles from './sequencerTable.module.css'
-import type { ColumnsType } from 'antd/lib/table/interface'
-import type { BaseType } from 'antd/lib/typography/Base'
 
 const getPrefixColumn = (record: SequencerInfo) => (
   <Space>

@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { StepList } from '@tmtsoftware/esw-ts'
+import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { SequencersTable } from '../../../src/features/sequencer/components/Sequ
 import { getCurrentStepCommandName, SequencerInfo, StepListStatus } from '../../../src/features/sequencer/utils'
 import { getSequencersInfo, getStep } from '../../utils/sequence-utils'
 import { renderWithAuth } from '../../utils/test-utils'
-import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
 
 describe('sequencer table', () => {
   const stepList1: StepList = new StepList([getStep('Pending', '11', true), getStep('Pending', '12')])

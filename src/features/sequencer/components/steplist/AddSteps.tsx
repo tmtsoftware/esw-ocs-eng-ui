@@ -1,4 +1,5 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
+import type { GenericResponse, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 import { SequenceCommandsD } from '@tmtsoftware/esw-ts/lib/dist/src/decoders/CommandDecoders'
 import { getOrThrow } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
 import { Menu, Upload } from 'antd'
@@ -14,7 +15,6 @@ import {
   couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../sequencerMessageConstants'
-import type { GenericResponse, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {

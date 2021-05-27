@@ -1,9 +1,9 @@
+import type { Reporter } from '@web/test-runner'
 // eslint-disable-next-line import/no-nodejs-modules
 import * as fs from 'fs'
 // eslint-disable-next-line import/no-nodejs-modules
 import * as path from 'path'
 import { deleteFile, parseOutput, writeArrayToFile } from './ReporterUtils.js'
-import type { Reporter } from '@web/test-runner'
 
 const args = process.argv.slice(2)
 

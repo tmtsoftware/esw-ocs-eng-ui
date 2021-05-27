@@ -1,6 +1,6 @@
 import { AuthContext } from '@tmtsoftware/esw-ts'
-import { useContext } from 'react'
 import type { AuthContextType } from '@tmtsoftware/esw-ts'
+import { useContext } from 'react'
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext)

@@ -1,10 +1,10 @@
+import type { ObsModeDetails, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import type { TabName } from '../../../containers/observation/ObservationTabs'
 import { useSMService } from '../../../contexts/SMContext'
 import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
 import { groupBy } from '../../../utils/groupBy'
 import { errorMessage } from '../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../queryKeys'
-import type { ObsModeDetails, SequenceManagerService } from '@tmtsoftware/esw-ts'
 
 export type GroupedObsModeDetails = {
   [key in TabName]: ObsModeDetails[]

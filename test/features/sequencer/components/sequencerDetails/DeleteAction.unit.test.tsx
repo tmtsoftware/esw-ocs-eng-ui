@@ -1,15 +1,12 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { GenericResponse, Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
-  const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
-
   const deleteActionTests: [string, GenericResponse, string][] = [
     [
       'success',
@@ -55,19 +52,17 @@ describe('Delete action', () => {
       }
 
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
-
-      const DeleteActionComponent = () => (
-        <Menu>
-          {DeleteAction({
-            sequencerPrefix: sequencerPrefix,
-            step: step,
-            isDisabled: false
-          })}
-        </Menu>
-      )
-
       renderWithAuth({
-        ui: <DeleteActionComponent />
+        ui: (
+          <MenuWithStepListContext
+            menuItem={() =>
+              DeleteAction({
+                step: step,
+                isDisabled: false
+              })
+            }
+          />
+        )
       })
 
       const deleteButton = await screen.findByText('Delete')

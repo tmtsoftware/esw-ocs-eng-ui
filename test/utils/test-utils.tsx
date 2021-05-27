@@ -19,6 +19,7 @@ import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/conf
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
 import 'antd/dist/antd.css'
+import { Menu } from 'antd'
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
@@ -26,6 +27,10 @@ import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
+import {
+  StepListContextProvider,
+  StepListTableContextType
+} from '../../src/features/sequencer/hooks/useStepListContext'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -207,6 +212,25 @@ const renderWithAuth = (
   })
 }
 
+const MenuWithStepListContext = ({
+  menuItem,
+  value = {
+    handleDuplicate: () => undefined,
+    isDuplicateEnabled: false,
+    stepListStatus: 'In Progress',
+    sequencerService: sequencerServiceInstance
+  }
+}: {
+  menuItem: () => JSX.Element
+  value?: StepListTableContextType
+}): JSX.Element => {
+  const MenuComponent = () => <Menu>{menuItem()}</Menu>
+  return (
+    <StepListContextProvider value={value}>
+      <MenuComponent />
+    </StepListContextProvider>
+  )
+}
 // eslint-disable-next-line import/export
-export { renderWithAuth, getContextWithQueryClientProvider }
+export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }

@@ -6,20 +6,9 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { AddSteps } from './AddSteps'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
-type SequencerStepProps = {
-  step: Step
-  sequencerPrefix: Prefix
-}
+import type { Step } from '@tmtsoftware/esw-ts'
 
-const StepActionsMenu = ({
-  step,
-  sequencerPrefix,
-  ...restProps
-}: {
-  step: Step
-  sequencerPrefix: Prefix
-}): JSX.Element => {
+const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element => {
   const status = step.status._type
   const isFinished = status === 'Failure' || status === 'Success'
   const isInProgressOrIsFinished = status === 'InFlight' || isFinished
@@ -30,14 +19,12 @@ const StepActionsMenu = ({
     <Menu {...restProps} className={styles.menu}>
       {BreakpointAction({
         step,
-        sequencerPrefix,
         isDisabled: isInProgressOrIsFinished
       })}
 
       {AddSteps({
         disabled: isFinished,
-        stepId: step.id,
-        sequencerPrefix: sequencerPrefix
+        stepId: step.id
       })}
 
       <Menu.Item key='Duplicate' onClick={handleDuplicate} disabled={stepListStatus === 'All Steps Completed'}>
@@ -47,15 +34,14 @@ const StepActionsMenu = ({
 
       {DeleteAction({
         step,
-        sequencerPrefix,
         isDisabled: isInProgressOrIsFinished
       })}
     </Menu>
   )
 }
 
-export const StepActions = ({ sequencerPrefix, step }: SequencerStepProps): JSX.Element => (
-  <Dropdown overlay={() => <StepActionsMenu sequencerPrefix={sequencerPrefix} step={step} />} trigger={['click']}>
+export const StepActions = ({ step }: { step: Step }): JSX.Element => (
+  <Dropdown overlay={() => <StepActionsMenu step={step} />} trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
   </Dropdown>
 )

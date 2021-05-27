@@ -5,7 +5,7 @@ import { Menu, Upload } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import {
   addStepsErrorPrefix,
@@ -14,7 +14,7 @@ import {
   couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../sequencerMessageConstants'
-import type { GenericResponse, Prefix, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -38,12 +38,11 @@ const addSteps = (id: string, commands: SequenceCommand[]) => (sequencerService:
 type AddStepsProps = {
   disabled: boolean
   stepId: string
-  sequencerPrefix: Prefix
 }
 
-export const AddSteps = ({ disabled, stepId, sequencerPrefix }: AddStepsProps): JSX.Element => {
+export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
-  const sequencerService = useSequencerService(sequencerPrefix)
+  const { sequencerService } = useStepListContext()
 
   const addStepAction = useMutation({
     mutationFn: addSteps(stepId, commands),

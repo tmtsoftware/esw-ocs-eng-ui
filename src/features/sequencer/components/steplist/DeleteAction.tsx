@@ -3,9 +3,9 @@ import { Menu, Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-import type { GenericResponse, Prefix, SequencerService, Step } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
 const handleDeleteResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -46,12 +46,11 @@ const showConfirmModal = (stepName: string, onYes: () => void): void => {
 
 type DeleteActionProps = {
   step: Step
-  sequencerPrefix: Prefix
   isDisabled: boolean
 }
 
-export const DeleteAction = ({ step, sequencerPrefix, isDisabled }: DeleteActionProps): JSX.Element => {
-  const sequencerService = useSequencerService(sequencerPrefix)
+export const DeleteAction = ({ step, isDisabled }: DeleteActionProps): JSX.Element => {
+  const { sequencerService } = useStepListContext()
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
     onSuccess: () => successMessage('Successfully deleted step'),

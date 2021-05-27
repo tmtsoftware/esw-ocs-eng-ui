@@ -1,16 +1,19 @@
 import { createContext, useContext } from 'react'
 import type { StepListStatus } from '../utils'
+import type { SequencerService, Option } from '@tmtsoftware/esw-ts'
 
 export type StepListTableContextType = {
   handleDuplicate: () => void
   isDuplicateEnabled: boolean
   stepListStatus: StepListStatus
+  sequencerService: Option<SequencerService>
 }
 
 const defaultStepListTableContext: StepListTableContextType = {
   handleDuplicate: () => undefined,
   isDuplicateEnabled: false,
-  stepListStatus: 'NA'
+  stepListStatus: 'NA',
+  sequencerService: undefined
 }
 
 const StepListTableContext: React.Context<StepListTableContextType> = createContext(defaultStepListTableContext)

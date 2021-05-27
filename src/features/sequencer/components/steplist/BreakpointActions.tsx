@@ -3,9 +3,9 @@ import { Menu } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-import type { GenericResponse, Prefix, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
 
 const handleActionResponse = (res: GenericResponse | RemoveBreakpointResponse) => {
   switch (res._type) {
@@ -29,16 +29,8 @@ const insertAction = (id: string) => (sequencerService: SequencerService) =>
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.removeBreakpoint(id).then(handleActionResponse)
 
-export const BreakpointAction = ({
-  sequencerPrefix,
-  step,
-  isDisabled
-}: {
-  step: Step
-  sequencerPrefix: Prefix
-  isDisabled: boolean
-}): JSX.Element => {
-  const sequencerService = useSequencerService(sequencerPrefix)
+export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled: boolean }): JSX.Element => {
+  const { sequencerService } = useStepListContext()
 
   const insertBreakpointAction = useMutation({
     mutationFn: insertAction(step.id),

@@ -1,5 +1,6 @@
 import { Space, Table, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { getStepListInfo, StepListStatus } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
@@ -39,14 +40,13 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
 }
 
 const columns = (
-  sequencerPrefix: Prefix,
   setSelectedStep: (_: Step) => void,
   setFollowProgress: (_: boolean) => void
 ): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress, sequencerPrefix)
+    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress)
   }
 ]
 
@@ -92,6 +92,7 @@ export const StepListTable = ({
       setFollowProgress(true)
     }
   }, [followProgress, selectedStep, stepList, stepListInfo.status, setSelectedStep])
+  const sequencerService = useSequencerService(sequencerPrefix)
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
@@ -106,7 +107,8 @@ export const StepListTable = ({
       value={{
         handleDuplicate: () => toggleDuplicateEnabled(!isDuplicateEnabled),
         isDuplicateEnabled,
-        stepListStatus: stepListInfo.status
+        stepListStatus: stepListInfo.status,
+        sequencerService
       }}>
       <div style={{ height: '90%' }}>
         <StepListTitle stepListStatus={stepListInfo.status} />
@@ -121,7 +123,7 @@ export const StepListTable = ({
             ...step,
             index
           }))}
-          columns={columns(sequencerPrefix, setSelectedStep, setFollowProgress)}
+          columns={columns(setSelectedStep, setFollowProgress)}
           onRow={(step) => ({
             id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell

@@ -5,11 +5,9 @@ import { expect } from 'chai'
 import React from 'react'
 import { StepActions } from '../../../../../src/features/sequencer/components/steplist/StepActions'
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
-import { renderWithAuth } from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceInstance } from '../../../../utils/test-utils'
 
 describe('StepActions', () => {
-  const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
-
   const stepStatusPending: StepStatus = { _type: 'Pending' }
   const stepStatusInProgress: StepStatus = { _type: 'InFlight' }
   const stepStatusSuccess: StepStatus = { _type: 'Success' }
@@ -24,7 +22,7 @@ describe('StepActions', () => {
 
   it('should give insert breakpoint option in menu if step does not have breakpoint | ESW-459', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusPending)} />
+      ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
 
@@ -33,7 +31,7 @@ describe('StepActions', () => {
 
   it('should give remove breakpoint option in menu if step has a breakpoint | ESW-459', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(true, stepStatusPending)} />
+      ui: <StepActions step={getStepWithBreakpoint(true, stepStatusPending)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
     await screen.findByText('Remove breakpoint')
@@ -41,7 +39,7 @@ describe('StepActions', () => {
 
   it('should disable insertBreakpoint and delete when status is in Progress | ESW-459, ESW-490', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusInProgress)} />
+      ui: <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -58,7 +56,7 @@ describe('StepActions', () => {
 
   it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459, ESW-490', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusFailure)} />
+      ui: <StepActions step={getStepWithBreakpoint(false, stepStatusFailure)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -80,7 +78,7 @@ describe('StepActions', () => {
 
   it('should disable delete, insert breakpoint and add a step when status is success | ESW-459 ESW-490', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusSuccess)} />
+      ui: <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -102,7 +100,7 @@ describe('StepActions', () => {
 
   it('should enable every menu item when status is pending | ESW-459, ESW-490', async () => {
     renderWithAuth({
-      ui: <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusPending)} />
+      ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
@@ -129,9 +127,10 @@ describe('StepActions', () => {
           value={{
             handleDuplicate: () => undefined,
             isDuplicateEnabled: false,
-            stepListStatus: 'All Steps Completed'
+            stepListStatus: 'All Steps Completed',
+            sequencerService: sequencerServiceInstance
           }}>
-          <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusInProgress)} />
+          <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
         </StepListContextProvider>
       )
     })
@@ -152,9 +151,10 @@ describe('StepActions', () => {
           value={{
             handleDuplicate: () => undefined,
             isDuplicateEnabled: false,
-            stepListStatus: 'All Steps Completed'
+            stepListStatus: 'All Steps Completed',
+            sequencerService: sequencerServiceInstance
           }}>
-          <StepActions sequencerPrefix={sequencerPrefix} step={getStepWithBreakpoint(false, stepStatusSuccess)} />
+          <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
         </StepListContextProvider>
       )
     })

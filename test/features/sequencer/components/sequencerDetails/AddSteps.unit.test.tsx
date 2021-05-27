@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { GenericResponse, Prefix, SequenceCommand, Setup } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import {
@@ -13,7 +12,7 @@ import {
 } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
 import { _createErrorMsg } from '../../../../../src/utils/message'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 type TestData = {
   testName: string
@@ -64,17 +63,18 @@ describe('AddSteps', () => {
   testCases.forEach(({ testName, response, message }) => {
     it(testName, async () => {
       when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(response)
-      const AddStepsComponent = () => (
-        <Menu>
-          {AddSteps({
-            disabled: false,
-            sequencerPrefix: seqPrefix,
-            stepId: id
-          })}
-        </Menu>
-      )
+
       renderWithAuth({
-        ui: <AddStepsComponent />
+        ui: (
+          <MenuWithStepListContext
+            menuItem={() =>
+              AddSteps({
+                disabled: false,
+                stepId: id
+              })
+            }
+          />
+        )
       })
 
       const addStepsButton = await screen.findByRole('button', {
@@ -95,17 +95,18 @@ describe('AddSteps', () => {
     const file = new File([JSON.stringify({ invalidCommands: 'invalidCommands' })], 'commands.json', {
       type: 'application/json'
     })
-    const AddStepsComponent = () => (
-      <Menu>
-        {AddSteps({
-          disabled: false,
-          sequencerPrefix: seqPrefix,
-          stepId: id
-        })}
-      </Menu>
-    )
+
     renderWithAuth({
-      ui: <AddStepsComponent />
+      ui: (
+        <MenuWithStepListContext
+          menuItem={() =>
+            AddSteps({
+              disabled: false,
+              stepId: id
+            })
+          }
+        />
+      )
     })
 
     const addStepsButton = await screen.findByRole('button', {

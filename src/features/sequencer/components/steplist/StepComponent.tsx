@@ -2,7 +2,7 @@ import { Button, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
-import type { Prefix, Step } from '@tmtsoftware/esw-ts'
+import type { Step } from '@tmtsoftware/esw-ts'
 import type { BaseType } from 'antd/lib/typography/Base'
 
 const color: { [stepStatus: string]: BaseType } = {
@@ -23,8 +23,7 @@ export const StepComponent = (
   step: Step,
   stepNumber: number,
   setSelectedStep: (_: Step) => void,
-  setFollowProgress: (_: boolean) => void,
-  sequencerPrefix: Prefix
+  setFollowProgress: (_: boolean) => void
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
@@ -58,7 +57,7 @@ export const StepComponent = (
           </Typography.Text>
         </Button>
       </Tooltip>
-      {!isDuplicateEnabled && <StepActions step={step} sequencerPrefix={sequencerPrefix} />}
+      {!isDuplicateEnabled && <StepActions step={step} />}
     </Space>
   )
 }

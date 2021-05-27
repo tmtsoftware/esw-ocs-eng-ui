@@ -11,13 +11,13 @@ This project is a React web application.
     run `sbt publishLocal` inside ESW sbt shell.
     Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
 
-3a. `AgentService` along with one or more `Agent's` should be up & running.
-    using sbt shell inside ESW `esw-services/run start --agent --agent-service`.
+3. Start esw services
+    * `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
-3b. Alternatively, to run esw-services with a simulated Sequence Manager, use
+    * Alternatively, to run esw-services with a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
-3c. You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
+    * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
 The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
@@ -57,10 +57,14 @@ npm run build
 
 ## Running Tests
 
+To run test:
 ```bash
 npm test
 ```
-
+To run test in watch mode:
+```bash
+npm run test:unit:watch
+```
 ## How to Use the Project
 
 The project has following structure:

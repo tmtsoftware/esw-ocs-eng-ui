@@ -1,13 +1,12 @@
-import { DeleteOutlined } from '@ant-design/icons'
-import type { ComponentId, AgentService } from '@tmtsoftware/esw-ts'
-import { Button, Tooltip } from 'antd'
+import { PoweroffOutlined } from '@ant-design/icons'
+import type { AgentService, ComponentId } from '@tmtsoftware/esw-ts'
+import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import styles from './agentCards.module.css'
 
 const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
   agentService.killComponent(componentId).then((res) => {
@@ -21,32 +20,29 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
     onSuccess: () => successMessage(`Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`),
-    onError: (e) => errorMessage('Sequence Component could not be killed', e),
+    onError: (e) => errorMessage(`Sequence Component (${componentId.prefix.toJSON()}) could not be killed`, e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 
+  const handleOnClick = () => {
+    agentService &&
+      showConfirmModal(
+        () => {
+          killSequenceComponentAction.mutateAsync(agentService)
+        },
+        `Do you want to delete ${componentId.prefix.toJSON()} sequence component?`,
+        'Delete'
+      )
+  }
   return (
-    <Tooltip placement='bottom' title={'Delete sequence component'}>
-      <Button
-        type='text'
-        icon={
-          <DeleteOutlined
-            className={styles.deleteIcon}
-            role='deleteSeqCompIcon'
-            onClick={() =>
-              agentService &&
-              showConfirmModal(
-                () => {
-                  killSequenceComponentAction.mutateAsync(agentService)
-                },
-                `Do you want to delete ${componentId.prefix.toJSON()} sequence component?`,
-                'Delete'
-              )
-            }
-          />
-        }
-        loading={isLoading || killSequenceComponentAction.isLoading}
-      />
-    </Tooltip>
+    <Menu.Item
+      key='KillSequenceComponent'
+      role='KillSequenceComponent'
+      danger={true}
+      disabled={isLoading}
+      icon={<PoweroffOutlined />}
+      onClick={handleOnClick}>
+      Shutdown Component
+    </Menu.Item>
   )
 }

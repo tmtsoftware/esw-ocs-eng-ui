@@ -6,7 +6,7 @@ import { getSequencerPath } from '../../../routes/RoutesConfig'
 import { LoadScript } from '../../sm/components/LoadScript'
 import { UnloadScript } from '../../sm/components/UnloadScript'
 import styles from './agentCards.module.css'
-import { KillSequenceComponent } from './KillSequenceComponent'
+import { SequenceComponentActions } from './SequenceComponentActions'
 
 type TitleProps = {
   seqCompPrefix: Prefix
@@ -66,7 +66,7 @@ export const SequenceComponentCard = ({ seqCompId, location }: SequenceComponent
       <SequenceComponent seqCompPrefix={seqCompId.prefix} obsMode={location[0]?.connection.prefix.toJSON()} />
     </Col>
     <Col className={styles.iconBox}>
-      <KillSequenceComponent componentId={seqCompId} />
+      <SequenceComponentActions componentId={seqCompId} obsMode={location[0]?.connection.prefix.toJSON()} />
     </Col>
   </Row>
 )

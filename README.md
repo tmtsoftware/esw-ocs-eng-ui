@@ -17,14 +17,16 @@ This project is a React web application.
 3b. Alternatively, to run esw-services with a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
+3c. You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
+
 The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## User role for login
 
-For testing purposes, we are creating a `esw-user` while launching the Keycloak from csw-services
+For testing purposes, we are creating a `osw-user1` while launching the Keycloak from csw-services
 
-Username: esw-user
-Password: esw-user
+Username: osw-user1
+Password: osw-user1
 
 ## Run the Application in Local Environment
 
@@ -87,4 +89,3 @@ The project has following structure:
 
 * ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)
 * ESW-TS Library Documentation - [Link](https://tmtsoftware.github.io/esw-ts/)
-  

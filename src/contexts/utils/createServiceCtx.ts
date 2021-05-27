@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
+import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
 import { createCtx, CtxType } from './createCtx'
-import type { Location, Connection, TokenFactory, TrackingEvent } from '@tmtsoftware/esw-ts'
+import type { Location, Connection, TokenFactory, TrackingEvent, ServiceError } from '@tmtsoftware/esw-ts'
 
 export const createServiceCtx = <T>(
   connection: Connection,
@@ -30,8 +31,14 @@ export const useService = <T>(
     },
     [auth, factory]
   )
-
-  const track = useCallback((onEvent) => locationService.track(connection)(onEvent), [connection, locationService])
+  const track = useCallback(
+    (onEvent) =>
+      locationService.track(connection)(onEvent, (error: ServiceError) => {
+        errorMessage(error.message)
+        setLoading(false)
+      }),
+    [connection, locationService]
+  )
 
   const [value] = useStream({
     mapper: onEventCallback,

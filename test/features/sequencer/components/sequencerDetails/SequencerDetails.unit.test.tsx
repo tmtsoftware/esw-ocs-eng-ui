@@ -292,8 +292,6 @@ describe('sequencer details', () => {
       }
     })
 
-    await setViewport({ width: 1440, height: 900 })
-
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -351,8 +349,6 @@ describe('sequencer details', () => {
       }
     )
 
-    await setViewport({ width: 1440, height: 900 })
-
     renderWithAuth({
       ui: (
         <BrowserRouter>
@@ -388,6 +384,57 @@ describe('sequencer details', () => {
 
     //as user is in follow mode, and after some time ui should show step3 as steplist progress
     await screen.findByText('ESW.test3')
+  })
+
+  it('should show current running step when step list is long in follow mode | ESW-501', async () => {
+    const step1To17 = new Array(17).fill('Success').map((s, index) => getStep(s, `${index + 1}`))
+
+    const stepListWithStep18InProgress: StepList = new StepList([
+      ...step1To17,
+      getStep('InFlight', '18'),
+      getStep('Pending', '19'),
+      getStep('Pending', '20')
+    ])
+
+    const stepListWithStep19InProgress: StepList = new StepList([
+      ...step1To17,
+      getStep('Success', '18'),
+      getStep('InFlight', '19'),
+      getStep('Pending', '20')
+    ])
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (callback: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendEvent(callback, 'Running', stepListWithStep18InProgress)
+        sendEvent(callback, 'Running', stepListWithStep19InProgress, 400)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+        </BrowserRouter>
+      )
+    })
+    //step18 is executing, ui should show step18 in visible area
+    const htmlElement1 = await screen.findByRole('cell', { name: /Command-18/i })
+    const stepButton1 = within(htmlElement1).getByRole('button')
+    expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test18')
+    //wait and assert for auto scroll to happen
+    await waitFor(() => expect(window.scrollY).to.greaterThan(500))
+
+    await new Promise((r) => setTimeout(r, 400))
+
+    //step19 is executing, ui should show step19 in visible area
+    const htmlElement2 = await screen.findByRole('cell', { name: /Command-19/i })
+    const stepButton2 = within(htmlElement2).getByRole('button')
+    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    await screen.findByText('ESW.test19')
   })
 
   it('should render Step details when a Step is clicked from the StepLists | ESW-457, ESW-489', async () => {

@@ -1,7 +1,5 @@
-import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import { Space, Table, Typography } from 'antd'
-import type { ColumnsType } from 'antd/lib/table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { getStepListInfo, StepListStatus } from '../../utils'
@@ -9,6 +7,8 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { StepComponent } from './StepComponent'
+import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
+import type { ColumnsType } from 'antd/lib/table'
 
 type StepData = {
   id: string
@@ -41,12 +41,13 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
 
 const columns = (
   setSelectedStep: (_: Step) => void,
-  setFollowProgress: (_: boolean) => void
+  setFollowProgress: (_: boolean) => void,
+  stepRefs: React.MutableRefObject<StepRefInfo>
 ): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress)
+    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress, stepRefs)
   }
 ]
 
@@ -70,6 +71,8 @@ export type StepListTableProps = {
   setSelectedStep: (_: Step | undefined) => void
 }
 
+export type StepRefInfo = Record<string, HTMLDivElement>
+
 export const StepListTable = ({
   sequencerPrefix,
   selectedStep,
@@ -82,10 +85,18 @@ export const StepListTable = ({
   const [followProgress, setFollowProgress] = useState(true)
   const stepListInfo = getStepListInfo(stepList)
 
+  const stepRefs = useRef<StepRefInfo>({})
+
   useEffect(() => {
     if (followProgress === true) {
       const runningStep = getRunningStep(stepList, stepListInfo.status)
       setSelectedStep(runningStep)
+      if (runningStep) {
+        stepRefs.current[runningStep.id].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        })
+      }
     }
     //fallback to follow progress mode for cases like abort sequence, load sequence(twice) when user selected step does not exist in stepList anymore
     else if (selectedStep && isSelectedStepNotPresentInStepList(stepList, selectedStep)) {
@@ -123,7 +134,7 @@ export const StepListTable = ({
             ...step,
             index
           }))}
-          columns={columns(setSelectedStep, setFollowProgress)}
+          columns={columns(setSelectedStep, setFollowProgress, stepRefs)}
           onRow={(step) => ({
             id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell

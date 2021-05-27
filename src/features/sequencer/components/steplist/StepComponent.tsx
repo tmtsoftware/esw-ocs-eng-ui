@@ -1,9 +1,10 @@
-import type { Step } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
-import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
+import type { StepRefInfo } from './StepListTable'
+import type { Step } from '@tmtsoftware/esw-ts'
+import type { BaseType } from 'antd/lib/typography/Base'
 
 const color: { [stepStatus: string]: BaseType } = {
   Success: 'secondary',
@@ -23,7 +24,8 @@ export const StepComponent = (
   step: Step,
   stepNumber: number,
   setSelectedStep: (_: Step) => void,
-  setFollowProgress: (_: boolean) => void
+  setFollowProgress: (_: boolean) => void,
+  stepRefs: React.MutableRefObject<StepRefInfo>
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
@@ -36,7 +38,7 @@ export const StepComponent = (
 
   return (
     <Space style={{ textAlign: 'right' }}>
-      <div style={{ width: '1.5rem', marginRight: '0.5rem' }}>
+      <div ref={(el) => el && (stepRefs.current[step.id] = el)} style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{stepNumber}</Typography.Text>
       </div>
       <Tooltip title={isVisible ? step.command.commandName : undefined}>

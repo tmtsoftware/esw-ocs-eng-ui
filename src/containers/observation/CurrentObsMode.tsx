@@ -4,6 +4,7 @@ import {
   SequencerService,
   SequencerState,
   SequencerStateResponse,
+  ServiceError,
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
@@ -19,6 +20,7 @@ import { createTokenFactory } from '../../utils/createTokenFactory'
 import type { TabName } from './ObservationTabs'
 import { ObsModeActions } from './ObsModeActions'
 import type { BaseType } from 'antd/lib/typography/Base'
+import { errorMessage } from '../../utils/message'
 
 type CurrentObsModeProps = {
   currentTab: TabName
@@ -80,6 +82,10 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>([])
 
+  const handleError = (error: ServiceError) => {
+    errorMessage(error.message)
+    setLoading(false)
+  }
   const handleSequencerStateChange = useCallback(
     (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
@@ -103,8 +109,9 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   useEffect(() => {
     const subscriptions = services.map(([sequencerService, sequencerPrefix]) =>
-      sequencerService.subscribeSequencerState()((sequencerState) =>
-        handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState)
+      sequencerService.subscribeSequencerState()(
+        (sequencerState) => handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState),
+        handleError
       )
     )
     return () => subscriptions.forEach((x) => x.cancel())

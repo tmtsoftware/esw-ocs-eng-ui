@@ -1,3 +1,4 @@
+import type { Prefix, SequencerState, Location, Step } from '@tmtsoftware/esw-ts'
 import { Badge, Card, Descriptions, Empty, Layout, Space, Typography } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
@@ -15,7 +16,6 @@ import { SequencerError } from '../SequencerError'
 import { StepListTable } from '../steplist/StepListTable'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
-import type { Prefix, SequencerState, Location, Step } from '@tmtsoftware/esw-ts'
 
 const { Sider } = Layout
 

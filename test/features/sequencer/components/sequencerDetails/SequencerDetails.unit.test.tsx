@@ -11,11 +11,13 @@ import {
   Parameter,
   Prefix,
   SequencerStateResponse,
+  ServiceError,
   Setup,
   StepList,
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -25,7 +27,6 @@ import { SequencerDetails } from '../../../../../src/features/sequencer/componen
 import { addStepsSuccessMsg } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
-import type { SequencerState } from '@tmtsoftware/esw-ts'
 
 describe('sequencer details', () => {
   let windowWidth: number
@@ -450,7 +451,7 @@ describe('sequencer details', () => {
     expect(obsIdValue.innerText).to.equals('2020A-001-123')
   })
 
-  it('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
+  it.skip('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -467,7 +468,7 @@ describe('sequencer details', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
     //Set small viewport so that values will have elipsis
-    await setViewport({ width: 1280, height: 800 })
+    await setViewport({ width: 1000, height: 800 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -685,6 +686,30 @@ describe('sequencer details', () => {
     })
 
     unmount()
+  })
+  it('should render error notification when error is received  | ESW-510', async () => {
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((_, onError) => {
+      onError &&
+        onError(
+          ServiceError.make(500, 'server error', {
+            message: 'Sequencer not found'
+          })
+        )
+      return {
+        cancel: () => undefined
+      }
+    })
+
+    renderWithAuth({
+      ui: (
+        //browser router is wrapped here because there is a Router Link to go to Home on error
+        <BrowserRouter>
+          <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+        </BrowserRouter>
+      )
+    })
+
+    await screen.findByText('Sequencer not found')
   })
 })
 

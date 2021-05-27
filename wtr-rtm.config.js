@@ -20,20 +20,14 @@ export default {
       inject: {
         importMap: {
           imports: {
-            './_dist_/features/sequencer/hooks/useSequencerService.js':
-              './dist_test/mocks/useSequencerService.js',
-            './_dist_/contexts/ConfigServiceContext.js':
-              './dist_test/mocks/ConfigServiceContext.js'
+            './_dist_/features/sequencer/hooks/useSequencerService.js': './dist_test/mocks/useSequencerService.js',
+            './_dist_/contexts/ConfigServiceContext.js': './dist_test/mocks/ConfigServiceContext.js'
           }
         }
       }
     })
   ],
-  reporters: [
-    defaultReporter({ reportTestResults: true, reportTestProgress: true }),
-    ConsoleReporter(),
-    RTMReporter()
-  ],
+  reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
     exclude: ['_snowpack/**/*'],
     threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }

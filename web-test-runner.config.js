@@ -19,18 +19,13 @@ export default {
       inject: {
         importMap: {
           imports: {
-            './_dist_/features/sequencer/hooks/useSequencerService.js':
-              './dist_test/mocks/useSequencerService.js',
-            './_dist_/contexts/ConfigServiceContext.js':
-              './dist_test/mocks/ConfigServiceContext.js'
+            './_dist_/features/sequencer/hooks/useSequencerService.js': './dist_test/mocks/useSequencerService.js',
+            './_dist_/contexts/ConfigServiceContext.js': './dist_test/mocks/ConfigServiceContext.js'
           }
         }
       }
     })
   ],
-  reporters: [
-    defaultReporter({ reportTestResults: true, reportTestProgress: true }),
-    ConsoleReporter()
-  ],
+  reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter()],
   browserLogs: Boolean(process.env.ESW_OCS_ENG_UI_LOGS)
 }

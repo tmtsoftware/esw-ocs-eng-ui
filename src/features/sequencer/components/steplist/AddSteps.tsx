@@ -1,8 +1,8 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
-import type { GenericResponse, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
-import { SequenceCommandsD } from '@tmtsoftware/esw-ts/lib/dist/src/decoders/CommandDecoders'
-import { getOrThrow } from '@tmtsoftware/esw-ts/lib/dist/src/utils/Utils'
-import { Menu, Upload } from 'antd'
+import type { Sequence, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
+import type { GenericResponse } from '@tmtsoftware/esw-ts/lib/src/clients/sequencer'
+import { Menu } from 'antd'
+
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -12,9 +12,9 @@ import {
   addStepsErrorPrefix,
   addStepsSuccessMsg,
   cannotOperateOnAnInFlightOrFinishedStepMsg,
-  couldNotDeserialiseSequenceMsg,
   idDoesNotExistMsg
 } from '../sequencerMessageConstants'
+import { UploadSequence } from '../UploadSequence'
 
 const handleResponse = (res: GenericResponse) => {
   switch (res._type) {
@@ -32,9 +32,6 @@ const handleResponse = (res: GenericResponse) => {
   }
 }
 
-const addSteps = (id: string, commands: SequenceCommand[]) => (sequencerService: SequencerService) =>
-  sequencerService.insertAfter(id, commands).then(handleResponse)
-
 type AddStepsProps = {
   disabled: boolean
   stepId: string
@@ -45,42 +42,24 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
   const { sequencerService } = useStepListContext()
 
   const addStepAction = useMutation({
-    mutationFn: addSteps(stepId, commands),
+    mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleResponse),
     onError: (e) => errorMessage(addStepsErrorPrefix, e),
     onSuccess: () => successMessage(addStepsSuccessMsg)
   })
 
-  const beforeUpload = (file: File): Promise<void> =>
-    new Promise<void>((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsText(file)
-      reader.onerror = () => errorMessage(addStepsErrorPrefix, reader.error)
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          try {
-            setCommands(getOrThrow(SequenceCommandsD.decode(JSON.parse(reader.result))))
-            resolve()
-          } catch (e) {
-            errorMessage(addStepsErrorPrefix, Error(couldNotDeserialiseSequenceMsg)).then(reject)
-          }
-        }
-      }
-    })
-
   return (
     <Menu.Item key='AddSteps' disabled={disabled}>
-      <Upload
-        className={styles.upload}
+      <UploadSequence
+        setSequence={(seq: Sequence) => setCommands(seq.commands)}
+        request={() => sequencerService && addStepAction.mutate(sequencerService)}
+        uploadErrorMsg={addStepsErrorPrefix}
         disabled={disabled}
-        showUploadList={false}
-        beforeUpload={beforeUpload}
-        customRequest={() => sequencerService && addStepAction.mutate(sequencerService)}
-        accept='application/json'>
+        className={styles.upload}>
         <div role='addSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
           <PlusCircleOutlined style={{ fontSize: '12px', marginRight: '8px' }} />
           Add steps
         </div>
-      </Upload>
+      </UploadSequence>
     </Menu.Item>
   )
 }

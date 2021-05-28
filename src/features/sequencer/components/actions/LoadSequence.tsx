@@ -32,6 +32,8 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX
   const loadSequenceAction = useLoadAction(sequence)
 
   const beforeUpload = (file: File): Promise<void> => {
+    console.log('inside before upload')
+
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsText(file)

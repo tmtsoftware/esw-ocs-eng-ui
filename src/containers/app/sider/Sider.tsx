@@ -30,10 +30,11 @@ export const Sider = (): JSX.Element => {
   }, [location])
 
   return (
-    <Layout.Sider theme={'light'} collapsible collapsed={collapsed} onCollapse={onCollapse}>
-      <Menu selectedKeys={[selectedKey]}>
+    <Layout.Sider theme={'light'} collapsible collapsed={collapsed} onCollapse={onCollapse} width={215}>
+      <Menu selectedKeys={[selectedKey]} mode='inline'>
         {menuItemLabels.map((item) => (
           <Menu.Item
+            title={item.title}
             className={styles.menuItem}
             icon={item.defaultIcon}
             onClick={() => setSelectedKey(item.link)}

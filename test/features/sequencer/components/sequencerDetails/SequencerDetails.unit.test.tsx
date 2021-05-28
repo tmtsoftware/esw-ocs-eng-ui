@@ -208,18 +208,14 @@ describe('sequencer details', () => {
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
-    // step1 in executng, ui should show step1
-    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
-    const stepButton = within(htmlElement).getByRole('button')
-    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
+    // step1 in executng, ui should show step1 details on right side
+    await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test1')
 
     await new Promise((r) => setTimeout(r, 100))
 
-    //After some time , a new event is received, step2 in executng, ui should show step2
-    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
-    const stepButton2 = within(htmlElement2).getByRole('button')
-    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //After some time , a new event is received, step2 in executng, ui should show step2 details on right side
+    await assertRunningStepIs(/Command-2/i)
     await screen.findByText('ESW.test2', undefined, { timeout: 120 })
   })
 
@@ -252,18 +248,14 @@ describe('sequencer details', () => {
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
 
-    //step1 is executing, but ui should show step3(which was clicked by user)
-    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
-    const stepButton = within(htmlElement).getByRole('button')
-    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step1 is executing, but ui should show step3(which was clicked by user) details on right side
+    await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
     await new Promise((r) => setTimeout(r, 400))
 
-    //step2 is executing, ui should continue to show step3(which was clicked by user)
-    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
-    const stepButton2 = within(htmlElement2).getByRole('button')
-    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step2 is executing, ui should continue to show step3(which was clicked by user) details on right side
+    await assertRunningStepIs(/Command-2/i)
     await screen.findByText('ESW.test3')
   })
 
@@ -300,22 +292,17 @@ describe('sequencer details', () => {
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
 
-    //step1 is executing, ui should show step3(which was clicked by user)
-    const htmlElement = await screen.findByRole('cell', { name: /Command-1/i })
-    const stepButton = within(htmlElement).getByRole('button')
-    expect(stepButton.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step1 is executing, ui should show step3(which was clicked by user) details on right side
+    await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
     await new Promise((r) => setTimeout(r, 400))
 
     //step2 is executing
-    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
-    const stepButton2 = within(htmlElement2).getByRole('button')
-    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
-
+    await assertRunningStepIs(/Command-2/i)
     await new Promise((r) => setTimeout(r, 400))
 
-    //ui should show step2 as step3 got removed
+    //ui should show step2 details on right side as step3 got removed
     await screen.findByText('ESW.test2')
   })
 
@@ -361,28 +348,24 @@ describe('sequencer details', () => {
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
 
-    //step1 is executing, ui should show step3(which was clicked by user) i.e. user goes to non-follow mode
-    const htmlElement1 = await screen.findByRole('cell', { name: /Command-1/i })
-    const stepButton1 = within(htmlElement1).getByRole('button')
-    expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step1 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user goes to non-follow mode
+    await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
     await new Promise((r) => setTimeout(r, 400))
 
-    //step2 is executing, ui should show step3(which was clicked by user) i.e. user is still in non-follow mode
-    const htmlElement2 = await screen.findByRole('cell', { name: /Command-2/i })
-    const stepButton2 = within(htmlElement2).getByRole('button')
-    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step2 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user is still in non-follow mode
+    await assertRunningStepIs(/Command-2/i)
     await screen.findByText('ESW.test3')
 
-    //user clicks step2, which is in progress to go in follow mode again, and now ui should show step2
+    //user clicks step2, which is in progress to go in follow mode again, and now ui should show step2 details on right side
     const step2 = await screen.findByRole('button', { name: /Command-2/i })
     userEvent.click(step2)
     await screen.findByText('ESW.test2')
 
     await new Promise((r) => setTimeout(r, 400))
 
-    //as user is in follow mode, and after some time ui should show step3 as steplist progress
+    //as user is in follow mode, and after some time ui should show step3 details on right side as steplist progress
     await screen.findByText('ESW.test3')
   })
 
@@ -420,20 +403,16 @@ describe('sequencer details', () => {
         </BrowserRouter>
       )
     })
-    //step18 is executing, ui should show step18 in visible area
-    const htmlElement1 = await screen.findByRole('cell', { name: /Command-18/i })
-    const stepButton1 = within(htmlElement1).getByRole('button')
-    expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step18 is executing, ui should show step18 details on right side
+    await assertRunningStepIs(/Command-18/i)
     await screen.findByText('ESW.test18')
     //wait and assert for auto scroll to happen
     await waitFor(() => expect(window.scrollY).to.greaterThan(500))
 
     await new Promise((r) => setTimeout(r, 400))
 
-    //step19 is executing, ui should show step19 in visible area
-    const htmlElement2 = await screen.findByRole('cell', { name: /Command-19/i })
-    const stepButton2 = within(htmlElement2).getByRole('button')
-    expect(stepButton2.style.borderColor).to.equal('rgb(82, 196, 26)')
+    //step19 is executing, ui should show step19 details on right side
+    await assertRunningStepIs(/Command-19/i)
     await screen.findByText('ESW.test19')
   })
 
@@ -784,4 +763,10 @@ const sendEvent = (
   timeout
     ? setTimeout(() => onevent(makeSeqStateResponse(state, stepList)), timeout)
     : onevent(makeSeqStateResponse(state, stepList))
+}
+
+const assertRunningStepIs = async (step: RegExp) => {
+  const htmlElement1 = await screen.findByRole('cell', { name: step })
+  const stepButton1 = within(htmlElement1).getByRole('button')
+  expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
 }

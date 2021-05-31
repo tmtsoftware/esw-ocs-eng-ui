@@ -212,9 +212,8 @@ describe('sequencer details', () => {
     await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test1')
 
-    await new Promise((r) => setTimeout(r, 100))
-
     //After some time , a new event is received, step2 in executng, ui should show step2 details on right side
+    await assertCompletedStepIs(/Command-1/i)
     await assertRunningStepIs(/Command-2/i)
     await screen.findByText('ESW.test2', undefined, { timeout: 120 })
   })
@@ -252,7 +251,7 @@ describe('sequencer details', () => {
     await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //step2 is executing, ui should continue to show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-2/i)
@@ -296,11 +295,11 @@ describe('sequencer details', () => {
     await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //step2 is executing
     await assertRunningStepIs(/Command-2/i)
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //ui should show step2 details on right side as step3 got removed
     await screen.findByText('ESW.test2')
@@ -352,7 +351,7 @@ describe('sequencer details', () => {
     await assertRunningStepIs(/Command-1/i)
     await screen.findByText('ESW.test3')
 
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //step2 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user is still in non-follow mode
     await assertRunningStepIs(/Command-2/i)
@@ -363,7 +362,7 @@ describe('sequencer details', () => {
     userEvent.click(step2)
     await screen.findByText('ESW.test2')
 
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //as user is in follow mode, and after some time ui should show step3 details on right side as steplist progress
     await screen.findByText('ESW.test3')
@@ -409,7 +408,7 @@ describe('sequencer details', () => {
     //wait and assert for auto scroll to happen
     await waitFor(() => expect(window.scrollY).to.greaterThan(500))
 
-    await new Promise((r) => setTimeout(r, 400))
+    await delay(400)
 
     //step19 is executing, ui should show step19 details on right side
     await assertRunningStepIs(/Command-19/i)
@@ -442,39 +441,35 @@ describe('sequencer details', () => {
     })
 
     await screen.findAllByRole('table')
-
-    const typeKey = screen.getByLabelText('Command Type-Key')
-    const typeValue = screen.getByLabelText('Command Type-Value')
-    const commandNameKey = screen.getByLabelText('Command-Key')
-    const commandNameValue = screen.getByLabelText('Command-Value')
-    const sourceKey = screen.getByLabelText('Source-Key')
-    const sourceValue = screen.getByLabelText('Source-Value')
-    const obsIdKey = screen.getByLabelText('Obs-Id-Key')
-    const obsIdValue = screen.getByLabelText('Obs-Id-Value')
+    const labels1: [string, string][] = [
+      ['Command Type', 'Setup'],
+      ['Command', 'Command-1'],
+      ['Source', 'ESW.ESW1'],
+      ['Obs-Id', 'NA']
+    ]
+    const labels2: [string, string][] = [
+      ['Command Type', 'Setup'],
+      ['Command', 'Command-2'],
+      ['Source', 'ESW.ESW2'],
+      ['Obs-Id', '2020A-001-123']
+    ]
 
     const step1 = screen.getByRole('button', { name: /Command-1/i })
     userEvent.click(step1)
-
-    expect(typeKey.innerText).to.equals('Command Type')
-    expect(typeValue.innerText).to.equals('Setup')
-    expect(commandNameKey.innerText).to.equals('Command')
-    expect(commandNameValue.innerText).to.equals('Command-1')
-    expect(sourceKey.innerText).to.equals('Source')
-    expect(sourceValue.innerText).to.equals('ESW.ESW1')
-    expect(obsIdKey.innerText).to.equals('Obs-Id')
-    expect(obsIdValue.innerText).to.equals('NA')
-
+    labels1.forEach(([key, value]) => {
+      const keyLabel = screen.getByLabelText(`${key}-Key`)
+      const valueLabel = screen.getByLabelText(`${key}-Value`)
+      expect(keyLabel.innerText).to.equals(key)
+      expect(valueLabel.innerText).to.equals(value)
+    })
     const step2 = screen.getByRole('button', { name: /Command-2/i })
     userEvent.click(step2)
-
-    expect(typeKey.innerText).to.equals('Command Type')
-    expect(typeValue.innerText).to.equals('Setup')
-    expect(commandNameKey.innerText).to.equals('Command')
-    expect(commandNameValue.innerText).to.equals('Command-2')
-    expect(sourceKey.innerText).to.equals('Source')
-    expect(sourceValue.innerText).to.equals('ESW.ESW2')
-    expect(obsIdKey.innerText).to.equals('Obs-Id')
-    expect(obsIdValue.innerText).to.equals('2020A-001-123')
+    labels2.forEach(([key, value]) => {
+      const keyLabel = screen.getByLabelText(`${key}-Key`)
+      const valueLabel = screen.getByLabelText(`${key}-Value`)
+      expect(keyLabel.innerText).to.equals(key)
+      expect(valueLabel.innerText).to.equals(value)
+    })
   })
 
   it.skip('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
@@ -770,3 +765,11 @@ const assertRunningStepIs = async (step: RegExp) => {
   const stepButton1 = within(htmlElement1).getByRole('button')
   expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)')
 }
+
+const assertCompletedStepIs = async (step: RegExp) => {
+  const htmlElement1 = await screen.findByRole('cell', { name: step })
+  const stepButton1 = within(htmlElement1).getByRole('button')
+  expect(stepButton1.style.borderColor).to.equal('rgba(0, 0, 0, 0.45)')
+}
+
+const delay = async (timeoutInMillis: number) => await new Promise((r) => setTimeout(r, timeoutInMillis))

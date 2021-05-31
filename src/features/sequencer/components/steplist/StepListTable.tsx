@@ -22,6 +22,10 @@ const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: St
   return !stepList?.steps.find((step) => step.id === selectedStep.id)
 }
 
+const findStepByStatus = (stepList: StepList, status: StepStatus['_type']): Step | undefined => {
+  return stepList.steps.find((step) => step.status._type === status)
+}
+
 export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatus): Step | undefined => {
   switch (stepListStatus) {
     case 'Loaded':
@@ -29,11 +33,11 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
     case 'All Steps Completed':
       return stepList.steps[stepList.steps.length - 1]
     case 'Failed':
-      return stepList.steps.find((step) => step.status._type === 'Failure')
+      return findStepByStatus(stepList, 'Failure')
     case 'Paused':
-      return stepList.steps.find((step) => step.status._type === 'Pending')
+      return findStepByStatus(stepList, 'Pending')
     case 'In Progress':
-      return stepList.steps.find((step) => step.status._type === 'InFlight')
+      return findStepByStatus(stepList, 'InFlight')
     default:
       return undefined
   }

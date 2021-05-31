@@ -10,7 +10,7 @@ interface SelectionModalProps extends ModalProps {
 }
 
 const getList = (selectedItem: string, data: string[] | undefined, onChange: (value: string) => void) => {
-  const onSelect = (e: SelectInfo) => onChange(e.key as string)
+  const onSelect = (e: SelectInfo) => onChange(e.key)
   if (data === undefined || data.length === 0) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   }

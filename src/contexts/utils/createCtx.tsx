@@ -32,5 +32,5 @@ export function createCtx<T>(useHook: () => T): CtxType<T> {
 
     return <ctx.Provider value={initialValue ?? value}>{children}</ctx.Provider>
   }
-  return [useCtx, Provider] as const
+  return [useCtx, Provider]
 }

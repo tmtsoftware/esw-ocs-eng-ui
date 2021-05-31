@@ -1,4 +1,4 @@
-import type { Location, Connection, TokenFactory, TrackingEvent, ServiceError } from '@tmtsoftware/esw-ts'
+import type { Connection, Location, ServiceError, TokenFactory, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
@@ -9,7 +9,7 @@ import { createCtx, CtxType } from './createCtx'
 
 export const createServiceCtx = <T>(
   connection: Connection,
-  factory: (location: Location, tokenFactory: TokenFactory) => T
+  factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T
 ): CtxType<[T | undefined, boolean]> => {
   const useHook = () => useService(connection, factory)
 
@@ -18,18 +18,19 @@ export const createServiceCtx = <T>(
 
 export const useService = <T>(
   connection: Connection,
-  factory: (location: Location, tokenFactory: TokenFactory) => T
+  factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T
 ): [T | undefined, boolean] => {
   const { auth } = useAuth()
   const [loading, setLoading] = useState(true)
+  const [username, setUsername] = useState<string>()
   const locationService = useLocationService()
   const onEventCallback = useCallback(
     (event: TrackingEvent) => {
       if (event._type === 'LocationRemoved') return undefined
-
-      return factory(event.location, createTokenFactory(auth))
+      const tokenFactory = createTokenFactory(auth)
+      return factory(event.location, tokenFactory, username)
     },
-    [auth, factory]
+    [auth, factory, username]
   )
   const track = useCallback(
     (onEvent) =>
@@ -39,6 +40,10 @@ export const useService = <T>(
       }),
     [connection, locationService]
   )
+
+  useEffect(() => {
+    auth?.loadUserProfile().then((e) => setUsername(e.username))
+  }, [auth])
 
   const [value] = useStream({
     mapper: onEventCallback,

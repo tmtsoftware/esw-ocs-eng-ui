@@ -82,10 +82,14 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>([])
 
+  const isRunningTab = currentTab === 'Running'
+
   const handleError = (error: ServiceError) => {
     errorMessage(error.message)
     setLoading(false)
   }
+
+  // TODO does this have to be in useCallback? can this go in useEffect? same for memo.
   const handleSequencerStateChange = useCallback(
     (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
@@ -98,14 +102,13 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
   )
 
   const services: [SequencerService, Prefix][] = useMemo(() => {
-    const sequencerServices: [SequencerService, Prefix][] = gatewayLocation
+    return isRunningTab && gatewayLocation
       ? sequencers.map((seq) => {
           const seqPrefix = new Prefix(seq, obsMode.name)
           return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
         })
       : []
-    return currentTab === 'Running' ? sequencerServices : []
-  }, [currentTab, gatewayLocation, obsMode.name, sequencers, tf])
+  }, [isRunningTab, gatewayLocation, obsMode.name, sequencers, tf])
 
   useEffect(() => {
     const subscriptions = services.map(([sequencerService, sequencerPrefix]) =>
@@ -114,7 +117,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
         handleError
       )
     )
-    return () => subscriptions.forEach((x) => x.cancel())
+    return () => subscriptions.forEach((s) => s.cancel())
   }, [handleSequencerStateChange, services])
 
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
@@ -132,8 +135,6 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
   })
 
   const sortedSequencers = sortSequencers(sequencersInfo)
-
-  const isRunningTab = currentTab === 'Running'
 
   const sequencerState: SequencerState =
     sortedSequencers && sortedSequencers[0] ? sortedSequencers[0].sequencerState : { _type: 'Idle' }

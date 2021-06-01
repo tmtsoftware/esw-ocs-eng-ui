@@ -11,11 +11,11 @@ export type GroupedObsModeDetails = {
 }
 
 const getObsModesDetails = async (smService: SequenceManagerService): Promise<GroupedObsModeDetails> => {
-  const response = await smService?.getObsModesDetails()
-  if (response?._type === 'Failed') return errorMessage(response.msg)
-  if (response?._type === 'LocationServiceError') return errorMessage(response.reason)
+  const response = await smService.getObsModesDetails()
+  if (response._type === 'Failed') return errorMessage(response.msg)
+  if (response._type === 'LocationServiceError') return errorMessage(response.reason)
 
-  const grouped = groupBy(response?.obsModes, (x) => x.status._type)
+  const grouped = groupBy(response.obsModes, (x) => x.status._type)
   return {
     Running: grouped.get('Configured') || [],
     Configurable: grouped.get('Configurable') || [],

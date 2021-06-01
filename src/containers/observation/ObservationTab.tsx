@@ -34,22 +34,21 @@ export type ObservationTabProps = {
 }
 
 export const ObservationTab = ({ tabName, selected = '', setObservation }: ObservationTabProps): JSX.Element => {
-  const { data: grouped } = useObsModesDetails()
+  const { data: allObsModesGrouped } = useObsModesDetails()
+  const thisTabObsModes = allObsModesGrouped ? allObsModesGrouped[tabName] : []
+  if (!thisTabObsModes.length) return <Empty description={`No ${tabName} ObsModes`} />
 
-  const runningResources = [...new Set(grouped && grouped.Running.flatMap((obsMode) => obsMode.resources))]
-
-  const data = grouped ? grouped[tabName] : []
-  const selectedObs = data.find((x) => x.obsMode.name === selected) ?? data[0]
-
-  if (!data.length) return <Empty description={`No ${tabName} ObsModes`} />
-
+  const runningResources = [
+    ...new Set(allObsModesGrouped && allObsModesGrouped.Running.flatMap((obsMode) => obsMode.resources))
+  ]
+  const selectedObs = thisTabObsModes.find((x) => x.obsMode.name === selected) ?? thisTabObsModes[0]
   const resources = getTabBasedResources(tabName, selectedObs.resources, runningResources)
 
   return (
     <Layout style={{ height: '99%' }}>
       <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
         <Menu mode='inline' selectedKeys={selectedObs && [selectedObs.obsMode.name]} style={{ paddingTop: '0.4rem' }}>
-          {data.map((item) => (
+          {thisTabObsModes.map((item) => (
             <Menu.Item onClick={() => setObservation(item.obsMode.name)} key={item.obsMode.name}>
               {item.obsMode.name}
             </Menu.Item>

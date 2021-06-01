@@ -43,6 +43,7 @@ describe('stepList table', () => {
             stepList={getStepList(lastStepStatus, breakpoint)}
             sequencerPrefix={sequencerPrefix}
             setSelectedStep={() => ({})}
+            sequencerState={{ _type: 'Running' }}
           />
         )
       })
@@ -74,6 +75,7 @@ describe('stepList table', () => {
           stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -95,6 +97,7 @@ describe('stepList table', () => {
           stepList={new StepList([])}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -113,6 +116,7 @@ describe('stepList table', () => {
           stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -147,6 +151,7 @@ describe('stepList table', () => {
           stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -191,6 +196,7 @@ describe('stepList table', () => {
           stepList={stepListAfterBreakpoint}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -217,6 +223,7 @@ describe('stepList table', () => {
           stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
           selectedStep={undefined}
         />
       )
@@ -240,6 +247,7 @@ describe('stepList table', () => {
           stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
           selectedStep={undefined}
         />
       )
@@ -276,6 +284,7 @@ describe('stepList table', () => {
           stepList={stepList}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
           selectedStep={undefined}
         />
       )
@@ -322,6 +331,7 @@ describe('stepList table', () => {
           stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
           selectedStep={undefined}
         />
       )
@@ -373,6 +383,7 @@ describe('stepList table', () => {
           stepList={stepListAfterBreakpoint}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
         />
       )
     })
@@ -382,6 +393,69 @@ describe('stepList table', () => {
     })
 
     await waitFor(() => expect(stepAfterBreakpoint.style.borderLeft).to.equals('1rem solid red'))
+  })
+
+  it('should show display Pause action when sequencer is in Running state and sequence is in Progress state | ESW-497, ESW-489, ESW-505', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending')}
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
+          selectedStep={undefined}
+        />
+      )
+    })
+
+    await screen.findByRole('PauseSequence')
+    screen.getByRole('img', { name: 'pause-circle' })
+
+    expect(screen.queryByRole('StartSequence')).to.null
+    expect(screen.queryByRole('ResumeSequence')).to.null
+  })
+
+  it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497, ESW-489, ESW-505', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending', true)}
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Running' }}
+          selectedStep={undefined}
+        />
+      )
+    })
+
+    await screen.findByRole('ResumeSequence')
+    screen.getByRole('img', { name: 'play-circle' })
+
+    expect(screen.queryByRole('StartSequence')).to.null
+    expect(screen.queryByRole('PauseSequence')).to.null
+  })
+
+  it('should show display Start action when sequencer is in Loaded state | ESW-497, ESW-489, ESW-505', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          isLoading={false}
+          stepList={getStepList('Pending')}
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerState={{ _type: 'Loaded' }}
+          selectedStep={undefined}
+        />
+      )
+    })
+
+    await screen.findByRole('StartSequence')
+    screen.getByRole('img', { name: 'play-circle' })
+
+    expect(screen.queryByRole('ResumeSequence')).to.null
+    expect(screen.queryByRole('PauseSequence')).to.null
   })
 })
 

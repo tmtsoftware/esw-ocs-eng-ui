@@ -29,7 +29,7 @@ export const StepComponent = (
 ): JSX.Element => {
   const stepsStyle = {
     borderColor: baseTypeColorCode[color[step.status._type]],
-    width: '10.9rem',
+    width: '15rem',
     borderLeft: `${step.hasBreakpoint ? '1rem solid red' : `1px solid ${baseTypeColorCode[color[step.status._type]]}`}`
   }
 

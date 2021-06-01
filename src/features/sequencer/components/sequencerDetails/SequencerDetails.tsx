@@ -1,4 +1,4 @@
-import type { Prefix, SequencerState, Location, Step } from '@tmtsoftware/esw-ts'
+import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
 import { Badge, Card, Descriptions, Empty, Layout, Space, Typography } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
@@ -9,7 +9,6 @@ import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubs
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
-import { PlayPauseSequence } from '../actions/PlayPauseSequence'
 import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
@@ -19,45 +18,14 @@ import styles from './sequencerDetails.module.css'
 
 const { Sider } = Layout
 
-const SequencerActions = ({
-  prefix,
-  isSequencerRunning,
-  isPaused,
-  sequencerState
-}: SequencerProps & {
-  isPaused: boolean
-}): JSX.Element => {
-  return (
-    <Space size={15}>
-      <PlayPauseSequence
-        prefix={prefix}
-        sequencerState={sequencerState}
-        isSequencerRunning={isSequencerRunning}
-        isPaused={isPaused}
-      />
-      <StopSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
-    </Space>
-  )
-}
-const SequenceActions = ({ prefix, isSequencerRunning, sequencerState }: SequencerProps): JSX.Element => (
-  <Space>
-    <LoadSequence prefix={prefix} sequencerState={sequencerState} />
-    <LifecycleState prefix={prefix} sequencerState={sequencerState} />
-    <AbortSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
-  </Space>
-)
-
-const Actions = ({ prefix, sequencerState, isPaused }: SequencerProps & { isPaused: boolean }): JSX.Element => {
+const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   return (
     <Space size={20}>
-      <SequencerActions
-        prefix={prefix}
-        isSequencerRunning={isSequencerRunning}
-        isPaused={isPaused}
-        sequencerState={sequencerState}
-      />
-      <SequenceActions prefix={prefix} isSequencerRunning={isSequencerRunning} sequencerState={sequencerState} />
+      <LoadSequence prefix={prefix} sequencerState={sequencerState} />
+      <LifecycleState prefix={prefix} sequencerState={sequencerState} />
+      <StopSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
+      <AbortSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />
     </Space>
   )
 }
@@ -144,23 +112,18 @@ export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element =>
         title={<SequencerTitle prefix={prefix} sequencerState={sequencerStateResponse.sequencerState} />}
         ghost={false}
         className={styles.headerBox}
-        extra={
-          <Actions
-            prefix={prefix}
-            isPaused={sequencerStateResponse.stepList.isPaused()}
-            sequencerState={sequencerStateResponse.sequencerState._type}
-          />
-        }>
+        extra={<Actions prefix={prefix} sequencerState={sequencerStateResponse.sequencerState._type} />}>
         <SequenceComponentInfo seqLocation={seqLocation.data} />
       </PageHeader>
       <Layout style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
-        <Sider theme='light' width={'18rem'}>
+        <Sider theme='light' width={'22rem'}>
           <StepListTable
             stepList={sequencerStateResponse.stepList}
             isLoading={loading}
             sequencerPrefix={prefix}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}
+            sequencerState={sequencerStateResponse.sequencerState}
           />
         </Sider>
         <Content>{selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}</Content>

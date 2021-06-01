@@ -1,10 +1,12 @@
 import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
-import { Space, Table, Typography } from 'antd'
+import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
+import { Col, Row, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { getStepListInfo, StepListStatus } from '../../utils'
+import { PlayPauseSequence } from '../actions/PlayPauseSequence'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
@@ -55,8 +57,12 @@ const columns = (
   }
 ]
 
-const StepListTitle = ({ stepListStatus }: { stepListStatus: StepListStatus }): JSX.Element => (
-  <div style={{ margin: '1rem 2rem' }} role='stepListTitle'>
+type StepListTitleProps = {
+  stepListStatus: StepListStatus
+}
+
+const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => (
+  <Col role='stepListTitle'>
     <Typography.Title level={5} style={{ marginBottom: 0 }}>
       Sequence Steps
     </Typography.Title>
@@ -64,7 +70,7 @@ const StepListTitle = ({ stepListStatus }: { stepListStatus: StepListStatus }): 
       <Typography.Text type={'secondary'}>Status:</Typography.Text>
       <Typography.Text type={statusTextType[stepListStatus]}>{stepListStatus}</Typography.Text>
     </Space>
-  </div>
+  </Col>
 )
 
 export type StepListTableProps = {
@@ -72,6 +78,7 @@ export type StepListTableProps = {
   selectedStep?: Step
   stepList: StepList
   isLoading: boolean
+  sequencerState: SequencerState
   setSelectedStep: (_: Step | undefined) => void
 }
 
@@ -82,6 +89,7 @@ export const StepListTable = ({
   selectedStep,
   setSelectedStep,
   stepList,
+  sequencerState,
   isLoading
 }: StepListTableProps): JSX.Element => {
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
@@ -126,7 +134,15 @@ export const StepListTable = ({
         sequencerService
       }}>
       <div style={{ height: '90%' }}>
-        <StepListTitle stepListStatus={stepListInfo.status} />
+        <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
+          <StepListTitle stepListStatus={stepListInfo.status} />
+          <PlayPauseSequence
+            prefix={sequencerPrefix}
+            sequencerState={sequencerState._type}
+            isSequencerRunning={sequencerState._type === 'Running'}
+            isPaused={stepList.isPaused()}
+          />
+        </Row>
         <Table
           showHeader={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}

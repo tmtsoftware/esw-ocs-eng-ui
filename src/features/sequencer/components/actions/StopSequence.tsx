@@ -1,13 +1,11 @@
-import { StopOutlined } from '@ant-design/icons'
 import type { OkOrUnhandledResponse, SequencerService } from '@tmtsoftware/esw-ts'
-import { Button, Tooltip } from 'antd'
+import { Button } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useStopAction = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
   const mutationFn = (sequencerService: SequencerService) => sequencerService.stop()
@@ -40,17 +38,8 @@ export const StopSequence = ({ prefix, isSequencerRunning }: StopSequenceProps):
     )
 
   return (
-    <Tooltip placement='bottom' title={'Stop sequencer'}>
-      <Button
-        onClick={onClick}
-        type={'text'}
-        shape={'circle'}
-        icon={
-          <StopOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled + ' ' + styles.danger} />
-        }
-        disabled={disabled}
-        role='StopSequence'
-      />
-    </Tooltip>
+    <Button onClick={onClick} disabled={disabled} role='StopSequence' danger={!disabled}>
+      Stop sequence
+    </Button>
   )
 }

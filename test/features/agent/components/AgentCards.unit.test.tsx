@@ -239,7 +239,7 @@ describe('Agents Grid View', () => {
       )
     })
     // first find the dropdown menu
-    const [_, sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
+    const [, sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components

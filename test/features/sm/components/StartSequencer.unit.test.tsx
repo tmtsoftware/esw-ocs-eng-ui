@@ -3,11 +3,11 @@ import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
-import { LoadScript } from '../../../../src/features/sm/components/LoadScript'
+import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
 import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
-describe('LoadScript', () => {
+describe('Start Sequencer', () => {
   const ESW = 'ESW'
   const obsModeName = 'DarkNight_1'
   const obsMode = new ObsMode(obsModeName)
@@ -21,7 +21,7 @@ describe('LoadScript', () => {
         _type: 'Started',
         componentId
       },
-      'Successfully loaded script'
+      'Successfully started sequencer'
     ],
     [
       'locationServiceError',
@@ -29,7 +29,7 @@ describe('LoadScript', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer component not found'
       },
-      'Failed to load script, reason: Sequencer component not found'
+      'Failed to start sequencer, reason: Sequencer component not found'
     ],
     [
       'Unhandled',
@@ -39,7 +39,7 @@ describe('LoadScript', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to load script, reason: StartSequencer message type is not supported in Processing state'
+      'Failed to start sequencer, reason: StartSequencer message type is not supported in Processing state'
     ],
     [
       'AlreadyRunning',
@@ -47,12 +47,12 @@ describe('LoadScript', () => {
         _type: 'AlreadyRunning',
         componentId
       },
-      `Failed to load script, reason: ${componentId.prefix.toJSON()} is already running`
+      `Failed to start sequencer, reason: ${componentId.prefix.toJSON()} is already running`
     ],
     [
       'LoadScriptError',
       { _type: 'LoadScriptError', reason: 'Script missing' },
-      'Failed to load script, reason: Script missing'
+      'Failed to start sequencer, reason: Script missing'
     ],
     [
       'SequenceComponentNotAvailable',
@@ -61,7 +61,7 @@ describe('LoadScript', () => {
         msg: 'Sequencer component not found',
         subsystems: []
       },
-      'Failed to load script, reason: Sequencer component not found'
+      'Failed to start sequencer, reason: Sequencer component not found'
     ],
     [
       'FailedResponse',
@@ -69,7 +69,7 @@ describe('LoadScript', () => {
         _type: 'FailedResponse',
         reason: 'LoadScript message timed out'
       },
-      'Failed to load script, reason: LoadScript message timed out'
+      'Failed to start sequencer, reason: LoadScript message timed out'
     ]
   ]
 
@@ -83,7 +83,7 @@ describe('LoadScript', () => {
       when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
-        ui: <LoadScript />
+        ui: <StartSequencer />
       })
 
       const loadScriptButton = screen.getByRole('button', { name: 'Start Sequencer' })

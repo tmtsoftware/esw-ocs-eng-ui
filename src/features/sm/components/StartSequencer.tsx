@@ -33,10 +33,10 @@ const handleResponse = (res: StartSequencerResponse) => {
   }
 }
 
-const loadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
+const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
   smService.startSequencer(subsystem, obsMode).then(handleResponse)
 
-export const LoadScript = ({ disabled }: { disabled?: boolean }): JSX.Element => {
+export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Element => {
   const emptyString = ''
 
   const [smService, isSMLoading] = useSMService()
@@ -55,10 +55,10 @@ export const LoadScript = ({ disabled }: { disabled?: boolean }): JSX.Element =>
     setSubsystem(undefined)
   }
 
-  const loadScriptAction = useMutation({
-    mutationFn: loadScript(subsystem as Subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage('Failed to load script', e),
-    onSuccess: () => successMessage('Successfully loaded script'),
+  const startSequencerAction = useMutation({
+    mutationFn: startSequencer(subsystem as Subsystem, new ObsMode(obsMode)),
+    onError: (e) => errorMessage('Failed to start sequencer', e),
+    onSuccess: () => successMessage('Successfully started sequencer'),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
   const showModal = () => {
@@ -67,7 +67,7 @@ export const LoadScript = ({ disabled }: { disabled?: boolean }): JSX.Element =>
 
   const handleOk = () => {
     if (subsystem && obsMode) {
-      smService && loadScriptAction.mutateAsync(smService.smService)
+      smService && startSequencerAction.mutateAsync(smService.smService)
       setIsModalVisible(false)
       resetInputData()
     } else {
@@ -90,7 +90,7 @@ export const LoadScript = ({ disabled }: { disabled?: boolean }): JSX.Element =>
 
   return (
     <>
-      <Button onClick={showModal} disabled={isSMLoading || disabled} loading={loadScriptAction.isLoading}>
+      <Button onClick={showModal} disabled={isSMLoading || disabled} loading={startSequencerAction.isLoading}>
         Start Sequencer
       </Button>
       <Modal

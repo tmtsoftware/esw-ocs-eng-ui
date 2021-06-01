@@ -1,4 +1,4 @@
-import { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'

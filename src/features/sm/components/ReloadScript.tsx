@@ -32,7 +32,7 @@ type ReloadScriptProps = {
   subsystem: Subsystem
   obsMode: string
 }
-export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps) => {
+export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
 

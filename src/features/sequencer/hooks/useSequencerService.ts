@@ -7,14 +7,14 @@ import {
   TokenFactory
 } from '@tmtsoftware/esw-ts'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
-import { useUsername } from '../../../contexts/utils/useUsername'
 import { useAuth } from '../../../hooks/useAuth'
 import { createTokenFactory } from '../../../utils/createTokenFactory'
+import { getUsername } from '../../../utils/getUsername'
 
 export const useSequencerService = (sequencerPrefix: Prefix): SequencerService | undefined => {
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
-  const username = useUsername(auth)
+  const username = getUsername(auth)
 
   const tf = createTokenFactory(auth)
   return gatewayLocation && mkSequencerService(sequencerPrefix, gatewayLocation, tf, username)

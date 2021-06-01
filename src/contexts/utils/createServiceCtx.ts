@@ -3,10 +3,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
+import { getUsername } from '../../utils/getUsername'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
 import { createCtx, CtxType } from './createCtx'
-import { useUsername } from './useUsername'
 
 export const createServiceCtx = <T>(
   connection: Connection,
@@ -23,7 +23,7 @@ export const useService = <T>(
 ): [T | undefined, boolean] => {
   const { auth } = useAuth()
   const [loading, setLoading] = useState(true)
-  const username = useUsername(auth)
+  const username = getUsername(auth)
   const locationService = useLocationService()
   const onEventCallback = useCallback(
     (event: TrackingEvent) => {

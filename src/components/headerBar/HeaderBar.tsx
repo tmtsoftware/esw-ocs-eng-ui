@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import TMTLogo from '../../assets/images/TMT_Logo.png'
 import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
+import { getUsername } from '../../utils/getUsername'
 import styles from './headerBar.module.css'
 
 export const HeaderBar = (): JSX.Element => {
@@ -12,7 +13,7 @@ export const HeaderBar = (): JSX.Element => {
   const [username, setUsername] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    setUsername(auth?.tokenParsed()?.preferred_username)
+    setUsername(getUsername(auth))
   }, [auth])
 
   const menu = (

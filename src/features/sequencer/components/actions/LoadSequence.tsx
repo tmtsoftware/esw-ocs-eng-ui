@@ -1,11 +1,11 @@
 import { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
-import { Button, Upload } from 'antd'
+import { Button } from 'antd'
 import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import type { SequencerProps } from '../Props'
-import { couldNotDeserialiseSequenceMsg } from '../sequencerMessageConstants'
+import { UploadSequence } from '../UploadSequence'
 
 const errorMessagePrefix = 'Failed to load the sequence'
 
@@ -31,30 +31,10 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX
   const [sequence, setSequence] = useState<Sequence>()
   const loadSequenceAction = useLoadAction(sequence)
 
-  const beforeUpload = (file: File): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsText(file)
-      reader.onerror = () => errorMessage(errorMessagePrefix, reader.error)
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          try {
-            setSequence(Sequence.from(JSON.parse(reader.result)))
-            resolve()
-          } catch (e) {
-            errorMessage(errorMessagePrefix, Error(couldNotDeserialiseSequenceMsg)).then(reject)
-          }
-        }
-      }
-    })
-  }
-
-  const request = () => {
-    sequencerService && loadSequenceAction.mutate(sequencerService)
-  }
+  const request = () => sequencerService && loadSequenceAction.mutate(sequencerService)
 
   return (
-    <Upload beforeUpload={beforeUpload} customRequest={request} showUploadList={false} accept={'application/json'}>
+    <UploadSequence setSequence={setSequence} request={request} uploadErrorMsg={errorMessagePrefix}>
       <Button
         type='primary'
         loading={loadSequenceAction.isLoading}
@@ -62,6 +42,6 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX
         disabled={!sequencerState || !(sequencerState === 'Idle' || sequencerState === 'Loaded')}>
         Load Sequence
       </Button>
-    </Upload>
+    </UploadSequence>
   )
 }

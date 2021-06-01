@@ -1,16 +1,19 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftware/esw-ts'
-import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { LoadScript } from '../../../../src/features/sm/components/LoadScript'
+import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
-describe('LoadScript Icon', () => {
-  const obsMode = new ObsMode('ESW.DarkNight')
+
+describe('LoadScript', () => {
+  const ESW = 'ESW'
+  const obsModeName = 'DarkNight_1'
+  const obsMode = new ObsMode(obsModeName)
   const smService = mockServices.mock.smService
 
-  const componentId = new ComponentId(Prefix.fromString(obsMode.name), 'Sequencer')
+  const componentId = new ComponentId(new Prefix(ESW, obsModeName), 'Sequencer')
   const tests: [string, StartSequencerResponse, string][] = [
     [
       'success',
@@ -70,32 +73,43 @@ describe('LoadScript Icon', () => {
     ]
   ]
 
+  beforeEach(() => {
+    reset(smService)
+  })
+
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447, ESW-507`, async () => {
+      when(smService.getObsModesDetails()).thenResolve(obsModesData)
       when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
-        ui: <LoadScript subsystem={'ESW'} />
+        ui: <LoadScript />
       })
 
-      const loadScriptButton = screen.getByRole('loadScript') as HTMLButtonElement
+      const loadScriptButton = screen.getByRole('button', { name: 'Start Sequencer' })
+      userEvent.click(loadScriptButton)
+      // await waitFor(() => expect(loadScriptButton.disabled).false)
 
-      await waitFor(() => expect(loadScriptButton.disabled).false)
+      const modal = await screen.findByRole('dialog', {
+        name: 'Select a Subsystem and Observation Mode to spawn:'
+      })
+      const subsystemInput = within(modal).getByRole('combobox', { name: 'Subsystem' })
+      userEvent.click(subsystemInput)
+      userEvent.type(subsystemInput, 'es')
+      const eswItem = await screen.findByText(ESW)
+      await waitFor(() => userEvent.click(eswItem))
 
-      userEvent.click(loadScriptButton, { button: 0 })
+      const obsModeInput = within(modal).getByRole('combobox', { name: 'Observation Mode' })
+      userEvent.click(obsModeInput)
+      userEvent.type(obsModeInput, 'dark')
+      const obsModeItem = await screen.findAllByText(obsModeName)
+      await waitFor(() => userEvent.click(obsModeItem[1]))
 
-      // expect modal to be visible
-      const modalTitle = await screen.findByText('Observation Mode:')
-      expect(modalTitle).to.exist
-      const input = within(modalTitle).getByRole('textbox')
-      await waitFor(() => userEvent.click(input))
-      userEvent.type(input, obsMode.name)
-
-      const confirmButton = screen.getByRole('button', { name: /ok/i })
+      const confirmButton = screen.getByRole('button', { name: 'Confirm' })
       userEvent.click(confirmButton)
 
       await screen.findByText(message)
-      verify(smService.startSequencer('ESW', deepEqual(obsMode))).called()
+      verify(smService.startSequencer(ESW, deepEqual(obsMode))).called()
     })
   })
 })

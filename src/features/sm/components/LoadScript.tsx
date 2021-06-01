@@ -1,13 +1,12 @@
-import { FileAddOutlined } from '@ant-design/icons'
-import { ObsMode, SequenceManagerService, StartSequencerResponse } from '@tmtsoftware/esw-ts'
-import type { Subsystem } from '@tmtsoftware/esw-ts/lib/src'
-import { Button, Input, Popconfirm, Tooltip } from 'antd'
+import { ObsMode, SequenceManagerService, StartSequencerResponse, subsystems } from '@tmtsoftware/esw-ts'
+import type { Subsystem } from '@tmtsoftware/esw-ts'
+import { AutoComplete, Button, Form, message, Modal, Select } from 'antd'
 import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import styles from './sm.module.css'
+import { GroupedObsModeDetails, useObsModesDetails } from '../hooks/useObsModesDetails'
 
 const handleResponse = (res: StartSequencerResponse) => {
   switch (res._type) {
@@ -37,41 +36,118 @@ const handleResponse = (res: StartSequencerResponse) => {
 const loadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
   smService.startSequencer(subsystem, obsMode).then(handleResponse)
 
-export const LoadScript = ({ subsystem }: { subsystem: Subsystem }): JSX.Element => {
-  const [obsMode, setObsMode] = useState<string>('')
-  const resetObsMode = () => setObsMode('')
-  const [data, isLoading] = useSMService()
+export const LoadScript = ({ disabled }: { disabled?: boolean }): JSX.Element => {
+  const emptyString = ''
+
+  const [smService, isSMLoading] = useSMService()
+  const { data: obsModeDetails } = useObsModesDetails()
+
+  const [subsystem, setSubsystem] = useState<Subsystem>()
+  const [obsMode, setObsMode] = useState<string>(emptyString)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const obsModes = getAllObsModes(obsModeDetails)
+  obsModeDetails?.Configurable.map((e) => ({
+    value: e.obsMode.name
+  }))
+  const resetInputData = () => {
+    setObsMode(emptyString)
+    setSubsystem(undefined)
+  }
 
   const loadScriptAction = useMutation({
-    mutationFn: loadScript(subsystem, new ObsMode(obsMode)),
+    mutationFn: loadScript(subsystem as Subsystem, new ObsMode(obsMode)),
     onError: (e) => errorMessage('Failed to load script', e),
     onSuccess: () => successMessage('Successfully loaded script'),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
+  const showModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const handleOk = () => {
+    if (subsystem && obsMode) {
+      smService && loadScriptAction.mutateAsync(smService.smService)
+      setIsModalVisible(false)
+      resetInputData()
+    } else {
+      message.error('Please input subsystem and observation mode')
+    }
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+    resetInputData()
+  }
+
+  const onSubsystemChange = (subsystem: string) => {
+    if (subsystems.find((e) => e === subsystem)) {
+      setSubsystem(subsystem as Subsystem)
+    }
+  }
+
+  const onObsModeChange = (data: string) => setObsMode(data)
 
   return (
-    <Tooltip placement='bottom' title='Load script'>
-      <Popconfirm
-        title={
-          <>
-            Observation Mode:
-            <Input value={obsMode} onChange={(e) => setObsMode(e.target.value)} />
-          </>
-        }
-        icon={<></>}
-        onCancel={resetObsMode}
-        onConfirm={() => {
-          data && loadScriptAction.mutateAsync(data.smService)
-          resetObsMode()
+    <>
+      <Button onClick={showModal} disabled={isSMLoading || disabled} loading={loadScriptAction.isLoading}>
+        Start Sequencer
+      </Button>
+      <Modal
+        title='Select a Subsystem and Observation Mode to spawn:'
+        visible={isModalVisible}
+        onOk={handleOk}
+        okText='Confirm'
+        okButtonProps={{
+          disabled: !subsystem || !obsMode
         }}
-        disabled={isLoading}>
-        <Button
-          type='text'
-          icon={<FileAddOutlined className={styles.icon} />}
-          role='loadScript'
-          loading={loadScriptAction.isLoading}
-        />
-      </Popconfirm>
-    </Tooltip>
+        onCancel={handleCancel}
+        destroyOnClose
+        centered>
+        <Form labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
+          <Form.Item label='Subsystem' name='Subsystem'>
+            <Select
+              showSearch
+              onClear={() => setSubsystem(undefined)}
+              allowClear
+              placeholder='Select a Subsystem'
+              onSelect={onSubsystemChange}
+              listHeight={124}>
+              {subsystems.map((sub) => (
+                <Select.Option key={sub} value={sub}>
+                  {sub}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label='Observation Mode' name='ObservationMode'>
+            <AutoComplete
+              value={obsMode}
+              options={obsModes}
+              placeholder='Enter Observation Mode'
+              onChange={onObsModeChange}
+              onSelect={onObsModeChange}
+              filterOption={(inputValue, option) =>
+                option?.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+              }
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   )
+}
+const getAllObsModes = (obsModeDetails: GroupedObsModeDetails | undefined) => {
+  if (!obsModeDetails) return undefined
+
+  const running = obsModeDetails.Running
+  const configurable = obsModeDetails.Configurable
+  const nonConfigurable = obsModeDetails['Non-configurable']
+  return running
+    .concat(configurable)
+    .concat(nonConfigurable)
+    .map((obs) => ({
+      value: obs.obsMode.name
+    }))
 }

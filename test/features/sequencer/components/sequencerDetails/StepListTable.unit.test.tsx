@@ -61,8 +61,6 @@ describe('stepList table', () => {
       // eslint-disable-next-line testing-library/no-node-access
       const spanElement = stepButton.firstChild as HTMLSpanElement
 
-      console.log(spanElement)
-
       expect(spanElement.classList.contains(className)).true
     })
   })

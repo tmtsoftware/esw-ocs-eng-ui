@@ -3,7 +3,6 @@ import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
-import { LoadScript } from '../../sm/components/LoadScript'
 import { UnloadScript } from '../../sm/components/UnloadScript'
 import styles from './agentCards.module.css'
 import { SequenceComponentActions } from './SequenceComponentActions'
@@ -47,9 +46,6 @@ const SequenceComponent = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element 
     <Row className={styles.seqComp}>
       <Col flex='auto' className={styles.seqCompTitle}>
         <Title />
-      </Col>
-      <Col className={styles.iconBoxSeqComp}>
-        <LoadScript subsystem={seqCompPrefix.subsystem} />
       </Col>
     </Row>
   )

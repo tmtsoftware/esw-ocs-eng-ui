@@ -54,12 +54,12 @@ export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Ele
   }
   return (
     <Menu.Item
-      key='ReloadSequencer'
+      key='ReloadScript'
       icon={<ReloadOutlined />}
       onClick={handleOnClick}
       disabled={loading}
-      role='ReloadSequencer'>
-      Reload Sequencer
+      role='ReloadScript'>
+      Reload Script
     </Menu.Item>
   )
 }

@@ -25,10 +25,14 @@ type SequenceComponentActionProps = {
 const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => {
   return (
     <Menu {...restProps}>
-      <KillSequenceComponent componentId={componentId} />
-      <Menu.Divider />
-      {!obsMode && <DisabledSequencerActions />}
       {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
+      <KillSequenceComponent componentId={componentId} />
+      {!obsMode && (
+        <>
+          <Menu.Divider />
+          <DisabledSequencerActions />
+        </>
+      )}
     </Menu>
   )
 }

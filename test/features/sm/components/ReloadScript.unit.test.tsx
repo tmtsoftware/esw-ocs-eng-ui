@@ -51,7 +51,7 @@ describe('Reload script', () => {
   ]
 
   responseScenarios.forEach(([testName, res, message]) => {
-    it(`should return ${testName} when Reload Sequencer is clicked | ESW-502`, async () => {
+    it(`should return ${testName} when Reload Script is clicked | ESW-502`, async () => {
       when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve(res)
 
       renderWithAuth({
@@ -67,8 +67,8 @@ describe('Reload script', () => {
         )
       })
 
-      const reloadSequencerItem = screen.getByRole('ReloadSequencer')
-      await waitFor(() => userEvent.click(reloadSequencerItem))
+      const reloadScriptItem = screen.getByRole('ReloadScript')
+      await waitFor(() => userEvent.click(reloadScriptItem))
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(`Do you want to reload the sequencer ${componentId.prefix.toJSON()}?`)

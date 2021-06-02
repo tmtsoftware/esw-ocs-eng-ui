@@ -265,7 +265,7 @@ describe('Agents Grid View', () => {
 
     // checking different menu items for sequencers and sequence components
     await screen.findByText('Shutdown Component')
-    await screen.findByText('Reload Sequencer')
+    await screen.findByText('Reload Script')
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {

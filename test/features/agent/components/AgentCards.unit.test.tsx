@@ -6,6 +6,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
+import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { getAgentStatusMock, mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
@@ -42,8 +43,6 @@ describe('Agents Grid View', () => {
     expect(screen.getAllByRole('sequenceCompActions')).length(2)
     expect(screen.getByRole('addSeqCompIcon')).exist
 
-    // ESW.esw1 is with sequencer hence unload icon will appear
-    expect(screen.getByRole('unloadScriptIcon')).exist
     verify(agentService.getAgentStatus()).called()
   })
 
@@ -266,6 +265,7 @@ describe('Agents Grid View', () => {
     // checking different menu items for sequencers and sequence components
     await screen.findByText('Shutdown Component')
     await screen.findByText('Reload Script')
+    await screen.findByText(stopSequencerConstants.menuItemText)
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {

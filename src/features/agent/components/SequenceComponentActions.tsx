@@ -1,8 +1,9 @@
 import { MoreOutlined } from '@ant-design/icons'
-import type { ComponentId } from '@tmtsoftware/esw-ts'
+import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
+import { UnloadScript } from '../../sm/components/UnloadScript'
 import { KillSequenceComponent } from './KillSequenceComponent'
 
 const { useBreakpoint } = Grid
@@ -26,6 +27,7 @@ type SequenceComponentActionProps = {
 const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => {
   return (
     <Menu {...restProps}>
+      {obsMode && <UnloadScript sequencerPrefix={Prefix.fromString(obsMode)} />}
       {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
       <KillSequenceComponent componentId={componentId} />
       {!obsMode && (

@@ -1,13 +1,13 @@
-import { FileExcelOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined } from '@ant-design/icons'
 import { ObsMode, Prefix, SequenceManagerService, ShutdownSequencersResponse, Subsystem } from '@tmtsoftware/esw-ts'
-import { Button, Tooltip } from 'antd'
+import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import styles from './sm.module.css'
+import { stopSequencerConstants } from '../smConstants'
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
   switch (res._type) {
@@ -33,29 +33,26 @@ export const UnloadScript = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): 
 
   const unloadAction = useMutation({
     mutationFn: unloadScript(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
-    onError: (e) => errorMessage('Failed to unload sequencer', e),
-    onSuccess: () => successMessage('Successfully unloaded sequencer'),
+    onSuccess: () => successMessage(stopSequencerConstants.successMessage),
+    onError: (e) => errorMessage(stopSequencerConstants.failureMessage, e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 
   return (
-    <Tooltip placement='bottom' title='Unload script'>
-      <Button
-        type='text'
-        icon={<FileExcelOutlined className={styles.icon} />}
-        role='unloadScriptIcon'
-        disabled={isLoading}
-        onClick={() =>
-          data?.smService &&
-          showConfirmModal(
-            () => {
-              unloadAction.mutate(data.smService)
-            },
-            `Do you want to unload the sequencer ${sequencerPrefix.toJSON()}?`,
-            'Unload'
-          )
-        }
-      />
-    </Tooltip>
+    <Menu.Item
+      icon={<CloseCircleOutlined />}
+      disabled={isLoading || unloadAction.isLoading}
+      onClick={() =>
+        data?.smService &&
+        showConfirmModal(
+          () => {
+            unloadAction.mutate(data.smService)
+          },
+          stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON()),
+          stopSequencerConstants.modalOkButtonText
+        )
+      }>
+      {stopSequencerConstants.menuItemText}
+    </Menu.Item>
   )
 }

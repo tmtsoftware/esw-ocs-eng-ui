@@ -1,10 +1,13 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ObsMode, Prefix, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
+import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { UnloadScript } from '../../../../src/features/sm/components/UnloadScript'
+import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
+import { _createErrorMsg } from '../../../../src/utils/message'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('UnloadScript Icon', () => {
@@ -18,7 +21,7 @@ describe('UnloadScript Icon', () => {
       {
         _type: 'Success'
       },
-      'Successfully unloaded sequencer'
+      stopSequencerConstants.successMessage
     ],
     [
       'locationServiceError',
@@ -26,7 +29,7 @@ describe('UnloadScript Icon', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer component not found'
       },
-      'Failed to unload sequencer, reason: Sequencer component not found'
+      _createErrorMsg(stopSequencerConstants.failureMessage, 'Sequencer component not found')
     ],
     [
       'Unhandled',
@@ -36,7 +39,10 @@ describe('UnloadScript Icon', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to unload sequencer, reason: ShutdownSequencer message type is not supported in Processing state'
+      _createErrorMsg(
+        stopSequencerConstants.failureMessage,
+        'ShutdownSequencer message type is not supported in Processing state'
+      )
     ],
     [
       'FailedResponse',
@@ -44,39 +50,40 @@ describe('UnloadScript Icon', () => {
         _type: 'FailedResponse',
         reason: 'Unload message timed out'
       },
-      'Failed to unload sequencer, reason: Unload message timed out'
+      _createErrorMsg(stopSequencerConstants.failureMessage, 'Unload message timed out')
     ]
   ]
 
   tests.forEach(([testname, response, message]) => {
+    const modalTitleText = stopSequencerConstants.getModalTitle(seqPrefix.toJSON())
     it(`should return ${testname} | ESW-447, ESW-507`, async () => {
       when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
-        ui: <UnloadScript sequencerPrefix={seqPrefix} />
+        ui: (
+          <Menu>
+            <UnloadScript sequencerPrefix={seqPrefix} />
+          </Menu>
+        )
       })
 
-      const unloadScriptButton = screen.getByRole('unloadScriptIcon') as HTMLButtonElement
+      const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
 
-      await waitFor(() => expect(unloadScriptButton.disabled).false)
-
-      userEvent.click(unloadScriptButton, { button: 0 })
+      userEvent.click(stopSequencer)
 
       // expect modal to be visible
-      const modalTitle = await screen.findByText(`Do you want to unload the sequencer ${seqPrefix.toJSON()}?`)
+      const modalTitle = await screen.findByText(modalTitleText)
       expect(modalTitle).to.exist
 
       const confirmButton = screen.getByRole('button', {
-        name: /unload/i
+        name: stopSequencerConstants.modalOkButtonText
       })
       userEvent.click(confirmButton)
 
       await screen.findByText(message)
 
       verify(smService.shutdownSequencer('ESW', deepEqual(obsMode))).called()
-      await waitFor(
-        () => expect(screen.queryByText(`Do you want to unload the sequencer ${seqPrefix.toJSON()}?`)).to.null
-      )
+      await waitFor(() => expect(screen.queryByText(modalTitleText)).to.null)
     })
   })
 })

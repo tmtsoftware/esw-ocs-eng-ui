@@ -20,7 +20,7 @@ const { Sider, Content } = Layout
 const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   return (
-    <Space size={20}>
+    <Space>
       <LoadSequence prefix={prefix} sequencerState={sequencerState} />
       <LifecycleState prefix={prefix} sequencerState={sequencerState} />
       <StopSequence prefix={prefix} isSequencerRunning={isSequencerRunning} />

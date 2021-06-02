@@ -7,6 +7,7 @@ import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { GroupedObsModeDetails, useObsModesDetails } from '../hooks/useObsModesDetails'
+import { startSequencerConstants } from '../smConstants'
 
 const handleResponse = (res: StartSequencerResponse) => {
   switch (res._type) {
@@ -14,7 +15,7 @@ const handleResponse = (res: StartSequencerResponse) => {
       return res.componentId
 
     case 'AlreadyRunning':
-      throw new Error(`${res.componentId.prefix.toJSON()} is already running`)
+      throw new Error(startSequencerConstants.getAlreadyRunningErrorMessage(res.componentId.prefix.toJSON()))
 
     case 'LoadScriptError':
       throw new Error(res.reason)
@@ -57,8 +58,8 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   const startSequencerAction = useMutation({
     mutationFn: startSequencer(subsystem as Subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage('Failed to start sequencer', e),
-    onSuccess: () => successMessage('Successfully started sequencer'),
+    onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
+    onSuccess: () => successMessage(startSequencerConstants.successMessage),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
   const showModal = () => {
@@ -71,7 +72,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
       setIsModalVisible(false)
       resetInputData()
     } else {
-      message.error('Please input subsystem and observation mode')
+      message.error(startSequencerConstants.inputErrorMessage)
     }
   }
 
@@ -91,10 +92,10 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
   return (
     <>
       <Button onClick={showModal} disabled={isSMLoading || disabled} loading={startSequencerAction.isLoading}>
-        Start Sequencer
+        {startSequencerConstants.startSequencerButtonText}
       </Button>
       <Modal
-        title='Select a Subsystem and Observation Mode to spawn:'
+        title={startSequencerConstants.modalTitle}
         visible={isModalVisible}
         onOk={handleOk}
         okText='Confirm'
@@ -105,12 +106,12 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
         destroyOnClose
         centered>
         <Form labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
-          <Form.Item label='Subsystem' name='Subsystem'>
+          <Form.Item label={startSequencerConstants.subsystemInputLabel} name='Subsystem'>
             <Select
               showSearch
               onClear={() => setSubsystem(undefined)}
               allowClear
-              placeholder='Select a Subsystem'
+              placeholder={startSequencerConstants.subsystemInputPlaceholder}
               onSelect={onSubsystemChange}
               listHeight={124}>
               {subsystems.map((sub) => (
@@ -120,12 +121,11 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
               ))}
             </Select>
           </Form.Item>
-
-          <Form.Item label='Observation Mode' name='ObservationMode'>
+          <Form.Item label={startSequencerConstants.obsModeInputLabel} name='ObservationMode'>
             <AutoComplete
               value={obsMode}
               options={obsModes}
-              placeholder='Enter Observation Mode'
+              placeholder={startSequencerConstants.obsModeInputPlaceholder}
               onChange={onObsModeChange}
               onSelect={onObsModeChange}
               filterOption={(inputValue, option) =>

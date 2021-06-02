@@ -4,6 +4,8 @@ import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftwa
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
+import { startSequencerConstants } from '../../../../src/features/sm/smConstants'
+import { _createErrorMsg } from '../../../../src/utils/message'
 import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
@@ -21,7 +23,7 @@ describe('Start Sequencer', () => {
         _type: 'Started',
         componentId
       },
-      'Successfully started sequencer'
+      startSequencerConstants.successMessage
     ],
     [
       'locationServiceError',
@@ -29,7 +31,7 @@ describe('Start Sequencer', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer component not found'
       },
-      'Failed to start sequencer, reason: Sequencer component not found'
+      _createErrorMsg(startSequencerConstants.failureMessage, 'Sequencer component not found')
     ],
     [
       'Unhandled',
@@ -39,7 +41,10 @@ describe('Start Sequencer', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to start sequencer, reason: StartSequencer message type is not supported in Processing state'
+      _createErrorMsg(
+        startSequencerConstants.failureMessage,
+        'StartSequencer message type is not supported in Processing state'
+      )
     ],
     [
       'AlreadyRunning',
@@ -47,12 +52,15 @@ describe('Start Sequencer', () => {
         _type: 'AlreadyRunning',
         componentId
       },
-      `Failed to start sequencer, reason: ${componentId.prefix.toJSON()} is already running`
+      _createErrorMsg(
+        startSequencerConstants.failureMessage,
+        startSequencerConstants.getAlreadyRunningErrorMessage(componentId.prefix.toJSON())
+      )
     ],
     [
       'LoadScriptError',
       { _type: 'LoadScriptError', reason: 'Script missing' },
-      'Failed to start sequencer, reason: Script missing'
+      _createErrorMsg(startSequencerConstants.failureMessage, 'Script missing')
     ],
     [
       'SequenceComponentNotAvailable',
@@ -61,7 +69,7 @@ describe('Start Sequencer', () => {
         msg: 'Sequencer component not found',
         subsystems: []
       },
-      'Failed to start sequencer, reason: Sequencer component not found'
+      _createErrorMsg(startSequencerConstants.failureMessage, 'Sequencer component not found')
     ],
     [
       'FailedResponse',
@@ -69,7 +77,7 @@ describe('Start Sequencer', () => {
         _type: 'FailedResponse',
         reason: 'LoadScript message timed out'
       },
-      'Failed to start sequencer, reason: LoadScript message timed out'
+      _createErrorMsg(startSequencerConstants.failureMessage, 'LoadScript message timed out')
     ]
   ]
 
@@ -80,26 +88,25 @@ describe('Start Sequencer', () => {
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447, ESW-507`, async () => {
       when(smService.getObsModesDetails()).thenResolve(obsModesData)
-      when(smService.startSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
+      when(smService.startSequencer(ESW, deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
         ui: <StartSequencer />
       })
 
-      const loadScriptButton = screen.getByRole('button', { name: 'Start Sequencer' })
+      const loadScriptButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
       userEvent.click(loadScriptButton)
-      // await waitFor(() => expect(loadScriptButton.disabled).false)
 
       const modal = await screen.findByRole('dialog', {
-        name: 'Select a Subsystem and Observation Mode to spawn:'
+        name: startSequencerConstants.modalTitle
       })
-      const subsystemInput = within(modal).getByRole('combobox', { name: 'Subsystem' })
+      const subsystemInput = within(modal).getByRole('combobox', { name: startSequencerConstants.subsystemInputLabel })
       userEvent.click(subsystemInput)
       userEvent.type(subsystemInput, 'es')
       const eswItem = await screen.findByText(ESW)
       await waitFor(() => userEvent.click(eswItem))
 
-      const obsModeInput = within(modal).getByRole('combobox', { name: 'Observation Mode' })
+      const obsModeInput = within(modal).getByRole('combobox', { name: startSequencerConstants.obsModeInputLabel })
       userEvent.click(obsModeInput)
       userEvent.type(obsModeInput, 'dark')
       const obsModeItem = await screen.findAllByText(obsModeName)

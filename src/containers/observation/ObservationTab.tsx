@@ -1,13 +1,12 @@
 import type { Subsystem } from '@tmtsoftware/esw-ts'
 import { Empty, Layout, Menu } from 'antd'
-import { Content } from 'antd/lib/layout/layout'
 import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import { CurrentObsMode } from './CurrentObsMode'
 import type { TabName } from './ObservationTabs'
 
-const { Sider } = Layout
+const { Sider, Content } = Layout
 
 const getTabBasedResources = (
   currentTab: TabName,

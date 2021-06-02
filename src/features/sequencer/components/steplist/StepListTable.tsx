@@ -21,7 +21,7 @@ type StepData = {
 }
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
-  return !stepList?.steps.find((step) => step.id === selectedStep.id)
+  return !stepList.steps.find((step) => step.id === selectedStep.id)
 }
 
 const findStepByStatus = (stepList: StepList, status: StepStatus['_type']): Step | undefined => {
@@ -150,7 +150,7 @@ export const StepListTable = ({
           rowKey={(step) => step.id}
           pagination={false}
           loading={isLoading}
-          dataSource={stepList?.steps.map((step, index) => ({
+          dataSource={stepList.steps.map((step, index) => ({
             ...step,
             index
           }))}

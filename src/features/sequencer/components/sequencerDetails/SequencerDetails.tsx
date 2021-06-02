@@ -1,6 +1,5 @@
 import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
 import { Badge, Card, Descriptions, Empty, Layout, Space, Typography } from 'antd'
-import { Content } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
@@ -16,7 +15,7 @@ import { StepListTable } from '../steplist/StepListTable'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 
-const { Sider } = Layout
+const { Sider, Content } = Layout
 
 const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'

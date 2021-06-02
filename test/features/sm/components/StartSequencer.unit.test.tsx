@@ -100,11 +100,9 @@ describe('Start Sequencer', () => {
       const modal = await screen.findByRole('dialog', {
         name: startSequencerConstants.modalTitle
       })
-      const subsystemInput = within(modal).getByRole('combobox', { name: startSequencerConstants.subsystemInputLabel })
-      userEvent.click(subsystemInput)
-      userEvent.type(subsystemInput, 'es')
-      const eswItem = await screen.findByText(ESW)
-      await waitFor(() => userEvent.click(eswItem))
+      await enterUserInputInSelect(modal, startSequencerConstants.subsystemInputLabel, 'es', ESW)
+
+      await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsModeName)
 
       const obsModeInput = within(modal).getByRole('combobox', { name: startSequencerConstants.obsModeInputLabel })
       userEvent.click(obsModeInput)
@@ -119,4 +117,53 @@ describe('Start Sequencer', () => {
       verify(smService.startSequencer(ESW, deepEqual(obsMode))).called()
     })
   })
+
+  it('should open modal and render a form containing subsystem and obsmode input| ESW-447', async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+    renderWithAuth({
+      ui: <StartSequencer />
+    })
+
+    const loadScriptButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
+    userEvent.click(loadScriptButton)
+
+    const modal = await screen.findByRole('dialog', {
+      name: startSequencerConstants.modalTitle
+    })
+
+    within(modal).getByRole('combobox', { name: startSequencerConstants.subsystemInputLabel })
+    within(modal).getByRole('combobox', { name: startSequencerConstants.obsModeInputLabel })
+    within(modal).getByText(startSequencerConstants.subsystemInputPlaceholder)
+    within(modal).getByText(startSequencerConstants.obsModeInputPlaceholder)
+    within(modal).getByRole('button', { name: 'Confirm' })
+  })
 })
+
+const enterUserInputInSelect = async (
+  withinElement: HTMLElement,
+  label: string,
+  userInput: string,
+  optionToChoose: string
+) => {
+  const combobox = within(withinElement).getByRole('combobox', { name: label })
+  userEvent.click(combobox)
+  userEvent.type(combobox, userInput)
+  const option = await screen.findByText(optionToChoose)
+
+  await waitFor(() => userEvent.click(option))
+}
+
+const enterUserInputInAutoComplete = async (
+  withinElement: HTMLElement,
+  label: string,
+  userInput: string,
+  optionToChoose: string
+) => {
+  const combobox = within(withinElement).getByRole('combobox', { name: label })
+  userEvent.click(combobox)
+  userEvent.type(combobox, userInput)
+  const option = await screen.findAllByRole('option', { name: optionToChoose })
+
+  await waitFor(() => userEvent.click(option[0]))
+}

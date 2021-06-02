@@ -40,7 +40,7 @@ const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: S
 export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Element => {
   const emptyString = ''
 
-  const [smService, isSMLoading] = useSMService()
+  const [smContext] = useSMService()
   const { data: obsModeDetails } = useObsModesDetails()
 
   const [subsystem, setSubsystem] = useState<Subsystem>()
@@ -68,7 +68,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   const handleOk = () => {
     if (subsystem && obsMode) {
-      smService && startSequencerAction.mutateAsync(smService.smService)
+      smContext && startSequencerAction.mutateAsync(smContext.smService)
       setIsModalVisible(false)
       resetInputData()
     } else {
@@ -91,7 +91,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   return (
     <>
-      <Button onClick={showModal} disabled={isSMLoading || disabled} loading={startSequencerAction.isLoading}>
+      <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isLoading}>
         {startSequencerConstants.startSequencerButtonText}
       </Button>
       <Modal

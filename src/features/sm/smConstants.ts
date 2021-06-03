@@ -1,3 +1,5 @@
+import type { Prefix } from '@tmtsoftware/esw-ts'
+
 export const startSequencerConstants = {
   successMessage: 'Successfully started sequencer',
   failureMessage: 'Failed to start sequencer',
@@ -12,8 +14,8 @@ export const startSequencerConstants = {
 }
 
 export const stopSequencerConstants = {
-  successMessage: 'Successfully unloaded sequencer',
-  failureMessage: 'Failed to unload sequencer',
+  successMessage: (sequencerPrefix: Prefix): string => `Successfully stopped sequencer ${sequencerPrefix.toJSON()}`,
+  failureMessage: (sequencerPrefix: Prefix): string => `Failed to stop sequencer ${sequencerPrefix.toJSON()}`,
   menuItemText: 'Stop Sequencer',
   modalOkButtonText: 'Stop',
   getModalTitle: (sequencerPrefix: string): string => `Are you sure you want to stop sequencer '${sequencerPrefix}'?`

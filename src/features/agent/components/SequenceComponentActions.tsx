@@ -3,7 +3,7 @@ import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
-import { UnloadScript } from '../../sm/components/UnloadScript'
+import { StopSequencer } from '../../sm/components/StopSequencer'
 import { KillSequenceComponent } from './KillSequenceComponent'
 
 const { useBreakpoint } = Grid
@@ -27,7 +27,7 @@ type SequenceComponentActionProps = {
 const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => {
   return (
     <Menu {...restProps}>
-      {obsMode && <UnloadScript sequencerPrefix={Prefix.fromString(obsMode)} />}
+      {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(obsMode)} />}
       {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
       <KillSequenceComponent componentId={componentId} />
       {!obsMode && (

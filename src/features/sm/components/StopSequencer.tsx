@@ -25,16 +25,16 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
   }
 }
 
-const unloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
+const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
   smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
-export const UnloadScript = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
+export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
   const [data, isLoading] = useSMService()
 
   const unloadAction = useMutation({
-    mutationFn: unloadScript(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
-    onSuccess: () => successMessage(stopSequencerConstants.successMessage),
-    onError: (e) => errorMessage(stopSequencerConstants.failureMessage, e),
+    mutationFn: stopSequencer(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
+    onSuccess: () => successMessage(stopSequencerConstants.successMessage(sequencerPrefix)),
+    onError: (e) => errorMessage(stopSequencerConstants.failureMessage(sequencerPrefix), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 

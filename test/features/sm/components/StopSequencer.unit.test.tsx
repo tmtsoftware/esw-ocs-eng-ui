@@ -5,12 +5,12 @@ import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
-import { UnloadScript } from '../../../../src/features/sm/components/UnloadScript'
+import { StopSequencer } from '../../../../src/features/sm/components/StopSequencer'
 import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { _createErrorMsg } from '../../../../src/utils/message'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
-describe('UnloadScript Icon', () => {
+describe('Stop Sequencer', () => {
   beforeEach(() => reset(mockServices.mock.smService))
   const obsMode = new ObsMode('DarkNight')
   const smService = mockServices.mock.smService
@@ -21,7 +21,7 @@ describe('UnloadScript Icon', () => {
       {
         _type: 'Success'
       },
-      stopSequencerConstants.successMessage
+      stopSequencerConstants.successMessage(seqPrefix)
     ],
     [
       'locationServiceError',
@@ -29,7 +29,7 @@ describe('UnloadScript Icon', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer component not found'
       },
-      _createErrorMsg(stopSequencerConstants.failureMessage, 'Sequencer component not found')
+      _createErrorMsg(stopSequencerConstants.failureMessage(seqPrefix), 'Sequencer component not found')
     ],
     [
       'Unhandled',
@@ -40,7 +40,7 @@ describe('UnloadScript Icon', () => {
         messageType: 'Unhandled'
       },
       _createErrorMsg(
-        stopSequencerConstants.failureMessage,
+        stopSequencerConstants.failureMessage(seqPrefix),
         'ShutdownSequencer message type is not supported in Processing state'
       )
     ],
@@ -50,7 +50,7 @@ describe('UnloadScript Icon', () => {
         _type: 'FailedResponse',
         reason: 'Unload message timed out'
       },
-      _createErrorMsg(stopSequencerConstants.failureMessage, 'Unload message timed out')
+      _createErrorMsg(stopSequencerConstants.failureMessage(seqPrefix), 'Unload message timed out')
     ]
   ]
 
@@ -62,7 +62,7 @@ describe('UnloadScript Icon', () => {
       renderWithAuth({
         ui: (
           <Menu>
-            <UnloadScript sequencerPrefix={seqPrefix} />
+            <StopSequencer sequencerPrefix={seqPrefix} />
           </Menu>
         )
       })

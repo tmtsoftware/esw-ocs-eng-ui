@@ -394,7 +394,6 @@ describe('sequencer details', () => {
     })
     //step18 is executing, ui should show step18 details on right side
     await assertRunningStepIs(/Command-18/i, 500)
-    await screen.findByText('ESW.test18')
     //wait and assert for auto scroll to happen
     await waitFor(() => expect(window.scrollY).to.greaterThan(500))
 

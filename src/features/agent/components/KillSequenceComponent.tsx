@@ -7,6 +7,7 @@ import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
+import { killComponentConstants } from '../agentConstants'
 
 const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
   agentService.killComponent(componentId).then((res) => {
@@ -19,8 +20,8 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
-    onSuccess: () => successMessage(`Successfully killed Sequence Component: ${componentId.prefix.toJSON()}`),
-    onError: (e) => errorMessage(`Sequence Component (${componentId.prefix.toJSON()}) could not be killed`, e),
+    onSuccess: () => successMessage(killComponentConstants.getSuccessMessage(componentId.prefix.toJSON())),
+    onError: (e) => errorMessage(killComponentConstants.getFailureMessage(componentId.prefix.toJSON()), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 
@@ -30,8 +31,8 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
         () => {
           killSequenceComponentAction.mutateAsync(agentService)
         },
-        `Do you want to delete ${componentId.prefix.toJSON()} sequence component?`,
-        'Delete'
+        killComponentConstants.getModalTitle(componentId.prefix.toJSON()),
+        killComponentConstants.modalOkButtonText
       )
   }
   return (
@@ -42,7 +43,7 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
       disabled={isLoading}
       icon={<PoweroffOutlined />}
       onClick={handleOnClick}>
-      Shutdown Component
+      {killComponentConstants.menuItemText}
     </Menu.Item>
   )
 }

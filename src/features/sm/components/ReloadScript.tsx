@@ -7,6 +7,7 @@ import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
+import { reloadSequencerConstants } from '../smConstants'
 
 const handleRestartResponse = (res: RestartSequencerResponse) => {
   switch (res._type) {
@@ -38,8 +39,8 @@ export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Ele
 
   const reloadScriptAction = useMutation({
     mutationFn: reloadScript(subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage(`Failed to load script (${subsystem}.${obsMode})`, e),
-    onSuccess: () => successMessage(`Successfully loaded script ${subsystem}.${obsMode}`),
+    onError: (e) => errorMessage(reloadSequencerConstants.getFailureMessage(`${subsystem}.${obsMode}`), e),
+    onSuccess: () => successMessage(reloadSequencerConstants.getSuccessMessage(`${subsystem}.${obsMode}`)),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
   const handleOnClick = () => {
@@ -48,8 +49,8 @@ export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Ele
         () => {
           reloadScriptAction.mutateAsync(smService)
         },
-        `Do you want to reload the sequencer ${subsystem}.${obsMode}?`,
-        'Reload'
+        reloadSequencerConstants.getModalTitle(subsystem, obsMode),
+        reloadSequencerConstants.modalOkButtonText
       )
   }
   return (
@@ -59,7 +60,7 @@ export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Ele
       onClick={handleOnClick}
       disabled={loading}
       role='ReloadScript'>
-      Reload Script
+      {reloadSequencerConstants.menuItemText}
     </Menu.Item>
   )
 }

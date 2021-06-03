@@ -1,36 +1,14 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Sequence, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
-import type { GenericResponse } from '@tmtsoftware/esw-ts/lib/src/clients/sequencer'
 import { Menu } from 'antd'
-
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { handleActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import {
-  addStepsErrorPrefix,
-  addStepsSuccessMsg,
-  cannotOperateOnAnInFlightOrFinishedStepMsg,
-  idDoesNotExistMsg
-} from '../sequencerMessageConstants'
+import { addStepsErrorPrefix, addStepsSuccessMsg } from '../sequencerMessageConstants'
 import { UploadSequence } from '../UploadSequence'
-
-const handleResponse = (res: GenericResponse) => {
-  switch (res._type) {
-    case 'Ok':
-      return res
-
-    case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
-
-    case 'IdDoesNotExist':
-      throw new Error(idDoesNotExistMsg(res.id))
-
-    case 'Unhandled':
-      throw new Error(res.msg)
-  }
-}
 
 type AddStepsProps = {
   disabled: boolean
@@ -42,7 +20,7 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
   const { sequencerService } = useStepListContext()
 
   const addStepAction = useMutation({
-    mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleResponse),
+    mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleActionResponse),
     onError: (e) => errorMessage(addStepsErrorPrefix, e),
     onSuccess: () => successMessage(addStepsSuccessMsg)
   })

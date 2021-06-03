@@ -150,7 +150,7 @@ describe('Agents Grid View', () => {
     verify(agentService.getAgentStatus()).called()
   })
 
-  it('should add sequence components on agent| ESW-446, ESW-502', async () => {
+  it('should add sequence components on agent| ESW-446', async () => {
     when(
       agentService.spawnSequenceComponent(deepEqual(Prefix.fromString('ESW.machine1')), deepEqual('ESW_1'))
     ).thenResolve({ _type: 'Spawned' })

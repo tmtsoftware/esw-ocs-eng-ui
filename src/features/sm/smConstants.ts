@@ -20,3 +20,12 @@ export const stopSequencerConstants = {
   modalOkButtonText: 'Stop',
   getModalTitle: (sequencerPrefix: string): string => `Are you sure you want to stop sequencer '${sequencerPrefix}'?`
 }
+
+export const reloadSequencerConstants = {
+  getSuccessMessage: (sequencerPrefix: string): string => `Successfully loaded script ${sequencerPrefix}`,
+  getFailureMessage: (sequencerPrefix: string): string => `Failed to load script ${sequencerPrefix}`,
+  menuItemText: 'Reload Script',
+  modalOkButtonText: 'Reload',
+  getModalTitle: (subsystem: string, obsMode: string): string =>
+    `Do you want to reload the sequencer ${subsystem}.${obsMode}?`
+}

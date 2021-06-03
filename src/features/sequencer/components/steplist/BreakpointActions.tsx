@@ -1,27 +1,11 @@
-import { VerticalAlignMiddleOutlined, CloseCircleOutlined } from '@ant-design/icons'
-import type { GenericResponse, RemoveBreakpointResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
+import { CloseCircleOutlined, VerticalAlignMiddleOutlined } from '@ant-design/icons'
+import type { SequencerService, Step } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
-import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-
-const handleActionResponse = (res: GenericResponse | RemoveBreakpointResponse) => {
-  switch (res._type) {
-    case 'Ok':
-      return res
-
-    case 'Unhandled':
-      throw new Error(res.msg)
-
-    case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
-
-    case 'IdDoesNotExist':
-      throw new Error(idDoesNotExistMsg(res.id))
-  }
-}
+import { handleActionResponse } from '../../utils'
 
 const insertAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.addBreakpoint(id).then(handleActionResponse)

@@ -4,6 +4,7 @@ import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
 import { StopSequencer } from '../../sm/components/StopSequencer'
+import styles from './agentCards.module.css'
 import { KillSequenceComponent } from './KillSequenceComponent'
 
 const { useBreakpoint } = Grid
@@ -14,7 +15,9 @@ const DisabledSequencerActions = () => {
   const displayMessage = 'Spawned sequencers will display more actions'
   return (
     <Menu.Item key='disabledSequencerActions' disabled={true}>
-      <div style={{ maxWidth: width, whiteSpace: 'pre-wrap', fontStyle: 'italic' }}>{displayMessage}</div>
+      <div style={{ maxWidth: width }} className={styles.disabledSequencerActions}>
+        {displayMessage}
+      </div>
     </Menu.Item>
   )
 }
@@ -24,27 +27,24 @@ type SequenceComponentActionProps = {
   obsMode: string
 }
 
-const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => {
-  return (
-    <Menu {...restProps}>
-      {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(obsMode)} />}
-      {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
-      <KillSequenceComponent componentId={componentId} />
-      {!obsMode && (
-        <>
-          <Menu.Divider />
-          <DisabledSequencerActions />
-        </>
-      )}
-    </Menu>
-  )
-}
-export const SequenceComponentActions = ({ componentId, obsMode }: SequenceComponentActionProps): JSX.Element => {
-  return (
-    <Dropdown
-      overlay={() => <SequenceComponentActionsMenu componentId={componentId} obsMode={obsMode} />}
-      trigger={['click']}>
-      <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
-    </Dropdown>
-  )
-}
+const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => (
+  <Menu {...restProps}>
+    {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(obsMode)} />}
+    {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
+    <KillSequenceComponent componentId={componentId} />
+    {!obsMode && (
+      <>
+        <Menu.Divider />
+        <DisabledSequencerActions />
+      </>
+    )}
+  </Menu>
+)
+
+export const SequenceComponentActions = ({ componentId, obsMode }: SequenceComponentActionProps): JSX.Element => (
+  <Dropdown
+    overlay={() => <SequenceComponentActionsMenu componentId={componentId} obsMode={obsMode} />}
+    trigger={['click']}>
+    <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
+  </Dropdown>
+)

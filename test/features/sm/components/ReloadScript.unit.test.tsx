@@ -28,7 +28,7 @@ describe('Reload script', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer location not found'
       },
-      `Failed to load script (${subsystem}.${obsMode.toJSON()}), reason: Sequencer location not found`
+      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequencer location not found`
     ],
     [
       'Unhandled',
@@ -38,7 +38,7 @@ describe('Reload script', () => {
         messageType: 'RestartSequencer',
         msg: "Sequence Manager can not accept 'RestartSequencer' message in 'Processing'"
       },
-      `Failed to load script (${subsystem}.${obsMode.toJSON()}), reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
+      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
     ],
     [
       'FailedResponse',
@@ -46,7 +46,7 @@ describe('Reload script', () => {
         _type: 'FailedResponse',
         reason: 'Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms'
       },
-      `Failed to load script (${subsystem}.${obsMode.toJSON()}), reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
+      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
     ]
   ]
 

@@ -29,7 +29,7 @@ const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: Se
   smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
 export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
-  const [data, isLoading] = useSMService()
+  const [smContext, isLoading] = useSMService()
 
   const unloadAction = useMutation({
     mutationFn: stopSequencer(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
@@ -43,10 +43,10 @@ export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }):
       icon={<CloseCircleOutlined />}
       disabled={isLoading || unloadAction.isLoading}
       onClick={() =>
-        data?.smService &&
+        smContext?.smService &&
         showConfirmModal(
           () => {
-            unloadAction.mutate(data.smService)
+            unloadAction.mutate(smContext.smService)
           },
           stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON()),
           stopSequencerConstants.modalOkButtonText

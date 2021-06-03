@@ -1,4 +1,6 @@
-import type { Option, SequencerState, Step, StepList } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, Option, SequencerState, Step, StepList } from '@tmtsoftware/esw-ts'
+import type { Ok } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/models/SequencerRes'
+import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from './components/sequencerMessageConstants'
 
 export type StepListStatus =
   | 'All Steps Completed'
@@ -48,4 +50,20 @@ export const getCurrentStepCommandName = (stepList: Option<StepList>): string =>
   if (stepList === undefined) return 'NA'
   const step = currentStep(stepList)
   return step === undefined ? 'NA' : step.command.commandName
+}
+
+export const handleActionResponse = (res: GenericResponse): Ok => {
+  switch (res._type) {
+    case 'Ok':
+      return res
+
+    case 'CannotOperateOnAnInFlightOrFinishedStep':
+      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
+
+    case 'IdDoesNotExist':
+      throw new Error(idDoesNotExistMsg(res.id))
+
+    case 'Unhandled':
+      throw new Error(res.msg)
+  }
 }

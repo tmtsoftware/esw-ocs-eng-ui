@@ -38,3 +38,8 @@
 :global #spawnSequenceComponent .ant-popover-message-title {
   padding-left: 0;
 }
+
+.disabledSequencerActions {
+  white-space: pre-wrap;
+  font-style: italic;
+}

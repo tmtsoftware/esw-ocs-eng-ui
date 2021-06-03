@@ -1,30 +1,14 @@
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import type { GenericResponse, SequencerService, Step } from '@tmtsoftware/esw-ts'
+import type { SequencerService, Step } from '@tmtsoftware/esw-ts'
 import { Menu, Modal } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
-import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from '../sequencerMessageConstants'
-
-const handleDeleteResponse = (res: GenericResponse) => {
-  switch (res._type) {
-    case 'Ok':
-      return res
-
-    case 'Unhandled':
-      throw new Error(res.msg)
-
-    case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
-
-    case 'IdDoesNotExist':
-      throw new Error(idDoesNotExistMsg(res.id))
-  }
-}
+import { handleActionResponse } from '../../utils'
 
 const deleteStep = (id: string) => (sequencerService: SequencerService) => {
-  return sequencerService.delete(id).then(handleDeleteResponse)
+  return sequencerService.delete(id).then(handleActionResponse)
 }
 
 const showConfirmModal = (stepName: string, onYes: () => void): void => {

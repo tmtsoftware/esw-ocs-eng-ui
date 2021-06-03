@@ -139,7 +139,6 @@ export const StepListTable = ({
           <PlayPauseSequence
             prefix={sequencerPrefix}
             sequencerState={sequencerState._type}
-            isSequencerRunning={sequencerState._type === 'Running'}
             isPaused={stepList.isPaused()}
           />
         </Row>

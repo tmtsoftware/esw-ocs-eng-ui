@@ -70,7 +70,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         okText='Confirm'>
         <Button
           type='text'
-          icon={<PlusCircleOutlined className={styles.commonIcon} role='addSeqCompIcon' />}
+          icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
           loading={isLoading || spawnSequenceComponentAction.isLoading}
         />
       </Popconfirm>

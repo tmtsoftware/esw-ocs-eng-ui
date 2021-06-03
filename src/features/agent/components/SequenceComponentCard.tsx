@@ -1,7 +1,7 @@
 import type { ComponentId, Location, Prefix } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from './agentCards.module.css'
 import { SequenceComponentActions } from './SequenceComponentActions'
@@ -12,7 +12,6 @@ type TitleProps = {
 }
 
 const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
-  const history = useHistory()
   const Title = () => (
     <Space direction='vertical' size={1}>
       <Typography.Text style={{ color: '#237804' }}>[{obsMode}]</Typography.Text>
@@ -21,29 +20,21 @@ const Sequencer = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
   )
 
   return (
-    <Row className={styles.sequencer}>
-      <Col flex='auto' className={styles.sequencerTitle} onClick={() => history.push(getSequencerPath(obsMode))}>
+    <Link to={getSequencerPath(obsMode)}>
+      <div className={styles.sequencer}>
         <Title />
-      </Col>
-    </Row>
+      </div>
+    </Link>
   )
 }
 
 const SequenceComponent = ({ seqCompPrefix, obsMode }: TitleProps): JSX.Element => {
   if (obsMode) return <Sequencer seqCompPrefix={seqCompPrefix} obsMode={obsMode} />
 
-  const Title = () => (
-    <Space direction='vertical' size={1}>
-      <Typography.Text style={{ color: 'var(--labelColor)' }}>{seqCompPrefix.toJSON()}</Typography.Text>
-    </Space>
-  )
-
   return (
-    <Row className={styles.seqComp}>
-      <Col flex='auto' className={styles.seqCompTitle}>
-        <Title />
-      </Col>
-    </Row>
+    <div className={styles.seqComp}>
+      <Typography.Text style={{ color: 'var(--labelColor)' }}>{seqCompPrefix.toJSON()}</Typography.Text>
+    </div>
   )
 }
 

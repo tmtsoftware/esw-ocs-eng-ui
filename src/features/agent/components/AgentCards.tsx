@@ -14,7 +14,7 @@ type AgentCardProps = {
 }
 
 const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element => {
-  const bodyStyle = seqCompsStatus.length === 0 ? { display: 'none' } : { padding: '1.5rem 1rem 1rem' }
+  const bodyStyle = seqCompsStatus.length === 0 ? { display: 'none' } : { padding: '1.5rem 1rem 0.5rem 1.5rem' }
 
   const agentName = agentPrefix === UNKNOWN_AGENT.prefix ? UNKNOWN_AGENT.prefix.componentName : agentPrefix.toJSON()
 
@@ -25,16 +25,8 @@ const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element
   return (
     <Card
       className={styles.agentCard}
-      title={
-        <Row justify='space-between'>
-          <Col>
-            <Typography.Text>{agentName}</Typography.Text>
-          </Col>
-          <Col>
-            <SpawnSequenceComponent agentPrefix={agentPrefix} />
-          </Col>
-        </Row>
-      }
+      title={<Typography.Text>{agentName}</Typography.Text>}
+      extra={<SpawnSequenceComponent agentPrefix={agentPrefix} />}
       bodyStyle={bodyStyle}>
       {sequenceCompCards}
     </Card>

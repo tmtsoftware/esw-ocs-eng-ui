@@ -1,4 +1,7 @@
 {
+  "devOptions": {
+    "port": 9000
+  },
   "buildOptions": {
     "clean": true,
     "sourceMap": true
@@ -9,7 +12,6 @@
     "src": "/_dist_",
     "test": "/dist_test"
   },
-
   "plugins": [["@snowpack/plugin-typescript"]],
   "packageOptions": {
     "polyfillNode": true,

@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useRef, useState } from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
-import { getStepListInfo, StepListStatus } from '../../utils'
+import { getStepListInfo, StepListInfo, StepListStatus } from '../../utils'
 import { PlayPauseSequence } from '../actions/PlayPauseSequence'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
@@ -79,6 +79,26 @@ const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => (
   </Col>
 )
 
+const StepListHeader = ({
+  stepListInfo,
+  sequencerStateResponse
+}: {
+  stepListInfo: StepListInfo
+  sequencerStateResponse: SequencerStateResponse
+}) => {
+  const { sequencerState, stepList } = sequencerStateResponse
+  return (
+    <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
+      <StepListTitle stepListStatus={stepListInfo.status} />
+      <PlayPauseSequence
+        sequencerState={sequencerState._type}
+        isPaused={stepList.isPaused()}
+        isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused(stepList, stepListInfo.currentStepNumber)}
+      />
+    </Row>
+  )
+}
+
 export type StepListTableProps = {
   sequencerPrefix: Prefix
   selectedStep?: Step
@@ -94,7 +114,7 @@ export const StepListTable = ({
   setSelectedStep,
   sequencerStateResponse
 }: StepListTableProps): JSX.Element => {
-  const { sequencerState, stepList } = sequencerStateResponse
+  const { stepList } = sequencerStateResponse
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const [followProgress, setFollowProgress] = useState(true)
@@ -137,17 +157,7 @@ export const StepListTable = ({
         sequencerService
       }}>
       <div style={{ height: '90%' }}>
-        <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
-          <StepListTitle stepListStatus={stepListInfo.status} />
-          <PlayPauseSequence
-            sequencerState={sequencerState._type}
-            isPaused={stepList.isPaused()}
-            isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused(
-              stepList,
-              stepListInfo.currentStepNumber
-            )}
-          />
-        </Row>
+        <StepListHeader sequencerStateResponse={sequencerStateResponse} stepListInfo={stepListInfo} />
         <Table
           showHeader={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}

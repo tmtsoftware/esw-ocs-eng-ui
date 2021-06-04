@@ -1,5 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons'
-import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
@@ -24,13 +24,19 @@ const DisabledSequencerActions = () => {
 
 type SequenceComponentActionProps = {
   componentId: ComponentId
+  sequencerSubsystem: Subsystem
   obsMode: string
 }
 
-const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: SequenceComponentActionProps) => (
+const SequenceComponentActionsMenu = ({
+  componentId,
+  sequencerSubsystem,
+  obsMode,
+  ...restProps
+}: SequenceComponentActionProps) => (
   <Menu {...restProps}>
-    {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(obsMode)} />}
-    {obsMode && <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={obsMode.split('.')[1]} />}
+    {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(`${sequencerSubsystem}.${obsMode}`)} />}
+    {obsMode && <ReloadScript subsystem={sequencerSubsystem} obsMode={obsMode} />}
     <KillSequenceComponent componentId={componentId} />
     {!obsMode && (
       <>
@@ -41,9 +47,19 @@ const SequenceComponentActionsMenu = ({ componentId, obsMode, ...restProps }: Se
   </Menu>
 )
 
-export const SequenceComponentActions = ({ componentId, obsMode }: SequenceComponentActionProps): JSX.Element => (
+export const SequenceComponentActions = ({
+  componentId,
+  sequencerSubsystem,
+  obsMode
+}: SequenceComponentActionProps): JSX.Element => (
   <Dropdown
-    overlay={() => <SequenceComponentActionsMenu componentId={componentId} obsMode={obsMode} />}
+    overlay={() => (
+      <SequenceComponentActionsMenu
+        componentId={componentId}
+        sequencerSubsystem={sequencerSubsystem}
+        obsMode={obsMode}
+      />
+    )}
     trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
   </Dropdown>

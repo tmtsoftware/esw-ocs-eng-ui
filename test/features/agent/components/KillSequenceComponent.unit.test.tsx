@@ -1,11 +1,12 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, KillResponse, Prefix } from '@tmtsoftware/esw-ts'
+import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
-import { MenuWithStepListContext, mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('Kill sequence component button', () => {
   const prefix = new Prefix('ESW', 'ESW_1')
@@ -29,19 +30,14 @@ describe('Kill sequence component button', () => {
   ]
 
   responseScenarios.forEach(([testName, res, message]) => {
-    it(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
+    it.only(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
       const agentService = mockServices.mock.agentService
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
-
       renderWithAuth({
         ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              KillSequenceComponent({
-                componentId: sequenceComponentID
-              })
-            }
-          />
+          <Menu>
+            <KillSequenceComponent componentId={sequenceComponentID} />
+          </Menu>
         )
       })
       const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')

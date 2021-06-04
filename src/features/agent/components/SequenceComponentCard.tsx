@@ -49,7 +49,11 @@ export const SequenceComponentCard = ({ seqCompId, location }: SequenceComponent
       <SequenceComponent seqCompPrefix={seqCompId.prefix} obsMode={location[0]?.connection.prefix.toJSON()} />
     </Col>
     <Col className={styles.iconBox}>
-      <SequenceComponentActions componentId={seqCompId} obsMode={location[0]?.connection.prefix.toJSON()} />
+      <SequenceComponentActions
+        componentId={seqCompId}
+        sequencerSubsystem={location[0]?.connection.prefix.subsystem}
+        obsMode={location[0]?.connection.prefix.componentName}
+      />
     </Col>
   </Row>
 )

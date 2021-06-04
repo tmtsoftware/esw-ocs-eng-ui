@@ -1,5 +1,4 @@
-import type { Prefix, SequenceCommand, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
-import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
+import type { Prefix, SequenceCommand, SequencerStateResponse, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useRef, useState } from 'react'
@@ -83,9 +82,7 @@ const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => (
 export type StepListTableProps = {
   sequencerPrefix: Prefix
   selectedStep?: Step
-  stepList: StepList
-  isLoading: boolean
-  sequencerState: SequencerState
+  sequencerStateResponse: SequencerStateResponse
   setSelectedStep: (_: Step | undefined) => void
 }
 
@@ -95,10 +92,9 @@ export const StepListTable = ({
   sequencerPrefix,
   selectedStep,
   setSelectedStep,
-  stepList,
-  sequencerState,
-  isLoading
+  sequencerStateResponse
 }: StepListTableProps): JSX.Element => {
+  const { sequencerState, stepList } = sequencerStateResponse
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const [followProgress, setFollowProgress] = useState(true)
@@ -144,7 +140,6 @@ export const StepListTable = ({
         <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
           <StepListTitle stepListStatus={stepListInfo.status} />
           <PlayPauseSequence
-            prefix={sequencerPrefix}
             sequencerState={sequencerState._type}
             isPaused={stepList.isPaused()}
             isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused(
@@ -159,7 +154,6 @@ export const StepListTable = ({
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
           rowKey={(step) => step.id}
           pagination={false}
-          loading={isLoading}
           dataSource={stepList.steps.map((step, index) => ({
             ...step,
             index
@@ -175,7 +169,6 @@ export const StepListTable = ({
       {isDuplicateEnabled && (
         <DuplicateAction
           commands={commands}
-          sequencerPrefix={sequencerPrefix}
           toggleDuplicateEnabled={() => toggleDuplicateEnabled(!isDuplicateEnabled)}
         />
       )}

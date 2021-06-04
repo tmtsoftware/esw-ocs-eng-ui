@@ -9,7 +9,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
@@ -89,28 +89,23 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
     setLoading(false)
   }
 
-  // TODO does this have to be in useCallback? can this go in useEffect? same for memo.
-  const handleSequencerStateChange = useCallback(
-    (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
+  useEffect(() => {
+    const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
         const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
         return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
       })
-    },
-    [setLoading]
-  )
+    }
 
-  const services: [SequencerService, Prefix][] = useMemo(() => {
-    return isRunningTab && gatewayLocation
-      ? sequencers.map((seq) => {
-          const seqPrefix = new Prefix(seq, obsMode.name)
-          return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
-        })
-      : []
-  }, [isRunningTab, gatewayLocation, obsMode.name, sequencers, tf])
+    const services: [SequencerService, Prefix][] =
+      isRunningTab && gatewayLocation
+        ? sequencers.map((seq) => {
+            const seqPrefix = new Prefix(seq, obsMode.name)
+            return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
+          })
+        : []
 
-  useEffect(() => {
     const subscriptions = services.map(([sequencerService, sequencerPrefix]) =>
       sequencerService.subscribeSequencerState()(
         (sequencerState) => handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState),
@@ -118,7 +113,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
       )
     )
     return () => subscriptions.forEach((s) => s.cancel())
-  }, [handleSequencerStateChange, services])
+  }, [gatewayLocation, isRunningTab, obsMode.name, sequencers, tf])
 
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
     const stepList = sequencerStatus.stepList

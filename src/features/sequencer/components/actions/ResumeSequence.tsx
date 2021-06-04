@@ -4,8 +4,7 @@ import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerProps } from '../Props'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useResumeSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
@@ -21,14 +20,14 @@ const useResumeSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, 
   })
 }
 
-type ResumeSequenceProps = Omit<SequencerProps, 'sequencerState'>
-
 export const ResumeSequence = ({
-  prefix,
   isSequencerRunning,
   isCurrentStepRunningAndNextPaused
-}: ResumeSequenceProps & { isCurrentStepRunningAndNextPaused: boolean }): JSX.Element => {
-  const sequencerService = useSequencerService(prefix)
+}: {
+  isSequencerRunning: boolean
+  isCurrentStepRunningAndNextPaused: boolean
+}): JSX.Element => {
+  const { sequencerService } = useStepListContext()
   const resumeSequence = useResumeSequence()
 
   const disabled = !isSequencerRunning || isCurrentStepRunningAndNextPaused

@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix, Result, SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
+import { Result, SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { StartSequence } from '../../../../../src/features/sequencer/components/actions/StartSequence'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Start Sequence', () => {
   const testData: [SubmitResponse, string, string][] = [
@@ -36,9 +36,7 @@ describe('Start Sequence', () => {
     it(`should show ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
       when(sequencerServiceMock.startSequence()).thenResolve(res)
 
-      renderWithAuth({
-        ui: <StartSequence prefix={new Prefix('ESW', 'darknight')} sequencerState={'Loaded'} />
-      })
+      renderWithStepListContext(<StartSequence sequencerState={'Loaded'} />)
 
       const button = await screen.findByRole('StartSequence')
 
@@ -53,9 +51,7 @@ describe('Start Sequence', () => {
   it('should show failed if error is returned | ESW-497', async () => {
     when(sequencerServiceMock.startSequence()).thenReject(Error('Something went wrong'))
 
-    renderWithAuth({
-      ui: <StartSequence prefix={new Prefix('ESW', 'darknight')} sequencerState={'Loaded'} />
-    })
+    renderWithStepListContext(<StartSequence sequencerState={'Loaded'} />)
 
     const button = await screen.findByRole('StartSequence')
 
@@ -70,9 +66,7 @@ describe('Start Sequence', () => {
 
   disabledStates.forEach((state) => {
     it(`should be disabled if sequencer in ${state} | ESW-497`, async () => {
-      renderWithAuth({
-        ui: <StartSequence prefix={new Prefix('ESW', 'darknight')} sequencerState={state} />
-      })
+      renderWithStepListContext(<StartSequence sequencerState={state} />)
 
       const button = (await screen.findByRole('StartSequence')) as HTMLButtonElement
 

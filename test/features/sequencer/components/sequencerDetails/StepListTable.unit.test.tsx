@@ -1,6 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
+import { Prefix, SequencerState, SequencerStateResponse, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
@@ -12,6 +12,11 @@ import {
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
+const getSequencerStateResponse = (state: SequencerState['_type'], stepList: StepList): SequencerStateResponse => ({
+  _type: 'SequencerStateResponse',
+  sequencerState: { _type: state },
+  stepList
+})
 describe('stepList table', () => {
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
@@ -43,11 +48,9 @@ describe('stepList table', () => {
       renderWithAuth({
         ui: (
           <StepListTable
-            isLoading={false}
-            stepList={getStepList(lastStepStatus, breakpoint)}
             sequencerPrefix={sequencerPrefix}
             setSelectedStep={() => ({})}
-            sequencerState={{ _type: 'Running' }}
+            sequencerStateResponse={getSequencerStateResponse('Running', getStepList(lastStepStatus, breakpoint))}
           />
         )
       })
@@ -73,11 +76,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
         />
       )
     })
@@ -95,11 +96,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={new StepList([])}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', new StepList([]))}
         />
       )
     })
@@ -114,11 +113,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
         />
       )
     })
@@ -149,11 +146,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepList}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
         />
       )
     })
@@ -194,11 +189,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepListAfterBreakpoint}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepListAfterBreakpoint)}
         />
       )
     })
@@ -221,12 +214,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
@@ -245,12 +235,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
@@ -282,12 +269,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepList}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
         />
       )
     })
@@ -329,12 +313,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
@@ -381,11 +362,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={stepListAfterBreakpoint}
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepListAfterBreakpoint)}
         />
       )
     })
@@ -401,12 +380,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
@@ -422,12 +398,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending', true)}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Running' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending', true))}
         />
       )
     })
@@ -443,12 +416,9 @@ describe('stepList table', () => {
     renderWithAuth({
       ui: (
         <StepListTable
-          isLoading={false}
-          stepList={getStepList('Pending')}
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerState={{ _type: 'Loaded' }}
-          selectedStep={undefined}
+          sequencerStateResponse={getSequencerStateResponse('Loaded', getStepList('Pending'))}
         />
       )
     })

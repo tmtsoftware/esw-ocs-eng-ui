@@ -4,8 +4,7 @@ import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerProps } from '../Props'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, SequencerService> => {
@@ -24,10 +23,8 @@ const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, Sequencer
   })
 }
 
-type PauseSequenceProps = Omit<SequencerProps, 'sequencerState'>
-
-export const PauseSequence = ({ prefix }: PauseSequenceProps): JSX.Element => {
-  const sequencerService = useSequencerService(prefix)
+export const PauseSequence = (): JSX.Element => {
+  const { sequencerService } = useStepListContext()
   const pauseSequence = usePauseSequence()
 
   const onClick = () => sequencerService && pauseSequence.mutate(sequencerService)

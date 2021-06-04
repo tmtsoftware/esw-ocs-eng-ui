@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { OkOrUnhandledResponse, Prefix } from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { ResumeSequence } from '../../../../../src/features/sequencer/components/actions/ResumeSequence'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Resume Sequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
@@ -26,15 +26,7 @@ describe('Resume Sequence', () => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
       when(sequencerServiceMock.resume()).thenResolve(res)
 
-      renderWithAuth({
-        ui: (
-          <ResumeSequence
-            prefix={new Prefix('ESW', 'darknight')}
-            isSequencerRunning
-            isCurrentStepRunningAndNextPaused={false}
-          />
-        )
-      })
+      renderWithStepListContext(<ResumeSequence isSequencerRunning isCurrentStepRunningAndNextPaused={false} />)
 
       const button = await screen.findByRole('ResumeSequence')
 
@@ -49,15 +41,7 @@ describe('Resume Sequence', () => {
   it('should show failed if error is returned | ESW-497', async () => {
     when(sequencerServiceMock.resume()).thenReject(Error('Something went wrong'))
 
-    renderWithAuth({
-      ui: (
-        <ResumeSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning
-          isCurrentStepRunningAndNextPaused={false}
-        />
-      )
-    })
+    renderWithStepListContext(<ResumeSequence isSequencerRunning isCurrentStepRunningAndNextPaused={false} />)
 
     const button = await screen.findByRole('ResumeSequence')
 
@@ -69,31 +53,7 @@ describe('Resume Sequence', () => {
   })
 
   it(`should be disabled if sequencer is not running | ESW-497`, async () => {
-    renderWithAuth({
-      ui: (
-        <ResumeSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning={false}
-          isCurrentStepRunningAndNextPaused={false}
-        />
-      )
-    })
-
-    const button = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement
-
-    expect(button.disabled).true
-  })
-
-  it(`should be disabled if current step is running and next step is paused | ESW-509`, async () => {
-    renderWithAuth({
-      ui: (
-        <ResumeSequence
-          prefix={new Prefix('ESW', 'darknight')}
-          isSequencerRunning={true}
-          isCurrentStepRunningAndNextPaused={true}
-        />
-      )
-    })
+    renderWithStepListContext(<ResumeSequence isSequencerRunning={false} isCurrentStepRunningAndNextPaused={false} />)
 
     const button = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement
 

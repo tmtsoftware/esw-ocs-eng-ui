@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { PauseResponse, Prefix } from '@tmtsoftware/esw-ts'
+import type { PauseResponse } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/actions/PauseSequence'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Pause Sequence', () => {
   const testData: [PauseResponse, string, string][] = [
@@ -30,9 +30,7 @@ describe('Pause Sequence', () => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
       when(sequencerServiceMock.pause()).thenResolve(res)
 
-      renderWithAuth({
-        ui: <PauseSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
-      })
+      renderWithStepListContext(<PauseSequence />)
 
       const button = await screen.findByRole('PauseSequence')
 
@@ -47,9 +45,7 @@ describe('Pause Sequence', () => {
   it('should show failed if error is returned | ESW-497', async () => {
     when(sequencerServiceMock.pause()).thenReject(Error('Something went wrong'))
 
-    renderWithAuth({
-      ui: <PauseSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
-    })
+    renderWithStepListContext(<PauseSequence />)
 
     const button = await screen.findByRole('PauseSequence')
 

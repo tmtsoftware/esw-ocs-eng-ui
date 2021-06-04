@@ -117,12 +117,10 @@ export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element =>
       <Layout style={{ height: '90%', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
         <Sider theme='light' width={'22rem'}>
           <StepListTable
-            stepList={sequencerStateResponse.stepList}
-            isLoading={loading}
             sequencerPrefix={prefix}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}
-            sequencerState={sequencerStateResponse.sequencerState}
+            sequencerStateResponse={sequencerStateResponse}
           />
         </Sider>
         <Content>{selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}</Content>

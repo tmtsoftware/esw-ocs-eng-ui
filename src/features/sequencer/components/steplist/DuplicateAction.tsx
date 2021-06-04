@@ -1,10 +1,10 @@
 import { CopyOutlined } from '@ant-design/icons'
-import type { Prefix, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
+import type { SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
 import { Button, Row, Space } from 'antd'
 import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
+import { useStepListContext } from '../../hooks/useStepListContext'
 
 const addCommands = (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
   return sequencerService.add(commands).then((res) => {
@@ -19,15 +19,13 @@ const addCommands = (commands: SequenceCommand[]) => (sequencerService: Sequence
 }
 
 export const DuplicateAction = ({
-  sequencerPrefix,
   commands: selectedCommands,
   toggleDuplicateEnabled
 }: {
-  sequencerPrefix: Prefix
   commands: SequenceCommand[]
   toggleDuplicateEnabled: () => void
 }): JSX.Element => {
-  const sequencerService = useSequencerService(sequencerPrefix)
+  const { sequencerService } = useStepListContext()
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),
     onError: (e) => errorMessage('Failed to duplicate steps', e),

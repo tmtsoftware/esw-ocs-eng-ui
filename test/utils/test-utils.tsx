@@ -1,25 +1,25 @@
 import { render, RenderOptions, RenderResult } from '@testing-library/react'
 import {
   AgentService,
+  AgentStatus,
   Auth,
   AuthContext,
+  ComponentId,
   ConfigService,
+  GATEWAY_CONNECTION,
   HttpLocation,
   LocationService,
+  Prefix,
   SequenceManagerService,
   SequencerService,
-  GATEWAY_CONNECTION,
-  SEQUENCE_MANAGER_CONNECTION,
-  ComponentId,
-  Prefix,
-  AgentStatus
+  SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/config-service/ConfigServiceImpl'
 import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequence-manager/SequenceManagerImpl'
 import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/SequencerServiceImpl'
-import 'antd/dist/antd.css'
 import { Menu } from 'antd'
+import 'antd/dist/antd.css'
 import type {
   KeycloakProfile,
   KeycloakPromise,
@@ -35,6 +35,7 @@ import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContex
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
 import {
+  defaultStepListTableContext,
   StepListContextProvider,
   StepListTableContextType
 } from '../../src/features/sequencer/hooks/useStepListContext'
@@ -231,6 +232,15 @@ const MenuWithStepListContext = ({
     </StepListContextProvider>
   )
 }
+
+export const renderWithStepListContext = (element: React.ReactNode): RenderResult =>
+  renderWithAuth({
+    ui: (
+      <StepListContextProvider value={{ ...defaultStepListTableContext, sequencerService: sequencerServiceInstance }}>
+        {element}
+      </StepListContextProvider>
+    )
+  })
 // eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }

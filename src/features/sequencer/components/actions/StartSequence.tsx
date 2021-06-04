@@ -1,11 +1,10 @@
 import { PlayCircleOutlined } from '@ant-design/icons'
-import type { SequencerService, SubmitResponse } from '@tmtsoftware/esw-ts'
+import type { SequencerService, SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
-import { useSequencerService } from '../../hooks/useSequencerService'
-import type { SequencerProps } from '../Props'
+import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, SequencerService> => {
@@ -34,8 +33,8 @@ const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, Sequence
   })
 }
 
-export const StartSequence = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
-  const sequencerService = useSequencerService(prefix)
+export const StartSequence = ({ sequencerState }: { sequencerState: SequencerState['_type'] }): JSX.Element => {
+  const { sequencerService } = useStepListContext()
   const startSequence = useStartSequence()
 
   const disabled = !sequencerState || sequencerState !== 'Loaded'

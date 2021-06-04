@@ -9,7 +9,7 @@ export type StepListTableContextType = {
   sequencerService: Option<SequencerService>
 }
 
-const defaultStepListTableContext: StepListTableContextType = {
+export const defaultStepListTableContext: StepListTableContextType = {
   handleDuplicate: () => undefined,
   isDuplicateEnabled: false,
   stepListStatus: 'NA',

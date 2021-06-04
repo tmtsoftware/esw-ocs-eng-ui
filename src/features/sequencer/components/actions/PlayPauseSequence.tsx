@@ -1,25 +1,27 @@
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import type { SequencerProps } from '../Props'
 import { PauseSequence } from './PauseSequence'
 import { ResumeSequence } from './ResumeSequence'
 import { StartSequence } from './StartSequence'
 
 export const PlayPauseSequence = ({
-  prefix,
   sequencerState,
   isPaused,
   isCurrentStepRunningAndNextPaused
-}: SequencerProps & { isPaused: boolean; isCurrentStepRunningAndNextPaused: boolean }): JSX.Element => {
+}: {
+  isPaused: boolean
+  sequencerState: SequencerState['_type']
+  isCurrentStepRunningAndNextPaused: boolean
+}): JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   const canBePaused = isSequencerRunning && !isPaused
 
-  if (canBePaused) return <PauseSequence prefix={prefix} />
+  if (canBePaused) return <PauseSequence />
 
   return sequencerState === 'Loaded' ? (
-    <StartSequence prefix={prefix} sequencerState={sequencerState} />
+    <StartSequence sequencerState={sequencerState} />
   ) : (
     <ResumeSequence
-      prefix={prefix}
       isSequencerRunning={isSequencerRunning}
       isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused}
     />

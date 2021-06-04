@@ -4,7 +4,7 @@ import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import { ResumeSequence } from '../../../../../src/features/sequencer/components/actions/ResumeSequence'
+import { ResumeSequence } from '../../../../../src/features/sequencer/components/steplist/ResumeSequence'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Resume Sequence', () => {

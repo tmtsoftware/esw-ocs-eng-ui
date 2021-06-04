@@ -4,7 +4,7 @@ import { Result, SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
-import { StartSequence } from '../../../../../src/features/sequencer/components/actions/StartSequence'
+import { StartSequence } from '../../../../../src/features/sequencer/components/steplist/StartSequence'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Start Sequence', () => {

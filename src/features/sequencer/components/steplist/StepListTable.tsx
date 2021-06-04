@@ -5,10 +5,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSequencerService } from '../../hooks/useSequencerService'
 import { StepListContextProvider } from '../../hooks/useStepListContext'
 import { getStepListInfo, StepListInfo, StepListStatus } from '../../utils'
-import { PlayPauseSequence } from '../actions/PlayPauseSequence'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
+import { PlayPauseSequence } from './PlayPauseSequence'
 import { StepComponent } from './StepComponent'
 
 type StepData = {

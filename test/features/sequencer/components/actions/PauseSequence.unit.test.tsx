@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import type { PauseResponse } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
-import { PauseSequence } from '../../../../../src/features/sequencer/components/actions/PauseSequence'
+import { PauseSequence } from '../../../../../src/features/sequencer/components/steplist/PauseSequence'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Pause Sequence', () => {

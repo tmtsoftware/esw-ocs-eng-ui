@@ -45,6 +45,13 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
   }
 }
 
+export const currentStepRunningAndNextPaused = (stepList: StepList, currentStepNumber: number): boolean => {
+  return (
+    stepList.steps[currentStepNumber - 1]?.status._type === 'InFlight' &&
+    stepList.steps[currentStepNumber]?.hasBreakpoint
+  )
+}
+
 const columns = (
   setSelectedStep: (_: Step) => void,
   setFollowProgress: (_: boolean) => void,
@@ -140,6 +147,7 @@ export const StepListTable = ({
             prefix={sequencerPrefix}
             sequencerState={sequencerState._type}
             isPaused={stepList.isPaused()}
+            currentStepRunningAndNextPaused={currentStepRunningAndNextPaused(stepList, stepListInfo.currentStepNumber)}
           />
         </Row>
         <Table

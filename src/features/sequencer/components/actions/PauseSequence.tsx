@@ -33,7 +33,7 @@ export const PauseSequence = ({ prefix }: PauseSequenceProps): JSX.Element => {
   const onClick = () => sequencerService && pauseSequence.mutate(sequencerService)
 
   return (
-    <Tooltip placement='bottom' title={'Pause sequence'}>
+    <Tooltip title={'Pause sequence'}>
       <Button
         onClick={onClick}
         type={'text'}

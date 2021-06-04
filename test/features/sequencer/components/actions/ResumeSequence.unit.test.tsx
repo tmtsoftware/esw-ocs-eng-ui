@@ -27,7 +27,13 @@ describe('Resume Sequence', () => {
       when(sequencerServiceMock.resume()).thenResolve(res)
 
       renderWithAuth({
-        ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
+        ui: (
+          <ResumeSequence
+            prefix={new Prefix('ESW', 'darknight')}
+            isSequencerRunning
+            currentStepRunningAndNextPaused={false}
+          />
+        )
       })
 
       const button = await screen.findByRole('ResumeSequence')
@@ -44,7 +50,13 @@ describe('Resume Sequence', () => {
     when(sequencerServiceMock.resume()).thenReject(Error('Something went wrong'))
 
     renderWithAuth({
-      ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning />
+      ui: (
+        <ResumeSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          isSequencerRunning
+          currentStepRunningAndNextPaused={false}
+        />
+      )
     })
 
     const button = await screen.findByRole('ResumeSequence')
@@ -58,7 +70,29 @@ describe('Resume Sequence', () => {
 
   it(`should be disabled if sequencer is not running | ESW-497`, async () => {
     renderWithAuth({
-      ui: <ResumeSequence prefix={new Prefix('ESW', 'darknight')} isSequencerRunning={false} />
+      ui: (
+        <ResumeSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          isSequencerRunning={false}
+          currentStepRunningAndNextPaused={false}
+        />
+      )
+    })
+
+    const button = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement
+
+    expect(button.disabled).true
+  })
+
+  it(`should be disabled if next step already paused | ESW-509`, async () => {
+    renderWithAuth({
+      ui: (
+        <ResumeSequence
+          prefix={new Prefix('ESW', 'darknight')}
+          isSequencerRunning={true}
+          currentStepRunningAndNextPaused={true}
+        />
+      )
     })
 
     const button = (await screen.findByRole('ResumeSequence')) as HTMLButtonElement

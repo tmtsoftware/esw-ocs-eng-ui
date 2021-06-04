@@ -704,7 +704,6 @@ const sendEvent = (
 }
 
 const assertRunningStepIs = async (step: RegExp, timeout: number) => {
-  console.log(step)
   const htmlElement1 = await screen.findByRole('cell', { name: step })
   const stepButton1 = within(htmlElement1).getByRole('button')
   await waitFor(() => expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)'), { timeout })

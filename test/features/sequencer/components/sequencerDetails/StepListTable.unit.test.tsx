@@ -4,7 +4,11 @@ import { Prefix, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
-import { getRunningStep, StepListTable } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
+import {
+  currentStepRunningAndNextPaused,
+  getRunningStep,
+  StepListTable
+} from '../../../../../src/features/sequencer/components/steplist/StepListTable'
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -493,5 +497,17 @@ describe('getRunningStep', () => {
   it('should return undefined step when step is in NA state | ESW-501 ', () => {
     const stepList = new StepList([getStep('Success', '1')])
     expect(getRunningStep(stepList, 'NA')?.id).to.equals(undefined)
+  })
+})
+
+describe('currentStepRunningAndNextPaused', () => {
+  it('should return true current step is running and next step is paused | ESW-509 ', () => {
+    const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', true)])
+    expect(currentStepRunningAndNextPaused(stepList, 1)).to.equals(true)
+  })
+
+  it('should return false current step is running and next step is paused | ESW-509 ', () => {
+    const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', false)])
+    expect(currentStepRunningAndNextPaused(stepList, 1)).to.equals(false)
   })
 })

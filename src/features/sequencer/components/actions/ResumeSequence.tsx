@@ -23,13 +23,17 @@ const useResumeSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, 
 
 type ResumeSequenceProps = Omit<SequencerProps, 'sequencerState'>
 
-export const ResumeSequence = ({ prefix, isSequencerRunning }: ResumeSequenceProps): JSX.Element => {
+export const ResumeSequence = ({
+  prefix,
+  isSequencerRunning,
+  currentStepRunningAndNextPaused
+}: ResumeSequenceProps & { currentStepRunningAndNextPaused: boolean }): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const resumeSequence = useResumeSequence()
 
-  const disabled = !isSequencerRunning
+  const disabled = !isSequencerRunning || currentStepRunningAndNextPaused
   return (
-    <Tooltip placement='bottom' title={'Resume sequence'}>
+    <Tooltip title={'Resume sequence'}>
       <Button
         onClick={() => sequencerService && resumeSequence.mutate(sequencerService)}
         type={'text'}

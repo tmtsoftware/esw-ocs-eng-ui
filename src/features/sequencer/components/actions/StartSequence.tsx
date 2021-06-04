@@ -40,7 +40,7 @@ export const StartSequence = ({ prefix, sequencerState }: SequencerProps): JSX.E
 
   const disabled = !sequencerState || sequencerState !== 'Loaded'
   return (
-    <Tooltip placement='bottom' title={'Start sequence'}>
+    <Tooltip title={'Start sequence'}>
       <Button
         onClick={() => sequencerService && startSequence.mutate(sequencerService)}
         type={'text'}

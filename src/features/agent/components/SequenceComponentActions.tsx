@@ -1,5 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons'
-import { ComponentId, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
+import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
@@ -24,21 +24,17 @@ const DisabledSequencerActions = () => {
 
 type SequenceComponentActionProps = {
   componentId: ComponentId
-  sequencerSubsystem: Subsystem
-  obsMode: string
+  sequencerPrefix: Prefix | undefined
 }
 
-const SequenceComponentActionsMenu = ({
-  componentId,
-  sequencerSubsystem,
-  obsMode,
-  ...restProps
-}: SequenceComponentActionProps) => (
+const SequenceComponentActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequenceComponentActionProps) => (
   <Menu {...restProps}>
-    {obsMode && <StopSequencer sequencerPrefix={Prefix.fromString(`${sequencerSubsystem}.${obsMode}`)} />}
-    {obsMode && <ReloadScript subsystem={sequencerSubsystem} obsMode={obsMode} />}
+    {sequencerPrefix && <StopSequencer sequencerPrefix={sequencerPrefix} />}
+    {sequencerPrefix && (
+      <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={sequencerPrefix.componentName} />
+    )}
     <KillSequenceComponent componentId={componentId} />
-    {!obsMode && (
+    {!sequencerPrefix && (
       <>
         <Menu.Divider />
         <DisabledSequencerActions />
@@ -46,20 +42,12 @@ const SequenceComponentActionsMenu = ({
     )}
   </Menu>
 )
-
 export const SequenceComponentActions = ({
   componentId,
-  sequencerSubsystem,
-  obsMode
+  sequencerPrefix
 }: SequenceComponentActionProps): JSX.Element => (
   <Dropdown
-    overlay={() => (
-      <SequenceComponentActionsMenu
-        componentId={componentId}
-        sequencerSubsystem={sequencerSubsystem}
-        obsMode={obsMode}
-      />
-    )}
+    overlay={() => <SequenceComponentActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix} />}
     trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
   </Dropdown>

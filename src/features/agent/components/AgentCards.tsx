@@ -19,7 +19,11 @@ const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element
   const agentName = agentPrefix === UNKNOWN_AGENT.prefix ? UNKNOWN_AGENT.prefix.componentName : agentPrefix.toJSON()
 
   const sequenceCompCards = seqCompsStatus.map((seqCompStatus, index) => (
-    <SequenceComponentCard key={index} seqCompId={seqCompStatus.seqCompId} location={seqCompStatus.sequencerLocation} />
+    <SequenceComponentCard
+      key={index}
+      seqCompId={seqCompStatus.seqCompId}
+      sequencerPrefix={getSequencerPrefix(seqCompStatus)}
+    />
   ))
 
   return (
@@ -61,4 +65,7 @@ export const AgentCards = (): JSX.Element => {
       ))}
     </Row>
   )
+}
+const getSequencerPrefix = (seqCompStatus: SequenceComponentStatus): Prefix | undefined => {
+  return seqCompStatus.sequencerLocation[0]?.connection.prefix
 }

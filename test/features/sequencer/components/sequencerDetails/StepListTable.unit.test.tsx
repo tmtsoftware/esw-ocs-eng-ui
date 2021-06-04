@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
 import {
-  currentStepRunningAndNextPaused,
+  isCurrentStepRunningAndNextPaused,
   getRunningStep,
   StepListTable
 } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
@@ -500,14 +500,14 @@ describe('getRunningStep', () => {
   })
 })
 
-describe('currentStepRunningAndNextPaused', () => {
-  it('should return true current step is running and next step is paused | ESW-509 ', () => {
+describe('isCurrentStepRunningAndNextPaused', () => {
+  it('should return true when current step is running and next step is paused | ESW-509 ', () => {
     const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', true)])
-    expect(currentStepRunningAndNextPaused(stepList, 1)).to.equals(true)
+    expect(isCurrentStepRunningAndNextPaused(stepList, 1)).to.equals(true)
   })
 
-  it('should return false current step is running and next step is paused | ESW-509 ', () => {
+  it('should return false when current step is running and next step is paused | ESW-509 ', () => {
     const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', false)])
-    expect(currentStepRunningAndNextPaused(stepList, 1)).to.equals(false)
+    expect(isCurrentStepRunningAndNextPaused(stepList, 1)).to.equals(false)
   })
 })

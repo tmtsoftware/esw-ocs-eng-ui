@@ -26,12 +26,12 @@ type ResumeSequenceProps = Omit<SequencerProps, 'sequencerState'>
 export const ResumeSequence = ({
   prefix,
   isSequencerRunning,
-  currentStepRunningAndNextPaused
-}: ResumeSequenceProps & { currentStepRunningAndNextPaused: boolean }): JSX.Element => {
+  isCurrentStepRunningAndNextPaused
+}: ResumeSequenceProps & { isCurrentStepRunningAndNextPaused: boolean }): JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const resumeSequence = useResumeSequence()
 
-  const disabled = !isSequencerRunning || currentStepRunningAndNextPaused
+  const disabled = !isSequencerRunning || isCurrentStepRunningAndNextPaused
   return (
     <Tooltip title={'Resume sequence'}>
       <Button

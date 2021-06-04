@@ -31,7 +31,7 @@ describe('Resume Sequence', () => {
           <ResumeSequence
             prefix={new Prefix('ESW', 'darknight')}
             isSequencerRunning
-            currentStepRunningAndNextPaused={false}
+            isCurrentStepRunningAndNextPaused={false}
           />
         )
       })
@@ -54,7 +54,7 @@ describe('Resume Sequence', () => {
         <ResumeSequence
           prefix={new Prefix('ESW', 'darknight')}
           isSequencerRunning
-          currentStepRunningAndNextPaused={false}
+          isCurrentStepRunningAndNextPaused={false}
         />
       )
     })
@@ -74,7 +74,7 @@ describe('Resume Sequence', () => {
         <ResumeSequence
           prefix={new Prefix('ESW', 'darknight')}
           isSequencerRunning={false}
-          currentStepRunningAndNextPaused={false}
+          isCurrentStepRunningAndNextPaused={false}
         />
       )
     })
@@ -84,13 +84,13 @@ describe('Resume Sequence', () => {
     expect(button.disabled).true
   })
 
-  it(`should be disabled if next step already paused | ESW-509`, async () => {
+  it(`should be disabled if current step is running and next step is paused | ESW-509`, async () => {
     renderWithAuth({
       ui: (
         <ResumeSequence
           prefix={new Prefix('ESW', 'darknight')}
           isSequencerRunning={true}
-          currentStepRunningAndNextPaused={true}
+          isCurrentStepRunningAndNextPaused={true}
         />
       )
     })

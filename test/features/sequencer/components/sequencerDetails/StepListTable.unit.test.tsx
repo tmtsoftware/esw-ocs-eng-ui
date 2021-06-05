@@ -3,12 +3,15 @@ import userEvent from '@testing-library/user-event'
 import { Prefix, SequencerState, SequencerStateResponse, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { deepEqual, reset, verify, when } from 'ts-mockito'
 import {
-  isCurrentStepRunningAndNextPaused,
+  getCurrentAndNextStepId,
+  getCurrentStepIndex,
   getRunningStep,
+  isCurrentStepRunningAndNextPaused,
   StepListTable
 } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
+
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -18,6 +21,8 @@ const getSequencerStateResponse = (state: SequencerState['_type'], stepList: Ste
   stepList
 })
 describe('stepList table', () => {
+  beforeEach(() => reset(sequencerServiceMock))
+
   const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
 
   const stepList: StepList = new StepList([
@@ -394,6 +399,40 @@ describe('stepList table', () => {
     expect(screen.queryByRole('ResumeSequence')).to.null
   })
 
+  it('should enable Step-Through action when sequencer is in Running state and sequence is Paused | ESW-509', async () => {
+    const currentStep = getStep('Pending', 'currentStepId', true)
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Running', new StepList([currentStep]))}
+        />
+      )
+    })
+
+    const button = (await screen.findByRole('StepThroughSequence')) as HTMLButtonElement
+
+    expect(button.disabled).false
+  })
+
+  it('should disable Step-Through action when sequencer is in Running state and sequence is in Progress state | ESW-509', async () => {
+    const currentStep = getStep('InFlight', 'currentStepId', false)
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Running', new StepList([currentStep]))}
+        />
+      )
+    })
+
+    const button = (await screen.findByRole('StepThroughSequence')) as HTMLButtonElement
+
+    expect(button.disabled).true
+  })
+
   it('should show display Resume action when sequencer is in Running state and sequence is paused | ESW-497, ESW-489, ESW-505', async () => {
     renderWithAuth({
       ui: (
@@ -471,13 +510,31 @@ describe('getRunningStep', () => {
 })
 
 describe('isCurrentStepRunningAndNextPaused', () => {
+  it('should return false when current step is not running | ESW-509 ', () => {
+    const stepList = new StepList([getStep('Pending', 'id45345'), getStep('Pending', 'id765764', false)])
+    expect(isCurrentStepRunningAndNextPaused(stepList, 1)).to.equals(false)
+  })
   it('should return true when current step is running and next step is paused | ESW-509 ', () => {
-    const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', true)])
-    expect(isCurrentStepRunningAndNextPaused(stepList, 1)).to.equals(true)
+    const stepList = new StepList([getStep('InFlight', 'id45345'), getStep('Pending', 'id765764', true)])
+    expect(isCurrentStepRunningAndNextPaused(stepList, 0)).to.equals(true)
   })
 
-  it('should return false when current step is running and next step is paused | ESW-509 ', () => {
-    const stepList = new StepList([getStep('InFlight', '1'), getStep('Pending', '2', false)])
+  it('should return false when current step is running and next step is not paused | ESW-509 ', () => {
+    const stepList = new StepList([getStep('InFlight', 'id45345'), getStep('Pending', 'id765764', false)])
     expect(isCurrentStepRunningAndNextPaused(stepList, 1)).to.equals(false)
+  })
+})
+
+describe('getCurrentAndNextStepId', () => {
+  it('should return current step id and next step id using stepList and current step index | ESW-509 ', () => {
+    const stepList = new StepList([getStep('InFlight', 'currentStepId'), getStep('Pending', 'nextStepId')])
+
+    expect(getCurrentAndNextStepId(stepList, 0)).to.eql(['currentStepId', 'nextStepId'])
+  })
+})
+
+describe('getCurrentStepIndex', () => {
+  it('should return current step index using current step number | ESW-509 ', () => {
+    expect(getCurrentStepIndex(1)).to.equals(0)
   })
 })

@@ -10,6 +10,7 @@ import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { PlayPauseSequence } from './PlayPauseSequence'
 import { StepComponent } from './StepComponent'
+import { StepThroughSequence } from './StepThroughSequence'
 
 type StepData = {
   id: string
@@ -44,11 +45,21 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
   }
 }
 
-export const isCurrentStepRunningAndNextPaused = (stepList: StepList, currentStepNumber: number): boolean => {
+export const isCurrentStepRunningAndNextPaused = (stepList: StepList, currentStepIndex: number): boolean => {
   return (
-    stepList.steps[currentStepNumber - 1]?.status._type === 'InFlight' &&
-    stepList.steps[currentStepNumber]?.hasBreakpoint
+    stepList.steps[currentStepIndex]?.status._type === 'InFlight' && stepList.steps[currentStepIndex + 1]?.hasBreakpoint
   )
+}
+//actual index start from 0, whereas currentStepNumber start from 1, hence we do -1
+export const getCurrentStepIndex = (currentStepNumber: number): number => currentStepNumber - 1
+
+export const getCurrentAndNextStepId = (
+  stepList: StepList,
+  currentStepIndex: number
+): [currentStepId: string, nextStepId: string] => {
+  const currentStepId = stepList.steps[currentStepIndex]?.id
+  const nextStepId = stepList.steps[currentStepIndex + 1]?.id
+  return [currentStepId, nextStepId]
 }
 
 const columns = (
@@ -87,14 +98,24 @@ const StepListHeader = ({
   sequencerStateResponse: SequencerStateResponse
 }) => {
   const { sequencerState, stepList } = sequencerStateResponse
+  const currentStepIndex = getCurrentStepIndex(stepListInfo.currentStepNumber)
+  const [currentStepId, nextStepId] = getCurrentAndNextStepId(stepList, currentStepIndex)
+
   return (
     <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
       <StepListTitle stepListStatus={stepListInfo.status} />
-      <PlayPauseSequence
-        sequencerState={sequencerState._type}
-        isPaused={stepList.isPaused()}
-        isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused(stepList, stepListInfo.currentStepNumber)}
-      />
+      <Space align='center'>
+        <PlayPauseSequence
+          sequencerState={sequencerState._type}
+          isPaused={stepList.isPaused()}
+          isCurrentStepRunningAndNextPaused={isCurrentStepRunningAndNextPaused(stepList, currentStepIndex)}
+        />
+        <StepThroughSequence
+          currentStepId={currentStepId}
+          nextStepId={nextStepId}
+          disabled={stepListInfo.status !== 'Paused'} // TODO see if same as isPaused and use it
+        />
+      </Space>
     </Row>
   )
 }

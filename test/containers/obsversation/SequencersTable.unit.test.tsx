@@ -79,6 +79,36 @@ describe('sequencer table', () => {
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darknight')
   })
+
+  it('should be able to render a close icon if some sequencer is not running | ESW-514', async () => {
+    const sequencersInfo = [
+      ...getSequencersInfo(),
+      {
+        key: 'TCS.darknight',
+        prefix: 'TCS.darknight',
+        currentStepCommandName: getCurrentStepCommandName(undefined),
+        stepListInfo: { status: 'NA', currentStepNumber: 0 },
+        totalSteps: 0
+      } as SequencerInfo
+    ]
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <SequencersTable sequencersInfo={sequencersInfo} loading={false} />
+        </BrowserRouter>
+      )
+    })
+
+    await assertHeaders()
+    await screen.findByRole('table')
+    await screen.findByRole('row', {
+      name: /setting esw\.darknight na na/i
+    })
+    await screen.findByRole('row', {
+      name: /setting tcs\.darknight close na na/i
+    })
+  })
 })
 
 const assertHeaders = async () => {

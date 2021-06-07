@@ -22,7 +22,7 @@ export type SequencerInfo = {
   currentStepCommandName: string
   stepListInfo: StepListInfo
   totalSteps: number
-  sequencerState: SequencerState
+  sequencerState?: SequencerState
 }
 
 const Status: { [key: string]: StepListStatus } = {

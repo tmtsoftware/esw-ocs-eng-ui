@@ -5,6 +5,7 @@ import {
   SequencerState,
   SequencerStateResponse,
   ServiceError,
+  StepList,
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
@@ -32,7 +33,7 @@ type CurrentObsModeProps = {
 /**
  * tuple of sequencers information : [sequencerPrefix, sequencerStateResponse]
  */
-type SequencerInfoMap = [string, SequencerStateResponse][]
+type SequencerInfoMap = [string, SequencerStateResponse | undefined][]
 
 const masterSequencer = (sequencersInfo: SequencerInfo[]): SequencerInfo[] => {
   const mayBeMaster = sequencersInfo.find(
@@ -59,12 +60,13 @@ const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
 
-const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerState: SequencerState }) => {
-  const status = isRunning ? (
-    <Text content={sequencerState._type} type={getTextType(sequencerState)} />
-  ) : (
-    <Text content='NA' type='secondary' />
-  )
+const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerState?: SequencerState }) => {
+  const status =
+    isRunning && sequencerState ? (
+      <Text content={sequencerState._type} type={getTextType(sequencerState)} />
+    ) : (
+      <Text content='NA' type='secondary' />
+    )
 
   return (
     <Space>
@@ -80,7 +82,9 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
   const tf = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
-  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>([])
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
+    sequencers.map((sub) => [new Prefix(sub, obsMode.name).toJSON(), undefined])
+  )
 
   const isRunningTab = currentTab === 'Running'
 
@@ -116,7 +120,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
   }, [gatewayLocation, isRunningTab, obsMode.name, sequencers, tf])
 
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
-    const stepList = sequencerStatus.stepList
+    const stepList = sequencerStatus?.stepList || new StepList([])
     const stepListInfo = getStepListInfo(stepList)
 
     return {
@@ -124,14 +128,14 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
       prefix: prefix,
       currentStepCommandName: getCurrentStepCommandName(stepList),
       stepListInfo,
-      sequencerState: sequencerStatus.sequencerState,
+      sequencerState: sequencerStatus?.sequencerState,
       totalSteps: stepList.steps.length
     }
   })
 
   const sortedSequencers = sortSequencers(sequencersInfo)
 
-  const sequencerState: SequencerState =
+  const sequencerState: SequencerState | undefined =
     sortedSequencers && sortedSequencers[0] ? sortedSequencers[0].sequencerState : { _type: 'Idle' }
 
   return (

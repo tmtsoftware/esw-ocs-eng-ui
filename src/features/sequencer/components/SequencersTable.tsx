@@ -1,4 +1,4 @@
-import { SettingOutlined } from '@ant-design/icons'
+import { CloseOutlined, SettingOutlined } from '@ant-design/icons'
 import { Space, Table, Tooltip, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
@@ -17,6 +17,15 @@ const getPrefixColumn = (record: SequencerInfo) => (
       </Link>
     </Tooltip>
     <Typography.Text>{record.prefix}</Typography.Text>
+    {!record.sequencerState ? (
+      <Tooltip title={'Sequencer is not running'}>
+        <Typography.Text type={'danger'}>
+          <CloseOutlined />
+        </Typography.Text>
+      </Tooltip>
+    ) : (
+      <></>
+    )}
   </Space>
 )
 

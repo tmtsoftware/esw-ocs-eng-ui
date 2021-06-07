@@ -108,6 +108,13 @@ describe('sequencer table', () => {
     await screen.findByRole('row', {
       name: /setting tcs\.darknight close na na/i
     })
+    const htmlElement = screen.getByRole('cell', {
+      name: /setting tcs\.darknight close/i
+    })
+
+    const button = within(htmlElement).getByRole('ManageSequencer') as HTMLButtonElement
+
+    expect(button.disabled).to.be.true
   })
 })
 

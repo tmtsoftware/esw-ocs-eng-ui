@@ -16,7 +16,7 @@ const Settings = ({ prefix, disabled }: { prefix: string; disabled: boolean }): 
       shape={'circle'}
       icon={<SettingOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}
       disabled={disabled}
-      role='StartSequence'
+      role='ManageSequencer'
     />
   )
   return (

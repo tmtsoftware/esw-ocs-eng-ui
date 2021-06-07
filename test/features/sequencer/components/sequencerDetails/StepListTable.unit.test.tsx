@@ -40,22 +40,29 @@ describe('stepList table', () => {
     }
   ])
 
-  const testData: [Step['status']['_type'], boolean, string, string, string][] = [
-    ['Success', false, 'All Steps Completed', 'ant-typography-secondary', 'rgba(0, 0, 0, 0.45)'],
-    ['Failure', false, 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
-    ['InFlight', false, 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
-    ['Pending', true, 'Paused', 'ant-typography-warning', 'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'],
-    ['Pending', false, 'Loaded', 'ant-typography-warning', 'rgb(255, 197, 61)']
+  const testData: [Step['status']['_type'], boolean, SequencerState['_type'], string, string, string][] = [
+    ['Success', false, 'Running', 'All Steps Completed', 'ant-typography-secondary', 'rgba(0, 0, 0, 0.45)'],
+    ['Failure', false, 'Running', 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
+    ['InFlight', false, 'Running', 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
+    [
+      'Pending',
+      true,
+      'Running',
+      'Paused',
+      'ant-typography-warning',
+      'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'
+    ],
+    ['Pending', false, 'Loaded', 'Loaded', 'ant-typography-warning', 'rgb(255, 197, 61)']
   ]
 
-  testData.forEach(([lastStepStatus, breakpoint, stepListStatus, className, borderColor]) => {
+  testData.forEach(([lastStepStatus, breakpoint, sequencerStatus, stepListStatus, className, borderColor]) => {
     it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
       renderWithAuth({
         ui: (
           <StepListTable
             sequencerPrefix={sequencerPrefix}
             setSelectedStep={() => ({})}
-            sequencerStateResponse={getSequencerStateResponse('Running', getStepList(lastStepStatus, breakpoint))}
+            sequencerStateResponse={getSequencerStateResponse(sequencerStatus, getStepList(lastStepStatus, breakpoint))}
           />
         )
       })

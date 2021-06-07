@@ -121,7 +121,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
     const stepList = sequencerStatus?.stepList || new StepList([])
-    const stepListInfo = getStepListInfo(stepList)
+    const stepListInfo = getStepListInfo(stepList, sequencerStatus?.sequencerState._type)
 
     return {
       key: prefix,

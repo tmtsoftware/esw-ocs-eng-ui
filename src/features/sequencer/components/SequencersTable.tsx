@@ -1,5 +1,5 @@
 import { CloseOutlined, SettingOutlined } from '@ant-design/icons'
-import { Space, Table, Tooltip, Typography } from 'antd'
+import { Button, Space, Table, Tooltip, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
@@ -9,25 +9,38 @@ import { getSequencerPath } from '../../../routes/RoutesConfig'
 import type { SequencerInfo, StepListInfo } from '../utils'
 import styles from './sequencerTable.module.css'
 
-const getPrefixColumn = (record: SequencerInfo) => (
-  <Space>
-    <Tooltip title={'Manage sequencer'}>
-      <Link to={getSequencerPath(record.prefix)}>
-        <SettingOutlined className={styles.sequencerIcon} />
-      </Link>
-    </Tooltip>
-    <Typography.Text>{record.prefix}</Typography.Text>
-    {!record.sequencerState ? (
-      <Tooltip title={'Sequencer is not running'}>
-        <Typography.Text type={'danger'}>
-          <CloseOutlined />
-        </Typography.Text>
-      </Tooltip>
-    ) : (
-      <></>
-    )}
-  </Space>
-)
+const Settings = ({ prefix, disabled }: { prefix: string; disabled: boolean }): JSX.Element => {
+  const icon = (
+    <Button
+      type={'text'}
+      shape={'circle'}
+      icon={<SettingOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}
+      disabled={disabled}
+      role='StartSequence'
+    />
+  )
+  return (
+    <Tooltip title={'Manage sequencer'}>{disabled ? icon : <Link to={getSequencerPath(prefix)}>{icon}</Link>}</Tooltip>
+  )
+}
+
+const getPrefixColumn = (record: SequencerInfo) => {
+  return (
+    <Space>
+      <Settings prefix={record.prefix} disabled={record.sequencerState === undefined} />
+      <Typography.Text>{record.prefix}</Typography.Text>
+      {!record.sequencerState ? (
+        <Tooltip title={'Sequencer is not running'}>
+          <Typography.Text type={'danger'}>
+            <CloseOutlined />
+          </Typography.Text>
+        </Tooltip>
+      ) : (
+        <></>
+      )}
+    </Space>
+  )
+}
 
 export const statusTextType: { [stepStatus: string]: BaseType } = {
   'All Steps Completed': 'secondary',

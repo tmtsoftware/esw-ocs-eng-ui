@@ -9,16 +9,8 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { PlayPauseSequence } from './PlayPauseSequence'
-import { StepComponent } from './StepComponent'
+import { StepComponent, StepData } from './StepComponent'
 import { StepThroughSequence } from './StepThroughSequence'
-
-type StepData = {
-  id: string
-  command: SequenceCommand
-  status: StepStatus
-  hasBreakpoint: boolean
-  index: number
-}
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -70,7 +62,7 @@ const columns = (
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) => StepComponent(record, record.index + 1, setSelectedStep, setFollowProgress, stepRefs)
+    render: (_, record) => StepComponent(record, setSelectedStep, setFollowProgress, stepRefs)
   }
 ]
 

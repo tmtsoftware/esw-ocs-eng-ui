@@ -31,9 +31,7 @@ const getPrefixColumn = (record: SequencerInfo) => {
       <Typography.Text>{record.prefix}</Typography.Text>
       {!record.sequencerState ? (
         <Tooltip title={'Sequencer is not running'}>
-          <Typography.Text type={'danger'}>
-            <CloseOutlined />
-          </Typography.Text>
+          <CloseOutlined style={{ color: 'var(--dangerColor)' }} />
         </Tooltip>
       ) : (
         <></>

@@ -30,7 +30,7 @@ describe('Kill sequence component button', () => {
   ]
 
   responseScenarios.forEach(([testName, res, message]) => {
-    it.only(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
+    it(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
       const agentService = mockServices.mock.agentService
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
       renderWithAuth({

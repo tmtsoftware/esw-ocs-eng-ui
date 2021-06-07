@@ -139,12 +139,12 @@ export const StepListTable = ({
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const [followProgress, setFollowProgress] = useState(true)
-  const stepListInfo = getStepListInfo(stepList)
+  const stepListInfo = getStepListInfo(stepList, sequencerStateResponse.sequencerState._type)
 
   const stepRefs = useRef<StepRefInfo>({})
 
   useEffect(() => {
-    if (followProgress === true) {
+    if (followProgress) {
       const runningStep = getRunningStep(stepList, stepListInfo.status)
       setSelectedStep(runningStep)
       if (runningStep) {

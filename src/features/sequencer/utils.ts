@@ -34,7 +34,7 @@ const Status: { [key: string]: StepListStatus } = {
 const currentStep = (stepList: StepList): Option<Step> => stepList.steps.find((e) => e.status._type !== 'Success')
 
 // todo refactor this code if possible
-export const getStepListInfo = (stepList: StepList): StepListInfo => {
+export const getStepListInfo = (stepList: StepList, sequencerState: SequencerState['_type']): StepListInfo => {
   if (stepList.steps.length === 0) return { currentStepNumber: 0, status: 'NA' }
   const step = currentStep(stepList)
   if (step === undefined) return { currentStepNumber: 0, status: 'All Steps Completed' }
@@ -42,7 +42,7 @@ export const getStepListInfo = (stepList: StepList): StepListInfo => {
   const status = Status[step.status._type]
   return {
     currentStepNumber,
-    status: status === 'Paused' && !stepList.isPaused() ? 'Loaded' : status
+    status: sequencerState === 'Loaded' ? 'Loaded' : status
   }
 }
 

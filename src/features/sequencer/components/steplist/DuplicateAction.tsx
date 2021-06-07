@@ -18,14 +18,8 @@ const addCommands = (commands: SequenceCommand[]) => (sequencerService: Sequence
   })
 }
 
-export const DuplicateAction = ({
-  commands: selectedCommands,
-  toggleDuplicateEnabled
-}: {
-  commands: SequenceCommand[]
-  toggleDuplicateEnabled: () => void
-}): JSX.Element => {
-  const { sequencerService } = useStepListContext()
+export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): JSX.Element => {
+  const { sequencerService, handleDuplicate } = useStepListContext()
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),
     onError: (e) => errorMessage('Failed to duplicate steps', e),
@@ -35,14 +29,14 @@ export const DuplicateAction = ({
   return (
     <Row justify='end' style={{ padding: '1rem 1rem' }} align='middle'>
       <Space>
-        <Button onClick={toggleDuplicateEnabled}>Cancel</Button>
+        <Button onClick={handleDuplicate}>Cancel</Button>
         <Button
           type='primary'
           loading={duplicateAction.isLoading}
           disabled={selectedCommands.length === 0}
           onClick={() => {
             sequencerService && duplicateAction.mutateAsync(sequencerService)
-            toggleDuplicateEnabled()
+            handleDuplicate()
           }}>
           <CopyOutlined />
           Duplicate

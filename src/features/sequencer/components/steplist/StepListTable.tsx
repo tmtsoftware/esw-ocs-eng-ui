@@ -197,12 +197,7 @@ export const StepListTable = ({
           sticky
         />
       </div>
-      {isDuplicateEnabled && (
-        <DuplicateAction
-          commands={commands}
-          toggleDuplicateEnabled={() => toggleDuplicateEnabled(!isDuplicateEnabled)}
-        />
-      )}
+      {isDuplicateEnabled && <DuplicateAction commands={commands} />}
     </StepListContextProvider>
   )
 }

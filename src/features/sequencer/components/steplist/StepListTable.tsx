@@ -46,9 +46,9 @@ export const getRunningStep = (stepList: StepList, stepListStatus: StepListStatu
 }
 
 export const isCurrentStepRunningAndNextPaused = (stepList: StepList, currentStepIndex: number): boolean => {
-  return (
-    stepList.steps[currentStepIndex]?.status._type === 'InFlight' && stepList.steps[currentStepIndex + 1]?.hasBreakpoint
-  )
+  const currentStepInFlight = stepList.steps[currentStepIndex]?.status._type === 'InFlight'
+  const nextStepPaused = stepList.steps[currentStepIndex + 1]?.hasBreakpoint === true
+  return currentStepInFlight && nextStepPaused
 }
 //actual index start from 0, whereas currentStepNumber start from 1, hence we do -1
 export const getCurrentStepIndex = (currentStepNumber: number): number => currentStepNumber - 1
@@ -56,7 +56,7 @@ export const getCurrentStepIndex = (currentStepNumber: number): number => curren
 export const getCurrentAndNextStepId = (
   stepList: StepList,
   currentStepIndex: number
-): [currentStepId: string, nextStepId: string] => {
+): [currentStepId: string, nextStepId: string | undefined] => {
   const currentStepId = stepList.steps[currentStepIndex]?.id
   const nextStepId = stepList.steps[currentStepIndex + 1]?.id
   return [currentStepId, nextStepId]
@@ -148,7 +148,7 @@ export const StepListTable = ({
       const runningStep = getRunningStep(stepList, stepListInfo.status)
       setSelectedStep(runningStep)
       if (runningStep) {
-        stepRefs.current[runningStep.id].scrollIntoView({
+        stepRefs.current[runningStep.id]?.scrollIntoView({
           behavior: 'smooth',
           block: 'center'
         })

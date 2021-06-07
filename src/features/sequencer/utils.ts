@@ -1,4 +1,4 @@
-import type { GenericResponse, Option, SequencerState, Step, StepList } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, Option, SequencerState, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import type { Ok } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/models/SequencerRes'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from './components/sequencerMessageConstants'
 
@@ -25,7 +25,7 @@ export type SequencerInfo = {
   sequencerState?: SequencerState
 }
 
-const Status: { [key: string]: StepListStatus } = {
+const Status: Record<StepStatus['_type'], StepListStatus> = {
   Pending: 'Paused',
   Failure: 'Failed',
   InFlight: 'In Progress',

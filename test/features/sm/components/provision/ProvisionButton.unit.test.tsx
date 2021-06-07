@@ -183,7 +183,7 @@ describe('ProvisionButton component', () => {
     [
       'SpawningSequenceComponentsFailed',
       Promise.resolve(spawnSeqCompError),
-      'Failed to provision, reason: Unable to spawn following sequence comps on machines: ESW.ESW_1 on ESW.machine,'
+      'Failed to provision, reason: failed to spawn: ESW.ESW_1 on ESW.machine,'
     ],
     [
       'CouldNotFindMachines',

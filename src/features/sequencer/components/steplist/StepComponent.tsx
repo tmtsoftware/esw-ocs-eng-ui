@@ -1,4 +1,4 @@
-import type { Step } from '@tmtsoftware/esw-ts'
+import type { Step, StepStatus } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
@@ -6,7 +6,7 @@ import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
 import type { StepRefInfo } from './StepListTable'
 
-const color: { [stepStatus: string]: BaseType } = {
+const color: Record<StepStatus['_type'], BaseType> = {
   Success: 'secondary',
   Failure: 'danger',
   Pending: 'warning',

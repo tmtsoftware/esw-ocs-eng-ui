@@ -19,7 +19,7 @@ import { ProvisionTable } from './ProvisionTable'
 type ProvisionRecord = Record<string, number>
 
 const sanitiseErrorMsg = (res: SpawningSequenceComponentsFailed) =>
-  res.failureResponses.map((x) => x.split('reason')[0].split(':')[1]).join('\n')
+  res.failureResponses.map((x) => x.split('reason')[0]).join('\n')
 
 const provision = (provisionRecord: ProvisionRecord) => async (sequenceManagerService: SequenceManagerService) => {
   const provisionConfig = parseProvisionConf(provisionRecord)
@@ -32,7 +32,7 @@ const provision = (provisionRecord: ProvisionRecord) => async (sequenceManagerSe
     case 'Unhandled':
       throw Error(res.msg)
     case 'SpawningSequenceComponentsFailed':
-      throw Error(`Unable to spawn following sequence comps on machines: ${sanitiseErrorMsg(res)}`)
+      throw Error(`${sanitiseErrorMsg(res)}`)
     case 'CouldNotFindMachines':
       throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
 

@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftware/esw-ts'
+import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
@@ -94,8 +95,10 @@ describe('Start Sequencer', () => {
         ui: <StartSequencer />
       })
 
-      const loadScriptButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
-      userEvent.click(loadScriptButton)
+      const startSequencerButton = screen.getByRole('button', {
+        name: startSequencerConstants.startSequencerButtonText
+      })
+      userEvent.click(startSequencerButton)
 
       const modal = await screen.findByRole('dialog', {
         name: startSequencerConstants.modalTitle
@@ -104,17 +107,12 @@ describe('Start Sequencer', () => {
 
       await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsModeName)
 
-      const obsModeInput = within(modal).getByRole('combobox', { name: startSequencerConstants.obsModeInputLabel })
-      userEvent.click(obsModeInput)
-      userEvent.type(obsModeInput, 'dark')
-      const obsModeItem = await screen.findAllByText(obsModeName)
-      await waitFor(() => userEvent.click(obsModeItem[1]))
-
       const confirmButton = screen.getByRole('button', { name: 'Confirm' })
       userEvent.click(confirmButton)
 
       await screen.findByText(message)
       verify(smService.startSequencer(ESW, deepEqual(obsMode))).called()
+      await waitFor(() => expect(screen.queryByText(startSequencerConstants.modalTitle)).to.null)
     })
   })
 
@@ -125,8 +123,8 @@ describe('Start Sequencer', () => {
       ui: <StartSequencer />
     })
 
-    const loadScriptButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
-    userEvent.click(loadScriptButton)
+    const startSequencerButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
+    userEvent.click(startSequencerButton)
 
     const modal = await screen.findByRole('dialog', {
       name: startSequencerConstants.modalTitle
@@ -163,7 +161,7 @@ const enterUserInputInAutoComplete = async (
   const combobox = within(withinElement).getByRole('combobox', { name: label })
   userEvent.click(combobox)
   userEvent.type(combobox, userInput)
-  const option = await screen.findAllByRole('option', { name: optionToChoose })
 
-  await waitFor(() => userEvent.click(option[0]))
+  const obsModeItem = await screen.findAllByText(optionToChoose)
+  await waitFor(() => userEvent.click(obsModeItem[1]))
 }

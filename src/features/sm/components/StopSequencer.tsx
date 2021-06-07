@@ -31,7 +31,7 @@ const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: Se
 export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
   const [smContext, isLoading] = useSMService()
 
-  const unloadAction = useMutation({
+  const stopAction = useMutation({
     mutationFn: stopSequencer(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
     onSuccess: () => successMessage(stopSequencerConstants.successMessage(sequencerPrefix)),
     onError: (e) => errorMessage(stopSequencerConstants.failureMessage(sequencerPrefix), e),
@@ -41,12 +41,12 @@ export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }):
   return (
     <Menu.Item
       icon={<CloseCircleOutlined />}
-      disabled={isLoading || unloadAction.isLoading}
+      disabled={isLoading || stopAction.isLoading}
       onClick={() =>
         smContext?.smService &&
         showConfirmModal(
           () => {
-            unloadAction.mutate(smContext.smService)
+            stopAction.mutate(smContext.smService)
           },
           stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON()),
           stopSequencerConstants.modalOkButtonText

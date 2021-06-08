@@ -56,13 +56,12 @@ export const getCurrentAndNextStepId = (
 
 const columns = (
   setSelectedStep: (_: Step) => void,
-  setFollowProgress: (_: boolean) => void,
   stepRefs: React.MutableRefObject<StepRefInfo>
 ): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
-    render: (_, record) => StepComponent(record, setSelectedStep, setFollowProgress, stepRefs)
+    render: (_, record) => StepComponent(record, setSelectedStep, stepRefs)
   }
 ]
 
@@ -165,6 +164,7 @@ export const StepListTable = ({
     <StepListContextProvider
       value={{
         handleDuplicate: () => toggleDuplicateEnabled(!isDuplicateEnabled),
+        setFollowProgress,
         isDuplicateEnabled,
         stepListStatus: stepListInfo.status,
         sequencerService
@@ -181,7 +181,7 @@ export const StepListTable = ({
             ...step,
             index
           }))}
-          columns={columns(setSelectedStep, setFollowProgress, stepRefs)}
+          columns={columns(setSelectedStep, stepRefs)}
           onRow={(step) => ({
             id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell

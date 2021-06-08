@@ -27,7 +27,7 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
   })
 
   return (
-    <Row justify='end' style={{ padding: '1rem 1rem' }} align='middle'>
+    <Row justify='center' style={{ padding: '1rem 1rem' }} align='middle'>
       <Space>
         <Button onClick={handleDuplicate}>Cancel</Button>
         <Button

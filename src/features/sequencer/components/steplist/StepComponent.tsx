@@ -23,7 +23,6 @@ const color: Record<StepStatus['_type'], string> = {
 export const StepComponent = (
   step: StepData,
   setSelectedStep: (_: Step) => void,
-  setFollowProgress: (_: boolean) => void,
   stepRefs: React.MutableRefObject<StepRefInfo>
 ): JSX.Element => {
   const stepsStyle = {
@@ -32,7 +31,7 @@ export const StepComponent = (
     borderLeft: `${step.hasBreakpoint ? '1rem solid red' : `1px solid ${color[step.status._type]}`}`
   }
 
-  const { isDuplicateEnabled } = useStepListContext()
+  const { isDuplicateEnabled, setFollowProgress } = useStepListContext()
   const [isVisible, setVisible] = useState<boolean>(false)
 
   return (

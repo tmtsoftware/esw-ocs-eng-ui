@@ -216,6 +216,7 @@ const renderWithAuth = (
 const MenuWithStepListContext = ({
   menuItem,
   value = {
+    setFollowProgress: () => undefined,
     handleDuplicate: () => undefined,
     isDuplicateEnabled: false,
     stepListStatus: 'In Progress',

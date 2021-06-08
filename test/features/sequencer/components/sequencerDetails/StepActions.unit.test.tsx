@@ -126,6 +126,7 @@ describe('StepActions', () => {
         <StepListContextProvider
           value={{
             handleDuplicate: () => undefined,
+            setFollowProgress: () => undefined,
             isDuplicateEnabled: false,
             stepListStatus: 'All Steps Completed',
             sequencerService: sequencerServiceInstance
@@ -150,6 +151,7 @@ describe('StepActions', () => {
         <StepListContextProvider
           value={{
             handleDuplicate: () => undefined,
+            setFollowProgress: () => undefined,
             isDuplicateEnabled: false,
             stepListStatus: 'All Steps Completed',
             sequencerService: sequencerServiceInstance

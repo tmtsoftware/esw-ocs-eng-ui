@@ -4,6 +4,7 @@ import type { StepListStatus } from '../utils'
 
 export type StepListTableContextType = {
   handleDuplicate: () => void
+  setFollowProgress: (_: boolean) => void
   isDuplicateEnabled: boolean
   stepListStatus: StepListStatus
   sequencerService: Option<SequencerService>
@@ -11,6 +12,7 @@ export type StepListTableContextType = {
 
 export const defaultStepListTableContext: StepListTableContextType = {
   handleDuplicate: () => undefined,
+  setFollowProgress: () => undefined,
   isDuplicateEnabled: false,
   stepListStatus: 'NA',
   sequencerService: undefined

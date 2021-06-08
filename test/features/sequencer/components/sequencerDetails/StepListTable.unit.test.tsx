@@ -40,29 +40,21 @@ describe('stepList table', () => {
     }
   ])
 
-  const testData: [Step['status']['_type'], boolean, SequencerState['_type'], string, string, string][] = [
-    ['Success', false, 'Running', 'All Steps Completed', 'ant-typography-secondary', 'rgba(0, 0, 0, 0.45)'],
-    ['Failure', false, 'Running', 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
-    ['InFlight', false, 'Running', 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
-    [
-      'Pending',
-      true,
-      'Running',
-      'Paused',
-      'ant-typography-warning',
-      'rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red'
-    ],
-    ['Pending', false, 'Loaded', 'Loaded', 'ant-typography-warning', 'rgb(255, 197, 61)']
+  const testData: [Step['status']['_type'], SequencerState['_type'], string, string, string][] = [
+    ['Success', 'Running', 'All Steps Completed', 'ant-typography-secondary', 'rgba(0, 0, 0, 0.45)'],
+    ['Failure', 'Running', 'Failed', 'ant-typography-danger', 'rgb(255, 77, 79)'],
+    ['InFlight', 'Running', 'In Progress', 'ant-typography-success', 'rgb(82, 196, 26)'],
+    ['Pending', 'Loaded', 'Loaded', 'ant-typography-warning', 'rgb(255, 197, 61)']
   ]
 
-  testData.forEach(([lastStepStatus, breakpoint, sequencerStatus, stepListStatus, className, borderColor]) => {
+  testData.forEach(([lastStepStatus, sequencerStatus, stepListStatus, className, borderColor]) => {
     it(`should show stepListStatus as ${stepListStatus} and verify ${lastStepStatus} step has ${className} css class | ESW-456`, async () => {
       renderWithAuth({
         ui: (
           <StepListTable
             sequencerPrefix={sequencerPrefix}
             setSelectedStep={() => ({})}
-            sequencerStateResponse={getSequencerStateResponse(sequencerStatus, getStepList(lastStepStatus, breakpoint))}
+            sequencerStateResponse={getSequencerStateResponse(sequencerStatus, getStepList(lastStepStatus))}
           />
         )
       })
@@ -79,9 +71,34 @@ describe('stepList table', () => {
       expect(stepButton.style.borderColor).to.equal(borderColor)
       // eslint-disable-next-line testing-library/no-node-access
       const spanElement = stepButton.firstChild as HTMLSpanElement
-
-      expect(spanElement.classList.contains(className)).true
+      await waitFor(() => expect(spanElement.style.color).to.equal(borderColor))
     })
+  })
+
+  it('should show stepListStatus as paused and the verify paused step has breakpoint', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={sequencerPrefix}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending', true))}
+        />
+      )
+    })
+
+    const title = `Sequence Steps\nStatus:\nPaused`
+
+    const stepListTitle = await screen.findByRole('stepListTitle')
+    expect(stepListTitle.innerText).to.equals(title)
+
+    const htmlElement = await findCell('1 Command-1 more')
+
+    const stepButton = within(htmlElement).getByRole('button')
+
+    expect(stepButton.style.borderColor).to.equal('rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red')
+    // eslint-disable-next-line testing-library/no-node-access
+    const spanElement = stepButton.firstChild as HTMLSpanElement
+    await waitFor(() => expect(spanElement.style.color).to.equal('rgb(255, 197, 61)'))
   })
 
   it('should show all the steps within a column | ESW-456', async () => {

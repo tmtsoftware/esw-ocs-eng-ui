@@ -1,6 +1,5 @@
 import type { SequenceCommand, Step, StepStatus } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
-import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useState } from 'react'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
@@ -14,18 +13,11 @@ export type StepData = {
   index: number
 }
 
-const color: Record<StepStatus['_type'], BaseType> = {
-  Success: 'secondary',
-  Failure: 'danger',
-  Pending: 'warning',
-  InFlight: 'success'
-}
-
-const baseTypeColorCode = {
-  secondary: '#00000073',
-  danger: '#ff4d4f',
-  warning: '#FFC53D',
-  success: '#52c41a'
+const color: Record<StepStatus['_type'], string> = {
+  Success: '#00000073',
+  Failure: '#ff4d4f',
+  Pending: '#FFC53D',
+  InFlight: '#52c41a'
 }
 
 export const StepComponent = (
@@ -35,9 +27,9 @@ export const StepComponent = (
   stepRefs: React.MutableRefObject<StepRefInfo>
 ): JSX.Element => {
   const stepsStyle = {
-    borderColor: baseTypeColorCode[color[step.status._type]],
+    borderColor: color[step.status._type],
     width: '15rem',
-    borderLeft: `${step.hasBreakpoint ? '1rem solid red' : `1px solid ${baseTypeColorCode[color[step.status._type]]}`}`
+    borderLeft: `${step.hasBreakpoint ? '1rem solid red' : `1px solid ${color[step.status._type]}`}`
   }
 
   const { isDuplicateEnabled } = useStepListContext()
@@ -58,9 +50,8 @@ export const StepComponent = (
             setFollowProgress(step.status._type === 'InFlight')
           }}>
           <Typography.Text
-            type={color[step.status._type]}
             ellipsis={{ onEllipsis: setVisible }}
-            style={{ width: '100%' }}
+            style={{ width: '100%', color: color[step.status._type] }}
             strong>
             {step.command.commandName}
           </Typography.Text>

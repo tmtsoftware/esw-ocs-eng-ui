@@ -104,7 +104,7 @@ const StepListHeader = ({
         <StepThroughSequence
           currentStepId={currentStepId}
           nextStepId={nextStepId}
-          disabled={stepListInfo.status !== 'Paused'} // TODO see if same as isPaused and use it
+          disabled={stepListInfo.status !== 'Paused'}
         />
       </Space>
     </Row>
@@ -163,7 +163,7 @@ export const StepListTable = ({
   return (
     <StepListContextProvider
       value={{
-        handleDuplicate: () => toggleDuplicateEnabled(!isDuplicateEnabled),
+        handleDuplicate: () => toggleDuplicateEnabled((prevState) => !prevState),
         setFollowProgress,
         isDuplicateEnabled,
         stepListStatus: stepListInfo.status,

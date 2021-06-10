@@ -4,6 +4,7 @@ import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
 import { StopSequencer } from '../../sm/components/StopSequencer'
+import { disabledSequencerActions } from '../agentConstants'
 import styles from './agentCards.module.css'
 import { KillSequenceComponent } from './KillSequenceComponent'
 
@@ -12,11 +13,10 @@ const { useBreakpoint } = Grid
 const DisabledSequencerActions = () => {
   const screen = useBreakpoint()
   const width = screen.lg ? '200px' : '150px'
-  const displayMessage = 'Spawned sequencers will display more actions'
   return (
     <Menu.Item key='disabledSequencerActions' disabled={true}>
       <div style={{ maxWidth: width }} className={styles.disabledSequencerActions}>
-        {displayMessage}
+        {disabledSequencerActions.displayMessage}
       </div>
     </Menu.Item>
   )

@@ -6,6 +6,7 @@ import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
+import { spawnSequenceComponentConstants } from '../agentConstants'
 import styles from './agentCards.module.css'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
@@ -17,8 +18,8 @@ const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
 const requirement = (predicate: boolean, msg: string) => predicate && errorMessage(msg)
 
 const validateComponentName = (componentName: string) => {
-  requirement(componentName !== componentName.trim(), 'component name has leading and trailing whitespaces')
-  requirement(componentName.includes('-'), "component name has '-'")
+  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation)
+  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
 }
 
 export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): JSX.Element => {
@@ -30,9 +31,11 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
     onSuccess: () =>
       successMessage(
-        `Successfully spawned Sequence Component: ${new Prefix(agentPrefix.subsystem, componentName).toJSON()}`
+        spawnSequenceComponentConstants.getSuccessMessage(
+          `${new Prefix(agentPrefix.subsystem, componentName).toJSON()}`
+        )
       ),
-    onError: (e) => errorMessage('Sequence Component could not be spawned', e),
+    onError: (e) => errorMessage(spawnSequenceComponentConstants.getFailureMessage, e), //TODO should we add componentId?
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 

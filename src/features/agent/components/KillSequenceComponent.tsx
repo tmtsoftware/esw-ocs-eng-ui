@@ -7,7 +7,7 @@ import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
-import { killComponentConstants } from '../agentConstants'
+import { killSequenceComponentConstants } from '../agentConstants'
 
 const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
   agentService.killComponent(componentId).then((res) => {
@@ -20,8 +20,8 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
-    onSuccess: () => successMessage(killComponentConstants.getSuccessMessage(componentId.prefix.toJSON())),
-    onError: (e) => errorMessage(killComponentConstants.getFailureMessage(componentId.prefix.toJSON()), e),
+    onSuccess: () => successMessage(killSequenceComponentConstants.getSuccessMessage(componentId.prefix.toJSON())),
+    onError: (e) => errorMessage(killSequenceComponentConstants.getFailureMessage(componentId.prefix.toJSON()), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 
@@ -31,8 +31,8 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
         () => {
           killSequenceComponentAction.mutateAsync(agentService)
         },
-        killComponentConstants.getModalTitle(componentId.prefix.toJSON()),
-        killComponentConstants.modalOkButtonText
+        killSequenceComponentConstants.getModalTitle(componentId.prefix.toJSON()),
+        killSequenceComponentConstants.modalOkButtonText
       )
   }
   return (
@@ -43,7 +43,7 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
       disabled={isLoading}
       icon={<PoweroffOutlined />}
       onClick={handleOnClick}>
-      {killComponentConstants.menuItemText}
+      {killSequenceComponentConstants.menuItemText}
     </Menu.Item>
   )
 }

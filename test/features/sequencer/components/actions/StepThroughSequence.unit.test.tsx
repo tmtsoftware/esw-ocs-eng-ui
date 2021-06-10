@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { RemoveBreakpointResponse } from '@tmtsoftware/esw-ts'
-import type { GenericResponse } from '@tmtsoftware/esw-ts/lib/src'
+import type { RemoveBreakpointResponse, GenericResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, reset, verify, when } from 'ts-mockito'

@@ -1,5 +1,4 @@
-import type { GenericResponse, Option, SequencerState, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
-import type { Ok } from '@tmtsoftware/esw-ts/lib/dist/src/clients/sequencer/models/SequencerRes'
+import type { GenericResponse, Option, SequencerState, Step, StepList, StepStatus, Ok } from '@tmtsoftware/esw-ts'
 import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from './components/sequencerMessageConstants'
 
 export type StepListStatus =

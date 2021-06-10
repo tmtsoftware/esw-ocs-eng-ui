@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { StepList } from '@tmtsoftware/esw-ts'
-import type { SequencerState } from '@tmtsoftware/esw-ts/lib/src'
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

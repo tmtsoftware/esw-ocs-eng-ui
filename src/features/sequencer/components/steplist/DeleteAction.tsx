@@ -5,6 +5,7 @@ import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { deleteStepConstants } from '../../sequencerConstants'
 import { handleActionResponse } from '../../utils'
 
 const deleteStep = (id: string) => (sequencerService: SequencerService) => {
@@ -13,10 +14,10 @@ const deleteStep = (id: string) => (sequencerService: SequencerService) => {
 
 const showConfirmModal = (stepName: string, onYes: () => void): void => {
   Modal.confirm({
-    title: `Do you want to delete a step '${stepName}'?`,
+    title: deleteStepConstants.getModalTitle(stepName),
     icon: <ExclamationCircleOutlined />,
     centered: true,
-    okText: 'Delete',
+    okText: deleteStepConstants.modalOkText,
     okButtonProps: {
       danger: true,
       type: 'primary'
@@ -37,8 +38,8 @@ export const DeleteAction = ({ step, isDisabled }: DeleteActionProps): JSX.Eleme
   const { sequencerService } = useStepListContext()
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),
-    onSuccess: () => successMessage('Successfully deleted step'),
-    onError: (e) => errorMessage('Failed to delete step', e)
+    onSuccess: () => successMessage(deleteStepConstants.successMessage),
+    onError: (e) => errorMessage(deleteStepConstants.failureMessage, e)
   })
 
   return (

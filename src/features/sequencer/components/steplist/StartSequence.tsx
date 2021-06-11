@@ -5,21 +5,22 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { startSequenceConstants } from '../../sequencerConstants'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, SequencerService> => {
   const mutationFn = (sequencerService: SequencerService) => sequencerService.startSequence()
 
-  const showError = (str: string) => errorMessage('Failed to start the sequence', Error(str))
+  const showError = (str: string) => errorMessage(startSequenceConstants.failureMessage, Error(str))
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
       switch (res._type) {
         case 'Completed':
-          return successMessage('Sequence is completed successfully')
+          return successMessage(startSequenceConstants.completedSuccessMessage)
         case 'Started':
-          return successMessage('Sequence is started successfully')
+          return successMessage(startSequenceConstants.successMessage)
         case 'Error':
           return showError(res.message)
         case 'Invalid':
@@ -29,7 +30,7 @@ const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, Sequence
       }
     },
     onError: (e) =>
-      errorMessage('Failed to start the sequence', (e as Error).message ? e : Error((e as string).toString()))
+      errorMessage(startSequenceConstants.failureMessage, (e as Error).message ? e : Error((e as string).toString()))
   })
 }
 

@@ -5,6 +5,7 @@ import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { insertBreakPointConstants, removeBreakPointConstants } from '../../sequencerConstants'
 import { handleActionResponse } from '../../utils'
 
 const insertAction = (id: string) => (sequencerService: SequencerService) =>
@@ -18,14 +19,14 @@ export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled:
 
   const insertBreakpointAction = useMutation({
     mutationFn: insertAction(step.id),
-    onSuccess: () => successMessage('Successfully inserted breakpoint'),
-    onError: (e) => errorMessage('Failed to insert breakpoint', e)
+    onSuccess: () => successMessage(insertBreakPointConstants.successMessage),
+    onError: (e) => errorMessage(insertBreakPointConstants.failureMessage, e)
   })
 
   const removeBreakpointAction = useMutation({
     mutationFn: removeAction(step.id),
-    onSuccess: () => successMessage('Successfully removed breakpoint'),
-    onError: (e) => errorMessage('Failed to remove breakpoint', e)
+    onSuccess: () => successMessage(removeBreakPointConstants.successMessage),
+    onError: (e) => errorMessage(removeBreakPointConstants.failureMessage, e)
   })
 
   const handleOnClick = () => {

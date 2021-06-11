@@ -24,7 +24,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { addStepsSuccessMsg } from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
+import { addStepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -556,7 +556,7 @@ describe('sequencer details', () => {
     const inputBox = addSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 
-    await screen.findByText(addStepsSuccessMsg)
+    await screen.findByText(addStepConstants.successMessage)
     commandInserted = true
     verify(sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))).called()
 

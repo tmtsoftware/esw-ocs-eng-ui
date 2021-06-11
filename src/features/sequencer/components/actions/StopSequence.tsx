@@ -5,6 +5,7 @@ import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import { stopSequenceConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 
 const useStopAction = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
@@ -13,10 +14,10 @@ const useStopAction = (): UseMutationResult<OkOrUnhandledResponse, unknown, Sequ
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Successfully stopped the Sequence')
-      return errorMessage('Failed to stop the Sequence', Error(res.msg))
+      if (res._type === 'Ok') return successMessage(stopSequenceConstants.successMessage)
+      return errorMessage(stopSequenceConstants.failureMessage, Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to stop the Sequence', e)
+    onError: (e) => errorMessage(stopSequenceConstants.failureMessage, e)
   })
 }
 
@@ -33,8 +34,8 @@ export const StopSequence = ({ prefix, isSequencerRunning }: StopSequenceProps):
       () => {
         stopAction.mutate(sequencerService)
       },
-      'Do you want to stop the sequence?',
-      'Stop'
+      stopSequenceConstants.modalTitle,
+      stopSequenceConstants.modalOkText
     )
 
   return (

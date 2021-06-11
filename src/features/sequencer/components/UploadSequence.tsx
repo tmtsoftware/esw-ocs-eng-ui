@@ -2,7 +2,7 @@ import { Sequence } from '@tmtsoftware/esw-ts'
 import { Upload } from 'antd'
 import React from 'react'
 import { errorMessage } from '../../../utils/message'
-import { couldNotDeserialiseSequenceMsg } from './sequencerMessageConstants'
+import { uploadSequenceConstants } from '../sequencerConstants'
 
 type UploadSequenceProps = {
   setSequence: (sequence: Sequence) => void
@@ -32,7 +32,7 @@ export const UploadSequence = ({
             setSequence(Sequence.from(JSON.parse(reader.result)))
             resolve()
           } catch (e) {
-            errorMessage(uploadErrorMsg, Error(couldNotDeserialiseSequenceMsg)).then(reject)
+            errorMessage(uploadErrorMsg, Error(uploadSequenceConstants.couldNotDeserialiseReason)).then(reject)
           }
         }
       }

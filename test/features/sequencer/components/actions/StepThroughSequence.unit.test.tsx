@@ -4,10 +4,8 @@ import type { RemoveBreakpointResponse, GenericResponse } from '@tmtsoftware/esw
 import { expect } from 'chai'
 import React from 'react'
 import { anything, reset, verify, when } from 'ts-mockito'
-import {
-  stepThroughFailedMessage,
-  StepThroughSequence
-} from '../../../../../src/features/sequencer/components/steplist/StepThroughSequence'
+import { StepThroughSequence } from '../../../../../src/features/sequencer/components/steplist/StepThroughSequence'
+import { stepThroughConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStep } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -54,7 +52,7 @@ describe('Step-Through Sequence', () => {
       {
         _type: 'CannotOperateOnAnInFlightOrFinishedStep'
       },
-      `${stepThroughFailedMessage}, reason: Cannot operate on in progress or finished step`
+      `${stepThroughConstants.failedMessage}, reason: Cannot operate on in progress or finished step`
     ],
     [
       'Unhandled',
@@ -64,7 +62,7 @@ describe('Step-Through Sequence', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      `${stepThroughFailedMessage}, reason: Cannot add breakpoint in idle state`
+      `${stepThroughConstants.failedMessage}, reason: Cannot add breakpoint in idle state`
     ],
     [
       'IdDoesNotExist',
@@ -72,7 +70,7 @@ describe('Step-Through Sequence', () => {
         _type: 'IdDoesNotExist',
         id: 'nextStep'
       },
-      `${stepThroughFailedMessage}, reason: nextStep does not exist`
+      `${stepThroughConstants.failedMessage}, reason: nextStep does not exist`
     ]
   ]
 
@@ -106,7 +104,7 @@ describe('Step-Through Sequence', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      `${stepThroughFailedMessage}, reason: Cannot remove breakpoint in idle state`
+      `${stepThroughConstants.failedMessage}, reason: Cannot remove breakpoint in idle state`
     ],
     [
       'IdDoesNotExist',
@@ -114,7 +112,7 @@ describe('Step-Through Sequence', () => {
         _type: 'IdDoesNotExist',
         id: 'currentStep'
       },
-      `${stepThroughFailedMessage}, reason: currentStep does not exist`
+      `${stepThroughConstants.failedMessage}, reason: currentStep does not exist`
     ]
   ]
 

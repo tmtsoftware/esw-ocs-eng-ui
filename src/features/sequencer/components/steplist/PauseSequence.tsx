@@ -5,6 +5,7 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { pauseSequenceConstants } from '../../sequencerConstants'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, SequencerService> => {
@@ -13,13 +14,13 @@ const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, Sequencer
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Sequence is paused successfully')
+      if (res._type === 'Ok') return successMessage(pauseSequenceConstants.successMessage)
       return errorMessage(
-        'Failed to pause the sequence',
+        pauseSequenceConstants.failureMessage,
         Error(res._type === 'CannotOperateOnAnInFlightOrFinishedStep' ? res._type : res.msg)
       )
     },
-    onError: (e) => errorMessage('Failed to pause the sequence', e)
+    onError: (e) => errorMessage(pauseSequenceConstants.failureMessage, e)
   })
 }
 

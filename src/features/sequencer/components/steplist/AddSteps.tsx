@@ -5,9 +5,9 @@ import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { addStepConstants } from '../../sequencerConstants'
 import { handleActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
-import { addStepsErrorPrefix, addStepsSuccessMsg } from '../sequencerMessageConstants'
 import { UploadSequence } from '../UploadSequence'
 
 type AddStepsProps = {
@@ -21,8 +21,8 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
 
   const addStepAction = useMutation({
     mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleActionResponse),
-    onError: (e) => errorMessage(addStepsErrorPrefix, e),
-    onSuccess: () => successMessage(addStepsSuccessMsg)
+    onSuccess: () => successMessage(addStepConstants.successMessage),
+    onError: (e) => errorMessage(addStepConstants.failureMessage, e)
   })
 
   return (
@@ -30,7 +30,7 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
         request={() => sequencerService && addStepAction.mutate(sequencerService)}
-        uploadErrorMsg={addStepsErrorPrefix}
+        uploadErrorMsg={addStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>
         <div role='addSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>

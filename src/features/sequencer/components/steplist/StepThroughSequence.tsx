@@ -5,6 +5,7 @@ import { StepThroughIcon } from '../../../../components/icons'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { stepThroughConstants } from '../../sequencerConstants'
 import { handleActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
@@ -21,20 +22,18 @@ type StepThroughSequenceProps = {
   disabled: boolean
 }
 
-export const stepThroughFailedMessage = 'StepThrough failed for step'
-
 export const StepThroughSequence = ({ currentStepId, nextStepId, disabled }: StepThroughSequenceProps): JSX.Element => {
   const { sequencerService } = useStepListContext()
   const stepThroughAction = useMutation({
     mutationFn: stepThrough(currentStepId, nextStepId),
     onSuccess: () => 'Do not show any message',
-    onError: (e) => errorMessage(stepThroughFailedMessage, e)
+    onError: (e) => errorMessage(stepThroughConstants.failedMessage, e)
   })
 
   return (
     <Tooltip title={'Step-Through'}>
       <Button
-        style={{ paddingTop: '0.33em' }}
+        style={{ paddingTop: '0.33rem' }}
         onClick={() => sequencerService && stepThroughAction.mutate(sequencerService)}
         icon={<StepThroughIcon className={disabled ? styles.actionDisabled : styles.actionEnabled} />}
         role='StepThroughSequence'

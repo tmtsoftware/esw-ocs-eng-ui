@@ -1,5 +1,6 @@
 import type { SequencerService, Option } from '@tmtsoftware/esw-ts'
 import { createContext, useContext } from 'react'
+import { stepListContextConstants } from '../sequencerConstants'
 import type { StepListStatus } from '../utils'
 
 export type StepListTableContextType = {
@@ -25,7 +26,7 @@ export const StepListContextProvider = StepListTableContext.Provider
 export const useStepListContext = (): StepListTableContextType => {
   const context = useContext(StepListTableContext)
   if (context === undefined) {
-    throw new Error('StepListTableContext must be used within a StepListContextProvider')
+    throw new Error(stepListContextConstants.failedMessage)
   }
   return context
 }

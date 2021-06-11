@@ -6,6 +6,7 @@ import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { OBS_MODES_DETAILS } from '../../../queryKeys'
+import { observationShutdownConstants } from '../../sequencerConstants'
 
 const shutdown = (obsMode: ObsMode) => async (smService: SequenceManagerService) => {
   const res = await smService.shutdownObsModeSequencers(obsMode)
@@ -28,8 +29,8 @@ const ShutdownButtonAction = <QResult, MResult>(
 ): UseMutationResult<MResult, unknown, QResult> =>
   useMutation({
     mutationFn: onClick,
-    onSuccess: () => successMessage(`${obsMode.name} Observation has been shutdown and moved to Configurable.`),
-    onError: (e) => errorMessage(`Failed to shutdown Observation ${obsMode.name}`, e),
+    onSuccess: () => successMessage(observationShutdownConstants.getSuccessMessage(obsMode)),
+    onError: (e) => errorMessage(observationShutdownConstants.getFailureMessage(obsMode), e),
     invalidateKeysOnSuccess: invalidateKeysOnSuccess
   })
 
@@ -48,8 +49,8 @@ export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element =
           () => {
             shutdownAction.mutateAsync(smService)
           },
-          `Do you want to shutdown Observation ${obsMode.toJSON()}?`,
-          'Shutdown'
+          observationShutdownConstants.getModalTitle(obsMode),
+          observationShutdownConstants.modalOkText
         )
       }
       danger>

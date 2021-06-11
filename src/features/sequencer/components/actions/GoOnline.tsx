@@ -4,6 +4,7 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import { goOnlineConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 
 const useGoOnlineAction = (): UseMutationResult<GoOnlineResponse, unknown, SequencerService> => {
@@ -12,13 +13,13 @@ const useGoOnlineAction = (): UseMutationResult<GoOnlineResponse, unknown, Seque
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Sequencer is online successfully')
+      if (res._type === 'Ok') return successMessage(goOnlineConstants.successMessage)
       return errorMessage(
-        'Sequencer failed to go Online',
+        goOnlineConstants.failureMessage,
         Error(res._type === 'GoOnlineHookFailed' ? res._type : res.msg)
       )
     },
-    onError: (e) => errorMessage('Sequencer failed to go Online', e)
+    onError: (e) => errorMessage(goOnlineConstants.failureMessage, e)
   })
 }
 

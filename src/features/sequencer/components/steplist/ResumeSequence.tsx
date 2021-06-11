@@ -5,6 +5,7 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { resumeSequenceConstants } from '../../sequencerConstants'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const useResumeSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
@@ -13,10 +14,10 @@ const useResumeSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Sequence is resumed successfully')
-      return errorMessage('Failed to resume the sequence', Error(res.msg))
+      if (res._type === 'Ok') return successMessage(resumeSequenceConstants.successMessage)
+      return errorMessage(resumeSequenceConstants.failureMessage, Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to resume the sequence', e)
+    onError: (e) => errorMessage(resumeSequenceConstants.failureMessage, e)
   })
 }
 

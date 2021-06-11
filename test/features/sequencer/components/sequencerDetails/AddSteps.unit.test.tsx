@@ -3,14 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { GenericResponse, Prefix, SequenceCommand, Setup } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
-import {
-  addStepsErrorPrefix,
-  addStepsSuccessMsg,
-  cannotOperateOnAnInFlightOrFinishedStepMsg,
-  couldNotDeserialiseSequenceMsg,
-  idDoesNotExistMsg
-} from '../../../../../src/features/sequencer/components/sequencerMessageConstants'
 import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
+import {
+  addStepConstants,
+  stepConstants,
+  uploadSequenceConstants
+} from '../../../../../src/features/sequencer/sequencerConstants'
 import { _createErrorMsg } from '../../../../../src/utils/message'
 import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -36,17 +34,20 @@ describe('AddSteps', () => {
     {
       testName: 'should add uploaded steps | ESW-461',
       response: { _type: 'Ok' },
-      message: addStepsSuccessMsg
+      message: addStepConstants.successMessage
     },
     {
       testName: 'should show error if step id does not exist | ESW-461',
       response: { _type: 'IdDoesNotExist', id },
-      message: _createErrorMsg(addStepsErrorPrefix, idDoesNotExistMsg(id))
+      message: _createErrorMsg(addStepConstants.failureMessage, stepConstants.idDoesNotExistMsg(id))
     },
     {
       testName: 'should show error if the step is finished | ESW-461',
       response: { _type: 'CannotOperateOnAnInFlightOrFinishedStep' },
-      message: _createErrorMsg(addStepsErrorPrefix, cannotOperateOnAnInFlightOrFinishedStepMsg)
+      message: _createErrorMsg(
+        addStepConstants.failureMessage,
+        stepConstants.cannotOperateOnAnInFlightOrFinishedStepMsg
+      )
     },
     {
       testName: 'should show error if unhandled response is given by sequencer | ESW-461',
@@ -56,7 +57,7 @@ describe('AddSteps', () => {
         state: 'idle',
         messageType: 'InsertAfter'
       },
-      message: _createErrorMsg(addStepsErrorPrefix, unhandledMsg)
+      message: _createErrorMsg(addStepConstants.failureMessage, unhandledMsg)
     }
   ]
 
@@ -118,7 +119,9 @@ describe('AddSteps', () => {
     const inputBox = addStepsButton.firstChild as HTMLInputElement
     userEvent.upload(inputBox, file)
 
-    await screen.findByText(_createErrorMsg(addStepsErrorPrefix, couldNotDeserialiseSequenceMsg))
+    await screen.findByText(
+      _createErrorMsg(addStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserialiseReason)
+    )
     verify(sequencerServiceMock.insertAfter(anything(), anything())).never()
   })
 })

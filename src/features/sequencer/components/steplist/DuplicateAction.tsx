@@ -5,6 +5,7 @@ import React from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { duplicateStepConstants } from '../../sequencerConstants'
 
 const addCommands = (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
   return sequencerService.add(commands).then((res) => {
@@ -22,8 +23,8 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
   const { sequencerService, handleDuplicate } = useStepListContext()
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),
-    onError: (e) => errorMessage('Failed to duplicate steps', e),
-    onSuccess: () => successMessage('Successfully duplicated steps')
+    onSuccess: () => successMessage(duplicateStepConstants.successMessage),
+    onError: (e) => errorMessage(duplicateStepConstants.failureMessage, e)
   })
 
   return (

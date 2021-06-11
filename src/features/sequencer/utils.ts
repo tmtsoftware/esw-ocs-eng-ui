@@ -1,5 +1,5 @@
 import type { GenericResponse, Option, SequencerState, Step, StepList, StepStatus, Ok } from '@tmtsoftware/esw-ts'
-import { cannotOperateOnAnInFlightOrFinishedStepMsg, idDoesNotExistMsg } from './components/sequencerMessageConstants'
+import { stepConstants } from './sequencerConstants'
 
 export type StepListStatus =
   | 'All Steps Completed'
@@ -57,10 +57,10 @@ export const handleActionResponse = (res: GenericResponse): Ok => {
       return res
 
     case 'CannotOperateOnAnInFlightOrFinishedStep':
-      throw new Error(cannotOperateOnAnInFlightOrFinishedStepMsg)
+      throw new Error(stepConstants.cannotOperateOnAnInFlightOrFinishedStepMsg)
 
     case 'IdDoesNotExist':
-      throw new Error(idDoesNotExistMsg(res.id))
+      throw new Error(stepConstants.idDoesNotExistMsg(res.id))
 
     case 'Unhandled':
       throw new Error(res.msg)

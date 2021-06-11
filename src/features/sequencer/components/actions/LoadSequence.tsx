@@ -4,10 +4,9 @@ import React, { useState } from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import { loadSequenceConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 import { UploadSequence } from '../UploadSequence'
-
-const errorMessagePrefix = 'Failed to load the sequence'
 
 const useLoadAction = (
   sequence?: Sequence
@@ -18,10 +17,10 @@ const useLoadAction = (
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res?._type === 'Ok') return successMessage('Sequence has been loaded successfully')
-      return errorMessage(errorMessagePrefix, Error(res?.msg))
+      if (res?._type === 'Ok') return successMessage(loadSequenceConstants.successMessage)
+      return errorMessage(loadSequenceConstants.failureMessage, Error(res?.msg))
     },
-    onError: (e) => errorMessage(errorMessagePrefix, e)
+    onError: (e) => errorMessage(loadSequenceConstants.failureMessage, e)
   })
 }
 type LoadSequenceProps = Omit<SequencerProps, 'isSequencerRunning'>
@@ -34,7 +33,7 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX
   const request = () => sequencerService && loadSequenceAction.mutate(sequencerService)
 
   return (
-    <UploadSequence setSequence={setSequence} request={request} uploadErrorMsg={errorMessagePrefix}>
+    <UploadSequence setSequence={setSequence} request={request} uploadErrorMsg={loadSequenceConstants.failureMessage}>
       <Button
         type='primary'
         loading={loadSequenceAction.isLoading}

@@ -4,6 +4,7 @@ import React from 'react'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import { goOfflineConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 
 const useGoOfflineAction = (): UseMutationResult<GoOfflineResponse, unknown, SequencerService> => {
@@ -12,13 +13,13 @@ const useGoOfflineAction = (): UseMutationResult<GoOfflineResponse, unknown, Seq
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Sequencer is offline successfully')
+      if (res._type === 'Ok') return successMessage(goOfflineConstants.successMessage)
       return errorMessage(
-        'Sequencer failed to go Offline',
+        goOfflineConstants.failureMessage,
         Error(res._type === 'GoOfflineHookFailed' ? res._type : res.msg)
       )
     },
-    onError: (e) => errorMessage('Sequencer failed to go Offline', e)
+    onError: (e) => errorMessage(goOfflineConstants.failureMessage, e)
   })
 }
 

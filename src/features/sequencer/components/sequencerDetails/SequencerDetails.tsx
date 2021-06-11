@@ -5,6 +5,7 @@ import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubscription'
+import { sequencerDetailsConstants } from '../../sequencerConstants'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -102,7 +103,9 @@ export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element =>
 
   // sequencerStateResponse will always be received atleast once on subscription
   if (!seqLocation.data || !sequencerStateResponse) {
-    return <SequencerError title='404' subtitle={`Sequencer ${prefix.toJSON()} : Not found`} />
+    return (
+      <SequencerError title='404' subtitle={sequencerDetailsConstants.getSequencerNotFoundMessage(prefix.toJSON())} />
+    )
   }
 
   return (

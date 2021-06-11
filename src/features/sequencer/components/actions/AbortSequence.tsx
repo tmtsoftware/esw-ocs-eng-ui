@@ -5,6 +5,7 @@ import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { useMutation, UseMutationResult } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useSequencerService } from '../../hooks/useSequencerService'
+import { abortSequenceConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 
 const useAbortSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, SequencerService> => {
@@ -13,10 +14,10 @@ const useAbortSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, S
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      if (res._type === 'Ok') return successMessage('Successfully aborted the Sequence')
-      return errorMessage('Failed to abort the Sequence', Error(res.msg))
+      if (res._type === 'Ok') return successMessage(abortSequenceConstants.successMessage)
+      return errorMessage(abortSequenceConstants.failureMessage, Error(res.msg))
     },
-    onError: (e) => errorMessage('Failed to abort the Sequence', e)
+    onError: (e) => errorMessage(abortSequenceConstants.failureMessage, e)
   })
 }
 
@@ -36,8 +37,8 @@ export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps
           () => {
             abortAction.mutate(sequencerService)
           },
-          'Do you want to abort the sequence?',
-          'Abort'
+          abortSequenceConstants.modalTitle,
+          abortSequenceConstants.modalOkText
         )
       }
       disabled={!isSequencerRunning}>

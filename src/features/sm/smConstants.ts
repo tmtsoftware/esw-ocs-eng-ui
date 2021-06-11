@@ -74,3 +74,9 @@ export const spawnSMConstants = {
   modalTitle: 'Choose an agent to spawn the Sequence Manager',
   modalOkText: 'Spawn'
 }
+
+export const sequencerActionConstants = {
+  popConfirmTitle: 'Are you sure you want to reload?',
+  popConfirmOkText: 'Yes',
+  reloadScript: 'Reload Script'
+}

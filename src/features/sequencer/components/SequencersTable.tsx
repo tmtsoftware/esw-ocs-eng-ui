@@ -1,4 +1,5 @@
 import { CloseOutlined, SettingOutlined } from '@ant-design/icons'
+import { Prefix } from '@tmtsoftware/esw-ts'
 import { Button, Space, Table, Tooltip, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
@@ -6,6 +7,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
+import { SmSequencerAction } from '../../sm/components/sequencer/SmSequencerAction'
 import type { SequencerInfo, StepListInfo } from '../utils'
 import styles from './sequencerTable.module.css'
 
@@ -57,6 +59,10 @@ const getStepColumn = (stepListInfo: StepListInfo) => (
   </Typography.Text>
 )
 
+const getSmSequencerAction = (_: string, record: SequencerInfo) => (
+  <SmSequencerAction sequencerPrefix={Prefix.fromString(record.prefix)} sequencerState={record.sequencerState} />
+)
+
 const columns: ColumnsType<SequencerInfo> = [
   {
     title: <HeaderTitle title='Sequencers' />,
@@ -78,6 +84,12 @@ const columns: ColumnsType<SequencerInfo> = [
     dataIndex: 'totalSteps',
     key: 'totalSteps',
     render: (steps) => (steps === 0 ? 'NA' : steps)
+  },
+  {
+    title: <HeaderTitle title='Action' />,
+    dataIndex: 'action',
+    key: 'action',
+    render: getSmSequencerAction
   }
 ]
 

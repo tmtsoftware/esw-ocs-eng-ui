@@ -7,6 +7,7 @@ import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { SM_COMPONENT_ID } from '../constants'
+import { shutdownSMConstants } from '../smConstants'
 
 const shutdownSM = (agent: AgentService) =>
   agent.killComponent(SM_COMPONENT_ID).then((res) => {
@@ -19,8 +20,8 @@ export const ShutdownSMButton = (): JSX.Element => {
 
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
-    onSuccess: () => successMessage('Successfully shutdown Sequence Manager'),
-    onError: (e) => errorMessage('Failed to shutdown Sequence Manager', e),
+    onSuccess: () => successMessage(shutdownSMConstants.successMessage),
+    onError: (e) => errorMessage(shutdownSMConstants.failureMessage, e),
     useErrorBoundary: true //TODO : remove error boundary
   })
 
@@ -36,8 +37,8 @@ export const ShutdownSMButton = (): JSX.Element => {
           () => {
             shutdownSmAction.mutateAsync(agentService)
           },
-          'Do you want to shutdown Sequence Manager?',
-          'Shutdown'
+          shutdownSMConstants.modalTitle,
+          shutdownSMConstants.modalOkText
         )
       }>
       Shutdown

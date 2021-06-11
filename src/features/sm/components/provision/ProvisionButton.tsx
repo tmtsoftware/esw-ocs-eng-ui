@@ -14,6 +14,7 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
+import { provisionConfConstants, provisionConstants } from '../../smConstants'
 import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
@@ -51,7 +52,7 @@ const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
 const validateProvisionConf = (provisionRecord: ProvisionRecord): ProvisionRecord => {
   Object.entries(provisionRecord).forEach(([key, value]) => {
     if (!Number.isInteger(value)) {
-      throw Error(`value of number of sequence components for ${key} is not an Integer`)
+      throw Error(provisionConfConstants.getInValidConfMessage(key))
     }
     Prefix.fromString(key)
   })
@@ -60,7 +61,7 @@ const validateProvisionConf = (provisionRecord: ProvisionRecord): ProvisionRecor
 
 const fetchProvisionConf = async (configService: ConfigService): Promise<ProvisionRecord> => {
   const confOption = await configService.getActive(PROVISION_CONF_PATH)
-  if (!confOption) throw Error('Provision conf is not present')
+  if (!confOption) throw Error(provisionConfConstants.confNotPresentMessage)
   const provisionConfRecord = await confOption.fileContentAsString()
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
@@ -80,20 +81,20 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
     mutationFn: fetchProvisionConf,
     onSuccess: async (data) => {
       if (Object.values(data).length <= 0) {
-        await errorMessage('Provision config is empty')
+        await errorMessage(provisionConfConstants.confEmptyMessage)
       } else {
         setProvisionRecord(data)
         setModalVisibility(true)
       }
     },
-    onError: (e) => errorMessage('Failed to fetch provision config', e),
+    onError: (e) => errorMessage(provisionConfConstants.fetchFailureMessage, e),
     useErrorBoundary
   })
 
   const provisionAction = useProvisionAction(
     provision(provisionRecord),
-    'Successfully provisioned',
-    'Failed to provision',
+    provisionConstants.successMessage,
+    provisionConstants.failureMessage,
     useErrorBoundary
   )
 
@@ -122,7 +123,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
             {'Provision Configuration:'}
           </Typography.Title>
         }
-        okText='Provision'
+        okText={provisionConstants.modalOkText}
         centered
         visible={modalVisibility}
         confirmLoading={provisionAction.isLoading}

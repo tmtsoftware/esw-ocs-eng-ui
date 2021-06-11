@@ -98,7 +98,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
         title={startSequencerConstants.modalTitle}
         visible={isModalVisible}
         onOk={handleOk}
-        okText='Confirm'
+        okText={startSequencerConstants.modalOkText}
         okButtonProps={{
           disabled: !subsystem || !obsMode
         }}

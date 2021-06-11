@@ -5,6 +5,7 @@ import { showConfirmModal } from '../../../../components/modal/showConfirmModal'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
+import { unProvisionConstants } from '../../smConstants'
 
 const shutdownAllSequenceComps = (sequenceManagerService: SequenceManagerService) =>
   sequenceManagerService.shutdownAllSequenceComponents().then((res) => {
@@ -27,8 +28,8 @@ export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }):
 
   const unProvisionAction = useProvisionAction(
     shutdownAllSequenceComps,
-    'Successfully shutdown all the Sequence Components',
-    'Failed to shutdown all Sequence Components',
+    unProvisionConstants.successMessage,
+    unProvisionConstants.failureMessage,
     useErrorBoundary
   )
 
@@ -45,8 +46,8 @@ export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }):
           () => {
             unProvisionAction.mutateAsync(smService)
           },
-          'Do you want to shutdown all the Sequence Components?',
-          'Shutdown'
+          unProvisionConstants.modalTitle,
+          unProvisionConstants.modalOkText
         )
       }>
       Unprovision

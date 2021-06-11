@@ -2,6 +2,7 @@ import type { ConfigureResponse, ConfigureSuccess, ObsMode, SequenceManagerServi
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS, OBS_MODES_DETAILS } from '../../queryKeys'
+import { configureConstants } from '../smConstants'
 
 const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
   switch (res._type) {
@@ -41,8 +42,8 @@ export const useConfigureAction = (
 
   return useMutation({
     mutationFn: configure,
-    onSuccess: () => successMessage(`${obsMode?.name} has been configured.`),
-    onError: (e) => errorMessage(`Failed to configure ${obsMode?.name}`, e),
+    onSuccess: () => successMessage(configureConstants.getSuccessMessage(obsMode?.name)),
+    onError: (e) => errorMessage(configureConstants.getFailureMessage(obsMode?.name), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key, OBS_MODES_DETAILS.key]
   })
 }

@@ -19,7 +19,7 @@ const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
         )}`
       )
     case 'FailedToStartSequencers':
-      throw Error(`Failed to start Sequencers. Reason: ${res.reasons}`)
+      throw Error(`Failed to start Sequencers as ${res.reasons}`)
     case 'SequenceComponentNotAvailable':
       throw Error(res.msg)
     case 'LocationServiceError':

@@ -159,7 +159,7 @@ describe('Configure button', () => {
     [configurationMissingResponse, 'Failed to configure ESW_DARKNIGHT, reason: ConfigurationMissing for ESW_DARKNIGHT'],
     [
       failedToStartSequencersResponse,
-      'Failed to configure ESW_DARKNIGHT, reason: Failed to start Sequencers. Reason: sequence component not found'
+      'Failed to configure ESW_DARKNIGHT, reason: Failed to start Sequencers as sequence component not found'
     ],
     [sequenceComponentNotAvailable, 'Failed to configure ESW_DARKNIGHT, reason: Not Available'],
     [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request'],

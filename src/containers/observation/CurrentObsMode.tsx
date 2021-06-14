@@ -1,6 +1,5 @@
 import {
   AkkaConnection,
-  LocationService,
   ObsMode,
   Prefix,
   SequencerService,
@@ -13,17 +12,15 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import { useLocationService } from '../../contexts/LocationServiceContext'
-import { useService } from '../../contexts/utils/createServiceCtx'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
-import { mkSequencerService, useSequencerService } from '../../features/sequencer/hooks/useSequencerService'
+import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
 import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
-import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'
 import type { TabName } from './ObservationTabs'
@@ -99,18 +96,6 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
     setLoading(false)
   }
 
-  // useEffect(() => {
-  //   sequencerPrefixDown &&
-  //     setSequencerInfoMap((previousMap) => {
-  //       const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== sequencerPrefixDown)
-  //       return [...filteredSequencers, [sequencerPrefixDown, undefined]]
-  //     })
-  //   //track sequencer
-  //   const seqConnection = sequencerPrefixDown && AkkaConnection(Prefix.fromString(sequencerPrefixDown), 'Sequencer')
-
-  //   seqConnection && gatewayLocation && useService(seqConnection, gatewayLocation)
-  // }, [sequencerPrefixDown])
-
   useEffect(() => {
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
       setLoading(false)
@@ -131,8 +116,6 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
     services.map(([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
       locationService.track(seqConnection)((event) => {
-        console.log('sequencerPrefix', sequencerPrefix)
-        console.log('event', event)
         switch (event._type) {
           case 'LocationRemoved':
             setSequencerInfoMap((previousMap) => {
@@ -141,7 +124,6 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
             })
             break
           case 'LocationUpdated':
-            console.log('LocationUpdated')
             subscriptions.push(
               sequencerService.subscribeSequencerState()(
                 (sequencerState) => handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState),
@@ -151,7 +133,6 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
         }
       })
     })
-    console.log('subscriptions', subscriptions)
     return () => subscriptions.forEach((s) => s.cancel())
   }, [gatewayLocation, isRunningTab, locationService, obsMode.name, sequencers, tf])
 

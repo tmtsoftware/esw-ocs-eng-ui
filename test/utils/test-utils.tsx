@@ -12,7 +12,10 @@ import {
   Prefix,
   SequenceManagerService,
   SequencerService,
-  SEQUENCE_MANAGER_CONNECTION
+  SequencerState,
+  SequencerStateResponse,
+  SEQUENCE_MANAGER_CONNECTION,
+  StepList
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/config-service/ConfigServiceImpl'
@@ -245,3 +248,23 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
 // eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }
+
+export const makeSeqStateResponse = (
+  seqState: SequencerState['_type'],
+  stepList: StepList
+): SequencerStateResponse => ({
+  _type: 'SequencerStateResponse',
+  sequencerState: { _type: seqState },
+  stepList
+})
+
+export const sendEvent = (
+  onevent: (sequencerStateResponse: SequencerStateResponse) => void,
+  state: SequencerState['_type'],
+  stepList: StepList,
+  timeout?: number | undefined
+): void => {
+  timeout
+    ? setTimeout(() => onevent(makeSeqStateResponse(state, stepList)), timeout)
+    : onevent(makeSeqStateResponse(state, stepList))
+}

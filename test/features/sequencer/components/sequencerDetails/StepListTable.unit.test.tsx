@@ -11,6 +11,11 @@ import {
   isCurrentStepRunningAndNextPaused,
   StepListTable
 } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
+import {
+  duplicateStepConstants,
+  insertBreakPointConstants,
+  removeBreakPointConstants
+} from '../../../../../src/features/sequencer/sequencerConstants'
 
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
@@ -193,7 +198,7 @@ describe('stepList table', () => {
 
     await waitFor(() => userEvent.click(insertBreakpoint))
 
-    await screen.findByText('Successfully inserted breakpoint')
+    await screen.findByText(insertBreakPointConstants.successMessage)
     const stepBeforeBreakpoint = screen.getByRole('button', {
       name: /command-1/i
     })
@@ -236,7 +241,7 @@ describe('stepList table', () => {
 
     await waitFor(() => userEvent.click(removeBreakpoint))
 
-    await screen.findByText('Successfully removed breakpoint')
+    await screen.findByText(removeBreakPointConstants.successMessage)
   })
 
   it('should render duplicate table | ESW-462', async () => {
@@ -325,7 +330,7 @@ describe('stepList table', () => {
     // click on duplicate
     userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
-    await screen.findByText('Successfully duplicated steps')
+    await screen.findByText(duplicateStepConstants.successMessage)
     await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
     verify(sequencerServiceMock.add(deepEqual([command1, command2]))).called()
   })
@@ -371,7 +376,7 @@ describe('stepList table', () => {
     // click on duplicate
     userEvent.click(duplicateAction)
 
-    await screen.findByText('Failed to duplicate steps, reason: error')
+    await screen.findByText(`${duplicateStepConstants.failureMessage}, reason: error`)
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.be.greaterThan(0)
     await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))

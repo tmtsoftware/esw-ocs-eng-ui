@@ -107,7 +107,7 @@ describe('Start Sequencer', () => {
 
       await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsModeName)
 
-      const confirmButton = screen.getByRole('button', { name: 'Confirm' })
+      const confirmButton = screen.getByRole('button', { name: startSequencerConstants.modalOkText })
       userEvent.click(confirmButton)
 
       await screen.findByText(message)
@@ -134,7 +134,7 @@ describe('Start Sequencer', () => {
     within(modal).getByRole('combobox', { name: startSequencerConstants.obsModeInputLabel })
     within(modal).getByText(startSequencerConstants.subsystemInputPlaceholder)
     within(modal).getByText(startSequencerConstants.obsModeInputPlaceholder)
-    within(modal).getByRole('button', { name: 'Confirm' })
+    within(modal).getByRole('button', { name: startSequencerConstants.modalOkText })
   })
 })
 

@@ -5,8 +5,13 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, verify, when } from 'ts-mockito'
+import {
+  disabledSequencerActions,
+  killSequenceComponentConstants,
+  spawnSequenceComponentConstants
+} from '../../../../src/features/agent/agentConstants'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
-import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
+import { reloadScriptConstants, stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { getAgentStatusMock, mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
@@ -179,7 +184,7 @@ describe('Agents Grid View', () => {
     userEvent.type(textBox, 'ESW_1')
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
-    await screen.findByText('Successfully spawned Sequence Component: ESW.ESW_1')
+    await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
     verify(agentService.getAgentStatus()).called()
   })
@@ -207,16 +212,16 @@ describe('Agents Grid View', () => {
     const [sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
     await waitFor(() => userEvent.click(sequenceCompActions))
 
-    const killSequenceComponent = await screen.findByText('Shutdown Component')
+    const killSequenceComponent = await screen.findByText(killSequenceComponentConstants.menuItemText)
     await waitFor(() => userEvent.click(killSequenceComponent))
-    await screen.findByText(`Do you want to delete ${seqCompPrefix.toJSON()} sequence component?`)
+    await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
     const document = screen.getByRole('document')
     const confirm = within(document).getByRole('button', { name: /delete/i })
 
     userEvent.click(confirm)
 
-    await screen.findByText('Successfully killed Sequence Component: ESW.ESW1')
+    await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW1'))
 
     verify(agentService.getAgentStatus()).called()
   })
@@ -240,8 +245,8 @@ describe('Agents Grid View', () => {
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
-    await waitFor(() => expect(screen.queryByText('Shutdown Component')).to.exist)
-    await waitFor(() => expect(screen.queryByText('Spawned sequencers will display more actions')).to.exist)
+    await waitFor(() => expect(screen.queryByText(killSequenceComponentConstants.menuItemText)).to.exist)
+    await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.exist)
   })
 
   it('should display menu items applicable to sequencer | ESW-502', async () => {
@@ -263,8 +268,8 @@ describe('Agents Grid View', () => {
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
-    await screen.findByText('Shutdown Component')
-    await screen.findByText('Reload Script')
+    await screen.findByText(killSequenceComponentConstants.menuItemText)
+    await screen.findByText(reloadScriptConstants.menuItemText)
     await screen.findByText(stopSequencerConstants.menuItemText)
   })
 

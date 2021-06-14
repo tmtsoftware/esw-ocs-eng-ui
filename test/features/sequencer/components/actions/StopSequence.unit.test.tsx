@@ -5,11 +5,12 @@ import { expect } from 'chai'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { StopSequence } from '../../../../../src/features/sequencer/components/actions/StopSequence'
+import { stopSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('StopSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Successfully stopped the Sequence', 'successful'],
+    [{ _type: 'Ok' }, stopSequenceConstants.successMessage, 'successful'],
     [
       {
         _type: 'Unhandled',
@@ -17,7 +18,7 @@ describe('StopSequence', () => {
         messageType: 'StopSequence',
         state: 'Processing'
       },
-      'Failed to stop the Sequence, reason: StopSequence message is not handled in Processing state',
+      `${stopSequenceConstants.failureMessage}, reason: StopSequence message is not handled in Processing state`,
       'failed'
     ]
   ]
@@ -38,9 +39,9 @@ describe('StopSequence', () => {
 
       userEvent.click(stopSeqButton, { button: 0 })
 
-      await screen.findByText('Do you want to stop the sequence?')
+      await screen.findByText(stopSequenceConstants.modalTitle)
       const modalConfirmButton = await within(screen.getByRole('document')).findByRole('button', {
-        name: 'Stop'
+        name: stopSequenceConstants.modalOkText
       })
 
       userEvent.click(modalConfirmButton, { button: 0 })
@@ -49,7 +50,7 @@ describe('StopSequence', () => {
 
       verify(sequencerServiceMock.stop()).called()
 
-      await waitFor(() => expect(screen.queryByText('Do you want to stop the sequence?')).to.not.exist)
+      await waitFor(() => expect(screen.queryByText(stopSequenceConstants.modalTitle)).to.not.exist)
     })
   })
 
@@ -64,7 +65,7 @@ describe('StopSequence', () => {
     const stopSeqButton1 = await screen.findByRole('StopSequence')
 
     userEvent.click(stopSeqButton1, { button: 0 })
-    await screen.findByText('Do you want to stop the sequence?')
+    await screen.findByText(stopSequenceConstants.modalTitle)
     const modalCancelButton = within(screen.getByRole('document')).getByRole('button', {
       name: 'Cancel'
     })
@@ -76,14 +77,14 @@ describe('StopSequence', () => {
     const stopSeqButton2 = await screen.findByRole('StopSequence')
 
     userEvent.click(stopSeqButton2, { button: 0 })
-    await screen.findByText('Do you want to stop the sequence?')
+    await screen.findByText(stopSequenceConstants.modalTitle)
     const modalConfirmButton = within(screen.getByRole('document')).getByRole('button', {
-      name: 'Stop'
+      name: stopSequenceConstants.modalOkText
     })
 
     userEvent.click(modalConfirmButton)
 
-    await screen.findByText('Failed to stop the Sequence, reason: error occurred')
+    await screen.findByText(`${stopSequenceConstants.failureMessage}, reason: error occurred`)
 
     verify(sequencerServiceMock.stop()).called()
   })

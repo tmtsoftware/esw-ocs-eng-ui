@@ -4,6 +4,7 @@ import { GenericResponse, Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
+import { deleteStepConstants, stepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
@@ -13,14 +14,14 @@ describe('Delete action', () => {
       {
         _type: 'Ok'
       },
-      'Successfully deleted step'
+      deleteStepConstants.successMessage
     ],
     [
       'CannotOperateOnAnInFlightOrFinishedStep',
       {
         _type: 'CannotOperateOnAnInFlightOrFinishedStep'
       },
-      'Failed to delete step, reason: Cannot operate on in progress or finished step'
+      `${deleteStepConstants.failureMessage}, reason: ${stepConstants.cannotOperateOnAnInFlightOrFinishedStepMsg}`
     ],
     [
       'Unhandled',
@@ -30,7 +31,7 @@ describe('Delete action', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to delete step, reason: Cannot delete step in idle state'
+      `${deleteStepConstants.failureMessage}, reason: Cannot delete step in idle state`
     ],
     [
       'IdDoesNotExist',
@@ -38,7 +39,7 @@ describe('Delete action', () => {
         _type: 'IdDoesNotExist',
         id: 'step1'
       },
-      'Failed to delete step, reason: step1 does not exist'
+      `${deleteStepConstants.failureMessage}, reason: ${stepConstants.idDoesNotExistMsg('step1')}`
     ]
   ]
 

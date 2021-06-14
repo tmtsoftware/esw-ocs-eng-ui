@@ -5,6 +5,7 @@ import React from 'react'
 import { when } from 'ts-mockito'
 import { SMServiceProvider } from '../../../../src/contexts/SMContext'
 import { SMCard } from '../../../../src/features/sm/components/smcard/SMCard'
+import { shutdownSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('SMCard', () => {
@@ -22,7 +23,7 @@ describe('SMCard', () => {
       )
     })
 
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Shutdown' })).to.null)
+    await waitFor(() => expect(screen.queryByRole('button', { name: shutdownSMConstants.modalOkText })).to.null)
 
     await screen.findByRole('button', { name: 'Spawn' })
   })
@@ -45,6 +46,6 @@ describe('SMCard', () => {
 
     await waitFor(() => expect(screen.queryByRole('button', { name: 'Spawn' })).to.null)
 
-    await screen.findByRole('button', { name: 'Shutdown' })
+    await screen.findByRole('button', { name: shutdownSMConstants.modalOkText })
   })
 })

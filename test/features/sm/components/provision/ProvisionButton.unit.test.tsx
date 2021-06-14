@@ -7,6 +7,7 @@ import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
+import { provisionConfConstants, provisionConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../../test/utils/test-utils'
 
 describe('ProvisionButton component', () => {
@@ -55,11 +56,11 @@ describe('ProvisionButton component', () => {
 
     const document = screen.getByRole('document')
     const confirmButton = within(document).getByRole('button', {
-      name: 'Provision'
+      name: provisionConstants.modalOkText
     })
 
     userEvent.click(confirmButton)
-    await screen.findByText('Successfully provisioned')
+    await screen.findByText(provisionConstants.successMessage)
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
   })
@@ -86,7 +87,7 @@ describe('ProvisionButton component', () => {
     )
 
     verify(configService.getActive(PROVISION_CONF_PATH)).called()
-    await screen.findByText('Failed to fetch provision config, reason: error occurred')
+    await screen.findByText(`${provisionConfConstants.fetchFailureMessage}, reason: error occurred`)
 
     verify(smService.provision(anything())).never()
   })
@@ -94,15 +95,19 @@ describe('ProvisionButton component', () => {
   const provisionConfTestData: [string, string, string][] = [
     [
       'esw.esw-machine',
-      "Failed to fetch provision config, reason: Requirement failed - component name esw-machine has '-'",
+      `${provisionConfConstants.fetchFailureMessage}, reason: Requirement failed - component name esw-machine has '-'`,
       'prefix(esw.esw-machine)'
     ],
     [
       'esw.esw_machine ',
-      'Failed to fetch provision config, reason: Requirement failed - component name esw_machine has leading/trailing whitespace',
+      `${provisionConfConstants.fetchFailureMessage}, reason: Requirement failed - component name esw_machine has leading/trailing whitespace`,
       'prefix(esw.esw_machine)'
     ],
-    ['rms.esw_machine', 'Failed to fetch provision config, reason: Subsystem: rms is invalid', 'subsystem(rms)']
+    [
+      'rms.esw_machine',
+      `${provisionConfConstants.fetchFailureMessage}, reason: Subsystem: rms is invalid`,
+      'subsystem(rms)'
+    ]
   ]
 
   provisionConfTestData.forEach(([agentPrefix, errMsg, statement]) => {
@@ -173,25 +178,29 @@ describe('ProvisionButton component', () => {
     [
       'Unhandled',
       Promise.resolve(unhandled),
-      'Failed to provision, reason: Provision message type is not supported in Processing state'
+      `${provisionConstants.failureMessage}, reason: Provision message type is not supported in Processing state`
     ],
     [
       'LocationServiceError',
       Promise.resolve(locServiceError),
-      'Failed to provision, reason: ESW.sequence_manager is not found'
+      `${provisionConstants.failureMessage}, reason: ESW.sequence_manager is not found`
     ],
     [
       'SpawningSequenceComponentsFailed',
       Promise.resolve(spawnSeqCompError),
-      'Failed to provision, reason: failed to spawn: ESW.ESW_1 on ESW.machine,'
+      `${provisionConstants.failureMessage}, reason: failed to spawn: ESW.ESW_1 on ESW.machine,`
     ],
     [
       'CouldNotFindMachines',
       Promise.resolve(couldNotFindMachine),
-      'Failed to provision, reason: Could not find following machine: ESW.esw_machine'
+      `${provisionConstants.failureMessage}, reason: Could not find following machine: ESW.esw_machine`
     ],
-    ['FailedResponse', Promise.resolve(failedResponse), 'Failed to provision, reason: Provision message timed out'],
-    ['Exception', Promise.reject(Error('error occured')), 'Failed to provision, reason: error occured']
+    [
+      'FailedResponse',
+      Promise.resolve(failedResponse),
+      `${provisionConstants.failureMessage}, reason: Provision message timed out`
+    ],
+    ['Exception', Promise.reject(Error('error occured')), `${provisionConstants.failureMessage}, reason: error occured`]
   ]
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
@@ -215,7 +224,7 @@ describe('ProvisionButton component', () => {
 
       const document = screen.getByRole('document')
       const confirmButton = within(document).getByRole('button', {
-        name: 'Provision'
+        name: provisionConstants.modalOkText
       })
 
       userEvent.click(confirmButton)

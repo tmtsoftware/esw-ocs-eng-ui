@@ -5,15 +5,16 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { StartSequence } from '../../../../../src/features/sequencer/components/steplist/StartSequence'
+import { startSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Start Sequence', () => {
   const testData: [SubmitResponse, string, string][] = [
-    [{ _type: 'Started', runId: '' }, 'Sequence is started successfully', 'successful'],
-    [{ _type: 'Completed', runId: '', result: mock(Result) }, 'Sequence is completed successfully', 'successful'],
+    [{ _type: 'Started', runId: '' }, startSequenceConstants.successMessage, 'successful'],
+    [{ _type: 'Completed', runId: '', result: mock(Result) }, startSequenceConstants.successMessage, 'successful'],
     [
       { _type: 'Error', runId: '', message: 'Unknown error' },
-      'Failed to start the sequence, reason: Unknown error',
+      `${startSequenceConstants.failureMessage}, reason: Unknown error`,
       'failed'
     ],
     [
@@ -25,11 +26,11 @@ describe('Start Sequence', () => {
           reason: 'Required HCD unavailable'
         }
       },
-      'Failed to start the sequence, reason: Required HCD unavailable',
+      `${startSequenceConstants.failureMessage}, reason: Required HCD unavailable`,
       'failed'
     ],
-    [{ _type: 'Cancelled', runId: '' }, 'Failed to start the sequence, reason: Cancelled', 'failed'],
-    [{ _type: 'Locked', runId: '' }, 'Failed to start the sequence, reason: Locked', 'failed']
+    [{ _type: 'Cancelled', runId: '' }, `${startSequenceConstants.failureMessage}, reason: Cancelled`, 'failed'],
+    [{ _type: 'Locked', runId: '' }, `${startSequenceConstants.failureMessage}, reason: Locked`, 'failed']
   ]
 
   testData.forEach(([res, msg, state]) => {
@@ -57,7 +58,7 @@ describe('Start Sequence', () => {
 
     userEvent.click(button)
 
-    await screen.findByText('Failed to start the sequence, reason: Something went wrong')
+    await screen.findByText(`${startSequenceConstants.failureMessage}, reason: Something went wrong`)
 
     verify(sequencerServiceMock.startSequence()).called()
   })

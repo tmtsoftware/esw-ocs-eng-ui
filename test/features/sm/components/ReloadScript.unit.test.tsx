@@ -5,6 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
+import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { MenuWithStepListContext, mockServices, renderWithAuth, sequencerServiceMock } from '../../../utils/test-utils'
 
 describe('Reload script', () => {
@@ -20,7 +21,7 @@ describe('Reload script', () => {
         _type: 'Success',
         componentId: componentId
       },
-      `Successfully loaded script ${subsystem}.${obsMode.toJSON()}`
+      reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`)
     ],
     [
       'LocationServiceError',
@@ -28,7 +29,9 @@ describe('Reload script', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer location not found'
       },
-      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequencer location not found`
+      `${reloadScriptConstants.getFailureMessage(
+        `${subsystem}.${obsMode.toJSON()}`
+      )}, reason: Sequencer location not found`
     ],
     [
       'Unhandled',
@@ -38,7 +41,9 @@ describe('Reload script', () => {
         messageType: 'RestartSequencer',
         msg: "Sequence Manager can not accept 'RestartSequencer' message in 'Processing'"
       },
-      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
+      `${reloadScriptConstants.getFailureMessage(
+        `${subsystem}.${obsMode.toJSON()}`
+      )}, reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
     ],
     [
       'FailedResponse',
@@ -46,7 +51,9 @@ describe('Reload script', () => {
         _type: 'FailedResponse',
         reason: 'Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms'
       },
-      `Failed to load script ${subsystem}.${obsMode.toJSON()}, reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
+      `${reloadScriptConstants.getFailureMessage(
+        `${subsystem}.${obsMode.toJSON()}`
+      )}, reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
     ]
   ]
 
@@ -71,18 +78,18 @@ describe('Reload script', () => {
       await waitFor(() => userEvent.click(reloadScriptItem))
 
       // expect modal to be visible
-      const modalTitle = await screen.findByText(`Do you want to reload the sequencer ${componentId.prefix.toJSON()}?`)
+      const modalTitle = await screen.findByText(reloadScriptConstants.getModalTitle(subsystem, obsMode.name))
       expect(modalTitle).to.exist
 
       const document = screen.getByRole('document')
       const reloadConfirm = within(document).getByRole('button', {
-        name: 'Reload'
+        name: reloadScriptConstants.modalOkButtonText
       })
       await waitFor(() => userEvent.click(reloadConfirm))
 
       await screen.findByText(message)
       await waitFor(
-        () => expect(screen.queryByText(`Do you want to reload the sequencer ${componentId.prefix.toJSON()}?`)).to.null
+        () => expect(screen.queryByText(reloadScriptConstants.getModalTitle(subsystem, obsMode.name))).to.null
       )
       verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
     })

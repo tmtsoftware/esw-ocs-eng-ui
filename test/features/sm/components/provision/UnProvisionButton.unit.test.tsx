@@ -5,10 +5,11 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
+import { unProvisionConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
-  const modalTitle = 'Do you want to shutdown all the Sequence Components?'
+  const modalTitle = unProvisionConstants.modalTitle
 
   afterEach(() => {
     cleanup()
@@ -40,20 +41,20 @@ describe('UnProvision button', () => {
       'error',
       'Unhandled',
       Promise.resolve(unhandled),
-      'Failed to shutdown all Sequence Components, reason: ShutdownAllSequenceComponents message type is not supported in Processing state'
+      `${unProvisionConstants.failureMessage}, reason: ShutdownAllSequenceComponents message type is not supported in Processing state`
     ],
     [
       'error',
       'LocationServiceError',
       Promise.resolve(locServiceError),
-      'Failed to shutdown all Sequence Components, reason: ESW.sequence_manager is not found'
+      `${unProvisionConstants.failureMessage}, reason: ESW.sequence_manager is not found`
     ],
-    ['success', 'Success', Promise.resolve(shutdownRes), 'Successfully shutdown all the Sequence Components'],
+    ['success', 'Success', Promise.resolve(shutdownRes), unProvisionConstants.successMessage],
     [
       'error',
       'FailedResponse',
       Promise.resolve(failedResponse),
-      'Failed to shutdown all Sequence Components, reason: UnProvision message timed out'
+      `${unProvisionConstants.failureMessage}, reason: UnProvision message timed out`
     ]
   ]
 
@@ -74,7 +75,7 @@ describe('UnProvision button', () => {
       const modalDocument = screen.getByRole('dialog')
 
       const modalShutdownButton = within(modalDocument).getByRole('button', {
-        name: 'Shutdown'
+        name: unProvisionConstants.modalOkText
       })
 
       //User clicks modal's shutdown button

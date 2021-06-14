@@ -5,7 +5,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { anything, reset, verify, when } from 'ts-mockito'
 import { StepThroughSequence } from '../../../../../src/features/sequencer/components/steplist/StepThroughSequence'
-import { stepThroughConstants } from '../../../../../src/features/sequencer/sequencerConstants'
+import { stepConstants, stepThroughConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStep } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -52,7 +52,7 @@ describe('Step-Through Sequence', () => {
       {
         _type: 'CannotOperateOnAnInFlightOrFinishedStep'
       },
-      `${stepThroughConstants.failedMessage}, reason: Cannot operate on in progress or finished step`
+      `${stepThroughConstants.failedMessage}, reason: ${stepConstants.cannotOperateOnAnInFlightOrFinishedStepMsg}`
     ],
     [
       'Unhandled',
@@ -70,7 +70,7 @@ describe('Step-Through Sequence', () => {
         _type: 'IdDoesNotExist',
         id: 'nextStep'
       },
-      `${stepThroughConstants.failedMessage}, reason: nextStep does not exist`
+      `${stepThroughConstants.failedMessage}, reason: ${stepConstants.idDoesNotExistMsg('nextStep')}`
     ]
   ]
 
@@ -112,7 +112,7 @@ describe('Step-Through Sequence', () => {
         _type: 'IdDoesNotExist',
         id: 'currentStep'
       },
-      `${stepThroughConstants.failedMessage}, reason: currentStep does not exist`
+      `${stepThroughConstants.failedMessage}, reason: ${stepConstants.idDoesNotExistMsg('currentStep')}`
     ]
   ]
 

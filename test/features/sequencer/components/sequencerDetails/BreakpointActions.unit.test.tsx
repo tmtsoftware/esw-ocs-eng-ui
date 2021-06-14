@@ -4,6 +4,11 @@ import { GenericResponse, Prefix, RemoveBreakpointResponse, Setup, Step } from '
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { BreakpointAction } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
+import {
+  insertBreakPointConstants,
+  removeBreakPointConstants,
+  stepConstants
+} from '../../../../../src/features/sequencer/sequencerConstants'
 import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Breakpoint actions', () => {
@@ -15,14 +20,14 @@ describe('Breakpoint actions', () => {
       {
         _type: 'Ok'
       },
-      'Successfully inserted breakpoint'
+      insertBreakPointConstants.successMessage
     ],
     [
       'CannotOperateOnAnInFlightOrFinishedStep',
       {
         _type: 'CannotOperateOnAnInFlightOrFinishedStep'
       },
-      'Failed to insert breakpoint, reason: Cannot operate on in progress or finished step'
+      `${insertBreakPointConstants.failureMessage}, reason: ${stepConstants.cannotOperateOnAnInFlightOrFinishedStepMsg}`
     ],
     [
       'Unhandled',
@@ -32,7 +37,7 @@ describe('Breakpoint actions', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to insert breakpoint, reason: Cannot add breakpoint in idle state'
+      `${insertBreakPointConstants.failureMessage}, reason: Cannot add breakpoint in idle state`
     ],
     [
       'IdDoesNotExist',
@@ -40,7 +45,7 @@ describe('Breakpoint actions', () => {
         _type: 'IdDoesNotExist',
         id: 'step1'
       },
-      'Failed to insert breakpoint, reason: step1 does not exist'
+      `${insertBreakPointConstants.failureMessage}, reason: ${stepConstants.idDoesNotExistMsg('step1')}`
     ]
   ]
 
@@ -83,7 +88,7 @@ describe('Breakpoint actions', () => {
       {
         _type: 'Ok'
       },
-      'Successfully removed breakpoint'
+      removeBreakPointConstants.successMessage
     ],
     [
       'Unhandled',
@@ -93,7 +98,7 @@ describe('Breakpoint actions', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      'Failed to remove breakpoint, reason: Cannot remove breakpoint in idle state'
+      `${removeBreakPointConstants.failureMessage}, reason: Cannot remove breakpoint in idle state`
     ],
     [
       'IdDoesNotExist',
@@ -101,7 +106,7 @@ describe('Breakpoint actions', () => {
         _type: 'IdDoesNotExist',
         id: 'step1'
       },
-      'Failed to remove breakpoint, reason: step1 does not exist'
+      `${removeBreakPointConstants.failureMessage}, reason: ${stepConstants.idDoesNotExistMsg('step1')}`
     ]
   ]
 

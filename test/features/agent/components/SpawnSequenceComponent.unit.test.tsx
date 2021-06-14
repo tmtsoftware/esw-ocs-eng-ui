@@ -4,6 +4,7 @@ import { Prefix, SpawnResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, when } from 'ts-mockito'
+import { spawnSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 import { SpawnSequenceComponent } from '../../../../src/features/agent/components/SpawnSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
@@ -28,7 +29,7 @@ describe('Spawn sequence component icon', () => {
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, ' primary21 ')
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
-    await screen.findByText('component name has leading and trailing whitespaces')
+    await screen.findByText(spawnSequenceComponentConstants.whiteSpaceValidation)
   })
 
   it("should show validation error on invalid component name with '-' | ESW-446", async function () {
@@ -40,18 +41,22 @@ describe('Spawn sequence component icon', () => {
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, 'primary-21')
     userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
-    await screen.findByText("component name has '-'")
+    await screen.findByText(spawnSequenceComponentConstants.hyphenValidation)
   })
 
   const tests: [string, SpawnResponse, string][] = [
-    ['spawn', { _type: 'Spawned' }, `Successfully spawned Sequence Component: ${agentPrefix.subsystem}.${seqCompName}`],
+    [
+      'spawn',
+      { _type: 'Spawned' },
+      spawnSequenceComponentConstants.getSuccessMessage(`${agentPrefix.subsystem}.${seqCompName}`)
+    ],
     [
       'fail to spawn',
       {
         _type: 'Failed',
         msg: 'Failed to spawn Sequence Component'
       },
-      'Sequence Component could not be spawned, reason: Failed to spawn Sequence Component'
+      `${spawnSequenceComponentConstants.getFailureMessage}, reason: Failed to spawn Sequence Component`
     ]
   ]
 

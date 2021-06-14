@@ -13,6 +13,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { Configure } from '../../../../../src/features/sm/components/Configure'
+import { configureConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 const obsModesDetails: ObsModesDetailsResponse = {
@@ -102,12 +103,12 @@ describe('Configure button', () => {
     })
 
     const button = await screen.findByRole('button', {
-      name: 'Configure'
+      name: configureConstants.modalOkText
     })
     userEvent.click(button)
 
     const dialog = screen.queryByRole('dialog', {
-      name: 'Select an Observation Mode to configure:'
+      name: configureConstants.modalTitle
     })
     // modal should not open on click of configure button
     expect(dialog).to.null
@@ -118,18 +119,18 @@ describe('Configure button', () => {
     renderWithAuth({
       ui: <Configure disabled={false} />
     })
-    const button = await screen.findByRole('button', { name: 'Configure' })
+    const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
     userEvent.click(button)
 
     const dialog = await screen.findByRole('dialog', {
-      name: 'Select an Observation Mode to configure:'
+      name: configureConstants.modalTitle
     })
 
     await within(dialog).findByRole('menuitem', { name: 'ESW_DARKNIGHT' })
     expect(within(dialog).queryByRole('menuitem', { name: 'ESW_RANDOM' })).to.null
     expect(within(dialog).queryByRole('menuitem', { name: 'ESW_CLEARSKY' })).to.null
 
-    await within(dialog).findByRole('button', { name: 'Configure' })
+    await within(dialog).findByRole('button', { name: configureConstants.modalOkText })
     await within(dialog).findByRole('button', { name: 'Cancel' })
 
     verify(smService.getObsModesDetails()).called()
@@ -143,27 +144,34 @@ describe('Configure button', () => {
 
     await openConfigureModalAndClickConfigureButton()
 
-    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to.exist
+    expect(await screen.findByText(configureConstants.getSuccessMessage('ESW_DARKNIGHT'))).to.exist
 
-    expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
+    expect(screen.queryByRole(configureConstants.getSuccessMessage('ESW_DARKNIGHT'))).to.null
     verify(smService.configure(deepEqual(darkNight))).called()
     verify(smService.getObsModesDetails()).called()
   })
 
   const testcases: Array<[ConfigureResponse, string]> = [
-    [locationServiceError, 'Failed to configure ESW_DARKNIGHT, reason: LocationNotFound'],
+    [locationServiceError, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: LocationNotFound`],
     [
       conflictingResourcesResponse,
-      'Failed to configure ESW_DARKNIGHT, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY'
+      `${configureConstants.getFailureMessage(
+        'ESW_DARKNIGHT'
+      )}, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY`
     ],
-    [configurationMissingResponse, 'Failed to configure ESW_DARKNIGHT, reason: ConfigurationMissing for ESW_DARKNIGHT'],
+    [
+      configurationMissingResponse,
+      `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: ConfigurationMissing for ESW_DARKNIGHT`
+    ],
     [
       failedToStartSequencersResponse,
-      'Failed to configure ESW_DARKNIGHT, reason: Failed to start Sequencers as sequence component not found'
+      `${configureConstants.getFailureMessage(
+        'ESW_DARKNIGHT'
+      )}, reason: Failed to start Sequencers as sequence component not found`
     ],
-    [sequenceComponentNotAvailable, 'Failed to configure ESW_DARKNIGHT, reason: Not Available'],
-    [unhandled, 'Failed to configure ESW_DARKNIGHT, reason: Bad request'],
-    [failedResponse, 'Failed to configure ESW_DARKNIGHT, reason: Configure message timed out']
+    [sequenceComponentNotAvailable, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Not Available`],
+    [unhandled, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Bad request`],
+    [failedResponse, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Configure message timed out`]
   ]
 
   testcases.map(([response, message]) => {
@@ -183,10 +191,10 @@ describe('Configure button', () => {
 })
 
 const openConfigureModalAndClickConfigureButton = async () => {
-  const button = await screen.findByRole('button', { name: 'Configure' })
+  const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
   userEvent.click(button)
   const dialog = screen.getByRole('dialog', {
-    name: 'Select an Observation Mode to configure:'
+    name: configureConstants.modalTitle
   })
 
   const darkNightObsMode = await screen.findByRole('menuitem', {
@@ -196,7 +204,7 @@ const openConfigureModalAndClickConfigureButton = async () => {
   //select item by clicking on it
   userEvent.click(darkNightObsMode)
   const configureButton = within(dialog).getByRole('button', {
-    name: 'Configure'
+    name: configureConstants.modalOkText
 
     // wait for button to be enabled.
   }) as HTMLButtonElement

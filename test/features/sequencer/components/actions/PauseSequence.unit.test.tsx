@@ -4,14 +4,15 @@ import type { PauseResponse } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/steplist/PauseSequence'
+import { pauseSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Pause Sequence', () => {
   const testData: [PauseResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Sequence is paused successfully', 'successful'],
+    [{ _type: 'Ok' }, pauseSequenceConstants.successMessage, 'successful'],
     [
       { _type: 'CannotOperateOnAnInFlightOrFinishedStep' },
-      'Failed to pause the sequence, reason: CannotOperateOnAnInFlightOrFinishedStep',
+      `${pauseSequenceConstants.failureMessage}, reason: CannotOperateOnAnInFlightOrFinishedStep`,
       'failed'
     ],
     [
@@ -21,7 +22,7 @@ describe('Pause Sequence', () => {
         messageType: 'Pause',
         state: 'Idle'
       },
-      'Failed to pause the sequence, reason: Pause message is not handled in Idle state',
+      `${pauseSequenceConstants.failureMessage}, reason: Pause message is not handled in Idle state`,
       'failed'
     ]
   ]
@@ -51,7 +52,7 @@ describe('Pause Sequence', () => {
 
     userEvent.click(button)
 
-    await screen.findByText('Failed to pause the sequence, reason: Something went wrong')
+    await screen.findByText(`${pauseSequenceConstants.failureMessage}, reason: Something went wrong`)
 
     verify(sequencerServiceMock.pause()).called()
   })

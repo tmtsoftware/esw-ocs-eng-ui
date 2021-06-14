@@ -13,6 +13,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
+import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('LoadSequence', () => {
@@ -28,7 +29,7 @@ describe('LoadSequence', () => {
     type: 'application/json'
   })
   const testData: [OkOrUnhandledResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Sequence has been loaded successfully', 'successful'],
+    [{ _type: 'Ok' }, loadSequenceConstants.successMessage, 'successful'],
     [
       {
         _type: 'Unhandled',
@@ -36,7 +37,7 @@ describe('LoadSequence', () => {
         messageType: 'LoadSequence',
         state: 'Offline'
       },
-      'Failed to load the sequence, reason: LoadSequence message is not handled in Offline state',
+      `${loadSequenceConstants.failureMessage}, reason: LoadSequence message is not handled in Offline state`,
       'failed'
     ]
   ]
@@ -104,7 +105,7 @@ describe('LoadSequence', () => {
 
     userEvent.upload(input, file)
 
-    await screen.findByText('Failed to load the sequence, reason: error occurred')
+    await screen.findByText(`${loadSequenceConstants.failureMessage}, reason: error occurred`)
 
     await waitFor(() => verify(sequencerServiceMock.loadSequence(deepEqual(sequence))).called())
   })

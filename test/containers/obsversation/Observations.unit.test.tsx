@@ -6,6 +6,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
+import { observationShutdownConstants } from '../../../src/features/sequencer/sequencerConstants'
 import { configurableObsModesData, nonConfigurableObsModesData, obsModesData } from '../../jsons/obsmodes'
 import { getObsModes } from '../../utils/observationUtils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
@@ -92,7 +93,7 @@ describe('Observation page', () => {
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     await screen.findByRole('menuitem', { name: 'DarkNight_8' })
 
-    const shutdownButton = screen.getByRole('button', { name: 'Shutdown' })
+    const shutdownButton = screen.getByRole('button', { name: observationShutdownConstants.modalOkText })
 
     expect(shutdownButton).to.exist
     expect(screen.getAllByText('DarkNight_1')).to.have.length(2)
@@ -182,13 +183,13 @@ describe('Observation page', () => {
     const runningTabPanel = await screen.findByRole('tabpanel')
     await within(runningTabPanel).findByText('Loaded')
     const shutdownButton = within(runningTabPanel).getByRole('button', {
-      name: 'Shutdown'
+      name: observationShutdownConstants.modalOkText
     })
     userEvent.click(shutdownButton)
 
     const modalDocument = await screen.findByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
-      name: 'Shutdown'
+      name: observationShutdownConstants.modalOkText
     })
 
     userEvent.click(modalShutdownButton)
@@ -197,7 +198,7 @@ describe('Observation page', () => {
       name: 'Configurable'
     })
     userEvent.click(configurableTab)
-    await screen.findByText('DarkNight_1 Observation has been shutdown and moved to Configurable.')
+    await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
 
     const configurableTabPanel = await screen.findByRole('tabpanel')
     await within(configurableTabPanel).findByText('NA')

@@ -6,6 +6,8 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
+import { observationShutdownConstants } from '../../../src/features/sequencer/sequencerConstants'
+import { configureConstants } from '../../../src/features/sm/smConstants'
 import { obsModesData } from '../../jsons/obsmodes'
 import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
 import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
@@ -25,7 +27,7 @@ describe('observation tabs', () => {
   it('should be able to shutdown running observation | ESW-450, ESW-454, ESW-489', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
-    const modalMessage = `Do you want to shutdown Observation DarkNight_1?`
+    const modalMessage = observationShutdownConstants.getModalTitle(obsMode)
 
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'
@@ -40,7 +42,7 @@ describe('observation tabs', () => {
     })
 
     const shutdownButton = await screen.findByRole('button', {
-      name: 'Shutdown'
+      name: observationShutdownConstants.modalOkText
     })
     userEvent.click(shutdownButton)
 
@@ -48,12 +50,12 @@ describe('observation tabs', () => {
 
     const modalDocument = await screen.findByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
-      name: 'Shutdown'
+      name: observationShutdownConstants.modalOkText
     })
 
     userEvent.click(modalShutdownButton)
 
-    await screen.findByText('DarkNight_1 Observation has been shutdown and moved to Configurable.')
+    await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
     await waitFor(() => verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called())
 
     await waitFor(() => expect(screen.queryByText(modalMessage)).to.null)
@@ -88,7 +90,7 @@ describe('observation tabs', () => {
 
     userEvent.click(configureButton)
 
-    await screen.findByText('DarkNight_2 has been configured.')
+    await screen.findByText(configureConstants.getSuccessMessage('DarkNight_2'))
 
     await waitFor(() => {
       verify(smService.configure(deepEqual(darkNight2))).called()

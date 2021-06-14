@@ -24,6 +24,7 @@ import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
 import { SMServiceProvider } from '../../../src/contexts/SMContext'
 import { ProvisionButton } from '../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../src/features/sm/constants'
+import { configureConstants, provisionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 const obsModeDetails: ObsModesDetailsResponse = {
@@ -168,7 +169,7 @@ describe('Infrastructure page', () => {
 
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {
-      name: 'Select an Observation Mode to configure:'
+      name: configureConstants.modalTitle
     })
 
     const darkNightObsMode = await screen.findByRole('menuitem', {
@@ -180,7 +181,7 @@ describe('Infrastructure page', () => {
     // wait for button to be enabled.
     await waitFor(() => {
       const configureButton = within(dialog).getByRole('button', {
-        name: 'Configure'
+        name: configureConstants.modalOkText
       }) as HTMLButtonElement
       expect(configureButton.disabled).false
       userEvent.click(configureButton)
@@ -189,9 +190,9 @@ describe('Infrastructure page', () => {
     verify(smService.getObsModesDetails()).called()
 
     verify(smService.configure(deepEqual(darkNight))).called()
-    expect(await screen.findByText('ESW_DARKNIGHT has been configured.')).to.exist
+    expect(await screen.findByText(configureConstants.getSuccessMessage('ESW_DARKNIGHT'))).to.exist
     verify(agentService.getAgentStatus()).called()
-    expect(screen.queryByRole('ESW_DARKNIGHT has been configured.')).to.null
+    expect(screen.queryByRole(configureConstants.getSuccessMessage('ESW_DARKNIGHT'))).to.null
   })
 
   it('should refetch agent cards after provision success | ESW-443', async () => {
@@ -242,7 +243,7 @@ describe('Infrastructure page', () => {
 
     userEvent.click(confirmButton)
 
-    await screen.findByText('Successfully provisioned')
+    await screen.findByText(provisionConstants.successMessage)
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
   })

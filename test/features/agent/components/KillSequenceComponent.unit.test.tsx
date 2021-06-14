@@ -5,6 +5,7 @@ import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'
+import { killSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
@@ -17,7 +18,7 @@ describe('Kill sequence component button', () => {
       {
         _type: 'Killed'
       },
-      `Successfully killed Sequence Component: ${prefix.toJSON()}`
+      killSequenceComponentConstants.getSuccessMessage(prefix.toJSON())
     ],
     [
       'Failed',
@@ -25,7 +26,7 @@ describe('Kill sequence component button', () => {
         _type: 'Failed',
         msg: 'Ask timed out'
       },
-      `Sequence Component (${prefix.toJSON()}) could not be killed, reason: Ask timed out`
+      `${killSequenceComponentConstants.getFailureMessage(prefix.toJSON())}, reason: Ask timed out`
     ]
   ]
 
@@ -43,7 +44,7 @@ describe('Kill sequence component button', () => {
       const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')
       await waitFor(() => userEvent.click(KillSequenceComponentItem))
 
-      await screen.findByText(`Do you want to delete ${sequenceComponentID.prefix.toJSON()} sequence component?`)
+      await screen.findByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON()))
 
       const document = screen.getByRole('document')
       const confirm = within(document).getByRole('button', { name: /delete/i })
@@ -55,7 +56,7 @@ describe('Kill sequence component button', () => {
 
       await waitFor(
         () =>
-          expect(screen.queryByText(`Do you want to delete ${sequenceComponentID.prefix.toJSON()} sequence component?`))
+          expect(screen.queryByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON())))
             .to.null
       )
     })

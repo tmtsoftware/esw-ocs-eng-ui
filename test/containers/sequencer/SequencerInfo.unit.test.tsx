@@ -5,6 +5,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, when } from 'ts-mockito'
 import { ManageSequencer } from '../../../src/containers/sequencer/ManageSequencer'
+import { sequencerDetailsConstants } from '../../../src/features/sequencer/sequencerConstants'
 import { getSequencerPath } from '../../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
@@ -41,7 +42,7 @@ describe('SequencerInfo ', () => {
   })
 
   const errorCases: [string, string, string][] = [
-    ['ESW.iris', 'Sequencer ESW.iris : Not found', '404'],
+    ['ESW.iris', sequencerDetailsConstants.getSequencerNotFoundMessage('ESW.iris'), '404'],
     ['ESW.IRIS-a', "Requirement failed - component name IRIS-a has '-'", 'Invalid sequencer prefix'],
     ['PSW.iris_darkNight', 'Subsystem: PSW is invalid', 'Invalid sequencer prefix']
   ]

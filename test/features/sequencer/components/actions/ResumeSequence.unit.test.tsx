@@ -5,11 +5,12 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { ResumeSequence } from '../../../../../src/features/sequencer/components/steplist/ResumeSequence'
+import { resumeSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Resume Sequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Sequence is resumed successfully', 'successful'],
+    [{ _type: 'Ok' }, resumeSequenceConstants.successMessage, 'successful'],
     [
       {
         _type: 'Unhandled',
@@ -17,7 +18,7 @@ describe('Resume Sequence', () => {
         messageType: 'Resume',
         state: 'Idle'
       },
-      'Failed to resume the sequence, reason: Resume message is not handled in Idle state',
+      `${resumeSequenceConstants.failureMessage}, reason: Resume message is not handled in Idle state`,
       'failed'
     ]
   ]
@@ -47,7 +48,7 @@ describe('Resume Sequence', () => {
 
     userEvent.click(button)
 
-    await screen.findByText('Failed to resume the sequence, reason: Something went wrong')
+    await screen.findByText(`${resumeSequenceConstants.failureMessage}, reason: Something went wrong`)
 
     verify(sequencerServiceMock.resume()).called()
   })

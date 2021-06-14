@@ -5,12 +5,13 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOffline } from '../../../../../src/features/sequencer/components/actions/GoOffline'
+import { goOfflineConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOffline', () => {
   const testData: [GoOfflineResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Sequencer is offline successfully', 'successful'],
-    [{ _type: 'GoOfflineHookFailed' }, 'Sequencer failed to go Offline, reason: GoOfflineHookFailed', 'failed'],
+    [{ _type: 'Ok' }, goOfflineConstants.successMessage, 'successful'],
+    [{ _type: 'GoOfflineHookFailed' }, `${goOfflineConstants.failureMessage}, reason: GoOfflineHookFailed`, 'failed'],
     [
       {
         _type: 'Unhandled',
@@ -18,7 +19,7 @@ describe('GoOffline', () => {
         messageType: 'GoOffline',
         state: 'InProgress'
       },
-      'Sequencer failed to go Offline, reason: GoOffline message is not handled in InProgress state',
+      `${goOfflineConstants.failureMessage}, reason: GoOffline message is not handled in InProgress state`,
       'failed'
     ]
   ]
@@ -56,7 +57,7 @@ describe('GoOffline', () => {
 
     userEvent.click(offlineButton, { button: 0 })
 
-    await screen.findByText('Sequencer failed to go Offline, reason: error occurred')
+    await screen.findByText(`${goOfflineConstants.failureMessage}, reason: error occurred`)
 
     verify(sequencerServiceMock.goOffline()).called()
   })

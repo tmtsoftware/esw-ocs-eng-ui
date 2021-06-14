@@ -5,12 +5,13 @@ import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { GoOnline } from '../../../../../src/features/sequencer/components/actions/GoOnline'
+import { goOnlineConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOnline', () => {
   const testData: [GoOnlineResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Sequencer is online successfully', 'successful'],
-    [{ _type: 'GoOnlineHookFailed' }, 'Sequencer failed to go Online, reason: GoOnlineHookFailed', 'failed'],
+    [{ _type: 'Ok' }, goOnlineConstants.successMessage, 'successful'],
+    [{ _type: 'GoOnlineHookFailed' }, `${goOnlineConstants.failureMessage}, reason: GoOnlineHookFailed`, 'failed'],
     [
       {
         _type: 'Unhandled',
@@ -18,7 +19,7 @@ describe('GoOnline', () => {
         messageType: 'GoOnline',
         state: 'InProgress'
       },
-      'Sequencer failed to go Online, reason: GoOnline message is not handled in InProgress state',
+      `${goOnlineConstants.failureMessage}, reason: GoOnline message is not handled in InProgress state`,
       'failed'
     ]
   ]
@@ -56,7 +57,7 @@ describe('GoOnline', () => {
 
     userEvent.click(onlineButton, { button: 0 })
 
-    await screen.findByText('Sequencer failed to go Online, reason: error occurred')
+    await screen.findByText(`${goOnlineConstants.failureMessage}, reason: error occurred`)
 
     verify(sequencerServiceMock.goOnline()).called()
   })

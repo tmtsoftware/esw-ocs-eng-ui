@@ -5,11 +5,12 @@ import { expect } from 'chai'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'
 import { AbortSequence } from '../../../../../src/features/sequencer/components/actions/AbortSequence'
+import { abortSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('AbortSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
-    [{ _type: 'Ok' }, 'Successfully aborted the Sequence', 'successful'],
+    [{ _type: 'Ok' }, abortSequenceConstants.successMessage, 'successful'],
     [
       {
         _type: 'Unhandled',
@@ -17,7 +18,7 @@ describe('AbortSequence', () => {
         messageType: 'AbortSequence',
         state: 'InProgress'
       },
-      'Failed to abort the Sequence, reason: AbortSequence message is not handled in InProgress state',
+      `${abortSequenceConstants.failureMessage}, reason: AbortSequence message is not handled in InProgress state`,
       'failed'
     ]
   ]
@@ -40,9 +41,9 @@ describe('AbortSequence', () => {
 
       userEvent.click(abortSeqButton, { button: 0 })
 
-      await screen.findByText('Do you want to abort the sequence?')
+      await screen.findByText(abortSequenceConstants.modalTitle)
       const modalAbortButton = await within(screen.getByRole('document')).findByRole('button', {
-        name: 'Abort'
+        name: abortSequenceConstants.modalOkText
       })
 
       userEvent.click(modalAbortButton, { button: 0 })
@@ -51,7 +52,7 @@ describe('AbortSequence', () => {
 
       verify(sequencerServiceMock.abortSequence()).called()
 
-      await waitFor(() => expect(screen.queryByText('Do you want to abort the sequence?')).to.not.exist)
+      await waitFor(() => expect(screen.queryByText(abortSequenceConstants.modalTitle)).to.not.exist)
     })
   })
 
@@ -68,7 +69,7 @@ describe('AbortSequence', () => {
     })
 
     userEvent.click(abortSeqButton1, { button: 0 })
-    await screen.findByText('Do you want to abort the sequence?')
+    await screen.findByText(abortSequenceConstants.modalTitle)
     const modalCancelButton = within(screen.getByRole('document')).getByRole('button', {
       name: 'Cancel'
     })
@@ -82,14 +83,14 @@ describe('AbortSequence', () => {
     })
 
     userEvent.click(abortSeqButton2, { button: 0 })
-    await screen.findByText('Do you want to abort the sequence?')
+    await screen.findByText(abortSequenceConstants.modalTitle)
     const modalAbortButton = within(screen.getByRole('document')).getByRole('button', {
-      name: 'Abort'
+      name: abortSequenceConstants.modalOkText
     })
 
     userEvent.click(modalAbortButton)
 
-    await screen.findByText('Failed to abort the Sequence, reason: error occurred')
+    await screen.findByText(`${abortSequenceConstants.failureMessage}, reason: error occurred`)
 
     verify(sequencerServiceMock.abortSequence()).called()
   })

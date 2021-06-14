@@ -127,11 +127,12 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
             return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
           })
         : []
-
     const subscriptions: Subscription[] = []
     services.map(([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
       locationService.track(seqConnection)((event) => {
+        console.log('sequencerPrefix', sequencerPrefix)
+        console.log('event', event)
         switch (event._type) {
           case 'LocationRemoved':
             setSequencerInfoMap((previousMap) => {
@@ -140,6 +141,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
             })
             break
           case 'LocationUpdated':
+            console.log('LocationUpdated')
             subscriptions.push(
               sequencerService.subscribeSequencerState()(
                 (sequencerState) => handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState),
@@ -149,6 +151,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
         }
       })
     })
+    console.log('subscriptions', subscriptions)
     return () => subscriptions.forEach((s) => s.cancel())
   }, [gatewayLocation, isRunningTab, locationService, obsMode.name, sequencers, tf])
 

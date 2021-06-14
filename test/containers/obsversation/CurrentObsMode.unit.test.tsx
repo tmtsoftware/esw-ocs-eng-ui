@@ -1,8 +1,19 @@
-import { screen, within } from '@testing-library/react'
-import { ObsMode, ObsModeDetails, ObsModesDetailsResponseSuccess, ServiceError, StepList } from '@tmtsoftware/esw-ts'
+import { screen, waitFor, within } from '@testing-library/react'
+import {
+  AkkaConnection,
+  AkkaLocation,
+  ObsMode,
+  ObsModeDetails,
+  ObsModesDetailsResponseSuccess,
+  Prefix,
+  ServiceError,
+  StepList,
+  TrackingEvent
+} from '@tmtsoftware/esw-ts'
+import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { reset, when } from 'ts-mockito'
+import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { CurrentObsMode } from '../../../src/containers/observation/CurrentObsMode'
 import { sequencerActionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
@@ -12,9 +23,18 @@ describe('CurrentObsMode', () => {
     reset(mockServices.mock.smService)
     reset(sequencerServiceMock)
   })
-  it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
-    const smService = mockServices.mock.smService
 
+  const eswSequencerPrefix = new Prefix('ESW', 'DarkNight_1')
+  const eswSequencerConnection = AkkaConnection(eswSequencerPrefix, 'Sequencer')
+  const eswSequencerLocation: AkkaLocation = {
+    _type: 'AkkaLocation',
+    connection: eswSequencerConnection,
+    uri: 'http://localhost:5000/',
+    metadata: {}
+  }
+
+  it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
+    const { smService, locationService } = mockServices.mock
     const obsModes: ObsModeDetails[] = [
       {
         obsMode: new ObsMode('DarkNight_1'),
@@ -35,6 +55,13 @@ describe('CurrentObsMode', () => {
       return { cancel: done }
     })
 
+    when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
+      cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
+      return {
+        cancel: () => ({})
+      }
+    })
+
     const { unmount } = renderWithAuth({
       ui: (
         <CurrentObsMode
@@ -45,6 +72,8 @@ describe('CurrentObsMode', () => {
         />
       )
     })
+
+    verify(locationService.track(deepEqual(eswSequencerConnection))).once()
 
     unmount()
   })
@@ -63,8 +92,15 @@ describe('CurrentObsMode', () => {
       _type: 'Success',
       obsModes: obsModes
     }
-    const smService = mockServices.mock.smService
+    const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+    when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
+      cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
+      return {
+        cancel: () => ({})
+      }
+    })
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((_, onError) => {
       onError &&
@@ -107,7 +143,7 @@ describe('CurrentObsMode', () => {
       _type: 'Success',
       obsModes: obsModes
     }
-    const smService = mockServices.mock.smService
+    const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
       onEvent({
@@ -117,6 +153,13 @@ describe('CurrentObsMode', () => {
       })
       return {
         cancel: () => undefined
+      }
+    })
+
+    when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
+      cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
+      return {
+        cancel: () => ({})
       }
     })
 
@@ -136,4 +179,68 @@ describe('CurrentObsMode', () => {
     const sequencer1 = await screen.findByRole('row', { name: /ESW.DarkNight_1/ })
     await within(sequencer1).findByText(sequencerActionConstants.reloadScript)
   })
+
+  it('should update sequencer table if sequencer is stopped in background', async () => {
+    const obsModes: ObsModeDetails[] = [
+      {
+        obsMode: new ObsMode('DarkNight_1'),
+        status: {
+          _type: 'Configured'
+        },
+        resources: ['ESW'],
+        sequencers: ['ESW']
+      }
+    ]
+    const obsModesData: ObsModesDetailsResponseSuccess = {
+      _type: 'Success',
+      obsModes: obsModes
+    }
+    const { smService, locationService } = mockServices.mock
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
+      onEvent({
+        _type: 'SequencerStateResponse',
+        sequencerState: { _type: 'Loaded' },
+        stepList: new StepList([])
+      })
+      return {
+        cancel: () => undefined
+      }
+    })
+
+    when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
+      sendEvent(cb, { _type: 'LocationUpdated', location: eswSequencerLocation })
+      sendEvent(cb, { _type: 'LocationRemoved', connection: eswSequencerConnection }, 400)
+      return {
+        cancel: () => ({})
+      }
+    })
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <CurrentObsMode
+            resources={[]}
+            sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
+            currentTab='Running'
+            obsMode={new ObsMode('DarkNight_1')}
+          />
+        </BrowserRouter>
+      )
+    })
+
+    const sequencerRow = /setting esw\.darknight_1 close/i
+
+    await waitFor(() => expect(screen.queryByRole('cell', { name: sequencerRow })).to.not.exist)
+
+    await screen.findByRole('cell', { name: sequencerRow })
+  })
 })
+
+const sendEvent = (
+  callback: (trackingEvent: TrackingEvent) => void,
+  state: TrackingEvent,
+  timeout?: number | undefined
+) => {
+  timeout ? setTimeout(() => callback(state), timeout) : callback(state)
+}

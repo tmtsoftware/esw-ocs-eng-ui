@@ -1,10 +1,17 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ObsMode, ObsModesDetailsResponseSuccess, StepList } from '@tmtsoftware/esw-ts'
+import {
+  AkkaConnection,
+  AkkaLocation,
+  ObsMode,
+  ObsModesDetailsResponseSuccess,
+  Prefix,
+  StepList
+} from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
+import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { Observations } from '../../../src/containers/observation/Observations'
 import { observationShutdownConstants } from '../../../src/features/sequencer/sequencerConstants'
 import { configurableObsModesData, nonConfigurableObsModesData, obsModesData } from '../../jsons/obsmodes'
@@ -225,6 +232,20 @@ describe('Observation page', () => {
   })
 
   const setSequencerServiceMockForLoadedState = () => {
+    const eswSequencerPrefix = new Prefix('ESW', 'DarkNight_1')
+    const eswSequencerConnection = AkkaConnection(eswSequencerPrefix, 'Sequencer')
+    const eswSequencerLocation: AkkaLocation = {
+      _type: 'AkkaLocation',
+      connection: eswSequencerConnection,
+      uri: 'http://localhost:5000/',
+      metadata: {}
+    }
+    when(mockServices.mock.locationService.track(anything())).thenReturn((cb) => {
+      cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
+      return {
+        cancel: () => undefined
+      }
+    })
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
       onEvent({
         _type: 'SequencerStateResponse',

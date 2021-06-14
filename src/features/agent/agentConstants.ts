@@ -2,8 +2,8 @@ export const killSequenceComponentConstants = {
   getSuccessMessage: (componentId: string): string => `Successfully killed Sequence Component: ${componentId}`,
   getFailureMessage: (componentId: string): string => `Sequence Component (${componentId}) could not be killed`,
   menuItemText: 'Shutdown Component',
-  modalOkButtonText: 'Delete',
-  getModalTitle: (componentId: string): string => `Do you want to delete ${componentId} sequence component?`
+  modalOkButtonText: 'Shutdown',
+  getModalTitle: (componentId: string): string => `Do you want to shutdown ${componentId} sequence component?`
 }
 
 export const spawnSequenceComponentConstants = {

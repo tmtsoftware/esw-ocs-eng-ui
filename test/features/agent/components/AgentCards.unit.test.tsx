@@ -217,7 +217,7 @@ describe('Agents Grid View', () => {
     await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
     const document = screen.getByRole('document')
-    const confirm = within(document).getByRole('button', { name: /delete/i })
+    const confirm = within(document).getByRole('button', { name: /shutdown/i })
 
     userEvent.click(confirm)
 
@@ -247,6 +247,8 @@ describe('Agents Grid View', () => {
     // checking different menu items for sequencers and sequence components
     await waitFor(() => expect(screen.queryByText(killSequenceComponentConstants.menuItemText)).to.exist)
     await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.exist)
+    await waitFor(() => expect(screen.queryByText(reloadScriptConstants.menuItemText)).to.null)
+    await waitFor(() => expect(screen.queryByText(stopSequencerConstants.menuItemText)).to.null)
   })
 
   it('should display menu items applicable to sequencer | ESW-502', async () => {

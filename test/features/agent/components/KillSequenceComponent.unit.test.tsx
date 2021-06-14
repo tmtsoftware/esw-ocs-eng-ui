@@ -47,7 +47,7 @@ describe('Kill sequence component button', () => {
       await screen.findByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON()))
 
       const document = screen.getByRole('document')
-      const confirm = within(document).getByRole('button', { name: /delete/i })
+      const confirm = within(document).getByRole('button', { name: /shutdown/i })
       userEvent.click(confirm)
 
       await screen.findByText(message)

@@ -7,16 +7,15 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { duplicateStepConstants } from '../../sequencerConstants'
 
-const addCommands = (commands: SequenceCommand[]) => (sequencerService: SequencerService) => {
-  return sequencerService.add(commands).then((res) => {
-    switch (res._type) {
-      case 'Ok':
-        return res
+const addCommands = (commands: SequenceCommand[]) => async (sequencerService: SequencerService) => {
+  const res = await sequencerService.add(commands)
+  switch (res._type) {
+    case 'Ok':
+      return res
 
-      case 'Unhandled':
-        throw new Error(res.msg)
-    }
-  })
+    case 'Unhandled':
+      throw new Error(res.msg)
+  }
 }
 
 export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): JSX.Element => {

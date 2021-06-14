@@ -115,7 +115,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
         disabled={disabled}
         loading={smContextLoading || isLoading || provisionAction.isLoading}
         onClick={onProvisionClick}>
-        Provision
+        {provisionConstants.buttonText}
       </Button>
       <Modal
         title={

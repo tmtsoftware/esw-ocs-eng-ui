@@ -5,6 +5,10 @@ import { expect } from 'chai'
 import React from 'react'
 import { StepActions } from '../../../../../src/features/sequencer/components/steplist/StepActions'
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
+import {
+  insertBreakPointConstants,
+  removeBreakPointConstants
+} from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceInstance } from '../../../../utils/test-utils'
 
 describe('StepActions', () => {
@@ -26,7 +30,7 @@ describe('StepActions', () => {
     })
     userEvent.click(await screen.findByRole('stepActions'))
 
-    await screen.findByText('Insert breakpoint')
+    await screen.findByText(insertBreakPointConstants.menuItemText)
   })
 
   it('should give remove breakpoint option in menu if step has a breakpoint | ESW-459', async () => {
@@ -34,7 +38,7 @@ describe('StepActions', () => {
       ui: <StepActions step={getStepWithBreakpoint(true, stepStatusPending)} />
     })
     userEvent.click(await screen.findByRole('stepActions'))
-    await screen.findByText('Remove breakpoint')
+    await screen.findByText(removeBreakPointConstants.menuItemText)
   })
 
   it('should disable insertBreakpoint and delete when status is in Progress | ESW-459, ESW-490', async () => {

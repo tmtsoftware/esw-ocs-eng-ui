@@ -97,7 +97,7 @@ describe('UnProvision button', () => {
     })
 
     const unProvisionButton = await screen.findByRole('button', {
-      name: 'Unprovision'
+      name: unProvisionConstants.buttonText
     })
 
     return { unProvisionButton }

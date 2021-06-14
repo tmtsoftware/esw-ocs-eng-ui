@@ -52,7 +52,7 @@ export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
         disabled={disabled || loading || !smService}
         loading={configureAction.isLoading}
         onClick={onConfigureClick}>
-        Configure
+        {configureConstants.buttonText}
       </Button>
       <SelectionModal
         title={configureConstants.modalTitle}

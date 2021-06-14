@@ -55,7 +55,7 @@ export const SpawnSMButton = (): JSX.Element => {
   return (
     <>
       <Button type='primary' size='middle' loading={spawnSmAction.isLoading} onClick={handleSpawnButtonClick}>
-        Spawn
+        {spawnSMConstants.buttonText}
       </Button>
       <SelectionModal
         title={spawnSMConstants.modalTitle}

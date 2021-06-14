@@ -73,7 +73,7 @@ describe('Breakpoint actions', () => {
         )
       })
 
-      const insertBreakpoint = await screen.findByText('Insert breakpoint')
+      const insertBreakpoint = await screen.findByText(insertBreakPointConstants.menuItemText)
       userEvent.click(insertBreakpoint, { button: 0 })
 
       await screen.findByText(message)
@@ -134,7 +134,7 @@ describe('Breakpoint actions', () => {
         )
       })
 
-      const removeBreakpoint = await screen.findByText('Remove breakpoint')
+      const removeBreakpoint = await screen.findByText(removeBreakPointConstants.menuItemText)
       userEvent.click(removeBreakpoint, { button: 0 })
 
       await screen.findByText(message)

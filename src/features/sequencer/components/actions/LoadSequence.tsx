@@ -39,7 +39,7 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX
         loading={loadSequenceAction.isLoading}
         role={'LoadSequence'}
         disabled={!sequencerState || !(sequencerState === 'Idle' || sequencerState === 'Loaded')}>
-        Load Sequence
+        {loadSequenceConstants.buttonText}
       </Button>
     </UploadSequence>
   )

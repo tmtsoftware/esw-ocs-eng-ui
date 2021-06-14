@@ -50,7 +50,7 @@ export const ReloadScript = ({ subsystem, obsMode }: ReloadScriptProps): JSX.Ele
           reloadScriptAction.mutateAsync(smService)
         },
         reloadScriptConstants.getModalTitle(subsystem, obsMode),
-        reloadScriptConstants.modalOkButtonText
+        reloadScriptConstants.modalOkText
       )
   }
   return (

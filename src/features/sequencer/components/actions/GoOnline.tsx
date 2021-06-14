@@ -31,7 +31,7 @@ export const GoOnline = ({ prefix, sequencerState }: SequencerProps): JSX.Elemen
 
   return (
     <Button disabled={sequencerState === 'Running'} loading={goOnlineAction.isLoading} onClick={() => goOnline()}>
-      Go online
+      {goOnlineConstants.buttonText}
     </Button>
   )
 }

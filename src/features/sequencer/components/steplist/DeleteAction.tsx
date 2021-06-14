@@ -53,7 +53,7 @@ export const DeleteAction = ({ step, isDisabled }: DeleteActionProps): JSX.Eleme
           sequencerService && deleteAction.mutateAsync(sequencerService)
         })
       }>
-      Delete
+      {deleteStepConstants.menuItemText}
     </Menu.Item>
   )
 }

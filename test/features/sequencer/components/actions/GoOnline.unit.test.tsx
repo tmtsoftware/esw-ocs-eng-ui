@@ -33,7 +33,7 @@ describe('GoOnline', () => {
       })
 
       const onlineButton = await screen.findByRole('button', {
-        name: 'Go online'
+        name: goOnlineConstants.buttonText
       })
 
       userEvent.click(onlineButton, { button: 0 })
@@ -52,7 +52,7 @@ describe('GoOnline', () => {
     })
 
     const onlineButton = await screen.findByRole('button', {
-      name: 'Go online'
+      name: goOnlineConstants.buttonText
     })
 
     userEvent.click(onlineButton, { button: 0 })
@@ -68,7 +68,7 @@ describe('GoOnline', () => {
     })
 
     const onlineButton = (await screen.findByRole('button', {
-      name: 'Go online'
+      name: goOnlineConstants.buttonText
     })) as HTMLButtonElement
 
     expect(onlineButton.disabled).true

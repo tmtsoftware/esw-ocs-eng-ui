@@ -41,7 +41,7 @@ export const ShutdownSMButton = (): JSX.Element => {
           shutdownSMConstants.modalOkText
         )
       }>
-      Shutdown
+      {shutdownSMConstants.buttonText}
     </Button>
   )
 }

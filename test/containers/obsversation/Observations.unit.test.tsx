@@ -100,7 +100,7 @@ describe('Observation page', () => {
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     await screen.findByRole('menuitem', { name: 'DarkNight_8' })
 
-    const shutdownButton = screen.getByRole('button', { name: observationShutdownConstants.modalOkText })
+    const shutdownButton = screen.getByRole('button', { name: observationShutdownConstants.buttonText })
 
     expect(shutdownButton).to.exist
     expect(screen.getAllByText('DarkNight_1')).to.have.length(2)
@@ -190,7 +190,7 @@ describe('Observation page', () => {
     const runningTabPanel = await screen.findByRole('tabpanel')
     await within(runningTabPanel).findByText('Loaded')
     const shutdownButton = within(runningTabPanel).getByRole('button', {
-      name: observationShutdownConstants.modalOkText
+      name: observationShutdownConstants.buttonText
     })
     userEvent.click(shutdownButton)
 

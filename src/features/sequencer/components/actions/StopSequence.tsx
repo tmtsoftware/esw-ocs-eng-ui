@@ -40,7 +40,7 @@ export const StopSequence = ({ prefix, isSequencerRunning }: StopSequenceProps):
 
   return (
     <Button onClick={onClick} disabled={disabled} role='StopSequence' danger={!disabled}>
-      Stop sequence
+      {stopSequenceConstants.buttonText}
     </Button>
   )
 }

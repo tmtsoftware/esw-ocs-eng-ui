@@ -12,6 +12,7 @@ import {
   StepListTable
 } from '../../../../../src/features/sequencer/components/steplist/StepListTable'
 import {
+  addStepConstants,
   duplicateStepConstants,
   insertBreakPointConstants,
   removeBreakPointConstants
@@ -162,12 +163,12 @@ describe('stepList table', () => {
     expect(menuItems.length).to.equal(4)
 
     // ESW-459
-    await screen.findByText('Insert breakpoint')
+    await screen.findByText(insertBreakPointConstants.menuItemText)
     //ESW-490
     await screen.findByText('Delete')
 
-    await screen.findByText('Add steps')
-    await screen.findByText('Duplicate')
+    await screen.findByText(addStepConstants.menuItemText)
+    await screen.findByText(duplicateStepConstants.menuItemText)
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
@@ -194,7 +195,7 @@ describe('stepList table', () => {
     expect(menuItems.length).to.equal(4)
 
     // ESW-459
-    const insertBreakpoint = await screen.findByText('Insert breakpoint')
+    const insertBreakpoint = await screen.findByText(insertBreakPointConstants.menuItemText)
 
     await waitFor(() => userEvent.click(insertBreakpoint))
 
@@ -237,7 +238,7 @@ describe('stepList table', () => {
     expect(menuItems.length).to.equal(4)
 
     // ESW-459
-    const removeBreakpoint = await screen.findByText('Remove breakpoint')
+    const removeBreakpoint = await screen.findByText(removeBreakPointConstants.menuItemText)
 
     await waitFor(() => userEvent.click(removeBreakpoint))
 
@@ -259,7 +260,7 @@ describe('stepList table', () => {
 
     userEvent.click(actions[0])
 
-    const duplicate = await screen.findByText('Duplicate')
+    const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
 
     expect(screen.getByRole('button', { name: /copy duplicate/i })).to.exist
@@ -279,7 +280,7 @@ describe('stepList table', () => {
     const actions = await screen.findAllByRole('stepActions')
     userEvent.click(actions[0])
 
-    const duplicate = await screen.findByText('Duplicate')
+    const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
 
     const cancel = screen.getByRole('button', {
@@ -313,7 +314,7 @@ describe('stepList table', () => {
     const actions = await screen.findAllByRole('stepActions')
     userEvent.click(actions[0])
 
-    const duplicate = await screen.findByText('Duplicate')
+    const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
 
     // select command to duplicate
@@ -357,7 +358,7 @@ describe('stepList table', () => {
     const actions = await screen.findAllByRole('stepActions')
     userEvent.click(actions[0])
 
-    const duplicate = await screen.findByText('Duplicate')
+    const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
 
     // select command to duplicate

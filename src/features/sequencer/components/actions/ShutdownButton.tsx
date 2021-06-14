@@ -54,7 +54,7 @@ export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element =
         )
       }
       danger>
-      Shutdown
+      {observationShutdownConstants.buttonText}
     </Button>
   )
 }

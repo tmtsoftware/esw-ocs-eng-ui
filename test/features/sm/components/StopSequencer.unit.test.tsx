@@ -76,7 +76,7 @@ describe('Stop Sequencer', () => {
       expect(modalTitle).to.exist
 
       const confirmButton = screen.getByRole('button', {
-        name: stopSequencerConstants.modalOkButtonText
+        name: stopSequencerConstants.modalOkText
       })
       userEvent.click(confirmButton)
 

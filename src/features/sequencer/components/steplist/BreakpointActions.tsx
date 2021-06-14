@@ -38,7 +38,7 @@ export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled:
   }
   const icon = step.hasBreakpoint ? <CloseCircleOutlined /> : <VerticalAlignMiddleOutlined />
 
-  const itemText = step.hasBreakpoint ? 'Remove breakpoint' : 'Insert breakpoint'
+  const itemText = step.hasBreakpoint ? removeBreakPointConstants.menuItemText : insertBreakPointConstants.menuItemText
 
   return (
     <Menu.Item key='BreakpointAction' disabled={isDisabled} icon={icon} onClick={handleOnClick}>

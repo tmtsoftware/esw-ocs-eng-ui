@@ -50,7 +50,7 @@ export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }):
           unProvisionConstants.modalOkText
         )
       }>
-      Unprovision
+      {unProvisionConstants.buttonText}
     </Button>
   )
 }

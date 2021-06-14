@@ -92,7 +92,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
   return (
     <>
       <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isLoading}>
-        {startSequencerConstants.startSequencerButtonText}
+        {startSequencerConstants.buttonText}
       </Button>
       <Modal
         title={startSequencerConstants.modalTitle}

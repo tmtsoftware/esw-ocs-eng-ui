@@ -2,7 +2,7 @@ export const killSequenceComponentConstants = {
   getSuccessMessage: (componentId: string): string => `Successfully killed Sequence Component: ${componentId}`,
   getFailureMessage: (componentId: string): string => `Sequence Component (${componentId}) could not be killed`,
   menuItemText: 'Shutdown Component',
-  modalOkButtonText: 'Shutdown',
+  modalOkText: 'Shutdown',
   getModalTitle: (componentId: string): string => `Do you want to shutdown ${componentId} sequence component?`
 }
 
@@ -10,7 +10,8 @@ export const spawnSequenceComponentConstants = {
   getSuccessMessage: (componentId: string): string => `Successfully spawned Sequence Component: ${componentId}`,
   getFailureMessage: 'Sequence Component could not be spawned',
   whiteSpaceValidation: 'component name has leading and trailing whitespaces',
-  hyphenValidation: `component name has '-'`
+  hyphenValidation: `component name has '-'`,
+  modalOkText: 'Confirm'
 }
 
 export const disabledSequencerActions = {

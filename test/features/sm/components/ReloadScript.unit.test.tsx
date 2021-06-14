@@ -83,7 +83,7 @@ describe('Reload script', () => {
 
       const document = screen.getByRole('document')
       const reloadConfirm = within(document).getByRole('button', {
-        name: reloadScriptConstants.modalOkButtonText
+        name: reloadScriptConstants.modalOkText
       })
       await waitFor(() => userEvent.click(reloadConfirm))
 

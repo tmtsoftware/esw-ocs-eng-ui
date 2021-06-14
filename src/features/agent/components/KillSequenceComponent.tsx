@@ -32,7 +32,7 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
           killSequenceComponentAction.mutateAsync(agentService)
         },
         killSequenceComponentConstants.getModalTitle(componentId.prefix.toJSON()),
-        killSequenceComponentConstants.modalOkButtonText
+        killSequenceComponentConstants.modalOkText
       )
   }
   return (

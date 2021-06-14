@@ -85,8 +85,8 @@ describe('Infrastructure page', () => {
 
     screen.getByText('Sequence Manager')
     screen.getByText('Manage Infrastructure')
-    await screen.findByRole('button', { name: 'Provision' })
-    await screen.findByRole('button', { name: 'Configure' })
+    await screen.findByRole('button', { name: provisionConstants.buttonText })
+    await screen.findByRole('button', { name: configureConstants.buttonText })
 
     await waitFor(() => verify(agentService.getAgentStatus()).called())
   })
@@ -164,7 +164,7 @@ describe('Infrastructure page', () => {
     renderWithAuth({
       ui: <Infrastructure />
     })
-    const button = await screen.findByRole('button', { name: 'Configure' })
+    const button = await screen.findByRole('button', { name: configureConstants.buttonText })
     userEvent.click(button, { button: 1 })
 
     //verify only configurable obsmodes are shown in the list
@@ -228,7 +228,7 @@ describe('Infrastructure page', () => {
     })
 
     const provisionButton = (await screen.findByRole('button', {
-      name: 'Provision'
+      name: provisionConstants.buttonText
     })) as HTMLButtonElement
 
     await waitFor(() => expect(provisionButton.disabled).false)
@@ -238,7 +238,7 @@ describe('Infrastructure page', () => {
 
     const document = await screen.findByRole('document')
     const confirmButton = within(document).getByRole('button', {
-      name: 'Provision'
+      name: provisionConstants.modalOkText
     })
 
     userEvent.click(confirmButton)

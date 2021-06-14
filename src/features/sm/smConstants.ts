@@ -3,7 +3,7 @@ import type { Prefix } from '@tmtsoftware/esw-ts'
 export const startSequencerConstants = {
   successMessage: 'Successfully started sequencer',
   failureMessage: 'Failed to start sequencer',
-  startSequencerButtonText: 'Start Sequencer',
+  buttonText: 'Start Sequencer',
   inputErrorMessage: 'Please input subsystem and observation mode',
   modalTitle: 'Select a Subsystem and Observation Mode to spawn:',
   modalOkText: 'Confirm',
@@ -18,7 +18,7 @@ export const stopSequencerConstants = {
   successMessage: (sequencerPrefix: Prefix): string => `Successfully stopped sequencer ${sequencerPrefix.toJSON()}`,
   failureMessage: (sequencerPrefix: Prefix): string => `Failed to stop sequencer ${sequencerPrefix.toJSON()}`,
   menuItemText: 'Stop Sequencer',
-  modalOkButtonText: 'Stop',
+  modalOkText: 'Stop',
   getModalTitle: (sequencerPrefix: string): string => `Are you sure you want to stop sequencer '${sequencerPrefix}'?`
 }
 
@@ -26,7 +26,7 @@ export const reloadScriptConstants = {
   getSuccessMessage: (sequencerPrefix: string): string => `Successfully loaded script ${sequencerPrefix}`,
   getFailureMessage: (sequencerPrefix: string): string => `Failed to load script ${sequencerPrefix}`,
   menuItemText: 'Reload Script',
-  modalOkButtonText: 'Reload',
+  modalOkText: 'Reload',
   getModalTitle: (subsystem: string, obsMode: string): string =>
     `Do you want to reload the sequencer ${subsystem}.${obsMode}?`
 }
@@ -36,7 +36,8 @@ export const configureConstants = {
   getFailureMessage: (obsModeName: string | undefined): string => `Failed to configure ${obsModeName}`,
   selectObModeMessage: 'Please select observation mode!',
   modalTitle: 'Select an Observation Mode to configure:',
-  modalOkText: 'Configure'
+  modalOkText: 'Configure',
+  buttonText: 'Configure'
 }
 
 export const provisionConfConstants = {
@@ -49,21 +50,24 @@ export const provisionConfConstants = {
 export const provisionConstants = {
   successMessage: 'Successfully provisioned',
   failureMessage: 'Failed to provision',
-  modalOkText: 'Provision'
+  modalOkText: 'Provision',
+  buttonText: 'Provision'
 }
 
 export const unProvisionConstants = {
   successMessage: 'Successfully shutdown all the Sequence Components',
   failureMessage: 'Failed to shutdown all Sequence Components',
   modalTitle: 'Do you want to shutdown all the Sequence Components?',
-  modalOkText: 'Shutdown'
+  modalOkText: 'Shutdown',
+  buttonText: 'Unprovision'
 }
 
 export const shutdownSMConstants = {
   successMessage: 'Successfully shutdown Sequence Manager',
   failureMessage: 'Failed to shutdown Sequence Manager',
   modalTitle: 'Do you want to shutdown Sequence Manager?',
-  modalOkText: 'Shutdown'
+  modalOkText: 'Shutdown',
+  buttonText: 'Shutdown'
 }
 
 export const spawnSMConstants = {
@@ -72,7 +76,8 @@ export const spawnSMConstants = {
   agentNotRunningMessage: 'Agents are not running. Please start an agent first.',
   selectAgentMessage: 'Please select agent!',
   modalTitle: 'Choose an agent to spawn the Sequence Manager',
-  modalOkText: 'Spawn'
+  modalOkText: 'Spawn',
+  buttonText: 'Spawn'
 }
 
 export const sequencerActionConstants = {

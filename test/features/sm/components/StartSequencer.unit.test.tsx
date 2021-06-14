@@ -96,7 +96,7 @@ describe('Start Sequencer', () => {
       })
 
       const startSequencerButton = screen.getByRole('button', {
-        name: startSequencerConstants.startSequencerButtonText
+        name: startSequencerConstants.buttonText
       })
       userEvent.click(startSequencerButton)
 
@@ -123,7 +123,7 @@ describe('Start Sequencer', () => {
       ui: <StartSequencer />
     })
 
-    const startSequencerButton = screen.getByRole('button', { name: startSequencerConstants.startSequencerButtonText })
+    const startSequencerButton = screen.getByRole('button', { name: startSequencerConstants.buttonText })
     userEvent.click(startSequencerButton)
 
     const modal = await screen.findByRole('dialog', {

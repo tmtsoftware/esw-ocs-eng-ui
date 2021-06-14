@@ -240,7 +240,7 @@ describe('ProvisionButton component', () => {
     })
 
     const provisionButton = await screen.findByRole('button', {
-      name: 'Provision'
+      name: provisionConstants.buttonText
     })
 
     return { provisionButton }
@@ -254,7 +254,7 @@ describe('ProvisionButton component', () => {
     })
 
     await within(dialog).findByRole('table')
-    await within(dialog).findByRole('button', { name: 'Provision' })
+    await within(dialog).findByRole('button', { name: provisionConstants.modalOkText })
     await within(dialog).findByRole('button', { name: 'Cancel' })
   }
 })

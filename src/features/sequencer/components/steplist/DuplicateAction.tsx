@@ -40,7 +40,7 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
             handleDuplicate()
           }}>
           <CopyOutlined />
-          Duplicate
+          {duplicateStepConstants.menuItemText}
         </Button>
       </Space>
     </Row>

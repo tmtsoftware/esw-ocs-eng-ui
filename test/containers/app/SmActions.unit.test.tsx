@@ -14,7 +14,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
-import { startSequencerConstants } from '../../../src/features/sm/smConstants'
+import { configureConstants, provisionConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
@@ -73,15 +73,15 @@ describe('SM actions', () => {
       })
 
       const provisionButton = screen.getByRole('button', {
-        name: 'Provision'
+        name: provisionConstants.buttonText
       }) as HTMLButtonElement
 
       const configureButton = screen.getByRole('button', {
-        name: 'Configure'
+        name: configureConstants.buttonText
       }) as HTMLButtonElement
 
       const startSequencerButton = screen.getByRole('button', {
-        name: startSequencerConstants.startSequencerButtonText
+        name: startSequencerConstants.buttonText
       }) as HTMLButtonElement
 
       expect(provisionButton.disabled).false
@@ -93,7 +93,7 @@ describe('SM actions', () => {
         expect(
           (
             screen.getByRole('button', {
-              name: 'Provision'
+              name: provisionConstants.buttonText
             }) as HTMLButtonElement
           ).disabled
         ).false
@@ -102,7 +102,7 @@ describe('SM actions', () => {
         expect(
           (
             screen.getByRole('button', {
-              name: 'Configure'
+              name: configureConstants.buttonText
             }) as HTMLButtonElement
           ).disabled
         ).false
@@ -121,7 +121,7 @@ describe('SM actions', () => {
 
     await waitFor(() => {
       const button = screen.getByRole('button', {
-        name: startSequencerConstants.startSequencerButtonText
+        name: startSequencerConstants.buttonText
       }) as HTMLButtonElement
       expect(button.disabled).false
     })

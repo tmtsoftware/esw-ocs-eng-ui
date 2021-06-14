@@ -49,7 +49,7 @@ export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }):
             stopAction.mutate(smContext.smService)
           },
           stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON()),
-          stopSequencerConstants.modalOkButtonText
+          stopSequencerConstants.modalOkText
         )
       }>
       {stopSequencerConstants.menuItemText}

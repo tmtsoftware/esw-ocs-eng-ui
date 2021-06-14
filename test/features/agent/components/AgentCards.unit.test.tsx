@@ -182,7 +182,7 @@ describe('Agents Grid View', () => {
 
     await waitFor(() => userEvent.click(textBox))
     userEvent.type(textBox, 'ESW_1')
-    userEvent.click(screen.getByRole('button', { name: 'Confirm' }))
+    userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
@@ -217,7 +217,7 @@ describe('Agents Grid View', () => {
     await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
     const document = screen.getByRole('document')
-    const confirm = within(document).getByRole('button', { name: /shutdown/i })
+    const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
 
     userEvent.click(confirm)
 

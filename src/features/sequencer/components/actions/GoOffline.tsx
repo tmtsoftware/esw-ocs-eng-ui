@@ -31,7 +31,7 @@ export const GoOffline = ({ prefix, sequencerState }: SequencerProps): JSX.Eleme
 
   return (
     <Button disabled={sequencerState === 'Running'} loading={goOfflineAction.isLoading} onClick={() => goOffline()}>
-      Go offline
+      {goOfflineConstants.buttonText}
     </Button>
   )
 }

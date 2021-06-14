@@ -42,7 +42,7 @@ describe('observation tabs', () => {
     })
 
     const shutdownButton = await screen.findByRole('button', {
-      name: observationShutdownConstants.modalOkText
+      name: observationShutdownConstants.buttonText
     })
     userEvent.click(shutdownButton)
 
@@ -83,7 +83,7 @@ describe('observation tabs', () => {
     })
 
     const configureButton = (await screen.findByRole('button', {
-      name: 'Configure'
+      name: configureConstants.buttonText
     })) as HTMLButtonElement
 
     await waitFor(() => expect(configureButton.disabled).false)
@@ -106,7 +106,7 @@ describe('observation tabs', () => {
     })
 
     const configureButton = (await screen.findByRole('button', {
-      name: 'Configure'
+      name: configureConstants.buttonText
     })) as HTMLButtonElement
     await waitFor(() => expect(configureButton.disabled).true)
 

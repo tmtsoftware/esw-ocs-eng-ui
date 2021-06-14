@@ -33,7 +33,7 @@ describe('GoOffline', () => {
       })
 
       const offlineButton = await screen.findByRole('button', {
-        name: 'Go offline'
+        name: goOfflineConstants.buttonText
       })
 
       userEvent.click(offlineButton, { button: 0 })
@@ -52,7 +52,7 @@ describe('GoOffline', () => {
     })
 
     const offlineButton = await screen.findByRole('button', {
-      name: 'Go offline'
+      name: goOfflineConstants.buttonText
     })
 
     userEvent.click(offlineButton, { button: 0 })
@@ -68,7 +68,7 @@ describe('GoOffline', () => {
     })
 
     const offlineButton = (await screen.findByRole('button', {
-      name: 'Go offline'
+      name: goOfflineConstants.buttonText
     })) as HTMLButtonElement
 
     expect(offlineButton.disabled).true

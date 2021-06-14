@@ -35,7 +35,7 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
         className={styles.upload}>
         <div role='addSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
           <PlusCircleOutlined style={{ fontSize: '12px', marginRight: '8px' }} />
-          Add steps
+          {addStepConstants.menuItemText}
         </div>
       </UploadSequence>
     </Menu.Item>

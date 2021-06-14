@@ -24,7 +24,11 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { addStepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
+import {
+  abortSequenceConstants,
+  addStepConstants,
+  goOfflineConstants
+} from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList } from '../../../../utils/sequence-utils'
 import {
   makeSeqStateResponse,
@@ -99,9 +103,9 @@ describe('sequencer details', () => {
 
     const loadButton = await screen.findByRole('LoadSequence')
     const abortButton = await screen.findByRole('button', {
-      name: 'Abort sequence'
+      name: abortSequenceConstants.buttonText
     })
-    const goOffline = await screen.findByRole('button', { name: 'Go offline' })
+    const goOffline = await screen.findByRole('button', { name: goOfflineConstants.buttonText })
 
     expect(loadButton).to.exist
     expect(goOffline).to.exist
@@ -386,7 +390,7 @@ describe('sequencer details', () => {
         )
       })
       const abortSeqButton = (await screen.findByRole('button', {
-        name: 'Abort sequence'
+        name: abortSequenceConstants.buttonText
       })) as HTMLButtonElement
 
       expect(abortSeqButton.disabled).true

@@ -60,7 +60,7 @@ describe('Shutdown button for Sequencer ', () => {
       })
 
       const shutdownButton = screen.getByRole('button', {
-        name: observationShutdownConstants.modalOkText
+        name: observationShutdownConstants.buttonText
       }) as HTMLButtonElement
 
       await waitFor(() => expect(shutdownButton.disabled).false)

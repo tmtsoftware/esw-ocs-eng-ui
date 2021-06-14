@@ -36,7 +36,7 @@ describe('AbortSequence', () => {
       })
 
       const abortSeqButton = await screen.findByRole('button', {
-        name: 'Abort sequence'
+        name: abortSequenceConstants.buttonText
       })
 
       userEvent.click(abortSeqButton, { button: 0 })
@@ -65,7 +65,7 @@ describe('AbortSequence', () => {
 
     //*********testing cancel button ***********************
     const abortSeqButton1 = await screen.findByRole('button', {
-      name: 'Abort sequence'
+      name: abortSequenceConstants.buttonText
     })
 
     userEvent.click(abortSeqButton1, { button: 0 })
@@ -79,7 +79,7 @@ describe('AbortSequence', () => {
 
     //*********testing abort(confirm) button ***********************
     const abortSeqButton2 = await screen.findByRole('button', {
-      name: 'Abort sequence'
+      name: abortSequenceConstants.buttonText
     })
 
     userEvent.click(abortSeqButton2, { button: 0 })
@@ -101,7 +101,7 @@ describe('AbortSequence', () => {
     })
 
     const abortSeqButton = (await screen.findByRole('button', {
-      name: 'Abort sequence'
+      name: abortSequenceConstants.buttonText
     })) as HTMLButtonElement
 
     expect(abortSeqButton.disabled).true

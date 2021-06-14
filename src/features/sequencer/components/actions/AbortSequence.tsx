@@ -42,7 +42,7 @@ export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps
         )
       }
       disabled={!isSequencerRunning}>
-      Abort sequence
+      {abortSequenceConstants.buttonText}
     </Button>
   )
 }

@@ -70,7 +70,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         }}
         onConfirm={onConfirm}
         disabled={spawnSequenceComponentAction.isLoading}
-        okText='Confirm'>
+        okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
           type='text'
           icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}

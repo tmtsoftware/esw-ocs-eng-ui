@@ -44,10 +44,9 @@ describe('CurrentObsMode', () => {
       sequencers: ['ESW']
     }
   ]
-  const obsModesData: ObsModesDetailsResponseSuccess = {
-    _type: 'Success',
-    obsModes: obsModes
-  }
+  const obsModesData: ObsModesDetailsResponseSuccess = { _type: 'Success', obsModes: obsModes }
+
+  const getSequencers = () => obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []
 
   const sequencerStateResponse: SequencerStateResponse = {
     _type: 'SequencerStateResponse',
@@ -75,7 +74,7 @@ describe('CurrentObsMode', () => {
       ui: (
         <CurrentObsMode
           resources={[]}
-          sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
+          sequencers={getSequencers()}
           currentTab='Running'
           obsMode={new ObsMode('DarkNight_1')}
         />
@@ -113,7 +112,7 @@ describe('CurrentObsMode', () => {
       ui: (
         <CurrentObsMode
           resources={[]}
-          sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
+          sequencers={getSequencers()}
           currentTab='Running'
           obsMode={new ObsMode('DarkNight_1')}
         />
@@ -145,7 +144,7 @@ describe('CurrentObsMode', () => {
         <BrowserRouter>
           <CurrentObsMode
             resources={[]}
-            sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
+            sequencers={getSequencers()}
             currentTab='Running'
             obsMode={new ObsMode('DarkNight_1')}
           />
@@ -188,7 +187,7 @@ describe('CurrentObsMode', () => {
         <BrowserRouter>
           <CurrentObsMode
             resources={[]}
-            sequencers={obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []}
+            sequencers={getSequencers()}
             currentTab='Running'
             obsMode={new ObsMode('DarkNight_1')}
           />

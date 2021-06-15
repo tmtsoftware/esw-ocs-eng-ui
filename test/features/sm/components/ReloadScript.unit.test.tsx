@@ -62,16 +62,7 @@ describe('Reload script', () => {
       when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              ReloadScript({
-                subsystem: subsystem,
-                obsMode: obsMode.toJSON()
-              })
-            }
-          />
-        )
+        ui: <MenuWithStepListContext menuItem={<ReloadScript subsystem={subsystem} obsMode={obsMode.toJSON()} />} />
       })
 
       const reloadScriptItem = screen.getByRole('ReloadScript')

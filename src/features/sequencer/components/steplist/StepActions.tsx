@@ -17,25 +17,16 @@ const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element =>
 
   return (
     <Menu {...restProps} className={styles.menu}>
-      {BreakpointAction({
-        step,
-        isDisabled: isInProgressOrIsFinished
-      })}
-
-      {AddSteps({
-        disabled: isFinished,
-        stepId: step.id
-      })}
-
-      <Menu.Item key='Duplicate' onClick={handleDuplicate} disabled={stepListStatus === 'All Steps Completed'}>
-        <CopyOutlined />
+      <BreakpointAction step={step} isDisabled={isInProgressOrIsFinished} />
+      <AddSteps disabled={isFinished} stepId={step.id} />
+      <Menu.Item
+        key='Duplicate'
+        onClick={handleDuplicate}
+        disabled={stepListStatus === 'All Steps Completed'}
+        icon={<CopyOutlined />}>
         Duplicate
       </Menu.Item>
-
-      {DeleteAction({
-        step,
-        isDisabled: isInProgressOrIsFinished
-      })}
+      <DeleteAction step={step} isDisabled={isInProgressOrIsFinished} />
     </Menu>
   )
 }

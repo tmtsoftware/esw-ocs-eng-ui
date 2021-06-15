@@ -66,16 +66,7 @@ describe('AddSteps', () => {
       when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(response)
 
       renderWithAuth({
-        ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              AddSteps({
-                disabled: false,
-                stepId: id
-              })
-            }
-          />
-        )
+        ui: <MenuWithStepListContext menuItem={<AddSteps disabled={false} stepId={id} />} />
       })
 
       const addStepsButton = await screen.findByRole('button', {
@@ -98,16 +89,7 @@ describe('AddSteps', () => {
     })
 
     renderWithAuth({
-      ui: (
-        <MenuWithStepListContext
-          menuItem={() =>
-            AddSteps({
-              disabled: false,
-              stepId: id
-            })
-          }
-        />
-      )
+      ui: <MenuWithStepListContext menuItem={<AddSteps disabled={false} stepId={id} />} />
     })
 
     const addStepsButton = await screen.findByRole('button', {

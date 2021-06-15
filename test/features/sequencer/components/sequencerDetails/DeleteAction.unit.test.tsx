@@ -54,16 +54,7 @@ describe('Delete action', () => {
 
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
       renderWithAuth({
-        ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              DeleteAction({
-                step: step,
-                isDisabled: false
-              })
-            }
-          />
-        )
+        ui: <MenuWithStepListContext menuItem={<DeleteAction step={step} isDisabled={false} />} />
       })
 
       const deleteButton = await screen.findByText(deleteStepConstants.menuItemText)

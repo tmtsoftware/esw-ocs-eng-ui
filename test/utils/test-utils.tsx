@@ -226,10 +226,10 @@ const MenuWithStepListContext = ({
     sequencerService: sequencerServiceInstance
   }
 }: {
-  menuItem: () => JSX.Element
+  menuItem: JSX.Element
   value?: StepListTableContextType
 }): JSX.Element => {
-  const MenuComponent = () => <Menu>{menuItem()}</Menu>
+  const MenuComponent = () => <Menu>{menuItem}</Menu>
   return (
     <StepListContextProvider value={value}>
       <MenuComponent />

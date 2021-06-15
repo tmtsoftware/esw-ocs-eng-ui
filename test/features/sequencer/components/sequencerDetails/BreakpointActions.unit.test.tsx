@@ -61,16 +61,7 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              BreakpointAction({
-                step: step,
-                isDisabled: false
-              })
-            }
-          />
-        )
+        ui: <MenuWithStepListContext menuItem={<BreakpointAction step={step} isDisabled={false} />} />
       })
 
       const insertBreakpoint = await screen.findByText(insertBreakPointConstants.menuItemText)
@@ -122,16 +113,7 @@ describe('Breakpoint actions', () => {
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
       renderWithAuth({
-        ui: (
-          <MenuWithStepListContext
-            menuItem={() =>
-              BreakpointAction({
-                step: step,
-                isDisabled: false
-              })
-            }
-          />
-        )
+        ui: <MenuWithStepListContext menuItem={<BreakpointAction step={step} isDisabled={false} />} />
       })
 
       const removeBreakpoint = await screen.findByText(removeBreakPointConstants.menuItemText)

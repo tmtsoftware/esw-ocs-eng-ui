@@ -6,7 +6,7 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { addStepConstants } from '../../sequencerConstants'
-import { handleActionResponse } from '../../utils'
+import { handleStepActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { UploadSequence } from '../UploadSequence'
 
@@ -20,7 +20,7 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
   const { sequencerService } = useStepListContext()
 
   const addStepAction = useMutation({
-    mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleActionResponse),
+    mutationFn: (seq: SequencerService) => seq.insertAfter(stepId, commands).then(handleStepActionResponse),
     onSuccess: () => successMessage(addStepConstants.successMessage),
     onError: (e) => errorMessage(addStepConstants.failureMessage, e)
   })

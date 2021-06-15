@@ -51,7 +51,7 @@ export const getCurrentStepCommandName = (stepList: Option<StepList>): string =>
   return step === undefined ? 'NA' : step.command.commandName
 }
 
-export const handleActionResponse = (res: GenericResponse): Ok => {
+export const handleStepActionResponse = (res: GenericResponse): Ok => {
   switch (res._type) {
     case 'Ok':
       return res

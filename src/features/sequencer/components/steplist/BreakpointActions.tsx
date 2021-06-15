@@ -6,13 +6,13 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { insertBreakPointConstants, removeBreakPointConstants } from '../../sequencerConstants'
-import { handleActionResponse } from '../../utils'
+import { handleStepActionResponse } from '../../utils'
 
 const insertAction = (id: string) => (sequencerService: SequencerService) =>
-  sequencerService.addBreakpoint(id).then(handleActionResponse)
+  sequencerService.addBreakpoint(id).then(handleStepActionResponse)
 
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
-  sequencerService.removeBreakpoint(id).then(handleActionResponse)
+  sequencerService.removeBreakpoint(id).then(handleStepActionResponse)
 
 export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled: boolean }): JSX.Element => {
   const { sequencerService } = useStepListContext()

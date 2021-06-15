@@ -6,14 +6,14 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { stepThroughConstants } from '../../sequencerConstants'
-import { handleActionResponse } from '../../utils'
+import { handleStepActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const stepThrough =
   (currentStepId: string, nextStepId: string | undefined) => async (sequencerService: SequencerService) => {
     //when current step is last step, next Step will not exist, hence skip add breakpoint
-    nextStepId && (await sequencerService.addBreakpoint(nextStepId).then(handleActionResponse))
-    return sequencerService.removeBreakpoint(currentStepId).then(handleActionResponse)
+    nextStepId && (await sequencerService.addBreakpoint(nextStepId).then(handleStepActionResponse))
+    return sequencerService.removeBreakpoint(currentStepId).then(handleStepActionResponse)
   }
 
 type StepThroughSequenceProps = {

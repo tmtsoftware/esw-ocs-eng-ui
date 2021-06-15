@@ -6,10 +6,10 @@ import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { deleteStepConstants } from '../../sequencerConstants'
-import { handleActionResponse } from '../../utils'
+import { handleStepActionResponse } from '../../utils'
 
 const deleteStep = (id: string) => (sequencerService: SequencerService) => {
-  return sequencerService.delete(id).then(handleActionResponse)
+  return sequencerService.delete(id).then(handleStepActionResponse)
 }
 
 const showConfirmModal = (stepName: string, onYes: () => void): void => {

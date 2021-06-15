@@ -102,7 +102,7 @@ describe('AddSteps', () => {
     userEvent.upload(inputBox, file)
 
     await screen.findByText(
-      _createErrorMsg(addStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserialiseReason)
+      _createErrorMsg(addStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserializeReason)
     )
     verify(sequencerServiceMock.insertAfter(anything(), anything())).never()
   })

@@ -32,7 +32,7 @@ export const UploadSequence = ({
             setSequence(Sequence.from(JSON.parse(reader.result)))
             resolve()
           } catch (e) {
-            errorMessage(uploadErrorMsg, Error(uploadSequenceConstants.couldNotDeserialiseReason)).then(reject)
+            errorMessage(uploadErrorMsg, Error(uploadSequenceConstants.couldNotDeserializeReason)).then(reject)
           }
         }
       }

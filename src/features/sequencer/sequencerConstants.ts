@@ -27,7 +27,7 @@ export const loadSequenceConstants = {
 }
 
 export const uploadSequenceConstants = {
-  couldNotDeserialiseReason: 'file content is not valid or not properly structured'
+  couldNotDeserializeReason: 'file content is not valid or not properly structured'
 }
 
 export const observationShutdownConstants = {

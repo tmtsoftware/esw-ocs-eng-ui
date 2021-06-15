@@ -33,22 +33,24 @@ describe('CurrentObsMode', () => {
     metadata: {}
   }
 
+  const obsModes: ObsModeDetails[] = [
+    {
+      obsMode: new ObsMode('DarkNight_1'),
+      status: {
+        _type: 'Configured'
+      },
+      resources: ['ESW'],
+      sequencers: ['ESW']
+    }
+  ]
+  const obsModesData: ObsModesDetailsResponseSuccess = {
+    _type: 'Success',
+    obsModes: obsModes
+  }
+
   it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
     const { smService, locationService } = mockServices.mock
-    const obsModes: ObsModeDetails[] = [
-      {
-        obsMode: new ObsMode('DarkNight_1'),
-        status: {
-          _type: 'Configured'
-        },
-        resources: ['ESW'],
-        sequencers: ['ESW']
-      }
-    ]
-    const obsModesData: ObsModesDetailsResponseSuccess = {
-      _type: 'Success',
-      obsModes: obsModes
-    }
+
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
@@ -78,20 +80,6 @@ describe('CurrentObsMode', () => {
     unmount()
   })
   it(`should render error notification when error is received | ESW-510`, async () => {
-    const obsModes: ObsModeDetails[] = [
-      {
-        obsMode: new ObsMode('DarkNight_1'),
-        status: {
-          _type: 'Configured'
-        },
-        resources: ['ESW'],
-        sequencers: ['ESW']
-      }
-    ]
-    const obsModesData: ObsModesDetailsResponseSuccess = {
-      _type: 'Success',
-      obsModes: obsModes
-    }
     const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
@@ -129,20 +117,6 @@ describe('CurrentObsMode', () => {
   })
 
   it(`should render reload script button if sequencer available | ESW-506`, async () => {
-    const obsModes: ObsModeDetails[] = [
-      {
-        obsMode: new ObsMode('DarkNight_1'),
-        status: {
-          _type: 'Configured'
-        },
-        resources: ['ESW'],
-        sequencers: ['ESW']
-      }
-    ]
-    const obsModesData: ObsModesDetailsResponseSuccess = {
-      _type: 'Success',
-      obsModes: obsModes
-    }
     const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
@@ -181,20 +155,6 @@ describe('CurrentObsMode', () => {
   })
 
   it('should update sequencer table if sequencer is stopped in background', async () => {
-    const obsModes: ObsModeDetails[] = [
-      {
-        obsMode: new ObsMode('DarkNight_1'),
-        status: {
-          _type: 'Configured'
-        },
-        resources: ['ESW'],
-        sequencers: ['ESW']
-      }
-    ]
-    const obsModesData: ObsModesDetailsResponseSuccess = {
-      _type: 'Success',
-      obsModes: obsModes
-    }
     const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {

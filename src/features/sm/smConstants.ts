@@ -83,5 +83,6 @@ export const spawnSMConstants = {
 export const sequencerActionConstants = {
   popConfirmTitle: 'Are you sure you want to reload?',
   popConfirmOkText: 'Yes',
-  reloadScript: 'Reload Script'
+  reloadScript: 'Reload Script',
+  startSequencer: 'Start Sequencer'
 }

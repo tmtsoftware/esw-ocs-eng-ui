@@ -6,6 +6,7 @@ import {
   ObsModeDetails,
   ObsModesDetailsResponseSuccess,
   Prefix,
+  SequencerStateResponse,
   ServiceError,
   StepList,
   TrackingEvent
@@ -46,6 +47,12 @@ describe('CurrentObsMode', () => {
   const obsModesData: ObsModesDetailsResponseSuccess = {
     _type: 'Success',
     obsModes: obsModes
+  }
+
+  const sequencerStateResponse: SequencerStateResponse = {
+    _type: 'SequencerStateResponse',
+    sequencerState: { _type: 'Loaded' },
+    stepList: new StepList([])
   }
 
   it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
@@ -116,22 +123,18 @@ describe('CurrentObsMode', () => {
     await screen.findByText('Sequencer not found')
   })
 
-  it(`should render reload script button if sequencer available | ESW-506`, async () => {
+  it(`should render reload script button when sequencer becomes available | ESW-506`, async () => {
     const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
-      onEvent({
-        _type: 'SequencerStateResponse',
-        sequencerState: { _type: 'Loaded' },
-        stepList: new StepList([])
-      })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((cb) => {
+      cb(sequencerStateResponse)
       return {
         cancel: () => undefined
       }
     })
 
     when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
-      cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
+      sendEvent(cb, { _type: 'LocationUpdated', location: eswSequencerLocation }, 400)
       return {
         cancel: () => ({})
       }
@@ -150,19 +153,23 @@ describe('CurrentObsMode', () => {
       )
     })
 
-    const sequencer1 = await screen.findByRole('row', { name: /ESW.DarkNight_1/ })
-    await within(sequencer1).findByText(sequencerActionConstants.reloadScript)
+    const sequencerCell = /setting esw\.darknight_1 close/i
+    const row = await screen.findByRole('row', { name: /esw\.darknight_1/i })
+
+    //checks that sequencer is not running
+    await within(row).findByRole('cell', { name: sequencerCell })
+    await within(row).findByText(sequencerActionConstants.startSequencer)
+
+    //checks that sequencer is up and running
+    await waitFor(() => expect(within(row).queryByRole('cell', { name: sequencerCell })).to.not.exist)
+    await within(row).findByText(sequencerActionConstants.reloadScript)
   })
 
-  it('should update sequencer table if sequencer is stopped in background', async () => {
+  it('should update sequencer table if sequencer is stopped in background | ESW-506', async () => {
     const { smService, locationService } = mockServices.mock
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((onEvent) => {
-      onEvent({
-        _type: 'SequencerStateResponse',
-        sequencerState: { _type: 'Loaded' },
-        stepList: new StepList([])
-      })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((cb) => {
+      cb(sequencerStateResponse)
       return {
         cancel: () => undefined
       }
@@ -189,11 +196,16 @@ describe('CurrentObsMode', () => {
       )
     })
 
-    const sequencerRow = /setting esw\.darknight_1 close/i
+    const sequencerCell = /setting esw\.darknight_1 close/i
+    const row = await screen.findByRole('row', { name: /esw\.darknight_1/i })
 
-    await waitFor(() => expect(screen.queryByRole('cell', { name: sequencerRow })).to.not.exist)
+    //checks that sequencer is up and running
+    await waitFor(() => expect(within(row).queryByRole('cell', { name: sequencerCell })).to.not.exist)
+    await within(row).findByText(sequencerActionConstants.reloadScript)
 
-    await screen.findByRole('cell', { name: sequencerRow })
+    //checks that sequencer is not running
+    await within(row).findByRole('cell', { name: sequencerCell })
+    await within(row).findByText(sequencerActionConstants.startSequencer)
   })
 })
 

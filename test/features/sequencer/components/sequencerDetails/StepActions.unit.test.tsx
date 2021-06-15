@@ -6,6 +6,9 @@ import React from 'react'
 import { StepActions } from '../../../../../src/features/sequencer/components/steplist/StepActions'
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
 import {
+  addStepConstants,
+  deleteStepConstants,
+  duplicateStepConstants,
   insertBreakPointConstants,
   removeBreakPointConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
@@ -47,11 +50,11 @@ describe('StepActions', () => {
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
-      name: /insert breakpoint/i
+      name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
 
     const deleteMenu = (await screen.findByRole('menuitem', {
-      name: /delete/i
+      name: new RegExp(deleteStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
@@ -64,15 +67,15 @@ describe('StepActions', () => {
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
-      name: /insert breakpoint/i
+      name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
 
     const deleteMenu = (await screen.findByRole('menuitem', {
-      name: /delete/i
+      name: new RegExp(deleteStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add steps/i
+      name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
@@ -86,15 +89,15 @@ describe('StepActions', () => {
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
-      name: /insert breakpoint/i
+      name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
 
     const deleteMenu = (await screen.findByRole('menuitem', {
-      name: /delete/i
+      name: new RegExp(deleteStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add steps/i
+      name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
@@ -108,15 +111,15 @@ describe('StepActions', () => {
     })
     userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
-      name: /insert breakpoint/i
+      name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
 
     const deleteMenu = (await screen.findByRole('menuitem', {
-      name: /delete/i
+      name: new RegExp(deleteStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     const addAStepMenu = (await screen.findByRole('menuitem', {
-      name: /add steps/i
+      name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
@@ -143,7 +146,7 @@ describe('StepActions', () => {
     userEvent.click(await screen.findByRole('stepActions'))
 
     const duplicateMenu = (await screen.findByRole('menuitem', {
-      name: /duplicate/i
+      name: new RegExp(duplicateStepConstants.menuItemText)
     })) as HTMLMenuElement
 
     expect(duplicateMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
@@ -168,7 +171,7 @@ describe('StepActions', () => {
     userEvent.click(await screen.findByRole('stepActions'))
 
     const addStepsMenu = (await screen.findByRole('menuitem', {
-      name: /add steps/i
+      name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
     const addStepsDiv = (await screen.findByRole('addSteps')) as HTMLDivElement
 

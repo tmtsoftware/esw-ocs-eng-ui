@@ -79,7 +79,7 @@ describe('AddSteps', () => {
       })
 
       const addStepsButton = await screen.findByRole('button', {
-        name: /add steps/i
+        name: new RegExp(addStepConstants.menuItemText)
       })
       userEvent.click(addStepsButton)
 
@@ -111,7 +111,7 @@ describe('AddSteps', () => {
     })
 
     const addStepsButton = await screen.findByRole('button', {
-      name: /add steps/i
+      name: new RegExp(addStepConstants.menuItemText)
     })
     userEvent.click(addStepsButton)
 

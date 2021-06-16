@@ -1,4 +1,4 @@
-import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Popconfirm, Typography } from 'antd'
 import React from 'react'
 import { useSMService } from '../../../../contexts/SMContext'
@@ -16,7 +16,10 @@ export const SmSequencerAction = ({
   const [smContext, smLoading] = useSMService()
   const smService = smContext?.smService
   const reloadAction = useReloadScriptAction(sequencerPrefix.subsystem, sequencerPrefix.componentName)
-  const startSequencerAction = useStartSequencerAction(sequencerPrefix.subsystem, sequencerPrefix.componentName)
+  const startSequencerAction = useStartSequencerAction(
+    sequencerPrefix.subsystem,
+    new ObsMode(sequencerPrefix.componentName)
+  )
 
   if (!sequencerState) {
     return (

@@ -1,41 +1,11 @@
-import { ObsMode, SequenceManagerService, StartSequencerResponse, subsystems } from '@tmtsoftware/esw-ts'
-import type { Subsystem } from '@tmtsoftware/esw-ts'
+import { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
+import { subsystems } from '@tmtsoftware/esw-ts'
 import { AutoComplete, Button, Form, message, Modal, Select } from 'antd'
 import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
-import { useMutation } from '../../../hooks/useMutation'
-import { errorMessage, successMessage } from '../../../utils/message'
-import { AGENTS_STATUS } from '../../queryKeys'
 import { GroupedObsModeDetails, useObsModesDetails } from '../hooks/useObsModesDetails'
+import { useStartSequencerAction } from '../hooks/useStartSequencerAction'
 import { startSequencerConstants } from '../smConstants'
-
-const handleResponse = (res: StartSequencerResponse) => {
-  switch (res._type) {
-    case 'Started':
-      return res.componentId
-
-    case 'AlreadyRunning':
-      throw new Error(startSequencerConstants.getAlreadyRunningErrorMessage(res.componentId.prefix.toJSON()))
-
-    case 'LoadScriptError':
-      throw new Error(res.reason)
-
-    case 'LocationServiceError':
-      throw new Error(res.reason)
-
-    case 'SequenceComponentNotAvailable':
-      throw new Error(res.msg)
-
-    case 'Unhandled':
-      throw new Error(res.msg)
-
-    case 'FailedResponse':
-      throw new Error(res.reason)
-  }
-}
-
-const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
-  smService.startSequencer(subsystem, obsMode).then(handleResponse)
 
 export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Element => {
   const emptyString = ''
@@ -56,12 +26,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
     setSubsystem(undefined)
   }
 
-  const startSequencerAction = useMutation({
-    mutationFn: startSequencer(subsystem as Subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
-    onSuccess: () => successMessage(startSequencerConstants.successMessage),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
-  })
+  const startSequencerAction = useStartSequencerAction(subsystem as Subsystem, new ObsMode(obsMode))
   const showModal = () => {
     setIsModalVisible(true)
   }

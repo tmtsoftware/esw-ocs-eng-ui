@@ -17,103 +17,38 @@ describe('Start Sequencer', () => {
   const smService = mockServices.mock.smService
 
   const componentId = new ComponentId(new Prefix(ESW, obsModeName), 'Sequencer')
-  const tests: [string, StartSequencerResponse, string][] = [
-    [
-      'success',
-      {
-        _type: 'Started',
-        componentId
-      },
-      startSequencerConstants.successMessage
-    ],
-    [
-      'locationServiceError',
-      {
-        _type: 'LocationServiceError',
-        reason: 'Sequencer component not found'
-      },
-      _createErrorMsg(startSequencerConstants.failureMessage, 'Sequencer component not found')
-    ],
-    [
-      'Unhandled',
-      {
-        _type: 'Unhandled',
-        msg: 'StartSequencer message type is not supported in Processing state',
-        state: 'Idle',
-        messageType: 'Unhandled'
-      },
-      _createErrorMsg(
-        startSequencerConstants.failureMessage,
-        'StartSequencer message type is not supported in Processing state'
-      )
-    ],
-    [
-      'AlreadyRunning',
-      {
-        _type: 'AlreadyRunning',
-        componentId
-      },
-      _createErrorMsg(
-        startSequencerConstants.failureMessage,
-        startSequencerConstants.getAlreadyRunningErrorMessage(componentId.prefix.toJSON())
-      )
-    ],
-    [
-      'LoadScriptError',
-      { _type: 'LoadScriptError', reason: 'Script missing' },
-      _createErrorMsg(startSequencerConstants.failureMessage, 'Script missing')
-    ],
-    [
-      'SequenceComponentNotAvailable',
-      {
-        _type: 'SequenceComponentNotAvailable',
-        msg: 'Sequencer component not found',
-        subsystems: []
-      },
-      _createErrorMsg(startSequencerConstants.failureMessage, 'Sequencer component not found')
-    ],
-    [
-      'FailedResponse',
-      {
-        _type: 'FailedResponse',
-        reason: 'LoadScript message timed out'
-      },
-      _createErrorMsg(startSequencerConstants.failureMessage, 'LoadScript message timed out')
-    ]
-  ]
 
   beforeEach(() => {
     reset(smService)
   })
 
-  tests.forEach(([testname, response, message]) => {
-    it(`should return ${testname} | ESW-447, ESW-507`, async () => {
-      when(smService.getObsModesDetails()).thenResolve(obsModesData)
-      when(smService.startSequencer(ESW, deepEqual(obsMode))).thenResolve(response)
-
-      renderWithAuth({
-        ui: <StartSequencer />
-      })
-
-      const startSequencerButton = screen.getByRole('button', {
-        name: startSequencerConstants.buttonText
-      })
-      userEvent.click(startSequencerButton)
-
-      const modal = await screen.findByRole('dialog', {
-        name: startSequencerConstants.modalTitle
-      })
-      await enterUserInputInSelect(modal, startSequencerConstants.subsystemInputLabel, 'es', ESW)
-
-      await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsModeName)
-
-      const confirmButton = screen.getByRole('button', { name: startSequencerConstants.modalOkText })
-      userEvent.click(confirmButton)
-
-      await screen.findByText(message)
-      verify(smService.startSequencer(ESW, deepEqual(obsMode))).called()
-      await waitFor(() => expect(screen.queryByText(startSequencerConstants.modalTitle)).to.null)
+  it('should start the sequencer for given subsystem and obsmode | ESW-447, ESW-507', async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+    when(smService.startSequencer(ESW, deepEqual(obsMode))).thenResolve({
+      _type: 'Started',
+      componentId
     })
+
+    renderWithAuth({ ui: <StartSequencer /> })
+
+    const startSequencerButton = screen.getByRole('button', {
+      name: startSequencerConstants.buttonText
+    })
+    userEvent.click(startSequencerButton)
+
+    const modal = await screen.findByRole('dialog', {
+      name: startSequencerConstants.modalTitle
+    })
+    await enterUserInputInSelect(modal, startSequencerConstants.subsystemInputLabel, 'es', ESW)
+
+    await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsModeName)
+
+    const confirmButton = screen.getByRole('button', { name: startSequencerConstants.modalOkText })
+    userEvent.click(confirmButton)
+
+    await screen.findByText(startSequencerConstants.successMessage)
+    verify(smService.startSequencer(ESW, deepEqual(obsMode))).called()
+    await waitFor(() => expect(screen.queryByText(startSequencerConstants.modalTitle)).to.null)
   })
 
   it('should open modal and render a form containing subsystem and obsmode input| ESW-447', async () => {

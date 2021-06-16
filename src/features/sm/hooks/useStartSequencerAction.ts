@@ -35,10 +35,10 @@ const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: S
 
 export const useStartSequencerAction = (
   subsystem: Subsystem,
-  obsMode: string
+  obsMode: ObsMode
 ): UseMutationResult<ComponentId | undefined, unknown, SequenceManagerService> =>
   useMutation({
-    mutationFn: startSequencer(subsystem, new ObsMode(obsMode)),
+    mutationFn: startSequencer(subsystem, obsMode),
     onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
     onSuccess: () => successMessage(startSequencerConstants.successMessage),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

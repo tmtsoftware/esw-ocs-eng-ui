@@ -2,7 +2,7 @@ import { ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Popconfirm, Typography } from 'antd'
 import React from 'react'
 import { useSMService } from '../../../../contexts/SMContext'
-import { useReloadScriptAction } from '../../hooks/reloadScriptAction'
+import { useReloadScriptAction } from '../../hooks/useReloadScriptAction'
 import { useStartSequencerAction } from '../../hooks/useStartSequencerAction'
 import { sequencerActionConstants } from '../../smConstants'
 

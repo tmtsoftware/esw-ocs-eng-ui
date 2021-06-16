@@ -29,7 +29,6 @@ export const useReloadScriptAction = (
 ): UseMutationResult<RestartSequencerResponse | undefined, unknown, SequenceManagerService> => {
   const reloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
     smService.restartSequencer(subsystem, obsMode).then(handleReloadScriptResponse)
-  console.log(reloadScript)
   return useMutation({
     mutationFn: reloadScript(subsystem, new ObsMode(obsMode)),
     onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${subsystem}.${obsMode}`), e),

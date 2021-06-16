@@ -1,10 +1,27 @@
-import type { RestartSequencerResponse, SequenceManagerService } from '@tmtsoftware/esw-ts'
+import type { RestartSequencerResponse, RestartSequencerSuccess, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { reloadScriptConstants } from '../smConstants'
-import { handleReloadScriptResponse } from '../smUtils'
+
+export const handleReloadScriptResponse = (res: RestartSequencerResponse): RestartSequencerSuccess => {
+  switch (res._type) {
+    case 'Success':
+      return res
+    case 'LoadScriptError':
+      throw new Error(res.reason)
+
+    case 'LocationServiceError':
+      throw new Error(res.reason)
+
+    case 'Unhandled':
+      throw new Error(res.msg)
+
+    case 'FailedResponse':
+      throw new Error(res.reason)
+  }
+}
 
 export const useReloadScriptAction = (
   subsystem: Subsystem,

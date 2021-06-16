@@ -1,5 +1,5 @@
-import { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
-import { subsystems } from '@tmtsoftware/esw-ts'
+import { ObsMode, Subsystem, subsystems } from '@tmtsoftware/esw-ts'
+
 import { AutoComplete, Button, Form, message, Modal, Select } from 'antd'
 import React, { useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'

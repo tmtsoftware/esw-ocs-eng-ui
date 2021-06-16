@@ -1,12 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentId, ObsMode, Prefix, StartSequencerResponse } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
 import { startSequencerConstants } from '../../../../src/features/sm/smConstants'
-import { _createErrorMsg } from '../../../../src/utils/message'
 import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 

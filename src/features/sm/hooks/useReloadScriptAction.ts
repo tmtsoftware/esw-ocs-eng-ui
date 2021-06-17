@@ -5,7 +5,7 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { reloadScriptConstants } from '../smConstants'
 
-export const handleReloadScriptResponse = (res: RestartSequencerResponse): RestartSequencerSuccess => {
+const handleReloadScriptResponse = (res: RestartSequencerResponse): RestartSequencerSuccess => {
   switch (res._type) {
     case 'Success':
       return res
@@ -29,6 +29,7 @@ export const useReloadScriptAction = (
 ): UseMutationResult<RestartSequencerResponse | undefined, unknown, SequenceManagerService> => {
   const reloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
     smService.restartSequencer(subsystem, obsMode).then(handleReloadScriptResponse)
+
   return useMutation({
     mutationFn: reloadScript(subsystem, new ObsMode(obsMode)),
     onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${subsystem}.${obsMode}`), e),

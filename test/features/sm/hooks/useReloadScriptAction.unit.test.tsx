@@ -24,6 +24,8 @@ describe('Reload script', () => {
   const obsMode = new ObsMode('Darknight')
   const subsystem = 'ESW'
   const componentId = new ComponentId(new Prefix(subsystem, obsMode.toJSON()), 'Sequencer')
+  const failureMessage = reloadScriptConstants.getFailureMessage(`${subsystem}.${obsMode.toJSON()}`)
+
   const responseScenarios: [string, RestartSequencerResponse, string][] = [
     [
       'Success',
@@ -39,9 +41,7 @@ describe('Reload script', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer location not found'
       },
-      `${reloadScriptConstants.getFailureMessage(
-        `${subsystem}.${obsMode.toJSON()}`
-      )}, reason: Sequencer location not found`
+      `${failureMessage}, reason: Sequencer location not found`
     ],
     [
       'Unhandled',
@@ -51,9 +51,7 @@ describe('Reload script', () => {
         messageType: 'RestartSequencer',
         msg: "Sequence Manager can not accept 'RestartSequencer' message in 'Processing'"
       },
-      `${reloadScriptConstants.getFailureMessage(
-        `${subsystem}.${obsMode.toJSON()}`
-      )}, reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
+      `${failureMessage}, reason: Sequence Manager can not accept 'RestartSequencer' message in 'Processing'`
     ],
     [
       'FailedResponse',
@@ -61,9 +59,7 @@ describe('Reload script', () => {
         _type: 'FailedResponse',
         reason: 'Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms'
       },
-      `${reloadScriptConstants.getFailureMessage(
-        `${subsystem}.${obsMode.toJSON()}`
-      )}, reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
+      `${failureMessage}, reason: Sequence Manager Operation(RestartSequencer) failed due to: Ask timed out after [10000] ms`
     ]
   ]
 

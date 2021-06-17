@@ -11,6 +11,7 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('Shutdown button for Sequencer ', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
   const smService = mockServices.mock.smService
+  const failureMessage = observationShutdownConstants.getFailureMessage(obsMode)
 
   const tests: [string, ShutdownSequencersResponse, string][] = [
     [
@@ -26,7 +27,7 @@ describe('Shutdown button for Sequencer ', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer location not found'
       },
-      `${observationShutdownConstants.getFailureMessage(obsMode)}, reason: Sequencer location not found`
+      `${failureMessage}, reason: Sequencer location not found`
     ],
     [
       'Unhandled',
@@ -36,9 +37,7 @@ describe('Shutdown button for Sequencer ', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      `${observationShutdownConstants.getFailureMessage(
-        obsMode
-      )}, reason: Shutdown message type is not supported in Processing state`
+      `${failureMessage}, reason: Shutdown message type is not supported in Processing state`
     ],
     [
       'FailedResponse',
@@ -46,7 +45,7 @@ describe('Shutdown button for Sequencer ', () => {
         _type: 'FailedResponse',
         reason: 'Shutdown message timed out'
       },
-      `${observationShutdownConstants.getFailureMessage(obsMode)}, reason: Shutdown message timed out`
+      `${failureMessage}, reason: Shutdown message timed out`
     ]
   ]
 

@@ -151,27 +151,22 @@ describe('Configure button', () => {
     verify(smService.getObsModesDetails()).called()
   })
 
+  const failureMessage = configureConstants.getFailureMessage('ESW_DARKNIGHT')
+
   const testcases: Array<[ConfigureResponse, string]> = [
-    [locationServiceError, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: LocationNotFound`],
+    [locationServiceError, `${failureMessage}, reason: LocationNotFound`],
     [
       conflictingResourcesResponse,
-      `${configureConstants.getFailureMessage(
-        'ESW_DARKNIGHT'
-      )}, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY`
+      `${failureMessage}, reason: ESW_DARKNIGHT is conflicting with currently running Observation Modes. Running ObsModes: ESW_CLEARSKY`
     ],
-    [
-      configurationMissingResponse,
-      `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: ConfigurationMissing for ESW_DARKNIGHT`
-    ],
+    [configurationMissingResponse, `${failureMessage}, reason: ConfigurationMissing for ESW_DARKNIGHT`],
     [
       failedToStartSequencersResponse,
-      `${configureConstants.getFailureMessage(
-        'ESW_DARKNIGHT'
-      )}, reason: Failed to start Sequencers as sequence component not found`
+      `${failureMessage}, reason: Failed to start Sequencers as sequence component not found`
     ],
-    [sequenceComponentNotAvailable, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Not Available`],
-    [unhandled, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Bad request`],
-    [failedResponse, `${configureConstants.getFailureMessage('ESW_DARKNIGHT')}, reason: Configure message timed out`]
+    [sequenceComponentNotAvailable, `${failureMessage}, reason: Not Available`],
+    [unhandled, `${failureMessage}, reason: Bad request`],
+    [failedResponse, `${failureMessage}, reason: Configure message timed out`]
   ]
 
   testcases.map(([response, message]) => {

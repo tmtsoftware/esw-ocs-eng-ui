@@ -15,6 +15,7 @@ describe('Stop Sequencer', () => {
   const obsMode = new ObsMode('DarkNight')
   const smService = mockServices.mock.smService
   const seqPrefix = new Prefix('ESW', obsMode.name)
+  const failureMessage = stopSequencerConstants.failureMessage(seqPrefix)
   const tests: [string, ShutdownSequencersResponse, string][] = [
     [
       'success',
@@ -29,7 +30,7 @@ describe('Stop Sequencer', () => {
         _type: 'LocationServiceError',
         reason: 'Sequencer component not found'
       },
-      _createErrorMsg(stopSequencerConstants.failureMessage(seqPrefix), 'Sequencer component not found')
+      _createErrorMsg(failureMessage, 'Sequencer component not found')
     ],
     [
       'Unhandled',
@@ -39,10 +40,7 @@ describe('Stop Sequencer', () => {
         state: 'Idle',
         messageType: 'Unhandled'
       },
-      _createErrorMsg(
-        stopSequencerConstants.failureMessage(seqPrefix),
-        'ShutdownSequencer message type is not supported in Processing state'
-      )
+      _createErrorMsg(failureMessage, 'ShutdownSequencer message type is not supported in Processing state')
     ],
     [
       'FailedResponse',
@@ -50,7 +48,7 @@ describe('Stop Sequencer', () => {
         _type: 'FailedResponse',
         reason: 'Unload message timed out'
       },
-      _createErrorMsg(stopSequencerConstants.failureMessage(seqPrefix), 'Unload message timed out')
+      _createErrorMsg(failureMessage, 'Unload message timed out')
     ]
   ]
 

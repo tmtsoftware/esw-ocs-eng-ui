@@ -69,17 +69,22 @@ type StepListTitleProps = {
   stepListStatus: StepListStatus
 }
 
-const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => (
-  <Col role='stepListTitle'>
-    <Typography.Title level={5} style={{ marginBottom: 0 }}>
-      Sequence Steps
-    </Typography.Title>
-    <Space>
-      <Typography.Text type={'secondary'}>Status:</Typography.Text>
-      <Typography.Text type={statusTextType[stepListStatus]}>{stepListStatus}</Typography.Text>
-    </Space>
-  </Col>
-)
+const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => {
+  const style = stepListStatus === 'All Steps Completed' ? { fontWeight: 'bold' as const } : {}
+  return (
+    <Col role='stepListTitle'>
+      <Typography.Title level={5} style={{ marginBottom: 0 }}>
+        Sequence Steps
+      </Typography.Title>
+      <Space>
+        <Typography.Text type={'secondary'}>Status:</Typography.Text>
+        <Typography.Text style={style} type={statusTextType[stepListStatus]}>
+          {stepListStatus}
+        </Typography.Text>
+      </Space>
+    </Col>
+  )
+}
 
 const StepListHeader = ({
   stepListInfo,
@@ -93,7 +98,7 @@ const StepListHeader = ({
   const [currentStepId, nextStepId] = getCurrentAndNextStepId(stepList, currentStepIndex)
 
   return (
-    <Row style={{ margin: '1rem 1rem' }} justify={'space-between'} align='middle'>
+    <Row style={{ margin: '1.5rem 1rem 1.5rem 1rem' }} justify={'space-between'} align='middle'>
       <StepListTitle stepListStatus={stepListInfo.status} />
       <Space align='center'>
         <PlayPauseSequence
@@ -172,6 +177,7 @@ export const StepListTable = ({
       <div style={{ height: '90%' }}>
         <StepListHeader sequencerStateResponse={sequencerStateResponse} stepListInfo={stepListInfo} />
         <Table
+          sticky
           showHeader={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
@@ -186,7 +192,6 @@ export const StepListTable = ({
             id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
           })}
-          sticky
         />
       </div>
       {isDuplicateEnabled && <DuplicateAction commands={commands} />}

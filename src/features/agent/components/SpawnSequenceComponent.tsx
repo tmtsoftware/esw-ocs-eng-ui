@@ -73,6 +73,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
           type='text'
+          style={{ paddingTop: '0.33rem' }}
           icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
           loading={isLoading || spawnSequenceComponentAction.isLoading}
         />

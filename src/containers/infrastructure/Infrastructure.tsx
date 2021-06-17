@@ -32,10 +32,10 @@ const SmStatusCard = (): JSX.Element => {
       <Typography.Text className={styles.pageTitle}>Sequence Manager</Typography.Text>
       <Meta
         description={
-          <>
-            <Typography.Text type='secondary'>{' Status: '}</Typography.Text>
+          <Space>
+            <Typography.Text type='secondary'>{' Status:'}</Typography.Text>
             <SMStatus />
-          </>
+          </Space>
         }
       />
     </Space>

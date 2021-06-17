@@ -28,16 +28,13 @@ const columns = [
 
 export const ResourcesTable = ({ resources }: ResourcesTableProps): JSX.Element => {
   return (
-    <div style={{ height: '100%', overflowY: 'scroll' }}>
-      <Table
-        sticky
-        style={{ marginBottom: '1rem' }}
-        onRow={() => ({ style: { fontSize: '1rem' } })}
-        pagination={false}
-        columns={columns}
-        dataSource={resources}
-        bordered
-      />
-    </div>
+    <Table
+      style={{ marginBottom: '1rem' }}
+      onRow={() => ({ style: { fontSize: '1rem' } })}
+      pagination={false}
+      columns={columns}
+      dataSource={resources}
+      bordered
+    />
   )
 }

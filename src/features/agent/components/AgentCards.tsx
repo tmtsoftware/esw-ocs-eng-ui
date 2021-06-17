@@ -28,6 +28,7 @@ const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element
 
   return (
     <Card
+      headStyle={{ paddingRight: '0.75rem' }}
       className={styles.agentCard}
       title={<Typography.Text>{agentName}</Typography.Text>}
       extra={<SpawnSequenceComponent agentPrefix={agentPrefix} />}

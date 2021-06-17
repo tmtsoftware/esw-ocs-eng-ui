@@ -75,7 +75,8 @@ tr#selectedRow > td:last-child::after {
   height: 0.75rem;
 }
 
-.stepInfo {
+.stepInfo,
+.emptyStepInfo {
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -33,6 +33,6 @@ const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element =>
 
 export const StepActions = ({ step }: { step: Step }): JSX.Element => (
   <Dropdown overlay={() => <StepActionsMenu step={step} />} trigger={['click']}>
-    <MoreOutlined style={{ fontSize: '1.5rem' }} role='stepActions' />
+    <MoreOutlined className={styles.actionEnabled} style={{ fontSize: '1.5rem' }} role='stepActions' />
   </Dropdown>
 )

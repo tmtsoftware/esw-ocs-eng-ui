@@ -48,7 +48,7 @@ const createDataSource = (paramSet: Parameter<Key>[]): ParameterDataType[] =>
   }))
 
 export const ParameterTable = ({ paramSet }: { paramSet: Parameter<Key>[] }): JSX.Element => (
-  <div style={{ height: '100%', overflowY: 'scroll' }}>
+  <div style={{ marginTop: '0.5rem', height: '100%', overflowY: 'scroll' }}>
     <Table
       sticky
       rowKey={(row) => row.parameter}

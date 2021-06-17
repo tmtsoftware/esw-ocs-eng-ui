@@ -12,13 +12,14 @@
 .iconBox {
   display: flex;
   align-items: center;
-  padding-left: 0.625rem;
+  padding-left: 1rem;
 }
 
 .addSeqCompIcon {
   font-size: 1.35rem;
 }
 
+.icon:hover,
 .addSeqCompIcon:hover {
   color: var(--activeColor);
 }

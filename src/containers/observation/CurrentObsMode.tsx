@@ -73,7 +73,7 @@ const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerSt
 
   return (
     <Space>
-      <Text type='secondary' content='Status: ' />
+      <Text type='secondary' content='Status:' />
       {status}
     </Space>
   )
@@ -157,7 +157,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   return (
     <Card
-      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', borderTop: 'none' }}
       headStyle={{ paddingBottom: '0.75rem' }}
       bodyStyle={{ overflowY: 'scroll', height: '100%' }}
       title={
@@ -166,11 +166,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
           <Status sequencerState={sequencerState} isRunning={isRunningTab} />
         </>
       }
-      extra={
-        <Space style={{ paddingRight: '2.5rem' }}>
-          <ObsModeActions tabName={currentTab} obsMode={obsMode} />
-        </Space>
-      }>
+      extra={<ObsModeActions tabName={currentTab} obsMode={obsMode} />}>
       {isRunningTab && <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />}
       <ResourcesTable resources={resources} />
     </Card>

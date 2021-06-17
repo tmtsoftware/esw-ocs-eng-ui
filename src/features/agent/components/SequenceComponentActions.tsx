@@ -57,6 +57,6 @@ export const SequencerActions = ({ componentId, sequencerPrefix }: SequencerActi
   <Dropdown
     overlay={() => <SequencerActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix} />}
     trigger={['click']}>
-    <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequencerActions' />
+    <MoreOutlined className={styles.icon} style={{ fontSize: '1.5rem' }} role='sequencerActions' />
   </Dropdown>
 )

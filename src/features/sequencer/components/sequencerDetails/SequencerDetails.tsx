@@ -1,8 +1,9 @@
 import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
-import { Badge, Card, Descriptions, Empty, Layout, Space, Typography } from 'antd'
+import { Badge, Descriptions, Empty, Layout, Space, Typography } from 'antd'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
+import globalStyles from '../../../../index.module.css'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubscription'
 import { sequencerDetailsConstants } from '../../sequencerConstants'
@@ -62,7 +63,7 @@ const StepItem = (label: string, item: string) => {
 
 const StepInfo = ({ step }: { step: Step }) => (
   <div className={styles.stepInfo}>
-    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }}>
+    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }} size={'small'}>
       {StepItem('Command', step.command.commandName)}
       {StepItem('Source', step.command.source.toJSON())}
       {StepItem('Command Type', step.command._type.toString())}
@@ -72,10 +73,10 @@ const StepInfo = ({ step }: { step: Step }) => (
   </div>
 )
 
-const EmptyStep = () => (
-  <Card style={{ height: '100%' }}>
+const EmptyStepInfo = () => (
+  <div className={globalStyles.centeredFlexElement + ' ' + styles.emptyStepInfo}>
     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-  </Card>
+  </div>
 )
 
 const SequencerTitle = ({
@@ -126,7 +127,7 @@ export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element =>
             sequencerStateResponse={sequencerStateResponse}
           />
         </Sider>
-        <Content>{selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStep />}</Content>
+        <Content>{selectedStep ? <StepInfo step={selectedStep} /> : <EmptyStepInfo />}</Content>
       </Layout>
     </>
   )

@@ -127,7 +127,7 @@ describe('observation tabs', () => {
       )
     })
     await screen.findAllByRole('table')
-    const [sequencerTable, resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
+    const [sequencerTable, resourcesTable] = screen.getAllByRole('table')
 
     assertTableHeader(sequencerTable, 'Sequencers')
     assertTableHeader(sequencerTable, 'Sequence Status')
@@ -136,8 +136,8 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })).to.have.length(0)
-    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(2)
+    expect(within(resourcesTable).queryAllByRole('row', { name: /Available/i })).to.have.length(0)
+    expect(within(resourcesTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(2)
   })
 
   it(`should render only resources with available status on configurable tab| ESW-451, ESW-453, ESW-489`, async () => {
@@ -147,8 +147,8 @@ describe('observation tabs', () => {
       ui: <ObservationTab tabName='Configurable' setObservation={() => ({})} />
     })
 
-    await screen.findAllByRole('table')
-    const [resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
+    await screen.findByRole('table')
+    const resourcesTable = screen.getByRole('table')
 
     assertTableHeaderNotPresent('Sequencers')
     assertTableHeaderNotPresent('Sequence Status')
@@ -157,8 +157,8 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /Available/i })).to.have.length(2)
-    expect(within(resourcesBodyTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(0)
+    expect(within(resourcesTable).queryAllByRole('row', { name: /Available/i })).to.have.length(2)
+    expect(within(resourcesTable).queryAllByRole('row', { name: /InUse/i })).to.have.length(0)
   })
 
   it(`should render only resources table with appropriate status on non-configurable tab | ESW-451, ESW-453, ESW-489`, async () => {
@@ -168,8 +168,8 @@ describe('observation tabs', () => {
       ui: <ObservationTab tabName='Non-configurable' setObservation={() => ({})} />
     })
 
-    await screen.findAllByRole('table')
-    const [resourcesTable, resourcesBodyTable] = screen.queryAllByRole('table')
+    await screen.findByRole('table')
+    const resourcesTable = screen.getByRole('table')
 
     assertTableHeaderNotPresent('Sequencers')
     assertTableHeaderNotPresent('Sequence Status')
@@ -178,8 +178,8 @@ describe('observation tabs', () => {
     assertTableHeader(resourcesTable, 'Resource Required')
     assertTableHeader(resourcesTable, 'Status')
 
-    expect(within(resourcesBodyTable).getByRole('row', { name: 'IRIS Available' })).to.exist
-    expect(within(resourcesBodyTable).getByRole('row', { name: 'WFOS Available' })).to.exist
-    expect(within(resourcesBodyTable).getByRole('row', { name: 'ESW InUse' })).to.exist
+    expect(within(resourcesTable).getByRole('row', { name: 'IRIS Available' })).to.exist
+    expect(within(resourcesTable).getByRole('row', { name: 'WFOS Available' })).to.exist
+    expect(within(resourcesTable).getByRole('row', { name: 'ESW InUse' })).to.exist
   })
 })

@@ -16,6 +16,7 @@ describe('sequencer details selected step', () => {
   beforeEach(() => {
     windowHeight = window.innerHeight
     windowWidth = window.innerWidth
+    reset(sequencerServiceMock)
   })
   afterEach(async () => {
     //Reset the viewport
@@ -57,7 +58,7 @@ describe('sequencer details selected step', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
       sendEvent(callback, 'Running', stepListWithStep1InProgress)
-      sendEvent(callback, 'Running', stepListWithStep2InProgress, 400)
+      sendEvent(callback, 'Running', stepListWithStep2InProgress, 700)
       return {
         cancel: () => undefined
       }
@@ -71,7 +72,7 @@ describe('sequencer details selected step', () => {
     await screen.findByText('ESW.test1')
 
     //After some time , a new event is received, step2 in executng, ui should show step2 details on right side
-    await assertRunningStepIs(/Command-2/i, 500)
+    await assertRunningStepIs(/Command-2/i, 1200)
     await screen.findByText('ESW.test2')
   })
 

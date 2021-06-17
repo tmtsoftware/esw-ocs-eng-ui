@@ -49,7 +49,7 @@ const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: Se
 
 export const SequenceComponentActions = ({ componentId }: SequenceComponentActionProps): JSX.Element => (
   <Dropdown overlay={() => <SequenceComponentActionsMenu componentId={componentId} />} trigger={['click']}>
-    <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
+    <MoreOutlined className={styles.icon} style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
   </Dropdown>
 )
 

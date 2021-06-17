@@ -4,7 +4,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from './agentCards.module.css'
-import { SequenceComponentActions } from './SequenceComponentActions'
+import { SequenceComponentActions, SequencerActions } from './SequenceComponentActions'
 
 type SequencerProps = {
   seqCompPrefix: Prefix
@@ -58,7 +58,8 @@ export const SequenceComponentCard = ({ seqCompId, sequencerPrefix }: SequenceCo
         <SequenceComponentOrSequencer />
       </Col>
       <Col className={styles.iconBox}>
-        <SequenceComponentActions componentId={seqCompId} sequencerPrefix={sequencerPrefix} />
+        {!sequencerPrefix && <SequenceComponentActions componentId={seqCompId} />}
+        {sequencerPrefix && <SequencerActions componentId={seqCompId} sequencerPrefix={sequencerPrefix} />}
       </Col>
     </Row>
   )

@@ -45,7 +45,8 @@ describe('Agents Grid View', () => {
     expect(screen.getByText('ESW.ESW1')).exist
     expect(screen.getByText('ESW.ESW2')).exist
     expect(screen.getByText('[ESW.darkNight]')).exist
-    expect(screen.getAllByRole('sequenceCompActions')).length(2)
+    expect(screen.getAllByRole('sequenceCompActions')).length(1)
+    expect(screen.getAllByRole('sequencerActions')).length(1)
     expect(screen.getByRole('addSeqCompIcon')).exist
 
     verify(agentService.getAgentStatus()).called()
@@ -68,7 +69,8 @@ describe('Agents Grid View', () => {
     await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('ESW.machine2')).exist
-    expect(screen.getAllByRole('sequenceCompActions')).length(2)
+    expect(screen.getAllByRole('sequenceCompActions')).length(1)
+    expect(screen.getAllByRole('sequencerActions')).length(1)
     expect(screen.getAllByRole('addSeqCompIcon')).length(2)
     verify(agentService.getAgentStatus()).called()
   })
@@ -190,7 +192,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should kill sequence components on agent| ESW-446,  ESW-502', async () => {
-    const seqCompPrefix = new Prefix('ESW', 'ESW1')
+    const seqCompPrefix = new Prefix('ESW', 'ESW2')
     when(agentService.killComponent(deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent')))).thenResolve({
       _type: 'Killed'
     })
@@ -209,7 +211,7 @@ describe('Agents Grid View', () => {
       )
     })
     // first find the dropdown menu
-    const [sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
+    const sequenceCompActions = await screen.findByRole('sequenceCompActions')
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     const killSequenceComponent = await screen.findByText(killSequenceComponentConstants.menuItemText)
@@ -221,7 +223,7 @@ describe('Agents Grid View', () => {
 
     userEvent.click(confirm)
 
-    await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW1'))
+    await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW2'))
 
     verify(agentService.getAgentStatus()).called()
   })
@@ -241,14 +243,13 @@ describe('Agents Grid View', () => {
       )
     })
     // first find the dropdown menu
-    const [, sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
+    const sequenceCompActions = await screen.findByRole('sequenceCompActions')
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
     await waitFor(() => expect(screen.queryByText(killSequenceComponentConstants.menuItemText)).to.exist)
     await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.exist)
     await waitFor(() => expect(screen.queryByText(reloadScriptConstants.menuItemText)).to.null)
-    await waitFor(() => expect(screen.queryByText(stopSequencerConstants.menuItemText)).to.null)
   })
 
   it('should display menu items applicable to sequencer | ESW-502', async () => {
@@ -266,13 +267,14 @@ describe('Agents Grid View', () => {
       )
     })
     // first find the dropdown menu
-    const [sequenceCompActions] = await screen.findAllByRole('sequenceCompActions')
+    const sequenceCompActions = await screen.findByRole('sequencerActions')
     await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
     await screen.findByText(killSequenceComponentConstants.menuItemText)
     await screen.findByText(reloadScriptConstants.menuItemText)
     await screen.findByText(stopSequencerConstants.menuItemText)
+    await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.null)
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {

@@ -10,6 +10,15 @@ import { KillSequenceComponent } from './KillSequenceComponent'
 
 const { useBreakpoint } = Grid
 
+type SequenceComponentActionProps = {
+  componentId: ComponentId
+}
+
+type SequencerActionProps = {
+  componentId: ComponentId
+  sequencerPrefix: Prefix
+}
+
 const DisabledSequencerActions = () => {
   const screen = useBreakpoint()
   const width = screen.lg ? '200px' : '150px'
@@ -22,33 +31,32 @@ const DisabledSequencerActions = () => {
   )
 }
 
-type SequenceComponentActionProps = {
-  componentId: ComponentId
-  sequencerPrefix: Prefix | undefined
-}
-
-const SequenceComponentActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequenceComponentActionProps) => (
+const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceComponentActionProps) => (
   <Menu {...restProps}>
-    {sequencerPrefix && <StopSequencer sequencerPrefix={sequencerPrefix} />}
-    {sequencerPrefix && (
-      <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={sequencerPrefix.componentName} />
-    )}
     <KillSequenceComponent componentId={componentId} />
-    {!sequencerPrefix && (
-      <>
-        <Menu.Divider />
-        <DisabledSequencerActions />
-      </>
-    )}
+    <Menu.Divider />
+    <DisabledSequencerActions />
   </Menu>
 )
-export const SequenceComponentActions = ({
-  componentId,
-  sequencerPrefix
-}: SequenceComponentActionProps): JSX.Element => (
-  <Dropdown
-    overlay={() => <SequenceComponentActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix} />}
-    trigger={['click']}>
+
+const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => (
+  <Menu {...restProps}>
+    <StopSequencer sequencerPrefix={sequencerPrefix} />
+    <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={sequencerPrefix.componentName} />
+    <KillSequenceComponent componentId={componentId} />
+  </Menu>
+)
+
+export const SequenceComponentActions = ({ componentId }: SequenceComponentActionProps): JSX.Element => (
+  <Dropdown overlay={() => <SequenceComponentActionsMenu componentId={componentId} />} trigger={['click']}>
     <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
+  </Dropdown>
+)
+
+export const SequencerActions = ({ componentId, sequencerPrefix }: SequencerActionProps): JSX.Element => (
+  <Dropdown
+    overlay={() => <SequencerActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix} />}
+    trigger={['click']}>
+    <MoreOutlined style={{ fontSize: '1.5rem' }} role='sequencerActions' />
   </Dropdown>
 )

@@ -208,15 +208,6 @@ describe('stepList table', () => {
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
-    const stepListAfterBreakpoint = new StepList([
-      {
-        hasBreakpoint: true,
-        status: { _type: 'Pending' },
-        command: new Setup(Prefix.fromString('ESW.test'), 'Command-1'),
-        id: 'step1'
-      }
-    ])
-
     when(sequencerServiceMock.removeBreakpoint('step1')).thenResolve({
       _type: 'Ok'
     })

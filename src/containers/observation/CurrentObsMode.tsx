@@ -131,7 +131,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
               )
             )
         }
-      })
+      }, handleError)
     })
     return () => subscriptions.forEach((s) => s.cancel())
   }, [gatewayLocation, isRunningTab, locationService, obsMode.name, sequencers, tf])

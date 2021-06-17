@@ -150,14 +150,14 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
+    const actions = await screen.findByRole('stepActions')
 
-    userEvent.click(actions[0], { button: 0 })
+    userEvent.click(actions, { button: 0 })
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)
@@ -172,8 +172,6 @@ describe('stepList table', () => {
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
-    const stepList = getStepList('Pending', false)
-
     when(sequencerServiceMock.addBreakpoint('step1')).thenResolve({
       _type: 'Ok'
     })
@@ -183,13 +181,13 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
         />
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
+    const actions = await screen.findByRole('stepActions')
+    userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)
@@ -205,6 +203,8 @@ describe('stepList table', () => {
     })
 
     expect(stepBeforeBreakpoint.style.borderLeft).to.equals('1px solid rgb(255, 197, 61)')
+
+    await waitFor(() => expect(screen.queryByRole('menuitem')).to.null)
   })
 
   it('should hide stepActions menu after clicking menu | ESW-490', async () => {
@@ -226,13 +226,13 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={sequencerPrefix}
           setSelectedStep={() => ({})}
-          sequencerStateResponse={getSequencerStateResponse('Running', stepListAfterBreakpoint)}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending', true))}
         />
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
+    const actions = await screen.findByRole('stepActions')
+    userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)
@@ -243,6 +243,8 @@ describe('stepList table', () => {
     await waitFor(() => userEvent.click(removeBreakpoint))
 
     await screen.findByText(removeBreakPointConstants.successMessage)
+
+    await waitFor(() => expect(screen.queryByRole('menuitem')).to.null)
   })
 
   it('should render duplicate table | ESW-462', async () => {
@@ -256,9 +258,9 @@ describe('stepList table', () => {
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
+    const actions = await screen.findByRole('stepActions')
 
-    userEvent.click(actions[0])
+    userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -277,8 +279,8 @@ describe('stepList table', () => {
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
+    const actions = await screen.findByRole('stepActions')
+    userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -289,7 +291,7 @@ describe('stepList table', () => {
     userEvent.click(cancel)
 
     const stepAction = await screen.findAllByRole('stepActions')
-    expect(stepAction.length).to.greaterThan(0)
+    expect(stepAction.length).to.equal(1)
 
     await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
   })
@@ -337,8 +339,8 @@ describe('stepList table', () => {
   })
 
   it('should not duplicate steps if error occurred | ESW-462', async () => {
-    const command = new Setup(Prefix.fromString('ESW.test'), 'Command-1')
-
+    const stepList = getStepList('Pending')
+    const command = stepList.steps[0].command
     when(sequencerServiceMock.add(deepEqual([command]))).thenResolve({
       _type: 'Unhandled',
       msg: 'error',
@@ -350,13 +352,13 @@ describe('stepList table', () => {
         <StepListTable
           sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
           setSelectedStep={() => ({})}
-          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('Pending'))}
+          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
         />
       )
     })
 
-    const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
+    const actions = await screen.findByRole('stepActions')
+    userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -379,7 +381,7 @@ describe('stepList table', () => {
 
     await screen.findByText(`${duplicateStepConstants.failureMessage}, reason: error`)
     const stepAction = await screen.findAllByRole('stepActions')
-    expect(stepAction.length).to.be.greaterThan(0)
+    expect(stepAction.length).to.be.equal(1)
     await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
     verify(sequencerServiceMock.add(deepEqual([command]))).called()
   })

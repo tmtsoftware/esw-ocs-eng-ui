@@ -1,5 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 import {
   booleanKey,
   BooleanKey,
@@ -17,7 +18,6 @@ import {
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
-import type { SequencerState } from '@tmtsoftware/esw-ts'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -340,8 +340,8 @@ describe('sequencer details', () => {
         </BrowserRouter>
       )
     })
-    const actions = await screen.findAllByRole('stepActions')
-    await waitFor(() => userEvent.click(actions[0]))
+    const actions = await screen.findByRole('stepActions')
+    await waitFor(() => userEvent.click(actions))
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(4)

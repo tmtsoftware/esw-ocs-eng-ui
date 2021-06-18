@@ -15,11 +15,9 @@ export const SmSequencerAction = ({
 }): JSX.Element => {
   const [smContext, smLoading] = useSMService()
   const smService = smContext?.smService
-  const reloadAction = useReloadScriptAction(sequencerPrefix.subsystem, sequencerPrefix.componentName)
-  const startSequencerAction = useStartSequencerAction(
-    sequencerPrefix.subsystem,
-    new ObsMode(sequencerPrefix.componentName)
-  )
+  const { subsystem, componentName } = sequencerPrefix
+  const reloadAction = useReloadScriptAction(subsystem, componentName)
+  const startSequencerAction = useStartSequencerAction(subsystem, new ObsMode(componentName))
 
   if (!sequencerState) {
     return (
@@ -32,7 +30,7 @@ export const SmSequencerAction = ({
   }
   return (
     <Popconfirm
-      title={sequencerActionConstants.popConfirmTitle}
+      title={sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)}
       okText={sequencerActionConstants.popConfirmOkText}
       onConfirm={() => {
         smService && reloadAction.mutateAsync(smService)

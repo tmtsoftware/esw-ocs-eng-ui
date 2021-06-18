@@ -35,7 +35,7 @@ describe('SmSequencerAction', () => {
     const link = await screen.findByText(sequencerActionConstants.reloadScript)
     await waitFor(() => userEvent.click(link))
     const yesButton = await screen.findByRole('button', { name: sequencerActionConstants.popConfirmOkText })
-    screen.getByText(sequencerActionConstants.popConfirmTitle)
+    screen.getByText(sequencerActionConstants.getPopConfirmTitle(subsystem, obsMode.toJSON()))
     await waitFor(() => userEvent.click(yesButton))
     await screen.findByText(reloadScriptConstants.getSuccessMessage(sequencerPrefix.toJSON()))
 

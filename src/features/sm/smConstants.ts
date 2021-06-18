@@ -81,7 +81,8 @@ export const spawnSMConstants = {
 }
 
 export const sequencerActionConstants = {
-  popConfirmTitle: 'Are you sure you want to reload?',
+  getPopConfirmTitle: (subsystem: string, obsMode: string): string =>
+    `Do you want to reload the sequencer ${subsystem}.${obsMode}?`,
   popConfirmOkText: 'Yes',
   reloadScript: 'Reload Script',
   startSequencer: 'Start Sequencer'

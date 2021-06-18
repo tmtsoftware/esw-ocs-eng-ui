@@ -10,7 +10,7 @@ import {
   Subscription,
   Subsystem
 } from '@tmtsoftware/esw-ts'
-import { Card, Space, Typography } from 'antd'
+import { Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
@@ -23,11 +23,10 @@ import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../..
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'
-import type { TabName } from './ObservationTabs'
-import { ObsModeActions } from './ObsModeActions'
+import { ObsModeCard, Text } from './NonConfiguredObsMode'
+import { RunningActions } from './ObsModeActions'
 
-type CurrentObsModeProps = {
-  currentTab: TabName
+type ConfiguredObsModeProps = {
   obsMode: ObsMode
   sequencers: Subsystem[]
   resources: ResourceTableStatus[]
@@ -53,23 +52,16 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
   return masterSequencer(sequencerInfo).concat(sortedSequencersWithoutMasterSequencer)
 }
 
-const Text = ({ content, type }: { content: string; type: BaseType }) => (
-  <Typography.Text strong type={type}>
-    {content}
-  </Typography.Text>
-)
-
 const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
 
-const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerState?: SequencerState }) => {
-  const status =
-    isRunning && sequencerState ? (
-      <Text content={sequencerState._type} type={getTextType(sequencerState)} />
-    ) : (
-      <Text content='NA' type='secondary' />
-    )
+const Status = ({ sequencerState }: { sequencerState?: SequencerState }) => {
+  const status = sequencerState ? (
+    <Text content={sequencerState._type} type={getTextType(sequencerState)} />
+  ) : (
+    <Text content='NA' type='secondary' />
+  )
 
   return (
     <Space>
@@ -79,17 +71,16 @@ const Status = ({ isRunning, sequencerState }: { isRunning: boolean; sequencerSt
   )
 }
 
-export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: CurrentObsModeProps): JSX.Element => {
+export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): JSX.Element => {
   const [gatewayLocation] = useGatewayLocation()
   const locationService = useLocationService()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
+
   const [loading, setLoading] = useState(true)
   const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
     sequencers.map((sub) => [new Prefix(sub, obsMode.name).toJSON(), undefined])
   )
-
-  const isRunningTab = currentTab === 'Running'
 
   const handleError = (error: ServiceError) => {
     errorMessage(error.message)
@@ -97,7 +88,7 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
   }
 
   useEffect(() => {
-    const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse: SequencerStateResponse) => {
+    const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
         const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
@@ -105,23 +96,20 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
       })
     }
 
-    const services: [SequencerService, Prefix][] =
-      isRunningTab && gatewayLocation
-        ? sequencers.map((seq) => {
-            const seqPrefix = new Prefix(seq, obsMode.name)
-            return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
-          })
-        : []
+    const services: [SequencerService, Prefix][] = gatewayLocation
+      ? sequencers.map((seq) => {
+          const seqPrefix = new Prefix(seq, obsMode.name)
+          return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
+        })
+      : []
+
     const subscriptions: Subscription[] = []
     services.map(([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
       const locationSubscription = locationService.track(seqConnection)((event) => {
         switch (event._type) {
           case 'LocationRemoved':
-            setSequencerInfoMap((previousMap) => {
-              const filteredSequencers = previousMap.filter(([sp]) => sp !== sequencerPrefix.toJSON())
-              return [...filteredSequencers, [sequencerPrefix.toJSON(), undefined]]
-            })
+            handleSequencerStateChange(sequencerPrefix.toJSON(), undefined)
             break
           case 'LocationUpdated':
             subscriptions.push(
@@ -131,11 +119,12 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
               )
             )
         }
+        subscriptions.push(locationSubscription)
       }, handleError)
       subscriptions.push(locationSubscription)
     })
     return () => subscriptions.forEach((s) => s.cancel())
-  }, [gatewayLocation, isRunningTab, locationService, obsMode.name, sequencers, tf])
+  }, [gatewayLocation, locationService, obsMode.name, sequencers, tf])
 
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
     const stepList = sequencerStatus?.stepList || new StepList([])
@@ -153,23 +142,21 @@ export const CurrentObsMode = ({ currentTab, obsMode, sequencers, resources }: C
 
   const sortedSequencers = sortSequencers(sequencersInfo)
 
-  const sequencerState: SequencerState | undefined =
-    sortedSequencers && sortedSequencers[0] ? sortedSequencers[0].sequencerState : { _type: 'Idle' }
+  const sequencerState: SequencerState | undefined = sortedSequencers[0]
+    ? sortedSequencers[0].sequencerState
+    : { _type: 'Idle' }
 
   return (
-    <Card
-      style={{ display: 'flex', flexDirection: 'column', height: '100%', borderTop: 'none' }}
-      headStyle={{ paddingBottom: '0.75rem' }}
-      bodyStyle={{ overflowY: 'scroll', height: '100%' }}
+    <ObsModeCard
       title={
         <>
           <Typography.Title level={4}>{obsMode.name}</Typography.Title>
-          <Status sequencerState={sequencerState} isRunning={isRunningTab} />
+          <Status sequencerState={sequencerState} />
         </>
       }
-      extra={<ObsModeActions tabName={currentTab} obsMode={obsMode} />}>
-      {isRunningTab && <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />}
+      extra={<RunningActions obsMode={obsMode} />}>
+      <SequencersTable sequencersInfo={sortedSequencers} loading={loading} />
       <ResourcesTable resources={resources} />
-    </Card>
+    </ObsModeCard>
   )
 }

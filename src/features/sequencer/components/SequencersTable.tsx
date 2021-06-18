@@ -83,7 +83,7 @@ const columns: ColumnsType<SequencerInfo> = [
     title: <HeaderTitle title='Total Steps' />,
     dataIndex: 'totalSteps',
     key: 'totalSteps',
-    render: (steps) => (steps === 0 ? 'NA' : steps)
+    render: (totalSteps) => (totalSteps === 0 ? 'NA' : totalSteps)
   },
   {
     title: <HeaderTitle title='Action' />,

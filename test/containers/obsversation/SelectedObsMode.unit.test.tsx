@@ -15,7 +15,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
-import { CurrentObsMode } from '../../../src/containers/observation/CurrentObsMode'
+import { SelectedObsMode } from '../../../src/containers/observation/SelectedObsMode'
 import { sequencerActionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
@@ -72,7 +72,7 @@ describe('CurrentObsMode', () => {
 
     const { unmount } = renderWithAuth({
       ui: (
-        <CurrentObsMode
+        <SelectedObsMode
           resources={[]}
           sequencers={getSequencers()}
           currentTab='Running'
@@ -110,7 +110,7 @@ describe('CurrentObsMode', () => {
 
     renderWithAuth({
       ui: (
-        <CurrentObsMode
+        <SelectedObsMode
           resources={[]}
           sequencers={getSequencers()}
           currentTab='Running'
@@ -142,7 +142,7 @@ describe('CurrentObsMode', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <CurrentObsMode
+          <SelectedObsMode
             resources={[]}
             sequencers={getSequencers()}
             currentTab='Running'
@@ -185,7 +185,7 @@ describe('CurrentObsMode', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <CurrentObsMode
+          <SelectedObsMode
             resources={[]}
             sequencers={getSequencers()}
             currentTab='Running'

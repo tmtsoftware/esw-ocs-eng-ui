@@ -4,8 +4,8 @@ import React from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import globalStyles from '../../index.module.css'
-import { CurrentObsMode } from './CurrentObsMode'
 import type { TabName } from './ObservationTabs'
+import { SelectedObsMode } from './SelectedObsMode'
 
 const { Sider, Content } = Layout
 
@@ -62,7 +62,7 @@ export const ObservationTab = ({ tabName, selected = '', setObservation }: Obser
       </Sider>
       <Content style={{ marginRight: '2rem' }}>
         {selectedObs && (
-          <CurrentObsMode
+          <SelectedObsMode
             obsMode={selectedObs.obsMode}
             sequencers={selectedObs.sequencers}
             resources={resources}

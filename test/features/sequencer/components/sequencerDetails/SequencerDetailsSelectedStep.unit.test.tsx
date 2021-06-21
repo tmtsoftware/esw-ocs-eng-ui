@@ -69,7 +69,10 @@ describe('sequencer details selected step', () => {
     })
     // step1 in executng, ui should show step1 details on right side
     await assertRunningStepIs(/Command-1/i, 500)
-    await screen.findByText('ESW.test1')
+    const sourceValue = screen.getByLabelText('Source-Value')
+    // eslint-disable-next-line testing-library/no-debug
+    screen.debug(sourceValue)
+    expect(sourceValue.innerHTML).to.equals('ESW.test1')
 
     //After some time , a new event is received, step2 in executng, ui should show step2 details on right side
     await assertRunningStepIs(/Command-2/i, 1200)

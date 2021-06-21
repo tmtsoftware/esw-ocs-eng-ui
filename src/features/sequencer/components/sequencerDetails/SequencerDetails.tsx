@@ -1,5 +1,5 @@
 import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
-import { Badge, Descriptions, Empty, Layout, Space, Typography } from 'antd'
+import { Alert, Badge, Descriptions, Empty, Layout, Space, Typography } from 'antd'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
@@ -61,14 +61,29 @@ const StepItem = (label: string, item: string) => {
   )
 }
 
+const StepErrorAlert = ({ message }: { message: string }) => {
+  const errorMessage = message !== '' ? message : 'Error while executing step'
+  return (
+    <Alert
+      message=''
+      description={<Typography.Text type='danger'>{errorMessage}</Typography.Text>}
+      type='error'
+      showIcon
+    />
+  )
+}
+
 const StepInfo = ({ step }: { step: Step }) => (
   <div className={styles.stepInfo}>
-    <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }} size={'small'}>
-      {StepItem('Command', step.command.commandName)}
-      {StepItem('Source', step.command.source.toJSON())}
-      {StepItem('Command Type', step.command._type.toString())}
-      {StepItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
-    </Descriptions>
+    <Space direction='vertical' size='large'>
+      {step.status._type === 'Failure' && <StepErrorAlert message={step.status.message} />}
+      <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }} size={'small'}>
+        {StepItem('Command', step.command.commandName)}
+        {StepItem('Source', step.command.source.toJSON())}
+        {StepItem('Command Type', step.command._type.toString())}
+        {StepItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
+      </Descriptions>
+    </Space>
     <ParameterTable paramSet={step.command.paramSet} />
   </div>
 )

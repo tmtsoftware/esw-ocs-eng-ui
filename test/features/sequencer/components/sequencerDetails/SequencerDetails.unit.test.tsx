@@ -293,6 +293,46 @@ describe('sequencer details', () => {
     expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
   })
 
+  it('should render error message on failure of step in step details pane | ESW-527', async () => {
+    const errorMessage = 'error while executing step'
+    const stepList: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Failure', message: errorMessage },
+        command: new Setup(Prefix.fromString('ESW.Darknight'), 'Command-1', [], '2020A-001-123'),
+        id: '1'
+      }
+    ])
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    const alert = await screen.findByRole('alert')
+    await within(alert).findByText(errorMessage)
+  })
+
+  it('should render default error message on failure of step in step details pane when error msg is empty | ESW-527', async () => {
+    const stepList: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Failure', message: '' },
+        command: new Setup(Prefix.fromString('ESW.Darknight'), 'Command-1', [], '2020A-001-123'),
+        id: '1'
+      }
+    ])
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
+    renderWithAuth({
+      ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
+    })
+
+    const defaultErrorMsg = 'Error while executing step'
+    const alert = await screen.findByRole('alert')
+    await within(alert).findByText(defaultErrorMsg)
+  })
+
   it('add steps should add uploaded steps after the selected step | ESW-461, ESW-489', async () => {
     const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
     const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')

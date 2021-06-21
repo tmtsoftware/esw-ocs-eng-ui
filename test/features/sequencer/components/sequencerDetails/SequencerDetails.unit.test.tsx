@@ -295,8 +295,17 @@ describe('sequencer details', () => {
   })
 
   it('should render error message on failure of step in step details pane | ESW-527', async () => {
+    const stepListWithInFlight: StepList = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'InFlight' },
+        command: new Setup(Prefix.fromString('ESW.Darknight'), 'Command-1', [], '2020A-001-123'),
+        id: '1'
+      }
+    ])
+
     const errorMessage = 'error while executing step'
-    const stepList: StepList = new StepList([
+    const stepListWithFailure: StepList = new StepList([
       {
         hasBreakpoint: false,
         status: { _type: 'Failure', message: errorMessage },
@@ -305,10 +314,20 @@ describe('sequencer details', () => {
       }
     ])
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendEvent(onevent, 'Running', stepListWithInFlight)
+        sendEvent(onevent, 'Running', stepListWithFailure, 400)
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
+
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
+    expect(screen.queryByRole('alert')).to.not.exist
 
     const alert = await screen.findByRole('alert')
     await within(alert).findByText(errorMessage)

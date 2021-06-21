@@ -98,24 +98,6 @@ describe('observation tabs', () => {
     })
   })
 
-  it('should not be able to configure on non-configurable observation tab | ESW-450, ESW-489', async () => {
-    when(smService.getObsModesDetails()).thenResolve(obsModesData)
-
-    renderWithAuth({
-      ui: <ObservationTab tabName='Non-configurable' setObservation={() => ({})} />
-    })
-
-    const configureButton = (await screen.findByRole('button', {
-      name: configureConstants.buttonText
-    })) as HTMLButtonElement
-    await waitFor(() => expect(configureButton.disabled).true)
-
-    await waitFor(() => {
-      verify(smService.configure(new ObsMode('random'))).never()
-      verify(agentService.getAgentStatus()).called()
-    })
-  })
-
   it('should render sequencer & resources table with all resources as in use on running tab | ESW-451, ESW-453, ESW-489', async () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 

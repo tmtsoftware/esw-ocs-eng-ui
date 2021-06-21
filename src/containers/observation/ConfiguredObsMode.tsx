@@ -119,7 +119,6 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
               )
             )
         }
-        subscriptions.push(locationSubscription)
       }, handleError)
       subscriptions.push(locationSubscription)
     })

@@ -6,7 +6,7 @@ import { Spinner } from '../../../../components/spinners/Spinner'
 import globalStyles from '../../../../index.module.css'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubscription'
-import { sequencerDetailsConstants } from '../../sequencerConstants'
+import { sequencerDetailsConstants, stepConstants } from '../../sequencerConstants'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -62,7 +62,7 @@ const StepItem = (label: string, item: string) => {
 }
 
 const StepErrorAlert = ({ message }: { message: string }) => {
-  const errorMessage = message !== '' ? message : 'Error while executing step'
+  const errorMessage = message !== '' ? message : stepConstants.defaultStepFailureErrorMessage
   return (
     <Alert
       message=''

@@ -27,7 +27,8 @@ import { SequencerDetails } from '../../../../../src/features/sequencer/componen
 import {
   abortSequenceConstants,
   addStepConstants,
-  goOfflineConstants
+  goOfflineConstants,
+  stepConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList } from '../../../../utils/sequence-utils'
 import {
@@ -328,9 +329,8 @@ describe('sequencer details', () => {
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
 
-    const defaultErrorMsg = 'Error while executing step'
     const alert = await screen.findByRole('alert')
-    await within(alert).findByText(defaultErrorMsg)
+    await within(alert).findByText(stepConstants.defaultStepFailureErrorMessage)
   })
 
   it('add steps should add uploaded steps after the selected step | ESW-461, ESW-489', async () => {

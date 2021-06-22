@@ -10,8 +10,7 @@ import {
   Subscription,
   Subsystem
 } from '@tmtsoftware/esw-ts'
-import { Space, Typography } from 'antd'
-import type { BaseType } from 'antd/lib/typography/Base'
+import { Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import { useLocationService } from '../../contexts/LocationServiceContext'
@@ -23,7 +22,7 @@ import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../..
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'
-import { ObsModeCard, Text } from './NonConfiguredObsMode'
+import { ObsModeCard, Status } from './CommonComponents'
 import { RunningActions } from './ObsModeActions'
 
 type ConfiguredObsModeProps = {
@@ -50,25 +49,6 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
     .sort((a, b) => (a.prefix > b.prefix ? 1 : -1))
 
   return masterSequencer(sequencerInfo).concat(sortedSequencersWithoutMasterSequencer)
-}
-
-const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
-  return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
-}
-
-const Status = ({ sequencerState }: { sequencerState?: SequencerState }) => {
-  const status = sequencerState ? (
-    <Text content={sequencerState._type} type={getTextType(sequencerState)} />
-  ) : (
-    <Text content='NA' type='secondary' />
-  )
-
-  return (
-    <Space>
-      <Text type='secondary' content='Status:' />
-      {status}
-    </Space>
-  )
 }
 
 export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): JSX.Element => {

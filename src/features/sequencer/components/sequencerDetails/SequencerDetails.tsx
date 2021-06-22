@@ -1,12 +1,11 @@
 import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
-import { Alert, Badge, Descriptions, Empty, Layout, Space, Typography } from 'antd'
+import { Badge, Layout, Space, Typography } from 'antd'
 import React, { useState } from 'react'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
-import globalStyles from '../../../../index.module.css'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
 import { useSequencerStateSubscription } from '../../hooks/useSequencerStateSubscription'
-import { sequencerDetailsConstants, stepConstants } from '../../sequencerConstants'
+import { sequencerDetailsConstants } from '../../sequencerConstants'
 import { AbortSequence } from '../actions/AbortSequence'
 import { LifecycleState } from '../actions/LifecycleState'
 import { LoadSequence } from '../actions/LoadSequence'
@@ -14,8 +13,8 @@ import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
 import { StepListTable } from '../steplist/StepListTable'
-import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
+import { StepInfo, EmptyStepInfo } from './StepInfo'
 
 const { Sider, Content } = Layout
 
@@ -43,57 +42,6 @@ const SequenceComponentInfo = ({ seqLocation }: { seqLocation: Location }): JSX.
     </Space>
   )
 }
-
-const StepItem = (label: string, item: string) => {
-  return (
-    <Descriptions.Item
-      label={
-        <Typography.Title aria-label={`${label}-Key`} type={'secondary'} level={5}>
-          {label}
-        </Typography.Title>
-      }>
-      {
-        <Typography.Title aria-label={`${label}-Value`} ellipsis={{ tooltip: true }} level={5}>
-          {item}
-        </Typography.Title>
-      }
-    </Descriptions.Item>
-  )
-}
-
-const StepErrorAlert = ({ message }: { message: string }) => {
-  const errorMessage = message !== '' ? message : stepConstants.defaultStepFailureErrorMessage
-  return (
-    <Alert
-      message=''
-      description={<Typography.Text type='danger'>{errorMessage}</Typography.Text>}
-      type='error'
-      showIcon
-    />
-  )
-}
-
-const StepInfo = ({ step }: { step: Step }) => (
-  <div className={styles.stepInfo}>
-    <Space direction='vertical' size='large'>
-      {step.status._type === 'Failure' && <StepErrorAlert message={step.status.message} />}
-      <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }} size={'small'}>
-        {StepItem('Command', step.command.commandName)}
-        {StepItem('Source', step.command.source.toJSON())}
-        {StepItem('Command Type', step.command._type.toString())}
-        {StepItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
-      </Descriptions>
-    </Space>
-    <ParameterTable paramSet={step.command.paramSet} />
-  </div>
-)
-
-const EmptyStepInfo = () => (
-  <div className={globalStyles.centeredFlexElement + ' ' + styles.emptyStepInfo}>
-    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-  </div>
-)
-
 const SequencerTitle = ({
   sequencerState,
   prefix

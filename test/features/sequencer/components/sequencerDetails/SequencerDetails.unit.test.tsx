@@ -294,7 +294,7 @@ describe('sequencer details', () => {
     expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
   })
 
-  it('should render error message on failure of step in step details pane | ESW-527', async () => {
+  it.only('should render error message on failure of step in step details pane | ESW-527', async () => {
     const stepListWithInFlight: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -330,7 +330,7 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('alert')).to.not.exist
 
     const alert = await screen.findByRole('alert')
-    await within(alert).findByText(errorMessage)
+    await within(alert).findByText(`Step Failure: ${errorMessage}`)
   })
 
   it('should render default error message on failure of step in step details pane when error msg is empty | ESW-527', async () => {

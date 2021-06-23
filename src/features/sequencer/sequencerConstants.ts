@@ -54,7 +54,7 @@ export const sequencerDetailsConstants = {
 export const stepConstants = {
   cannotOperateOnAnInFlightOrFinishedStepMsg: 'Cannot operate on in progress or finished step',
   idDoesNotExistMsg: (id: string): string => `${id} does not exist`,
-  defaultStepFailureErrorMessage: 'Error while executing step'
+  defaultStepFailureErrorMessage: 'Step Failure: Error while executing step'
 }
 
 export const addStepConstants = {

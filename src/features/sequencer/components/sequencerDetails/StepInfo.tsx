@@ -25,7 +25,7 @@ const StepItem = (label: string, item: string) => {
 }
 
 const getStepFailureMessage = (failure: StepStatusFailure) =>
-  failure.message !== '' ? failure.message : stepConstants.defaultStepFailureErrorMessage
+  failure.message !== '' ? `Step Failure: ${failure.message}` : stepConstants.defaultStepFailureErrorMessage
 
 const StepErrorAlert = ({ message }: { message: string }) => (
   <Alert message='' description={<Typography.Text type='danger'>{message}</Typography.Text>} type='error' showIcon />

@@ -294,7 +294,7 @@ describe('sequencer details', () => {
     expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
   })
 
-  it.only('should render error message on failure of step in step details pane | ESW-527', async () => {
+  it('should render error message on failure of step in step details pane | ESW-527', async () => {
     const stepListWithInFlight: StepList = new StepList([
       {
         hasBreakpoint: false,

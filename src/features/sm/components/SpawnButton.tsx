@@ -39,7 +39,7 @@ export const SpawnSMButton = (): JSX.Element => {
     }
   }
 
-  const handleSpawnButtonClick = () => {
+  const handleSpawnButtonClick = async () => {
     // do we need special treatment when agent list is empty ?
     if (allAgentsQuery.data && allAgentsQuery.data.length !== 0) {
       setModalVisibility(true)

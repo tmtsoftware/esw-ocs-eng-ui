@@ -1,5 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { AuthContextProvider } from '@tmtsoftware/esw-ts'
+import { AuthContextProvider, setAppName } from '@tmtsoftware/esw-ts'
 import { Result } from 'antd'
 import React from 'react'
 import { render } from 'react-dom'
@@ -8,6 +8,8 @@ import { App } from './containers/app/App'
 import { CombinedServiceContext } from './contexts/CombinedServiceContext'
 import { useAuth } from './hooks/useAuth'
 import './index.module.css'
+
+setAppName(AppConfig.applicationName)
 
 const Main = () => {
   const { auth } = useAuth()
@@ -23,7 +25,7 @@ const Main = () => {
 
 render(
   <React.StrictMode>
-    <AuthContextProvider config={AppConfig}>
+    <AuthContextProvider>
       <Main />
     </AuthContextProvider>
   </React.StrictMode>,

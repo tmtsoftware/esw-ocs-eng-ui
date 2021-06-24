@@ -1,0 +1,6 @@
+{
+  "short_name": "esw-ocs-eng-ui",
+  "name": "esw-ocs-eng-ui",
+  "start_url": "./index.html",
+  "display": "standalone"
+}

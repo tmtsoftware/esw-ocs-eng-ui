@@ -129,7 +129,8 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
         confirmLoading={provisionAction.isLoading}
         bodyStyle={{ padding: 0 }}
         onOk={handleModalOk}
-        onCancel={handleModalCancel}>
+        onCancel={handleModalCancel}
+        destroyOnClose>
         <ProvisionTable provisionRecord={provisionRecord} setProvisionRecord={setProvisionRecord} />
       </Modal>
     </>

@@ -37,6 +37,7 @@ import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
+import { LOCATION_SERVICE } from '../../src/features/queryKeys'
 import {
   defaultStepListTableContext,
   StepListContextProvider,
@@ -166,7 +167,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <LocationServiceProvider initialValue={mockServices.instance.locationService}>
+      <LocationServiceProvider>
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
             <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
@@ -188,11 +189,12 @@ const getContextWithQueryClientProvider = (
 ): React.FC<{ children: React.ReactNode }> => {
   const queryClient = new QueryClient()
   const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
+  queryClient.setQueryData(LOCATION_SERVICE.key, mockServices.instance.locationService)
 
   const provider = ({ children }: { children: React.ReactNode }) => (
-    <ContextProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </ContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <ContextProvider>{children}</ContextProvider>
+    </QueryClientProvider>
   )
   return provider
 }

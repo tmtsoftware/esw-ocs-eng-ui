@@ -74,8 +74,8 @@ jobs:
       - name: Create build zip
         uses: thedoctor0/zip-release@master
         with:
-          filename: 'build.zip'
-          path: ./build
+          filename: 'esw-ocs-eng-ui.zip'
+          path: ./esw-ocs-eng-ui
 
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v1
@@ -84,7 +84,7 @@ jobs:
           files: |
             ./RTM.zip
             ./coverage.zip
-            ./build.zip
+            ./esw-ocs-eng-ui.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

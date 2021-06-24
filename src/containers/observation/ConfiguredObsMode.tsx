@@ -84,7 +84,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
       : []
 
     const subscriptions: Subscription[] = []
-    services.map(([sequencerService, sequencerPrefix]) => {
+    services.map(async ([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
       const locationSubscription = locationService.track(seqConnection)((event) => {
         switch (event._type) {

@@ -3,6 +3,10 @@ type Query = {
   refetchInterval?: number // Refetch the data every defined milliseconds
   retry?: number // only failing queries will retry given number of times
 }
+//LocationService
+export const LOCATION_SERVICE: Query = {
+  key: 'locationService'
+}
 // Agent
 export const LIST_AGENTS: Query = { key: 'listAgents' }
 

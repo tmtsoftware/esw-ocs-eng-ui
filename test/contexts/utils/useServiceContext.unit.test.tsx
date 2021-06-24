@@ -2,9 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { HttpLocation, GATEWAY_CONNECTION, ServiceError } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, verify, when } from 'ts-mockito'
 import { LocationServiceProvider } from '../../../src/contexts/LocationServiceContext'
 import { createServiceCtx } from '../../../src/contexts/utils/createServiceCtx'
+import { LOCATION_SERVICE } from '../../../src/features/queryKeys'
 import { mockServices } from '../../utils/test-utils'
 const gatewayLocation: HttpLocation = {
   _type: 'HttpLocation',
@@ -23,15 +25,20 @@ const Component = (): JSX.Element => {
   const [str] = useContext()
   return <span>{str ? str : 'Unknown'}</span>
 }
+const renderComponentWithMockLocatonService = () => {
+  const queryClient = new QueryClient()
+  queryClient.setQueryData(LOCATION_SERVICE.key, mockServices.instance.locationService)
 
-const renderComponentWithMockLocatonService = () =>
-  render(
-    <LocationServiceProvider initialValue={mockServices.instance.locationService}>
-      <Provider>
-        <Component />
-      </Provider>
-    </LocationServiceProvider>
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <LocationServiceProvider>
+        <Provider>
+          <Component />
+        </Provider>
+      </LocationServiceProvider>
+    </QueryClientProvider>
   )
+}
 
 describe('Service context helper', () => {
   it('returns undefined for a provided factory with use hook | ESW-491', async () => {

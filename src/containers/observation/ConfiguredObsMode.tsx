@@ -86,7 +86,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     const subscriptions: Subscription[] = []
     services.map(async ([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
-      const locationSubscription = (await locationService).track(seqConnection)((event) => {
+      const locationSubscription = locationService.track(seqConnection)((event) => {
         switch (event._type) {
           case 'LocationRemoved':
             handleSequencerStateChange(sequencerPrefix.toJSON(), undefined)

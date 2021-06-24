@@ -8,21 +8,12 @@ const LocationServiceContext = createContext<LocationService | undefined>(undefi
 
 const useLocationServiceQuery = () => useQuery(LOCATION_SERVICE.key, () => LocationService())
 
-//initialValue is used for testing purpose
-export const LocationServiceProvider = ({
-  children,
-  initialValue
-}: {
-  children: React.ReactNode
-  initialValue?: LocationService
-}): JSX.Element => {
+export const LocationServiceProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const { data, isLoading } = useLocationServiceQuery()
   if (isLoading) return <Spinner />
 
   return data ? (
-    <LocationServiceContext.Provider value={initialValue ? initialValue : data}>
-      {children}
-    </LocationServiceContext.Provider>
+    <LocationServiceContext.Provider value={data}>{children}</LocationServiceContext.Provider>
   ) : (
     <>Location server instance notfound</>
   )

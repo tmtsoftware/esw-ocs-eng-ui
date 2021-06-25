@@ -1,20 +1,19 @@
-import React from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import type { LocationService } from '@tmtsoftware/esw-ts'
+import React, { PropsWithChildren } from 'react'
 import { AgentServiceProvider } from './AgentServiceContext'
 import { GatewayLocationProvider } from './GatewayServiceContext'
 import { LocationServiceProvider } from './LocationServiceContext'
 import { SMServiceProvider } from './SMContext'
 
-const queryClient = new QueryClient()
-
-export const CombinedServiceContext = ({ children }: { children: React.ReactNode }): JSX.Element => (
-  <QueryClientProvider client={queryClient}>
-    <LocationServiceProvider>
-      <GatewayLocationProvider>
-        <AgentServiceProvider>
-          <SMServiceProvider>{children}</SMServiceProvider>
-        </AgentServiceProvider>
-      </GatewayLocationProvider>
-    </LocationServiceProvider>
-  </QueryClientProvider>
+export const CombinedServiceContext = ({
+  children,
+  locationService
+}: PropsWithChildren<{ locationService: LocationService }>): JSX.Element => (
+  <LocationServiceProvider locationService={locationService}>
+    <GatewayLocationProvider>
+      <AgentServiceProvider>
+        <SMServiceProvider>{children}</SMServiceProvider>
+      </AgentServiceProvider>
+    </GatewayLocationProvider>
+  </LocationServiceProvider>
 )

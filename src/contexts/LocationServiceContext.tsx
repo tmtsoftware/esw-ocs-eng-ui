@@ -1,26 +1,17 @@
-import { LocationService } from '@tmtsoftware/esw-ts'
-import React, { useContext, createContext } from 'react'
-import { useQuery } from 'react-query'
-import { Spinner } from '../components/spinners/Spinner'
-import { LOCATION_SERVICE } from '../features/queryKeys'
+import type { LocationService } from '@tmtsoftware/esw-ts'
+import React, { createContext, PropsWithChildren, useContext } from 'react'
 
 const LocationServiceContext = createContext<LocationService | undefined>(undefined)
 
-const useLocationServiceQuery = () => useQuery(LOCATION_SERVICE.key, () => LocationService())
-
-export const LocationServiceProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
-  const { data, isLoading } = useLocationServiceQuery()
-  if (isLoading) return <Spinner />
-
-  return data ? (
-    <LocationServiceContext.Provider value={data}>{children}</LocationServiceContext.Provider>
-  ) : (
-    <>Location server instance notfound</>
-  )
-}
+export const LocationServiceProvider = ({
+  children,
+  locationService
+}: PropsWithChildren<{ locationService: LocationService }>): JSX.Element => (
+  <LocationServiceContext.Provider value={locationService}>{children}</LocationServiceContext.Provider>
+)
 
 export const useLocationService = (): LocationService => {
   const c = useContext(LocationServiceContext)
-  if (!c) throw new Error('useCtx must be inside a Provider with a value')
+  if (!c) throw new Error('useLocationService must be inside a LocationServiceProvider with a value')
   return c
 }

@@ -167,7 +167,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <LocationServiceProvider>
+      <LocationServiceProvider locationService={mockServices.instance.locationService}>
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
             <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>

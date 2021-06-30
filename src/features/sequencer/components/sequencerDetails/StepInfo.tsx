@@ -10,6 +10,7 @@ import styles from './sequencerDetails.module.css'
 const StepItem = (label: string, item: string) => {
   return (
     <Descriptions.Item
+      style={{ paddingBottom: '1px' }}
       label={
         <Typography.Title aria-label={`${label}-Key`} type={'secondary'} level={5}>
           {label}
@@ -35,7 +36,7 @@ export const StepInfo = ({ step }: { step: Step }): JSX.Element => (
   <div className={styles.stepInfo}>
     <Space direction='vertical' size='large'>
       {step.status._type === 'Failure' && <StepErrorAlert message={getStepFailureMessage(step.status)} />}
-      <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }} size={'small'}>
+      <Descriptions column={{ xs: 1, md: 1, lg: 2, xl: 2 }}>
         {StepItem('Command', step.command.commandName)}
         {StepItem('Source', step.command.source.toJSON())}
         {StepItem('Command Type', step.command._type.toString())}

@@ -81,7 +81,7 @@ tr#selectedRow > td:last-child::after {
   flex-direction: column;
   height: 100%;
   background-color: var(--backgroundColor);
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   margin-left: 1px;
 }
 

@@ -98,7 +98,7 @@ const StepListHeader = ({
   const [currentStepId, nextStepId] = getCurrentAndNextStepId(stepList, currentStepIndex)
 
   return (
-    <Row style={{ margin: '1.5rem 1rem 1.5rem 1rem' }} justify={'space-between'} align='middle'>
+    <Row style={{ margin: '1rem' }} justify={'space-between'} align='middle'>
       <StepListTitle stepListStatus={stepListInfo.status} />
       <Space align='center'>
         <PlayPauseSequence

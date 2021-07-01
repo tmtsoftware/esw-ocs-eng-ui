@@ -99,6 +99,6 @@ export const formatParameters = (key: Key['keyTag'], values: Parameter<Key>['val
       )
 
     default:
-      return <Typography.Text>{values.toString()}</Typography.Text>
+      return <Typography.Text>{values.map((value) => JSON.stringify(value)).join(', ')}</Typography.Text>
   }
 }

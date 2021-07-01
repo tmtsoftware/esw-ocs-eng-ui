@@ -1,18 +1,27 @@
-import type {
+import {
+  AltAzCoord,
+  altAzCoordKey,
   CometCoord,
+  cometCoordKey,
   Coord,
-  CoordKey,
+  coordKey,
   EqCoord,
+  eqCoordKey,
   Key,
   MinorPlanetCoord,
+  minorPlanetCoordKey,
   Parameter,
-  TAITimeKey,
-  UTCTimeKey
+  SequenceCommand,
+  SolarSystemCoord,
+  solarSystemCoordKey,
+  taiTimeKey,
+  utcTimeKey
 } from '@tmtsoftware/esw-ts'
 import { Space, Typography } from 'antd'
+import type { SpaceSize } from 'antd/lib/space'
 import React from 'react'
 
-const FormattedEqCoord = ({ value }: { value: EqCoord }) => (
+const formatEqCoord = (value: EqCoord) => (
   <>
     {value.tag.name}: RA={value.ra.toDegree()} DEC={value.dec.toDegree()} <br />
     {value.frame.toString()}, Catalog={value.catalogName} <br />
@@ -20,7 +29,7 @@ const FormattedEqCoord = ({ value }: { value: EqCoord }) => (
   </>
 )
 
-const FormattedCometCoord = ({ value }: { value: CometCoord }) => (
+const formatCometCoord = (value: CometCoord) => (
   <>
     {value.tag.name}: Epoch of Perihelion={value.epochOfPerihelion}
     inclination={value.inclination.toDegree()} degrees <br />
@@ -31,7 +40,7 @@ const FormattedCometCoord = ({ value }: { value: CometCoord }) => (
   </>
 )
 
-const FormattedMinorPlanetCoord = ({ value }: { value: MinorPlanetCoord }) => (
+const formatMinorPlanetCoord = (value: MinorPlanetCoord) => (
   <>
     {value.tag.name}: Epoch={value.epoch} <br />
     inclination={value.inclination.toDegree()} degrees <br />
@@ -43,62 +52,93 @@ const FormattedMinorPlanetCoord = ({ value }: { value: MinorPlanetCoord }) => (
   </>
 )
 
+const formatSolarSystemCoord = (value: SolarSystemCoord) => (
+  <>
+    {value.tag.name}: {value.body.toString()}
+  </>
+)
+
+const formatAltAzCoord = (value: AltAzCoord) => (
+  <>
+    {value.tag.name}: Alt={value.alt.toDegree()} Az={value.az.toDegree()}
+  </>
+)
+
 const formatCoord = (value: Coord) => {
   switch (value._type) {
     case 'EqCoord':
-      return <FormattedEqCoord value={value} />
+      return formatEqCoord(value)
 
     case 'SolarSystemCoord':
-      return (
-        <>
-          {value.tag.name}: {value.body.toString()}
-        </>
-      )
+      return formatSolarSystemCoord(value)
 
     case 'AltAzCoord':
-      return (
-        <>
-          {value.tag.name}: Alt={value.alt.toDegree()} Az={value.az.toDegree()}
-        </>
-      )
+      return formatAltAzCoord(value)
 
     case 'CometCoord':
-      return <FormattedCometCoord value={value} />
+      return formatCometCoord(value)
 
     case 'MinorPlanetCoord':
-      return <FormattedMinorPlanetCoord value={value} />
+      return formatMinorPlanetCoord(value)
   }
 }
 
-export const formatParameters = (key: Key['keyTag'], values: Parameter<Key>['values']): JSX.Element => {
-  switch (key) {
+const FormattedParams = ({ values, size }: { values: JSX.Element[] | undefined; size?: SpaceSize }) => (
+  <Space direction='vertical' size={size}>
+    {values && values.map((value, index) => <Typography.Text key={index}>{value}</Typography.Text>)}
+  </Space>
+)
+
+export const formatParameters = (parameter: Parameter<Key>, command: SequenceCommand): JSX.Element => {
+  const { keyName, keyTag } = parameter
+  switch (keyTag) {
     case 'CoordKey':
+      const coordParam = command.get(coordKey(keyName))
+      return <FormattedParams values={coordParam?.values.map(formatCoord)} />
+
     case 'EqCoordKey':
+      const eqCoordParam = command.get(eqCoordKey(keyName))
+      return <FormattedParams values={eqCoordParam?.values.map(formatEqCoord)} />
+
     case 'AltAzCoordKey':
+      const solarSystemParams = command.get(altAzCoordKey(keyName))
+      return <FormattedParams values={solarSystemParams?.values.map(formatAltAzCoord)} />
+
     case 'CometCoordKey':
+      const cometCoordParam = command.get(cometCoordKey(keyName))
+      return <FormattedParams values={cometCoordParam?.values.map(formatCometCoord)} />
+
     case 'MinorPlanetCoordKey':
+      const minorPlantCoordParam = command.get(minorPlanetCoordKey(keyName))
+      return <FormattedParams values={minorPlantCoordParam?.values.map(formatMinorPlanetCoord)} />
+
     case 'SolarSystemCoordKey':
-      const coordValues = values as Parameter<CoordKey>['values']
-      return (
-        <Space direction='vertical'>
-          {coordValues.map((coord, index) => (
-            <Typography.Text key={index}>{formatCoord(coord)}</Typography.Text>
-          ))}
-        </Space>
-      )
+      const solarSystemCoordParam = command.get(solarSystemCoordKey(keyName))
+      return <FormattedParams values={solarSystemCoordParam?.values.map(formatSolarSystemCoord)} />
 
     case 'UTCTimeKey':
-    case 'TAITimeKey':
-      const timeValues = values as Parameter<UTCTimeKey | TAITimeKey>['values']
+      const utcTimeParams = command.get(utcTimeKey(keyName))
       return (
-        <Space direction='vertical' size={0}>
-          {timeValues.map((time, index) => (
-            <Typography.Text key={index}>{time}</Typography.Text>
+        <FormattedParams
+          size={0}
+          values={utcTimeParams?.values.map((value, index) => (
+            <Typography.Text key={index}>{value}</Typography.Text>
           ))}
-        </Space>
+        />
+      )
+
+    case 'TAITimeKey':
+      const taiTimeParams = command.get(taiTimeKey(keyName))
+      return (
+        <FormattedParams
+          size={0}
+          values={taiTimeParams?.values.map((value, index) => (
+            <Typography.Text key={index}>{value}</Typography.Text>
+          ))}
+        />
       )
 
     default:
-      return <Typography.Text>{values.map((value) => JSON.stringify(value)).join(', ')}</Typography.Text>
+      return <Typography.Text>{parameter.values.map((value) => JSON.stringify(value)).join(', ')}</Typography.Text>
   }
 }

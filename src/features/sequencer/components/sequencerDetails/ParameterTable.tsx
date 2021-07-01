@@ -1,13 +1,14 @@
-import type { Key, Parameter } from '@tmtsoftware/esw-ts'
+import type { SequenceCommand } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import React from 'react'
 import { HeaderTitle } from '../../../../components/table/HeaderTitle'
+import { formatParameters } from './ParamFormatter'
 
 type ParameterDataType = {
   parameter: string
   unit: string
-  values: string
+  values: JSX.Element
 }
 
 const columns: ColumnsType<ParameterDataType> = [
@@ -36,21 +37,22 @@ const columns: ColumnsType<ParameterDataType> = [
   }
 ]
 
-const createDataSource = (paramSet: Parameter<Key>[]): ParameterDataType[] =>
-  paramSet.map((parameter) => ({
+const createDataSource = (command: SequenceCommand): ParameterDataType[] => {
+  return command.paramSet.map((parameter) => ({
     parameter: parameter.keyName,
     unit: parameter.units.toString(),
-    values: parameter.values.map((v) => JSON.stringify(v)).join(', ')
+    values: formatParameters(parameter, command)
   }))
+}
 
-export const ParameterTable = ({ paramSet }: { paramSet: Parameter<Key>[] }): JSX.Element => (
+export const ParameterTable = ({ command }: { command: SequenceCommand }): JSX.Element => (
   <div style={{ marginTop: '0.5rem', height: '100%', overflowY: 'scroll' }}>
     <Table
       sticky
       rowKey={(row) => row.parameter}
       pagination={false}
       columns={columns}
-      dataSource={createDataSource(paramSet)}
+      dataSource={createDataSource(command)}
       bordered
     />
   </div>

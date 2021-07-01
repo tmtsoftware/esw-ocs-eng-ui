@@ -7,6 +7,8 @@ import {
   intKey,
   IntKey,
   Parameter,
+  Prefix,
+  Setup,
   stringKey,
   StringKey
 } from '@tmtsoftware/esw-ts'
@@ -27,7 +29,9 @@ describe('Parameters Table', () => {
     const stringParam: Parameter<StringKey> = stringKey('ra').set(['12:13:14.1'])
 
     const paramSet = [booleanParam, intParam, filterParam, stringParam]
-    renderWithAuth({ ui: <ParameterTable paramSet={paramSet} /> })
+    const command = new Setup(Prefix.fromString('ESW.darknight'), 'setup', paramSet)
+
+    renderWithAuth({ ui: <ParameterTable command={command} /> })
     await screen.findByRole('table')
     const [paramHeaderTable, paramBodyTable] = screen.queryAllByRole('table')
     assertTableHeader(paramHeaderTable, 'Parameter')

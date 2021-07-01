@@ -43,7 +43,7 @@ export const StepInfo = ({ step }: { step: Step }): JSX.Element => (
         {StepItem('Obs-Id', step.command.maybeObsId ?? 'NA')}
       </Descriptions>
     </Space>
-    <ParameterTable paramSet={step.command.paramSet} />
+    <ParameterTable command={step.command} />
   </div>
 )
 

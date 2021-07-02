@@ -1,7 +1,6 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix, SequencerStateResponse, StepList, Location } from '@tmtsoftware/esw-ts'
-import { setViewport } from '@web/test-runner-commands'
+import { Location, Prefix, SequencerStateResponse, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,19 +10,10 @@ import { getStep } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sendEvent, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details selected step', () => {
-  let windowWidth: number
-  let windowHeight: number
   beforeEach(() => {
-    windowHeight = window.innerHeight
-    windowWidth = window.innerWidth
     reset(sequencerServiceMock)
   })
-  afterEach(async () => {
-    //Reset the viewport
-    await setViewport({
-      width: windowWidth,
-      height: windowHeight
-    })
+  afterEach(() => {
     reset(sequencerServiceMock)
   })
 
@@ -117,7 +107,7 @@ describe('sequencer details selected step', () => {
     await screen.findByText('ESW.test3')
   })
 
-  it.skip('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
+  it('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
     const stepListWithStep1InProgress: StepList = new StepList([
       getStep('InFlight', '1'),
       getStep('Pending', '2'),

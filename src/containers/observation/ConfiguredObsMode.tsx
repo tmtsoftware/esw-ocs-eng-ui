@@ -71,7 +71,10 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
-        const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
+        const filteredSequencers = previousMap.filter(
+          ([sequencerPrefix]) =>
+            sequencerPrefix !== currentPrefix && Prefix.fromString(sequencerPrefix).componentName === obsMode.name
+        )
         return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
       })
     }

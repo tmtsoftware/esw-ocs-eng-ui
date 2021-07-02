@@ -18,7 +18,7 @@ import { Container } from './Container'
 
 const { Header } = Layout
 
-const basename = import.meta.env.NODE_ENV === 'production' ? `/${AppConfig.applicationName}` : ''
+const ROUTER_BASENAME = import.meta.env.NODE_ENV === 'production' ? `/${AppConfig.applicationName}` : ''
 
 const useLocationServiceQuery = () => useQuery(LOCATION_SERVICE.key, () => LocationService())
 
@@ -29,10 +29,11 @@ export const App = (): JSX.Element => {
   if (isError) return <Result status='error' title='Location service not found!' />
 
   if (!auth || isLoading || !locationService) return <Result icon={<LoadingOutlined />} />
+
   return (
     <>
       <CombinedServiceContext locationService={locationService}>
-        <Router basename={basename}>
+        <Router basename={ROUTER_BASENAME}>
           <Layout className={styles.app}>
             <Header className={styles.tmtHeader}>
               <HeaderBar />

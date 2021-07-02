@@ -36,7 +36,7 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <ObservationTab tabName='Running' setObservation={() => ({})} />
+          <ObservationTab tabName='Running' />
         </BrowserRouter>
       )
     })
@@ -79,7 +79,7 @@ describe('observation tabs', () => {
     // mock setup ends here
 
     renderWithAuth({
-      ui: <ObservationTab tabName='Configurable' setObservation={() => ({})} />
+      ui: <ObservationTab tabName='Configurable' />
     })
 
     const configureButton = (await screen.findByRole('button', {
@@ -104,7 +104,7 @@ describe('observation tabs', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <ObservationTab tabName='Running' setObservation={() => ({})} />
+          <ObservationTab tabName='Running' />
         </BrowserRouter>
       )
     })
@@ -126,7 +126,7 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: <ObservationTab tabName='Configurable' setObservation={() => ({})} />
+      ui: <ObservationTab tabName='Configurable' />
     })
 
     await screen.findByRole('table')
@@ -147,7 +147,7 @@ describe('observation tabs', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
-      ui: <ObservationTab tabName='Non-configurable' setObservation={() => ({})} />
+      ui: <ObservationTab tabName='Non-configurable' />
     })
 
     await screen.findByRole('table')

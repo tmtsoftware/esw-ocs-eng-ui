@@ -13,9 +13,8 @@ import { HOME, INFRASTRUCTURE, NO_MATCH, OBSERVATIONS, RESOURCES, SEQUENCER_PATH
 
 const RedirectToLogin = () => {
   const { login } = useAuth()
-  useEffect(() => {
-    login()
-  }, [login])
+
+  useEffect(login, [login])
 
   return <Result icon={<LoadingOutlined />} />
 }

@@ -9,8 +9,11 @@ import {
   Parameter,
   Prefix,
   Setup,
+  SolarSystemCoord,
+  solarSystemCoordKey,
   stringKey,
-  StringKey
+  StringKey,
+  Tag
 } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
@@ -18,7 +21,7 @@ import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestU
 import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Parameters Table', () => {
-  it('should display all the parameters in a step of a Sequence | ESW-457', async () => {
+  it('should display all the parameters in a step of a Sequence | ESW-457, ESW-503', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flag').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
     const filterKey = intArrayKey('filter')
@@ -27,8 +30,9 @@ describe('Parameters Table', () => {
       [4, 5, 6]
     ])
     const stringParam: Parameter<StringKey> = stringKey('ra').set(['12:13:14.1'])
+    const solarSystemCoord = solarSystemCoordKey('solarSystem').set([new SolarSystemCoord(new Tag('Base'), 'Jupiter')])
 
-    const paramSet = [booleanParam, intParam, filterParam, stringParam]
+    const paramSet = [booleanParam, intParam, filterParam, stringParam, solarSystemCoord]
     const command = new Setup(Prefix.fromString('ESW.darknight'), 'setup', paramSet)
 
     renderWithAuth({ ui: <ParameterTable command={command} /> })
@@ -38,8 +42,9 @@ describe('Parameters Table', () => {
     assertTableHeader(paramHeaderTable, 'Unit')
     assertTableHeader(paramHeaderTable, 'Values')
 
-    assertTableBody(paramBodyTable, 'flag false copy NoUnits')
-    assertTableBody(paramBodyTable, 'randomKey 123, 12432 copy NoUnits')
-    assertTableBody(paramBodyTable, 'filter [1,2,3], [4,5,6] copy NoUnits')
+    assertTableBody(paramBodyTable, 'flag false NoUnits')
+    assertTableBody(paramBodyTable, 'randomKey 123, 12432 NoUnits')
+    assertTableBody(paramBodyTable, 'filter [1,2,3], [4,5,6] NoUnits')
+    assertTableBody(paramBodyTable, 'solarSystem Base: Jupiter NoUnits')
   })
 })

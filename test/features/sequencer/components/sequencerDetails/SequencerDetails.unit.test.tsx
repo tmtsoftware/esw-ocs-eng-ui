@@ -193,12 +193,12 @@ describe('sequencer details', () => {
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
       within(parameterBodyTable).getByRole('row', {
-        name: 'filter [1,2,3], [4,5,6] copy NoUnits'
+        name: 'filter [1,2,3], [4,5,6] NoUnits'
       })
     ).to.exist
     expect(
       within(parameterBodyTable).getByRole('row', {
-        name: 'ra "12:13:14.1" copy NoUnits'
+        name: 'ra "12:13:14.1" NoUnits'
       })
     ).to.exist
   })

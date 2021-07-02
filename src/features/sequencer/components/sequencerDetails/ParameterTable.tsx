@@ -24,9 +24,7 @@ const columns: ColumnsType<ParameterDataType> = [
     key: 'values',
     // eslint-disable-next-line react/display-name
     render: (values: string): JSX.Element => (
-      <Typography.Paragraph copyable ellipsis={{ expandable: true, rows: 2, tooltip: true }}>
-        {values}
-      </Typography.Paragraph>
+      <Typography.Paragraph ellipsis={{ expandable: true, rows: 20, tooltip: true }}>{values}</Typography.Paragraph>
     )
   },
   {

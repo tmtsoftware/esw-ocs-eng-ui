@@ -24,14 +24,14 @@ import React from 'react'
 const formatEqCoord = (value: EqCoord) => (
   <>
     {value.tag.name}: RA={value.ra.toDegree()} DEC={value.dec.toDegree()} <br />
-    {value.frame.toString()}, Catalog={value.catalogName} <br />
+    {value.frame.toString()}, Catalog=&quot;{value.catalogName}&quot; <br />
     Proper Motion={value.pm.pmx} {value.pm.pmy}
   </>
 )
 
 const formatCometCoord = (value: CometCoord) => (
   <>
-    {value.tag.name}: Epoch of Perihelion={value.epochOfPerihelion}
+    {value.tag.name}: Epoch of Perihelion={value.epochOfPerihelion} <br />
     inclination={value.inclination.toDegree()} degrees <br />
     Long Ascending Node={value.longAscendingNode.toDegree()} degrees <br />
     Argument of Perihelion={value.argOfPerihelion.toDegree()} degrees <br />
@@ -83,8 +83,16 @@ const formatCoord = (value: Coord) => {
   }
 }
 
-const FormattedParams = ({ values, size }: { values: JSX.Element[] | undefined; size?: SpaceSize }) => (
-  <Space direction='vertical' size={size}>
+const FormattedParams = ({
+  values,
+  size,
+  role
+}: {
+  values: JSX.Element[] | undefined
+  role: string
+  size?: SpaceSize
+}) => (
+  <Space direction='vertical' size={size} role={role}>
     {values && values.map((value, index) => <Typography.Text key={index}>{value}</Typography.Text>)}
   </Space>
 )
@@ -94,32 +102,33 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
   switch (keyTag) {
     case 'CoordKey':
       const coordParam = command.get(coordKey(keyName))
-      return <FormattedParams values={coordParam?.values.map(formatCoord)} />
+      return <FormattedParams values={coordParam?.values.map(formatCoord)} role={keyTag} />
 
     case 'EqCoordKey':
       const eqCoordParam = command.get(eqCoordKey(keyName))
-      return <FormattedParams values={eqCoordParam?.values.map(formatEqCoord)} />
+      return <FormattedParams values={eqCoordParam?.values.map(formatEqCoord)} role={keyTag} />
 
     case 'AltAzCoordKey':
       const solarSystemParams = command.get(altAzCoordKey(keyName))
-      return <FormattedParams values={solarSystemParams?.values.map(formatAltAzCoord)} />
+      return <FormattedParams values={solarSystemParams?.values.map(formatAltAzCoord)} role={keyTag} />
 
     case 'CometCoordKey':
       const cometCoordParam = command.get(cometCoordKey(keyName))
-      return <FormattedParams values={cometCoordParam?.values.map(formatCometCoord)} />
+      return <FormattedParams values={cometCoordParam?.values.map(formatCometCoord)} role={keyTag} />
 
     case 'MinorPlanetCoordKey':
       const minorPlantCoordParam = command.get(minorPlanetCoordKey(keyName))
-      return <FormattedParams values={minorPlantCoordParam?.values.map(formatMinorPlanetCoord)} />
+      return <FormattedParams values={minorPlantCoordParam?.values.map(formatMinorPlanetCoord)} role={keyTag} />
 
     case 'SolarSystemCoordKey':
       const solarSystemCoordParam = command.get(solarSystemCoordKey(keyName))
-      return <FormattedParams values={solarSystemCoordParam?.values.map(formatSolarSystemCoord)} />
+      return <FormattedParams values={solarSystemCoordParam?.values.map(formatSolarSystemCoord)} role={keyTag} />
 
     case 'UTCTimeKey':
       const utcTimeParams = command.get(utcTimeKey(keyName))
       return (
         <FormattedParams
+          role={keyTag}
           size={0}
           values={utcTimeParams?.values.map((value, index) => (
             <Typography.Text key={index}>{value}</Typography.Text>
@@ -131,6 +140,7 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
       const taiTimeParams = command.get(taiTimeKey(keyName))
       return (
         <FormattedParams
+          role={keyTag}
           size={0}
           values={taiTimeParams?.values.map((value, index) => (
             <Typography.Text key={index}>{value}</Typography.Text>
@@ -139,6 +149,10 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
       )
 
     default:
-      return <Typography.Text>{parameter.values.map((value) => JSON.stringify(value)).join(', ')}</Typography.Text>
+      return (
+        <div role={keyTag}>
+          <Typography.Text>{parameter.values.map((value) => JSON.stringify(value)).join(', ')}</Typography.Text>
+        </div>
+      )
   }
 }

@@ -117,7 +117,7 @@ describe('sequencer details selected step', () => {
     await screen.findByText('ESW.test3')
   })
 
-  it('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
+  it.skip('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
     const stepListWithStep1InProgress: StepList = new StepList([
       getStep('InFlight', '1'),
       getStep('Pending', '2'),

@@ -9,7 +9,7 @@ import { SequencerDetails } from '../../../../../src/features/sequencer/componen
 import { getStep } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sendEvent, sequencerServiceMock } from '../../../../utils/test-utils'
 
-describe('sequencer details selected step', () => {
+describe.skip('sequencer details selected step', () => {
   beforeEach(() => {
     reset(sequencerServiceMock)
   })

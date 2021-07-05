@@ -1,21 +1,26 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Location, Prefix, StepStatus } from '@tmtsoftware/esw-ts'
+import { Location, Prefix, SequencerStateResponse, StepList, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, reset, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { addEventListenerForSubscribing } from '../../../../utils/sequence-utils'
+import { getStep, makeSeqStateResponse as mkSeqStateResponse } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
+const mkStepList = (statusList: StepStatus['_type'][]): StepList => {
+  const steps = statusList.map((x, index) => getStep(x, `${index + 1}`))
+  return new StepList(steps)
+}
 describe('sequencer details selected step', () => {
+  let simulateBackendEvent: (sequencerStateResponse: SequencerStateResponse) => void = () => ({})
   beforeEach(() => {
     reset(sequencerServiceMock)
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
-      const listener = addEventListenerForSubscribing(callback)
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn((cb) => {
+      simulateBackendEvent = cb
       return {
-        cancel: () => window.removeEventListener('message', listener)
+        cancel: () => undefined
       }
     })
   })
@@ -56,14 +61,14 @@ describe('sequencer details selected step', () => {
       )
     })
     //simulating backend event
-    window.postMessage(stepListWithStep1InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep1InProgress)))
     // step1 in executng, ui should show step1 details on right side
     await assertRunningStepIs(/Command-1/i, 500)
     const sourceValue = screen.getByLabelText('Source-Value')
     expect(sourceValue.innerHTML).to.equals('ESW.test1')
 
     //simulating backend event
-    window.postMessage(stepListWithStep2InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep2InProgress)))
     //After some time , a new event is received, step2 in executng, ui should show step2 details on right side
     await assertRunningStepIs(/Command-2/i, 1200)
     await screen.findByText('ESW.test2')
@@ -81,7 +86,7 @@ describe('sequencer details selected step', () => {
         </BrowserRouter>
       )
     })
-    window.postMessage(stepListWithStep1InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep1InProgress)))
     //User clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
@@ -89,7 +94,7 @@ describe('sequencer details selected step', () => {
     //step1 is executing, but ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
     await screen.findByText('ESW.test3')
-    window.postMessage(stepListWithStep2InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep2InProgress)))
     //step2 is executing, ui should continue to show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-2/i, 500)
     await screen.findByText('ESW.test3')
@@ -108,7 +113,7 @@ describe('sequencer details selected step', () => {
         </BrowserRouter>
       )
     })
-    window.postMessage(stepListWithStep1InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep1InProgress)))
     //user clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
@@ -116,10 +121,11 @@ describe('sequencer details selected step', () => {
     //step1 is executing, ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
     await screen.findByText('ESW.test3')
-    window.postMessage(stepListWithStep2InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep2InProgress)))
     //step2 is executing
     await assertRunningStepIs(/Command-2/i, 1000)
-    window.postMessage(stepListWithStep3Removed, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep3Removed)))
+
     //ui should show step2 details on right side as step3 got removed
     await screen.findByText('ESW.test2')
   })
@@ -136,7 +142,7 @@ describe('sequencer details selected step', () => {
         </BrowserRouter>
       )
     })
-    window.postMessage(stepList, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepList)))
     //user clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
     userEvent.click(step3)
@@ -144,7 +150,7 @@ describe('sequencer details selected step', () => {
     //step1 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user goes to non-follow mode
     await assertRunningStepIs(/Command-1/i, 500)
     await screen.findByText('ESW.test3')
-    window.postMessage(updatedStepListWithStep2InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(updatedStepListWithStep2InProgress)))
     //step2 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user is still in non-follow mode
     await assertRunningStepIs(/Command-2/i, 500)
     await screen.findByText('ESW.test3')
@@ -154,7 +160,7 @@ describe('sequencer details selected step', () => {
     userEvent.click(step2)
     await screen.findByText('ESW.test2')
 
-    window.postMessage(updatedStepListWithStep3InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(updatedStepListWithStep3InProgress)))
     //as user is in follow mode, and after some time ui should show step3 details on right side as steplist progress
     await screen.findByText('ESW.test3')
   })
@@ -171,12 +177,12 @@ describe('sequencer details selected step', () => {
         </BrowserRouter>
       )
     })
-    window.postMessage(stepListWithStep18InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep18InProgress)))
     //step18 is executing, ui should show step18 details on right side
     await assertRunningStepIs(/Command-18/i, 500)
     //wait and assert for auto scroll to happen
     await waitFor(() => expect(window.scrollY).to.greaterThan(500))
-    window.postMessage(stepListWithStep19InProgress, '*')
+    simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep19InProgress)))
     //step19 is executing, ui should show step19 details on right side
     await assertRunningStepIs(/Command-19/i, 500)
     await screen.findByText('ESW.test19')

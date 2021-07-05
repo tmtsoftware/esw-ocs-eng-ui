@@ -33,18 +33,6 @@ export const getSequencersInfo = (): SequencerInfo[] => {
   ]
 }
 
-export const addEventListenerForSubscribing = (
-  callback: (sequencerStateResponse: SequencerStateResponse) => void,
-  status: SequencerState['_type'] = 'Running'
-): ((event: MessageEvent<StepStatus['_type'][]>) => void) => {
-  const onMessage = (event: MessageEvent<StepStatus['_type'][]>): void => {
-    const steps = event.data.map((x, index) => getStep(x, `${index + 1}`))
-    sendEvent(callback, status, new StepList(steps))
-  }
-  window.addEventListener('message', onMessage)
-  return onMessage
-}
-
 export const sendEvent = (
   onevent: (sequencerStateResponse: SequencerStateResponse) => void,
   state: SequencerState['_type'],

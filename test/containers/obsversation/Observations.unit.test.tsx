@@ -22,14 +22,13 @@ describe('Observation page', () => {
   beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
     const smService = mockServices.mock.smService
-
-    renderWithAuth({
-      ui: <Observations />
-    })
-
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'Success',
       obsModes: []
+    })
+
+    renderWithAuth({
+      ui: <Observations />
     })
 
     const header = screen.getByText('Manage Observation')
@@ -52,13 +51,13 @@ describe('Observation page', () => {
   it('should render no obsModes if no obsModes are available in tab | ESW-450', async () => {
     const smService = mockServices.mock.smService
 
-    renderWithAuth({
-      ui: <Observations />
-    })
-
     when(smService.getObsModesDetails()).thenResolve({
       _type: 'Success',
       obsModes: []
+    })
+
+    renderWithAuth({
+      ui: <Observations />
     })
 
     const configurableTab = screen.getByRole('tab', { name: 'Configurable' })

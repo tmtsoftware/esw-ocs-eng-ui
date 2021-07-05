@@ -9,7 +9,7 @@ import { SequencerDetails } from '../../../../../src/features/sequencer/componen
 import { getStep } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sendEvent, sequencerServiceMock } from '../../../../utils/test-utils'
 
-describe.skip('sequencer details selected step', () => {
+describe('sequencer details selected step', () => {
   beforeEach(() => {
     reset(sequencerServiceMock)
   })
@@ -101,7 +101,7 @@ describe.skip('sequencer details selected step', () => {
     //step1 is executing, but ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
     await screen.findByText('ESW.test3')
-
+    await delay(10)
     //step2 is executing, ui should continue to show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-2/i, 500)
     await screen.findByText('ESW.test3')
@@ -260,3 +260,5 @@ const assertRunningStepIs = async (step: RegExp, timeout: number) => {
   const stepButton1 = within(htmlElement1).getByRole('button')
   await waitFor(() => expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)'), { timeout })
 }
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))

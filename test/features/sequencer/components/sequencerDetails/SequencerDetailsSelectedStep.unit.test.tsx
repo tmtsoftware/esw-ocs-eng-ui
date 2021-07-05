@@ -125,7 +125,7 @@ describe('sequencer details selected step', () => {
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
       sendEvent(callback, 'Running', stepListWithStep1InProgress)
       sendEvent(callback, 'Running', stepListWithStep2InProgress, 400)
-      sendEvent(callback, 'Running', stepListWithStep3Removed, 800)
+      sendEvent(callback, 'Running', stepListWithStep3Removed, 1000)
       return {
         cancel: () => undefined
       }
@@ -142,11 +142,9 @@ describe('sequencer details selected step', () => {
     //step1 is executing, ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
     await screen.findByText('ESW.test3')
-    await delay(10)
     //step2 is executing
-    await assertRunningStepIs(/Command-2/i, 500)
+    await assertRunningStepIs(/Command-2/i, 1000)
 
-    await delay(10)
     //ui should show step2 details on right side as step3 got removed
     await screen.findByText('ESW.test2')
   })

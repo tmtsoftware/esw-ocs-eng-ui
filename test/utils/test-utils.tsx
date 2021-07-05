@@ -250,23 +250,3 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
 // eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }
-
-export const makeSeqStateResponse = (
-  seqState: SequencerState['_type'],
-  stepList: StepList
-): SequencerStateResponse => ({
-  _type: 'SequencerStateResponse',
-  sequencerState: { _type: seqState },
-  stepList
-})
-
-export const sendEvent = (
-  onevent: (sequencerStateResponse: SequencerStateResponse) => void,
-  state: SequencerState['_type'],
-  stepList: StepList,
-  timeout?: number | undefined
-): void => {
-  timeout
-    ? setTimeout(() => onevent(makeSeqStateResponse(state, stepList)), timeout)
-    : onevent(makeSeqStateResponse(state, stepList))
-}

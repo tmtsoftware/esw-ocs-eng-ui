@@ -1,26 +1,23 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Location, Prefix, SequencerStateResponse, StepList, StepStatus } from '@tmtsoftware/esw-ts'
+import { Location, Prefix, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { anything, reset, when } from 'ts-mockito'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
-import { getStep } from '../../../../utils/sequence-utils'
-import { mockServices, renderWithAuth, sendEvent, sequencerServiceMock } from '../../../../utils/test-utils'
+import { addEventListenerForSubscribing } from '../../../../utils/sequence-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details selected step', () => {
   beforeEach(() => {
     reset(sequencerServiceMock)
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn((callback) => {
-      addEventListenerForSubscribing(callback)
+      const listener = addEventListenerForSubscribing(callback)
       return {
-        cancel: () => undefined
+        cancel: () => window.removeEventListener('message', listener)
       }
     })
-  })
-  afterEach(() => {
-    reset(sequencerServiceMock)
   })
 
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
@@ -190,12 +187,4 @@ const assertRunningStepIs = async (step: RegExp, timeout: number) => {
   const htmlElement1 = await screen.findByRole('cell', { name: step })
   const stepButton1 = within(htmlElement1).getByRole('button')
   await waitFor(() => expect(stepButton1.style.borderColor).to.equal('rgb(82, 196, 26)'), { timeout })
-}
-
-const addEventListenerForSubscribing = (callback: (sequencerStateResponse: SequencerStateResponse) => void) => {
-  window.addEventListener('message', (event) => {
-    const eventTypes: StepStatus['_type'][] = event.data
-    const steps = eventTypes.map((x, index) => getStep(x, `${index + 1}`))
-    sendEvent(callback, 'Running', new StepList(steps))
-  })
 }

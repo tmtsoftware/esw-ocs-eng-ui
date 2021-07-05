@@ -30,14 +30,8 @@ import {
   goOfflineConstants,
   stepConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
-import { getStepList } from '../../../../utils/sequence-utils'
-import {
-  makeSeqStateResponse,
-  mockServices,
-  renderWithAuth,
-  sendEvent,
-  sequencerServiceMock
-} from '../../../../utils/test-utils'
+import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/sequence-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details', () => {
   let windowWidth: number

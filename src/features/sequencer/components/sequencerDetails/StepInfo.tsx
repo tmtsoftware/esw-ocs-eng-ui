@@ -12,21 +12,19 @@ const StepItem = (label: string, item: string) => {
     <Descriptions.Item
       style={{ paddingBottom: '1px' }}
       label={
-        <Typography.Title aria-label={`${label}-Key`} type={'secondary'} level={5}>
+        <Typography.Title aria-label={`${label}-Key`} type='secondary' level={5}>
           {label}
         </Typography.Title>
       }>
-      {
-        <Typography.Title aria-label={`${label}-Value`} ellipsis={{ tooltip: true }} level={5}>
-          {item}
-        </Typography.Title>
-      }
+      <Typography.Text aria-label={`${label}-Value`} ellipsis={true}>
+        {item}
+      </Typography.Text>
     </Descriptions.Item>
   )
 }
 
 const getStepFailureMessage = (failure: StepStatusFailure) =>
-  failure.message !== '' ? `Step Failure: ${failure.message}` : stepConstants.defaultStepFailureErrorMessage
+  failure.message ? `Step Failure: ${failure.message}` : stepConstants.defaultStepFailureErrorMessage
 
 const StepErrorAlert = ({ message }: { message: string }) => (
   <Alert message='' description={<Typography.Text type='danger'>{message}</Typography.Text>} type='error' showIcon />

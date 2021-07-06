@@ -1,6 +1,7 @@
 import { ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Popconfirm, Typography } from 'antd'
 import React from 'react'
+import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useReloadScriptAction } from '../../hooks/useReloadScriptAction'
 import { useStartSequencerAction } from '../../hooks/useStartSequencerAction'
@@ -18,6 +19,8 @@ export const SmSequencerAction = ({
   const { subsystem, componentName } = sequencerPrefix
   const reloadAction = useReloadScriptAction(subsystem, componentName)
   const startSequencerAction = useStartSequencerAction(subsystem, new ObsMode(componentName))
+
+  if (reloadAction.isLoading) return <Spinner />
 
   if (!sequencerState) {
     return (

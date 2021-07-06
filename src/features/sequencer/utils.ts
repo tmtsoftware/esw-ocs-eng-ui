@@ -66,3 +66,6 @@ export const handleStepActionResponse = (res: GenericResponse): Ok => {
       throw new Error(res.msg)
   }
 }
+
+export const isSequencerInProgress = (sequencerState?: SequencerState): boolean =>
+  sequencerState?._type !== 'Idle' && sequencerState?._type !== 'Offline'

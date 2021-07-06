@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ObsMode, Prefix, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix, SequencerState, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
@@ -14,15 +14,16 @@ describe('Stop Sequencer', () => {
   beforeEach(() => reset(mockServices.mock.smService))
   const obsMode = new ObsMode('DarkNight')
   const smService = mockServices.mock.smService
-  const seqPrefix = new Prefix('ESW', obsMode.name)
-  const failureMessage = stopSequencerConstants.failureMessage(seqPrefix)
+  const darkNight = new Prefix('ESW', obsMode.name)
+  const clearsky = new Prefix('ESW', 'ClearSky')
+  const failureMessage = stopSequencerConstants.failureMessage(darkNight)
   const tests: [string, ShutdownSequencersResponse, string][] = [
     [
       'success',
       {
         _type: 'Success'
       },
-      stopSequencerConstants.successMessage(seqPrefix)
+      stopSequencerConstants.successMessage(darkNight)
     ],
     [
       'locationServiceError',
@@ -53,14 +54,18 @@ describe('Stop Sequencer', () => {
   ]
 
   tests.forEach(([testname, response, message]) => {
-    const modalTitleText = stopSequencerConstants.getModalTitle(seqPrefix.toJSON())
+    const running: SequencerState = {
+      _type: 'Running'
+    }
+
+    const modalTitleText = stopSequencerConstants.getModalTitle(darkNight.toJSON(), running)
     it(`should return ${testname} | ESW-447, ESW-507`, async () => {
       when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({
         ui: (
           <Menu>
-            <StopSequencer sequencerPrefix={seqPrefix} />
+            <StopSequencer sequencerState={running} sequencerPrefix={darkNight} />
           </Menu>
         )
       })
@@ -82,6 +87,40 @@ describe('Stop Sequencer', () => {
 
       verify(smService.shutdownSequencer('ESW', deepEqual(obsMode))).called()
       await waitFor(() => expect(screen.queryByText(modalTitleText)).to.null)
+    })
+  })
+  const testCasesForByPassingModal: [SequencerState['_type'], Prefix][] = [
+    ['Idle', darkNight],
+    ['Offline', clearsky]
+  ]
+  testCasesForByPassingModal.forEach(([state, sequencerPrefix]) => {
+    it(`should not show confirm modal if sequencer is in ${state} | ESW-506`, async () => {
+      when(smService.shutdownSequencer('ESW', deepEqual(new ObsMode(sequencerPrefix.componentName)))).thenResolve({
+        _type: 'Success'
+      })
+      const sequencerState: SequencerState = {
+        _type: state
+      }
+      renderWithAuth({
+        ui: (
+          <Menu>
+            <StopSequencer sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
+          </Menu>
+        )
+      })
+
+      const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
+
+      userEvent.click(stopSequencer)
+
+      const modalTitle = screen.queryByText(
+        stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON(), sequencerState)
+      )
+      expect(modalTitle).to.not.exist
+
+      await screen.findByText(stopSequencerConstants.successMessage(sequencerPrefix))
+
+      verify(smService.shutdownSequencer('ESW', deepEqual(new ObsMode(sequencerPrefix.componentName)))).called()
     })
   })
 })

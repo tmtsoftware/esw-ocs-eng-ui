@@ -1,4 +1,4 @@
-import type { Prefix } from '@tmtsoftware/esw-ts'
+import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 
 export const startSequencerConstants = {
   successMessage: 'Successfully started sequencer',
@@ -19,7 +19,8 @@ export const stopSequencerConstants = {
   failureMessage: (sequencerPrefix: Prefix): string => `Failed to stop sequencer ${sequencerPrefix.toJSON()}`,
   menuItemText: 'Stop Sequencer',
   modalOkText: 'Stop',
-  getModalTitle: (sequencerPrefix: string): string => `Are you sure you want to stop sequencer '${sequencerPrefix}'?`
+  getModalTitle: (sequencerPrefix: string, sequencerState: SequencerState): string =>
+    `Sequencer is ${sequencerState._type}, do you still want to stop sequencer '${sequencerPrefix}'?`
 }
 
 export const reloadScriptConstants = {
@@ -27,8 +28,8 @@ export const reloadScriptConstants = {
   getFailureMessage: (sequencerPrefix: string): string => `Failed to load script ${sequencerPrefix}`,
   menuItemText: 'Reload Script',
   modalOkText: 'Reload',
-  getModalTitle: (subsystem: string, obsMode: string): string =>
-    `Do you want to reload the sequencer ${subsystem}.${obsMode}?`
+  getModalTitle: (sequencerPrefix: string, sequencerState: SequencerState): string =>
+    `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${sequencerPrefix}?`
 }
 
 export const configureConstants = {

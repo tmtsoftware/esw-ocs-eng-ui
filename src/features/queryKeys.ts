@@ -22,3 +22,7 @@ export const OBS_MODES_DETAILS: Query = {
 
 // Sequencers
 export const SEQUENCER_LOCATION = { key: 'findSequencerLocation' }
+
+export const SEQUENCER_STATE = {
+  key: 'getSequencerState'
+}

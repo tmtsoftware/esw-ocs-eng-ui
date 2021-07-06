@@ -1,9 +1,10 @@
 import { MoreOutlined } from '@ant-design/icons'
-import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import type { ComponentId, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
 import { StopSequencer } from '../../sm/components/StopSequencer'
+import { useSequencerState } from '../../sm/hooks/useSequencerState'
 import { disabledSequencerActions } from '../agentConstants'
 import styles from './agentCards.module.css'
 import { KillSequenceComponent } from './KillSequenceComponent'
@@ -39,13 +40,20 @@ const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceCom
   </Menu>
 )
 
-const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => (
-  <Menu {...restProps}>
-    <StopSequencer sequencerPrefix={sequencerPrefix} />
-    <ReloadScript subsystem={componentId.prefix.subsystem} obsMode={sequencerPrefix.componentName} />
-    <KillSequenceComponent componentId={componentId} />
-  </Menu>
-)
+const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => {
+  const { data: sequencerState } = useSequencerState(sequencerPrefix)
+  return (
+    <Menu {...restProps}>
+      <StopSequencer sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
+      <ReloadScript
+        sequencerState={sequencerState}
+        subsystem={componentId.prefix.subsystem}
+        obsMode={sequencerPrefix.componentName}
+      />
+      <KillSequenceComponent componentId={componentId} />
+    </Menu>
+  )
+}
 
 export const SequenceComponentActions = ({ componentId }: SequenceComponentActionProps): JSX.Element => (
   <Dropdown overlay={() => <SequenceComponentActionsMenu componentId={componentId} />} trigger={['click']}>

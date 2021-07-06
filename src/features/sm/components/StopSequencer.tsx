@@ -1,5 +1,12 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
-import { ObsMode, Prefix, SequenceManagerService, ShutdownSequencersResponse, Subsystem } from '@tmtsoftware/esw-ts'
+import {
+  ObsMode,
+  Prefix,
+  SequenceManagerService,
+  SequencerState,
+  ShutdownSequencersResponse,
+  Subsystem
+} from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
@@ -7,6 +14,7 @@ import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
+import { isSequencerInProgress } from '../../sequencer/utils'
 import { stopSequencerConstants } from '../smConstants'
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
@@ -28,8 +36,30 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
 const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
   smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
-export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }): JSX.Element => {
+export const StopSequencer = ({
+  sequencerPrefix,
+  sequencerState
+}: {
+  sequencerPrefix: Prefix
+  sequencerState: SequencerState | undefined
+}): JSX.Element => {
   const [smContext, isLoading] = useSMService()
+  const isInProgress = isSequencerInProgress(sequencerState)
+
+  const handleOnClick = () => {
+    if (isInProgress && sequencerState) {
+      smContext?.smService &&
+        showConfirmModal(
+          () => {
+            stopAction.mutate(smContext.smService)
+          },
+          stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON(), sequencerState),
+          stopSequencerConstants.modalOkText
+        )
+    } else {
+      smContext?.smService && stopAction.mutate(smContext.smService)
+    }
+  }
 
   const stopAction = useMutation({
     mutationFn: stopSequencer(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
@@ -39,19 +69,7 @@ export const StopSequencer = ({ sequencerPrefix }: { sequencerPrefix: Prefix }):
   })
 
   return (
-    <Menu.Item
-      icon={<CloseCircleOutlined />}
-      disabled={isLoading || stopAction.isLoading}
-      onClick={() =>
-        smContext?.smService &&
-        showConfirmModal(
-          () => {
-            stopAction.mutate(smContext.smService)
-          },
-          stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON()),
-          stopSequencerConstants.modalOkText
-        )
-      }>
+    <Menu.Item icon={<CloseCircleOutlined />} disabled={isLoading || stopAction.isLoading} onClick={handleOnClick}>
       {stopSequencerConstants.menuItemText}
     </Menu.Item>
   )

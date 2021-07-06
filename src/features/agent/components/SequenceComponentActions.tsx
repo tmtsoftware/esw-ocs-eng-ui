@@ -1,5 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons'
-import type { ComponentId, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'

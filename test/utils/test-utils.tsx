@@ -12,10 +12,7 @@ import {
   Prefix,
   SequenceManagerService,
   SequencerService,
-  SequencerState,
-  SequencerStateResponse,
-  SEQUENCE_MANAGER_CONNECTION,
-  StepList
+  SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
 import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/config-service/ConfigServiceImpl'

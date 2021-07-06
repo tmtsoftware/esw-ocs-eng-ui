@@ -3,6 +3,7 @@ import { Popconfirm, Typography } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSMService } from '../../../../contexts/SMContext'
+import { isSequencerInProgress } from '../../../sequencer/utils'
 import { useReloadScriptAction } from '../../hooks/useReloadScriptAction'
 import { useStartSequencerAction } from '../../hooks/useStartSequencerAction'
 import { sequencerActionConstants } from '../../smConstants'
@@ -31,16 +32,23 @@ export const SmSequencerAction = ({
       </Typography.Link>
     )
   }
-  return (
+  const isInProgress = isSequencerInProgress(sequencerState)
+  const isDisabled = smLoading || reloadAction.isLoading
+
+  const reload = () => {
+    smService && reloadAction.mutateAsync(smService)
+  }
+
+  return isInProgress ? (
     <Popconfirm
-      title={sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)}
+      title={sequencerActionConstants.getPopConfirmTitle(subsystem, componentName, sequencerState)}
       okText={sequencerActionConstants.popConfirmOkText}
-      onConfirm={() => {
-        smService && reloadAction.mutateAsync(smService)
-      }}>
-      <Typography.Link disabled={smLoading || reloadAction.isLoading}>
-        {sequencerActionConstants.reloadScript}
-      </Typography.Link>
+      onConfirm={reload}>
+      <Typography.Link disabled={isDisabled}>{sequencerActionConstants.reloadScript}</Typography.Link>
     </Popconfirm>
+  ) : (
+    <Typography.Link disabled={isDisabled} onClick={reload}>
+      {sequencerActionConstants.reloadScript}
+    </Typography.Link>
   )
 }

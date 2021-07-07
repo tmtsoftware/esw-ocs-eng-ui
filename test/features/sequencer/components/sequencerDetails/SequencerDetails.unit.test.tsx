@@ -307,11 +307,11 @@ describe('sequencer details', () => {
         id: '1'
       }
     ])
+    let sendCommand: (sequencerStateRes: SequencerStateResponse) => void = () => ({})
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
       (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
-        sendEvent(onevent, 'Running', stepListWithInFlight)
-        sendEvent(onevent, 'Running', stepListWithFailure, 400)
+        sendCommand = onevent
         return {
           cancel: () => undefined
         }
@@ -321,7 +321,11 @@ describe('sequencer details', () => {
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
+    sendCommand(makeSeqStateResponse('Running', stepListWithInFlight))
+
     expect(screen.queryByRole('alert')).to.not.exist
+
+    sendCommand(makeSeqStateResponse('Running', stepListWithFailure))
 
     const alert = await screen.findByRole('alert')
     await within(alert).findByText(`Step Failure: ${errorMessage}`)
@@ -370,12 +374,11 @@ describe('sequencer details', () => {
         id: 'step2'
       }
     ])
-    let commandInserted = false
+    let sendCommand: (sequencerStateRes: SequencerStateResponse) => void = () => ({})
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
       (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
-        sendEvent(onevent, 'Idle', stepList)
-        setInterval(() => commandInserted && sendEvent(onevent, 'Idle', stepListAfterInsertion), 1)
+        sendCommand = onevent
         return {
           cancel: () => undefined
         }
@@ -393,6 +396,7 @@ describe('sequencer details', () => {
         </BrowserRouter>
       )
     })
+    sendCommand(makeSeqStateResponse('Idle', stepList))
     const actions = await screen.findByRole('stepActions')
     await waitFor(() => userEvent.click(actions))
 
@@ -410,7 +414,7 @@ describe('sequencer details', () => {
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 
     await screen.findByText(addStepConstants.successMessage)
-    commandInserted = true
+    sendCommand(makeSeqStateResponse('Idle', stepListAfterInsertion))
     verify(sequencerServiceMock.insertAfter('step1', deepEqual([commandToInsert]))).called()
 
     // assert step is added

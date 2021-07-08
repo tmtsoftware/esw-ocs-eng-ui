@@ -169,7 +169,9 @@ describe('Observation page', () => {
   it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
     const smService = mockServices.mock.smService
 
-    when(smService.getObsModesDetails()).thenResolve(getObsModes('Configured')).thenResolve(getObsModes('Configurable'))
+    when(smService.getObsModesDetails())
+      .thenResolve(getObsModes({ _type: 'Configured' }))
+      .thenResolve(getObsModes({ _type: 'Configurable' }))
     const obsMode = new ObsMode('DarkNight_1')
     when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve({
       _type: 'Success'

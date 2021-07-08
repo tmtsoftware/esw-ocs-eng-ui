@@ -39,7 +39,8 @@ const obsModesDetails: ObsModesDetailsResponse = {
       obsMode: new ObsMode('ESW_RANDOM'),
       resources: [],
       status: {
-        _type: 'NonConfigurable'
+        _type: 'NonConfigurable',
+        missingSequenceComponents: []
       },
       sequencers: []
     }

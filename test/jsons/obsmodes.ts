@@ -19,7 +19,8 @@ const obsModes: ObsModeDetails[] = [
   {
     obsMode: new ObsMode('DarkNight_3'),
     status: {
-      _type: 'NonConfigurable'
+      _type: 'NonConfigurable',
+      missingSequenceComponents: []
     },
     resources: ['ESW', 'IRIS', 'WFOS'],
     sequencers: ['ESW', 'TCS']
@@ -43,7 +44,8 @@ const obsModes: ObsModeDetails[] = [
   {
     obsMode: new ObsMode('DarkNight_5'),
     status: {
-      _type: 'NonConfigurable'
+      _type: 'NonConfigurable',
+      missingSequenceComponents: []
     },
     resources: ['ESW', 'IRIS', 'WFOS'],
     sequencers: ['ESW', 'TCS']

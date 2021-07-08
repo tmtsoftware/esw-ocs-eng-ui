@@ -12,21 +12,12 @@ import {
   Prefix,
   SequenceManagerService,
   SequencerService,
-  SEQUENCE_MANAGER_CONNECTION
+  SEQUENCE_MANAGER_CONNECTION,
+  TestUtils
 } from '@tmtsoftware/esw-ts'
-import { AgentServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/agent-service/AgentServiceImpl'
-import { ConfigServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/config-service/ConfigServiceImpl'
-import { SequenceManagerImpl } from '@tmtsoftware/esw-ts/dist/src/clients/sequence-manager/SequenceManagerImpl'
-import { SequencerServiceImpl } from '@tmtsoftware/esw-ts/dist/src/clients/sequencer/SequencerServiceImpl'
+import type { TestUtils as KeyCloakTypes } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import 'antd/dist/antd.css'
-import type {
-  KeycloakProfile,
-  KeycloakPromise,
-  KeycloakResourceAccess,
-  KeycloakRoles,
-  KeycloakTokenParsed
-} from 'keycloak-js'
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
@@ -49,16 +40,16 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as KeycloakPromise<void, void>
+      return Promise.resolve() as KeyCloakTypes.KeycloakPromise<void, void>
     },
     token: () => 'token string',
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      } as KeycloakTokenParsed),
-    realmAccess: () => [''] as unknown as KeycloakRoles,
-    resourceAccess: () => [''] as unknown as KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as KeycloakPromise<KeycloakProfile, void>
+      } as KeyCloakTypes.KeycloakTokenParsed),
+    realmAccess: () => [''] as unknown as KeyCloakTypes.KeycloakRoles,
+    resourceAccess: () => [''] as unknown as KeyCloakTypes.KeycloakResourceAccess,
+    loadUserProfile: () => Promise.resolve({}) as KeyCloakTypes.KeycloakPromise<KeyCloakTypes.KeycloakProfile, void>
   }
 }
 
@@ -74,12 +65,12 @@ type MockServices = {
   mock: Services
 }
 
-export const sequencerServiceMock = mock<SequencerService>(SequencerServiceImpl)
+export const sequencerServiceMock = mock<SequencerService>(TestUtils.SequencerServiceImpl)
 
 export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
 
 const getMockServices: () => MockServices = () => {
-  const agentServiceMock = mock<AgentService>(AgentServiceImpl)
+  const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
@@ -91,10 +82,10 @@ const getMockServices: () => MockServices = () => {
   })
   when(locationServiceMock.find(anything())).thenResolve(undefined)
 
-  const smServiceMock = mock<SequenceManagerService>(SequenceManagerImpl)
+  const smServiceMock = mock<SequenceManagerService>(TestUtils.SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
 
-  const configServiceMock = mock<ConfigService>(ConfigServiceImpl)
+  const configServiceMock = mock<ConfigService>(TestUtils.ConfigServiceImpl)
   const configServiceInstance = instance<ConfigService>(configServiceMock)
   return {
     mock: {

@@ -57,14 +57,7 @@ export const ObservationTab = ({ tabName }: { tabName: TabName }): JSX.Element =
         </Menu>
       </Sider>
       <Content style={{ marginRight: '2rem' }}>
-        {selectedObs && (
-          <SelectedObsMode
-            obsMode={selectedObs.obsMode}
-            sequencers={selectedObs.sequencers}
-            resources={resources}
-            currentTab={tabName}
-          />
-        )}
+        {selectedObs && <SelectedObsMode obsModeDetails={selectedObs} resources={resources} currentTab={tabName} />}
       </Content>
     </Layout>
   )

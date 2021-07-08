@@ -34,19 +34,17 @@ describe('CurrentObsMode', () => {
     metadata: {}
   }
 
-  const obsModes: ObsModeDetails[] = [
-    {
-      obsMode: new ObsMode('DarkNight_1'),
-      status: {
-        _type: 'Configured'
-      },
-      resources: ['ESW'],
-      sequencers: ['ESW']
-    }
-  ]
-  const obsModesData: ObsModesDetailsResponseSuccess = { _type: 'Success', obsModes: obsModes }
+  const darknightObsModeDetails: ObsModeDetails = {
+    obsMode: new ObsMode('DarkNight_1'),
+    status: {
+      _type: 'Configured'
+    },
+    resources: ['ESW'],
+    sequencers: ['ESW']
+  }
 
-  const getSequencers = () => obsModes.find((x) => x.obsMode.name === 'DarkNight_1')?.sequencers ?? []
+  const obsModes: ObsModeDetails[] = [darknightObsModeDetails]
+  const obsModesData: ObsModesDetailsResponseSuccess = { _type: 'Success', obsModes: obsModes }
 
   const sequencerStateResponse: SequencerStateResponse = {
     _type: 'SequencerStateResponse',
@@ -71,14 +69,7 @@ describe('CurrentObsMode', () => {
     })
 
     const { unmount } = renderWithAuth({
-      ui: (
-        <SelectedObsMode
-          resources={[]}
-          sequencers={getSequencers()}
-          currentTab='Running'
-          obsMode={new ObsMode('DarkNight_1')}
-        />
-      )
+      ui: <SelectedObsMode resources={[]} currentTab='Running' obsModeDetails={darknightObsModeDetails} />
     })
 
     verify(locationService.track(deepEqual(eswSequencerConnection))).once()
@@ -109,14 +100,7 @@ describe('CurrentObsMode', () => {
     })
 
     renderWithAuth({
-      ui: (
-        <SelectedObsMode
-          resources={[]}
-          sequencers={getSequencers()}
-          currentTab='Running'
-          obsMode={new ObsMode('DarkNight_1')}
-        />
-      )
+      ui: <SelectedObsMode resources={[]} currentTab='Running' obsModeDetails={darknightObsModeDetails} />
     })
 
     await screen.findByText('Sequencer not found')
@@ -142,12 +126,7 @@ describe('CurrentObsMode', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SelectedObsMode
-            resources={[]}
-            sequencers={getSequencers()}
-            currentTab='Running'
-            obsMode={new ObsMode('DarkNight_1')}
-          />
+          <SelectedObsMode resources={[]} currentTab='Running' obsModeDetails={darknightObsModeDetails} />
         </BrowserRouter>
       )
     })
@@ -185,12 +164,7 @@ describe('CurrentObsMode', () => {
     renderWithAuth({
       ui: (
         <BrowserRouter>
-          <SelectedObsMode
-            resources={[]}
-            sequencers={getSequencers()}
-            currentTab='Running'
-            obsMode={new ObsMode('DarkNight_1')}
-          />
+          <SelectedObsMode resources={[]} currentTab='Running' obsModeDetails={darknightObsModeDetails} />
         </BrowserRouter>
       )
     })

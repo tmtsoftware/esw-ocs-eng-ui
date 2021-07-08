@@ -164,4 +164,21 @@ describe('observation tabs', () => {
     expect(within(resourcesTable).getByRole('row', { name: 'WFOS Available' })).to.exist
     expect(within(resourcesTable).getByRole('row', { name: 'ESW InUse' })).to.exist
   })
+
+  it('should render alert if sequence components are missing on non-configurable tab | ESW-529', async () => {
+    when(smService.getObsModesDetails()).thenResolve(obsModesData)
+
+    renderWithAuth({
+      ui: <ObservationTab tabName='Non-configurable' />
+    })
+
+    const menuitem = await screen.findByRole('menuitem', {
+      name: /DarkNight_5/i
+    })
+
+    userEvent.click(menuitem)
+
+    const alert = await screen.findByRole('alert')
+    expect(alert.innerText).to.equals('Sequence components are not available for TCS')
+  })
 })

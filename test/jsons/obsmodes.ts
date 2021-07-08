@@ -45,7 +45,7 @@ const obsModes: ObsModeDetails[] = [
     obsMode: new ObsMode('DarkNight_5'),
     status: {
       _type: 'NonConfigurable',
-      missingSequenceComponents: []
+      missingSequenceComponents: ['TCS']
     },
     resources: ['ESW', 'IRIS', 'WFOS'],
     sequencers: ['ESW', 'TCS']

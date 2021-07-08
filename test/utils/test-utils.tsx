@@ -13,6 +13,7 @@ import {
   SequenceManagerService,
   SequencerService,
   SEQUENCE_MANAGER_CONNECTION,
+  setAppName,
   TestUtils
 } from '@tmtsoftware/esw-ts'
 import type { TestUtils as KeyCloakTypes } from '@tmtsoftware/esw-ts'
@@ -52,6 +53,8 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     loadUserProfile: () => Promise.resolve({}) as KeyCloakTypes.KeycloakPromise<KeyCloakTypes.KeycloakProfile, void>
   }
 }
+
+setAppName('esw-ocs-eng-ui-test')
 
 type Services = {
   agentService: AgentService

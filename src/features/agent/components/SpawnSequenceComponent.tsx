@@ -15,12 +15,14 @@ const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (
     return res
   })
 
-const requirement = (predicate: boolean, msg: string) => predicate && errorMessage(msg)
-
-const validateComponentName = (componentName: string) => {
-  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation)
-  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
+const requirement = (predicate: boolean, msg: string) => {
+  if (predicate) errorMessage(msg)
+  return predicate
 }
+
+const validateComponentName = (componentName: string) =>
+  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
+  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
 
 export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): JSX.Element => {
   const [componentName, setComponentName] = useState('')
@@ -42,8 +44,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
   const resetComponentName = () => setComponentName('')
 
   const onConfirm = () => {
-    validateComponentName(componentName)
-    agentService && spawnSequenceComponentAction.mutateAsync(agentService)
+    !validateComponentName(componentName) && agentService && spawnSequenceComponentAction.mutateAsync(agentService)
     resetComponentName()
   }
   return (

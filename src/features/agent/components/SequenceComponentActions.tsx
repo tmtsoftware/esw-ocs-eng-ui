@@ -24,7 +24,7 @@ const DisabledSequencerActions = () => {
   const screen = useBreakpoint()
   const width = screen.lg ? '200px' : '150px'
   return (
-    <Menu.Item key='disabledSequencerActions' disabled={true}>
+    <Menu.Item key='disabledSequencerActions' disabled>
       <div style={{ maxWidth: width }} className={styles.disabledSequencerActions}>
         {disabledSequencerActions.displayMessage}
       </div>
@@ -35,7 +35,7 @@ const DisabledSequencerActions = () => {
 const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceComponentActionProps) => (
   <Menu {...restProps}>
     <KillSequenceComponent componentId={componentId} />
-    <Menu.Divider />
+    <Menu.Divider key='divider' />
     <DisabledSequencerActions />
   </Menu>
 )

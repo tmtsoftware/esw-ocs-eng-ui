@@ -69,7 +69,11 @@ export const StopSequencer = ({
   })
 
   return (
-    <Menu.Item icon={<CloseCircleOutlined />} disabled={isLoading || stopAction.isLoading} onClick={handleOnClick}>
+    <Menu.Item
+      icon={<CloseCircleOutlined />}
+      disabled={isLoading || stopAction.isLoading}
+      onClick={handleOnClick}
+      key='stopSequencer'>
       {stopSequencerConstants.menuItemText}
     </Menu.Item>
   )

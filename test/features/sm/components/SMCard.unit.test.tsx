@@ -13,6 +13,7 @@ describe('SMCard', () => {
   when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => ({
     cancel: () => ({})
   }))
+  when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
   it('should show Spawn button if Sequence Manager is not spawned | ESW-441', async () => {
     renderWithAuth({

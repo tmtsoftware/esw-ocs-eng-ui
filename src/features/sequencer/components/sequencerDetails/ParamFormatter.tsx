@@ -23,9 +23,9 @@ import React from 'react'
 
 const formatEqCoord = (value: EqCoord) => (
   <>
-    {value.tag.name}: RA={value.ra.toDegree()} DEC={value.dec.toDegree()} <br />
+    {value.tag.name}: RA={value.ra.toJSON()} DEC={value.dec.toJSON()} <br />
     {value.frame.toString()}, Catalog=&quot;{value.catalogName}&quot; <br />
-    Proper Motion={value.pm.pmx} {value.pm.pmy}
+    Proper Motion={value.pm.pmx}, {value.pm.pmy}
   </>
 )
 

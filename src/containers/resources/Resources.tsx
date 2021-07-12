@@ -29,11 +29,9 @@ const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): Resource
 
   const inUseResources = [
     ...new Set(
-      groupedObsModes.Running.flatMap((om) => {
-        return om.resources.map<[string, Subsystem]>((resource) => {
-          return [om.obsMode.name, resource]
-        })
-      })
+      groupedObsModes.Running.flatMap((om) =>
+        om.resources.map<[string, Subsystem]>((resource) => [om.obsMode.name, resource])
+      )
     )
   ]
 

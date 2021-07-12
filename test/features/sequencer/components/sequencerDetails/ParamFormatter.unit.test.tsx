@@ -70,7 +70,7 @@ describe('Parameter Formatter', () => {
   const setupWithIntKey = new Setup(Prefix.fromString('ESW.iris_darknight'), 'intKey', [intParam])
 
   //expectations
-  const formattedEqCoord = `Base: RA=0.0000034280555555555554 DEC=0.0000034280555555555554\nICRS, Catalog="cat123"\nProper Motion=123 123414`
+  const formattedEqCoord = `Base: RA=12341 DEC=12341\nICRS, Catalog="cat123"\nProper Motion=123, 123414`
   const formattedCometCoord = `Base: Epoch of Perihelion=11\ninclination=0.0000034280555555555554 degrees\nLong Ascending Node=0.0000034280555555555554 degrees\nArgument of Perihelion=0.0000034280555555555554 degrees\nPerihelion Distance=200 AU\nEccentricity=0.4\n`
   const formattedMinorCoord = `Base: Epoch=2\ninclination=0.0000034280555555555554 degrees\nLong Ascending Node=0.0000034280555555555554 degrees\nArgument of Perihelion=0.0000034280555555555554 degrees\nMean Distance=2 AU\nEccentricity=2\nMean Anomaly=0.0000034280555555555554 degrees\n`
   const formattedSolarSystemCoord = `Base: Jupiter`

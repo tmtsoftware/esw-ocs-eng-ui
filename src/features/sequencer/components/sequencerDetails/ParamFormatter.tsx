@@ -32,13 +32,14 @@ const formatEqCoord = (value: EqCoord) => (
     {value.tag.name}: RA={value.ra.toJSON()} DEC={value.dec.toJSON()} <br />
     {value.frame.toString()}, Catalog=&quot;{value.catalogName}&quot; <br />
     Proper Motion={value.pm.pmx}, {value.pm.pmy}
+    <br />
   </>
 )
 
 const formatCometCoord = (value: CometCoord) => (
   <>
     {value.tag.name}: Epoch of Perihelion={value.epochOfPerihelion} <br />
-    inclination={uasToDegree(value.inclination)} degrees <br />
+    Inclination={uasToDegree(value.inclination)} degrees <br />
     Long Ascending Node={uasToDegree(value.longAscendingNode)} degrees <br />
     Argument of Perihelion={uasToDegree(value.argOfPerihelion)} degrees <br />
     Perihelion Distance={value.perihelionDistance} AU <br />
@@ -49,7 +50,7 @@ const formatCometCoord = (value: CometCoord) => (
 const formatMinorPlanetCoord = (value: MinorPlanetCoord) => (
   <>
     {value.tag.name}: Epoch={value.epoch} <br />
-    inclination={uasToDegree(value.inclination)} degrees <br />
+    Inclination={uasToDegree(value.inclination)} degrees <br />
     Long Ascending Node={uasToDegree(value.longAscendingNode)} degrees <br />
     Argument of Perihelion={uasToDegree(value.argOfPerihelion)} degrees <br />
     Mean Distance={value.meanDistance} AU <br />

@@ -80,9 +80,24 @@ describe('Parameter Formatter', () => {
   const setupWithIntKey = new Setup(Prefix.fromString('ESW.iris_darknight'), 'intKey', [intParam])
 
   //expectations
-  const formattedEqCoord = `Base: RA=324000000000 DEC=123.4252\nICRS, Catalog="cat123"\nProper Motion=123, 123414`
-  const formattedCometCoord = `Base: Epoch of Perihelion=11\ninclination=123.534 degrees\nLong Ascending Node=180.000 degrees\nArgument of Perihelion=12.900 degrees\nPerihelion Distance=200 AU\nEccentricity=0.4\n`
-  const formattedMinorCoord = `Base: Epoch=2\ninclination=123.534 degrees\nLong Ascending Node=180.000 degrees\nArgument of Perihelion=12.900 degrees\nMean Distance=2 AU\nEccentricity=2\nMean Anomaly=0.900 degrees\n`
+  const formattedEqCoord =
+    `Base: RA=324000000000 DEC=123.4252\n` + `ICRS, Catalog="cat123"\n` + `Proper Motion=123, 123414\n`
+  const formattedCometCoord =
+    `Base: Epoch of Perihelion=11\n` +
+    `Inclination=123.534 degrees\n` +
+    `Long Ascending Node=180.000 degrees\n` +
+    `Argument of Perihelion=12.900 degrees\n` +
+    `Perihelion Distance=200 AU\n` +
+    `Eccentricity=0.4\n`
+  const formattedMinorCoord =
+    `Base: Epoch=2\n` +
+    `Inclination=123.534 degrees\n` +
+    `Long Ascending Node=180.000 degrees\n` +
+    `Argument of Perihelion=12.900 degrees\n` +
+    `Mean Distance=2 AU\n` +
+    `Eccentricity=2\n` +
+    `Mean Anomaly=0.900 degrees\n`
+
   const formattedSolarSystemCoord = `Base: Jupiter`
   const formattedAltAzCoord = `Base: Alt=141.000 Az=88.880`
   const formattedUtcTime = '1970-01-01T00:00:00.000Z'

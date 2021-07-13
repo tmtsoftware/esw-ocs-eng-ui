@@ -28,28 +28,38 @@ import { formatParameters } from '../../../../../src/features/sequencer/componen
 describe('Parameter Formatter', () => {
   // construct coord parameters
   const eqCoord = eqCoordKey('eq').set([
-    new EqCoord(new Tag('Base'), new Angle(12341), new Angle(12341), 'ICRS', 'cat123', {
+    new EqCoord(new Tag('Base'), Angle.fromDegree(90.0), new Angle(123.4252), 'ICRS', 'cat123', {
       pmx: 123,
       pmy: 123414
     })
   ])
   const cometCoord = cometCoordKey('comet').set([
-    new CometCoord(new Tag('Base'), 11, new Angle(12341), new Angle(12341), new Angle(12341), 200, 0.4)
+    new CometCoord(
+      new Tag('Base'),
+      11,
+      Angle.fromDegree(123.53441),
+      Angle.fromDegree(180.0),
+      Angle.fromDegree(12.9),
+      200,
+      0.4
+    )
   ])
   const minorCoord = minorPlanetCoordKey('minorPlanet').set([
     new MinorPlanetCoord(
       new Tag('Base'),
       2,
-      new Angle(12341),
-      new Angle(12341),
-      new Angle(12341),
+      Angle.fromDegree(123.53441),
+      Angle.fromDegree(180.0),
+      Angle.fromDegree(12.9),
       2,
       2,
-      new Angle(12341)
+      Angle.fromDegree(0.9)
     )
   ])
   const solarSystemCoord = solarSystemCoordKey('solarSystem').set([new SolarSystemCoord(new Tag('Base'), 'Jupiter')])
-  const altAzCoord = altAzCoordKey('altAz').set([new AltAzCoord(new Tag('Base'), new Angle(12341), new Angle(12341))])
+  const altAzCoord = altAzCoordKey('altAz').set([
+    new AltAzCoord(new Tag('Base'), Angle.fromDegree(141), Angle.fromDegree(88.88))
+  ])
   // construct time parameters
   const utcTime = utcTimeKey('utcTime').set(['1970-01-01T00:00:00Z'])
   const taiTime = taiTimeKey('taiTime').set(['2017-09-04T19:00:00.123456789Z'])
@@ -70,13 +80,13 @@ describe('Parameter Formatter', () => {
   const setupWithIntKey = new Setup(Prefix.fromString('ESW.iris_darknight'), 'intKey', [intParam])
 
   //expectations
-  const formattedEqCoord = `Base: RA=12341 DEC=12341\nICRS, Catalog="cat123"\nProper Motion=123, 123414`
-  const formattedCometCoord = `Base: Epoch of Perihelion=11\ninclination=0.0000034280555555555554 degrees\nLong Ascending Node=0.0000034280555555555554 degrees\nArgument of Perihelion=0.0000034280555555555554 degrees\nPerihelion Distance=200 AU\nEccentricity=0.4\n`
-  const formattedMinorCoord = `Base: Epoch=2\ninclination=0.0000034280555555555554 degrees\nLong Ascending Node=0.0000034280555555555554 degrees\nArgument of Perihelion=0.0000034280555555555554 degrees\nMean Distance=2 AU\nEccentricity=2\nMean Anomaly=0.0000034280555555555554 degrees\n`
+  const formattedEqCoord = `Base: RA=324000000000 DEC=123.4252\nICRS, Catalog="cat123"\nProper Motion=123, 123414`
+  const formattedCometCoord = `Base: Epoch of Perihelion=11\ninclination=123.534 degrees\nLong Ascending Node=180.000 degrees\nArgument of Perihelion=12.900 degrees\nPerihelion Distance=200 AU\nEccentricity=0.4\n`
+  const formattedMinorCoord = `Base: Epoch=2\ninclination=123.534 degrees\nLong Ascending Node=180.000 degrees\nArgument of Perihelion=12.900 degrees\nMean Distance=2 AU\nEccentricity=2\nMean Anomaly=0.900 degrees\n`
   const formattedSolarSystemCoord = `Base: Jupiter`
-  const formattedAltAzCoord = `Base: Alt=0.0000034280555555555554 Az=0.0000034280555555555554`
-  const formattedUtcTime = '1970-01-01T00:00:00Z'
-  const formattedTaiTime = '2017-09-04T19:00:00.123456789Z'
+  const formattedAltAzCoord = `Base: Alt=141.000 Az=88.880`
+  const formattedUtcTime = '1970-01-01T00:00:00.000Z'
+  const formattedTaiTime = '2017-09-04T19:00:00.123Z'
   const formattedIntValue = '123, 12432'
 
   const testCases: [Parameter<Key>, SequenceCommand, string][] = [

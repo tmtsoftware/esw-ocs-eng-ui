@@ -1,6 +1,7 @@
 import {
   AltAzCoord,
   altAzCoordKey,
+  Angle,
   CometCoord,
   cometCoordKey,
   Coord,
@@ -20,6 +21,11 @@ import {
 import { Space, Typography } from 'antd'
 import type { SpaceSize } from 'antd/lib/space'
 import React from 'react'
+const DIGITS_AFTER_DECIMAL = 3
+
+const uasToDegree = (angle: Angle) => angle.toDegree().toFixed(DIGITS_AFTER_DECIMAL)
+
+const dateStringToISO = (date: string) => new Date(date).toISOString()
 
 const formatEqCoord = (value: EqCoord) => (
   <>
@@ -32,9 +38,9 @@ const formatEqCoord = (value: EqCoord) => (
 const formatCometCoord = (value: CometCoord) => (
   <>
     {value.tag.name}: Epoch of Perihelion={value.epochOfPerihelion} <br />
-    inclination={value.inclination.toDegree()} degrees <br />
-    Long Ascending Node={value.longAscendingNode.toDegree()} degrees <br />
-    Argument of Perihelion={value.argOfPerihelion.toDegree()} degrees <br />
+    inclination={uasToDegree(value.inclination)} degrees <br />
+    Long Ascending Node={uasToDegree(value.longAscendingNode)} degrees <br />
+    Argument of Perihelion={uasToDegree(value.argOfPerihelion)} degrees <br />
     Perihelion Distance={value.perihelionDistance} AU <br />
     Eccentricity={value.eccentricity} <br />
   </>
@@ -43,12 +49,12 @@ const formatCometCoord = (value: CometCoord) => (
 const formatMinorPlanetCoord = (value: MinorPlanetCoord) => (
   <>
     {value.tag.name}: Epoch={value.epoch} <br />
-    inclination={value.inclination.toDegree()} degrees <br />
-    Long Ascending Node={value.longAscendingNode.toDegree()} degrees <br />
-    Argument of Perihelion={value.argOfPerihelion.toDegree()} degrees <br />
+    inclination={uasToDegree(value.inclination)} degrees <br />
+    Long Ascending Node={uasToDegree(value.longAscendingNode)} degrees <br />
+    Argument of Perihelion={uasToDegree(value.argOfPerihelion)} degrees <br />
     Mean Distance={value.meanDistance} AU <br />
     Eccentricity={value.eccentricity} <br />
-    Mean Anomaly={value.meanAnomaly.toDegree()} degrees <br />
+    Mean Anomaly={uasToDegree(value.meanAnomaly)} degrees <br />
   </>
 )
 
@@ -60,7 +66,7 @@ const formatSolarSystemCoord = (value: SolarSystemCoord) => (
 
 const formatAltAzCoord = (value: AltAzCoord) => (
   <>
-    {value.tag.name}: Alt={value.alt.toDegree()} Az={value.az.toDegree()}
+    {value.tag.name}: Alt={uasToDegree(value.alt)} Az={uasToDegree(value.az)}
   </>
 )
 
@@ -131,7 +137,7 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
           role={keyTag}
           size={0}
           values={utcTimeParams?.values.map((value, index) => (
-            <Typography.Text key={index}>{value}</Typography.Text>
+            <Typography.Text key={index}>{dateStringToISO(value)}</Typography.Text>
           ))}
         />
       )
@@ -143,7 +149,7 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
           role={keyTag}
           size={0}
           values={taiTimeParams?.values.map((value, index) => (
-            <Typography.Text key={index}>{value}</Typography.Text>
+            <Typography.Text key={index}>{dateStringToISO(value)}</Typography.Text>
           ))}
         />
       )

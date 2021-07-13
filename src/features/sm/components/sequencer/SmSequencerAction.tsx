@@ -39,16 +39,13 @@ export const SmSequencerAction = ({
     smService && reloadAction.mutateAsync(smService)
   }
 
-  return isInProgress ? (
-    <Popconfirm
-      title={sequencerActionConstants.getPopConfirmTitle(subsystem, componentName, sequencerState)}
-      okText={sequencerActionConstants.popConfirmOkText}
-      onConfirm={reload}>
+  const popConfirmTitle = isInProgress
+    ? sequencerActionConstants.getPopConfirmTitleWithState(subsystem, componentName, sequencerState)
+    : sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)
+
+  return (
+    <Popconfirm title={popConfirmTitle} okText={sequencerActionConstants.popConfirmOkText} onConfirm={reload}>
       <Typography.Link disabled={isDisabled}>{sequencerActionConstants.reloadScript}</Typography.Link>
     </Popconfirm>
-  ) : (
-    <Typography.Link disabled={isDisabled} onClick={reload}>
-      {sequencerActionConstants.reloadScript}
-    </Typography.Link>
   )
 }

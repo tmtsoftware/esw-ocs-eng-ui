@@ -33,6 +33,11 @@ const handleResponse = (res: ShutdownSequencersResponse) => {
   }
 }
 
+const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencerState: SequencerState) =>
+  isInProgress
+    ? stopSequencerConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
+    : stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON())
+
 const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
   smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
 
@@ -47,18 +52,15 @@ export const StopSequencer = ({
   const isInProgress = isSequencerInProgress(sequencerState)
 
   const handleOnClick = () => {
-    if (isInProgress && sequencerState) {
+    sequencerState &&
       smContext?.smService &&
-        showConfirmModal(
-          () => {
-            stopAction.mutate(smContext.smService)
-          },
-          stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON(), sequencerState),
-          stopSequencerConstants.modalOkText
-        )
-    } else {
-      smContext?.smService && stopAction.mutate(smContext.smService)
-    }
+      showConfirmModal(
+        () => {
+          stopAction.mutate(smContext.smService)
+        },
+        getModalTitle(isInProgress, sequencerPrefix, sequencerState),
+        stopSequencerConstants.modalOkText
+      )
   }
 
   const stopAction = useMutation({

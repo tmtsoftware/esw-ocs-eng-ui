@@ -13,25 +13,28 @@ type ReloadScriptProps = {
   obsMode: string
   sequencerState: SequencerState | undefined
 }
+const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencerState: SequencerState) =>
+  isInProgress
+    ? reloadScriptConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
+    : reloadScriptConstants.getModalTitle(sequencerPrefix.toJSON())
+
 export const ReloadScript = ({ subsystem, obsMode, sequencerState }: ReloadScriptProps): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
+  const sequencerPrefix = new Prefix(subsystem, obsMode)
   const reloadScriptAction = useReloadScriptAction(subsystem, obsMode)
   const isInProgress = isSequencerInProgress(sequencerState)
 
   const handleOnClick = () => {
-    if (isInProgress && sequencerState) {
+    sequencerState &&
       smService &&
-        showConfirmModal(
-          () => {
-            reloadScriptAction.mutateAsync(smService)
-          },
-          reloadScriptConstants.getModalTitle(new Prefix(subsystem, obsMode).toJSON(), sequencerState),
-          reloadScriptConstants.modalOkText
-        )
-    } else {
-      smService && reloadScriptAction.mutateAsync(smService)
-    }
+      showConfirmModal(
+        () => {
+          reloadScriptAction.mutateAsync(smService)
+        },
+        getModalTitle(isInProgress, sequencerPrefix, sequencerState),
+        reloadScriptConstants.modalOkText
+      )
   }
   return (
     <Menu.Item

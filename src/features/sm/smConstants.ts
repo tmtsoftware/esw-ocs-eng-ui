@@ -19,8 +19,9 @@ export const stopSequencerConstants = {
   failureMessage: (sequencerPrefix: Prefix): string => `Failed to stop sequencer ${sequencerPrefix.toJSON()}`,
   menuItemText: 'Stop Sequencer',
   modalOkText: 'Stop',
-  getModalTitle: (sequencerPrefix: string, sequencerState: SequencerState): string =>
-    `Sequencer is ${sequencerState._type}, do you still want to stop sequencer '${sequencerPrefix}'?`
+  getModalTitleWithState: (sequencerPrefix: string, sequencerState: SequencerState): string =>
+    `Sequencer is ${sequencerState._type}, do you still want to stop sequencer '${sequencerPrefix}'?`,
+  getModalTitle: (sequencerPrefix: string): string => `Do you want to stop the sequencer ${sequencerPrefix}?`
 }
 
 export const reloadScriptConstants = {
@@ -28,8 +29,9 @@ export const reloadScriptConstants = {
   getFailureMessage: (sequencerPrefix: string): string => `Failed to load script ${sequencerPrefix}`,
   menuItemText: 'Reload Script',
   modalOkText: 'Reload',
-  getModalTitle: (sequencerPrefix: string, sequencerState: SequencerState): string =>
-    `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${sequencerPrefix}?`
+  getModalTitleWithState: (sequencerPrefix: string, sequencerState: SequencerState): string =>
+    `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${sequencerPrefix}?`,
+  getModalTitle: (sequencerPrefix: string): string => `Do you want to reload the sequencer ${sequencerPrefix}?`
 }
 
 export const configureConstants = {
@@ -82,8 +84,10 @@ export const spawnSMConstants = {
 }
 
 export const sequencerActionConstants = {
-  getPopConfirmTitle: (subsystem: string, obsMode: string, sequencerState: SequencerState): string =>
+  getPopConfirmTitleWithState: (subsystem: string, obsMode: string, sequencerState: SequencerState): string =>
     `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${subsystem}.${obsMode}?`,
+  getPopConfirmTitle: (subsystem: string, obsMode: string): string =>
+    `Do you want to reload the sequencer ${subsystem}.${obsMode}?`,
   popConfirmOkText: 'Yes',
   reloadScript: 'Reload Script',
   startSequencer: 'Start Sequencer'

@@ -38,7 +38,7 @@ describe('Reload script', () => {
 
     // expect modal to be visible
     const modalTitle = await screen.findByText(
-      reloadScriptConstants.getModalTitle(new Prefix(subsystem, obsMode.name).toJSON(), running)
+      reloadScriptConstants.getModalTitleWithState(new Prefix(subsystem, obsMode.name).toJSON(), running)
     )
     expect(modalTitle).to.exist
 
@@ -52,41 +52,46 @@ describe('Reload script', () => {
     await waitFor(
       () =>
         expect(
-          screen.queryByText(reloadScriptConstants.getModalTitle(new Prefix(subsystem, obsMode.name).toJSON(), running))
+          screen.queryByText(
+            reloadScriptConstants.getModalTitleWithState(new Prefix(subsystem, obsMode.name).toJSON(), running)
+          )
         ).to.null
     )
     verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
   })
-  const testCasesForByPassingModal: SequencerState['_type'][] = ['Idle', 'Offline']
-  testCasesForByPassingModal.forEach((state) => {
-    it(`should not show confirm modal if sequencer is in ${state} | ESW-506`, async () => {
-      when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve({
-        _type: 'Success',
-        componentId: componentId
-      })
 
-      const sequencerState: SequencerState = {
-        _type: state
-      }
-
-      renderWithAuth({
-        ui: (
-          <Menu>
-            <ReloadScript sequencerState={sequencerState} subsystem={subsystem} obsMode={obsMode.toJSON()} />
-          </Menu>
-        )
-      })
-
-      const reloadScriptItem = screen.getByRole('ReloadScript')
-      await waitFor(() => userEvent.click(reloadScriptItem))
-
-      const modalTitle = screen.queryByText(
-        reloadScriptConstants.getModalTitle(new Prefix(subsystem, obsMode.name).toJSON(), sequencerState)
-      )
-      expect(modalTitle).to.not.exist
-
-      await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
-      verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
+  it(`should show confirm modal without state when sequencer is not inProgress | ESW-506`, async () => {
+    when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve({
+      _type: 'Success',
+      componentId: componentId
     })
+
+    const sequencerState: SequencerState = { _type: 'Idle' }
+
+    renderWithAuth({
+      ui: (
+        <Menu>
+          <ReloadScript sequencerState={sequencerState} subsystem={subsystem} obsMode={obsMode.toJSON()} />
+        </Menu>
+      )
+    })
+
+    const reloadScriptItem = screen.getByRole('ReloadScript')
+    await waitFor(() => userEvent.click(reloadScriptItem))
+
+    // expect modal to be visible
+    const modalTitle = await screen.findByText(
+      reloadScriptConstants.getModalTitle(new Prefix(subsystem, obsMode.name).toJSON())
+    )
+    expect(modalTitle).to.exist
+
+    const document = screen.getByRole('document')
+    const reloadConfirm = within(document).getByRole('button', {
+      name: reloadScriptConstants.modalOkText
+    })
+    await waitFor(() => userEvent.click(reloadConfirm))
+
+    await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
+    verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
   })
 })

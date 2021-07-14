@@ -22,6 +22,7 @@ export type SequencerInfo = {
   stepListInfo: StepListInfo
   totalSteps: number
   sequencerState?: SequencerState
+  masterSequencerState?: SequencerState
 }
 
 const Status: Record<StepStatus['_type'], StepListStatus> = {

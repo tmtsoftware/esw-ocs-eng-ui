@@ -30,7 +30,9 @@ describe('SmSequencerAction', () => {
     const running: SequencerState = { _type: 'Running' }
 
     renderWithAuth({
-      ui: <SmSequencerAction sequencerPrefix={sequencerPrefix} sequencerState={running} />
+      ui: (
+        <SmSequencerAction sequencerPrefix={sequencerPrefix} sequencerState={running} masterSequencerState={running} />
+      )
     })
 
     const link = await screen.findByText(sequencerActionConstants.reloadScript)
@@ -50,7 +52,7 @@ describe('SmSequencerAction', () => {
     })
 
     renderWithAuth({
-      ui: <SmSequencerAction sequencerPrefix={new Prefix(subsystem, obsModeString)} sequencerState={undefined} />
+      ui: <SmSequencerAction sequencerPrefix={new Prefix(subsystem, obsModeString)} />
     })
 
     const link = await screen.findByText(sequencerActionConstants.startSequencer)
@@ -65,10 +67,16 @@ describe('SmSequencerAction', () => {
       _type: 'Success',
       componentId: componentId
     })
-    const sequencerState: SequencerState = { _type: 'Offline' }
+    const offlineSequencerState: SequencerState = { _type: 'Offline' }
 
     renderWithAuth({
-      ui: <SmSequencerAction sequencerPrefix={sequencerPrefix} sequencerState={sequencerState} />
+      ui: (
+        <SmSequencerAction
+          sequencerPrefix={sequencerPrefix}
+          sequencerState={offlineSequencerState}
+          masterSequencerState={offlineSequencerState}
+        />
+      )
     })
 
     const link = await screen.findByText(sequencerActionConstants.reloadScript)

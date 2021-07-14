@@ -14,6 +14,7 @@ import {
   SequencerService,
   SEQUENCE_MANAGER_CONNECTION,
   setAppName,
+  Subsystem,
   TestUtils
 } from '@tmtsoftware/esw-ts'
 import type { TestUtils as KeyCloakTypes } from '@tmtsoftware/esw-ts'
@@ -69,8 +70,12 @@ type MockServices = {
 }
 
 export const sequencerServiceMock = mock<SequencerService>(TestUtils.SequencerServiceImpl)
+export const sequencerServiceMockIris = mock<SequencerService>(TestUtils.SequencerServiceImpl)
+export const sequencerServiceMockTcs = mock<SequencerService>(TestUtils.SequencerServiceImpl)
 
 export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
+export const sequencerServiceInstanceIris = instance<SequencerService>(sequencerServiceMockIris)
+export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerServiceMockTcs)
 
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
@@ -108,7 +113,7 @@ const getMockServices: () => MockServices = () => {
 
 export const mockServices = getMockServices()
 
-export const getAgentStatusMock = (): AgentStatus => {
+export const getAgentStatusMock = (subsystem: Subsystem = 'ESW'): AgentStatus => {
   return {
     agentId: new ComponentId(Prefix.fromString('ESW.machine1'), 'Machine'),
     seqCompsStatus: [
@@ -120,7 +125,7 @@ export const getAgentStatusMock = (): AgentStatus => {
             connection: {
               componentType: 'Sequencer',
               connectionType: 'akka',
-              prefix: Prefix.fromString('ESW.darkNight')
+              prefix: Prefix.fromString(`${subsystem}.darkNight`)
             },
             metadata: {},
             uri: ''

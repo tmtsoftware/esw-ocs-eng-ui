@@ -10,9 +10,11 @@ import { sequencerActionConstants } from '../../smConstants'
 
 export const SmSequencerAction = ({
   sequencerPrefix,
-  sequencerState
+  sequencerState,
+  masterSequencerState
 }: {
   sequencerPrefix: Prefix
+  masterSequencerState?: SequencerState
   sequencerState?: SequencerState
 }): JSX.Element => {
   const [smContext, smLoading] = useSMService()
@@ -21,7 +23,7 @@ export const SmSequencerAction = ({
   const reloadAction = useReloadScriptAction(subsystem, componentName)
   const startSequencerAction = useStartSequencerAction(subsystem, new ObsMode(componentName))
 
-  if (reloadAction.isLoading) return <Spinner />
+  if (reloadAction.isLoading || startSequencerAction.isLoading) return <Spinner />
 
   if (!sequencerState) {
     return (
@@ -32,20 +34,22 @@ export const SmSequencerAction = ({
       </Typography.Link>
     )
   }
-  const isInProgress = isSequencerInProgress(sequencerState)
-  const isDisabled = smLoading || reloadAction.isLoading
 
   const reload = () => {
     smService && reloadAction.mutateAsync(smService)
   }
 
-  const popConfirmTitle = isInProgress
-    ? sequencerActionConstants.getPopConfirmTitleWithState(subsystem, componentName, sequencerState)
-    : sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)
+  const popConfirmTitle = (): JSX.Element => (
+    <div style={{ width: '22rem' }}>
+      {masterSequencerState && isSequencerInProgress(masterSequencerState)
+        ? sequencerActionConstants.getPopConfirmTitleWithState(subsystem, componentName, masterSequencerState)
+        : sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)}
+    </div>
+  )
 
   return (
-    <Popconfirm title={popConfirmTitle} okText={sequencerActionConstants.popConfirmOkText} onConfirm={reload}>
-      <Typography.Link disabled={isDisabled}>{sequencerActionConstants.reloadScript}</Typography.Link>
+    <Popconfirm title={popConfirmTitle()} okText={sequencerActionConstants.popConfirmOkText} onConfirm={reload}>
+      <Typography.Link disabled={smLoading}>{sequencerActionConstants.reloadScript}</Typography.Link>
     </Popconfirm>
   )
 }

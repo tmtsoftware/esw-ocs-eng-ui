@@ -12,7 +12,13 @@ import {
 } from '../../../../src/features/agent/agentConstants'
 import { AgentCards } from '../../../../src/features/agent/components/AgentCards'
 import { reloadScriptConstants, stopSequencerConstants } from '../../../../src/features/sm/smConstants'
-import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../../utils/test-utils'
+import {
+  getAgentStatusMock,
+  mockServices,
+  renderWithAuth,
+  sequencerServiceMock,
+  sequencerServiceMockIris
+} from '../../../utils/test-utils'
 
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
@@ -253,6 +259,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should display menu items applicable to sequencer | ESW-502, ESW-506', async () => {
+    const agentStatus = getAgentStatusMock('IRIS')
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
@@ -278,6 +285,7 @@ describe('Agents Grid View', () => {
     await screen.findByText(stopSequencerConstants.menuItemText)
     await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.null)
     verify(sequencerServiceMock.getSequencerState()).called()
+    verify(sequencerServiceMockIris.getSequencerState()).never()
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {

@@ -107,7 +107,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     })
     return () => subscriptions.forEach((s) => s.cancel())
   }, [gatewayLocation, locationService, obsMode.name, sequencers, tf])
-
+  const masterSequencerInfo = sequencersInfoMap.find((state) => Prefix.fromString(state[0]).subsystem === 'ESW')?.[1]
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
     const stepList = sequencerStatus?.stepList || new StepList([])
     const stepListInfo = getStepListInfo(stepList, sequencerStatus?.sequencerState._type)
@@ -118,7 +118,8 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
       currentStepCommandName: getCurrentStepCommandName(stepList),
       stepListInfo,
       sequencerState: sequencerStatus?.sequencerState,
-      totalSteps: stepList.steps.length
+      totalSteps: stepList.steps.length,
+      masterSequencerState: masterSequencerInfo && masterSequencerInfo.sequencerState
     }
   })
 

@@ -1,5 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons'
-import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu, Grid } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
@@ -41,7 +41,8 @@ const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceCom
 )
 
 const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => {
-  const { data: sequencerState } = useSequencerState(sequencerPrefix)
+  const masterSequencerPrefix = new Prefix('ESW', sequencerPrefix.componentName)
+  const { data: sequencerState } = useSequencerState(masterSequencerPrefix)
   return (
     <Menu {...restProps}>
       <StopSequencer sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />

@@ -60,7 +60,11 @@ const getStepColumn = (stepListInfo: StepListInfo) => (
 )
 
 const getSmSequencerAction = (_: string, record: SequencerInfo) => (
-  <SmSequencerAction sequencerPrefix={Prefix.fromString(record.prefix)} sequencerState={record.sequencerState} />
+  <SmSequencerAction
+    sequencerPrefix={Prefix.fromString(record.prefix)}
+    masterSequencerState={record.masterSequencerState}
+    sequencerState={record.sequencerState}
+  />
 )
 
 const columns: ColumnsType<SequencerInfo> = [

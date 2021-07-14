@@ -28,7 +28,7 @@ import { formatParameters } from '../../../../../src/features/sequencer/componen
 describe('Parameter Formatter', () => {
   // construct coord parameters
   const eqCoord = eqCoordKey('eq').set([
-    new EqCoord(new Tag('Base'), Angle.fromDegree(90.0), new Angle(123.4252), 'ICRS', 'cat123', {
+    new EqCoord(new Tag('Base'), Angle.fromDegree(90.0), Angle.fromDegree(123.4252), 'ICRS', 'cat123', {
       pmx: 123,
       pmy: 123414
     })
@@ -81,7 +81,7 @@ describe('Parameter Formatter', () => {
 
   //expectations
   const formattedEqCoord =
-    `Base: RA=324000000000 DEC=123.4252\n` + `ICRS, Catalog="cat123"\n` + `Proper Motion=123, 123414\n`
+    `Base: RA=6h DEC=123°25'30.72"\n` + `ICRS, Catalog="cat123"\n` + `Proper Motion=123, 123414\n`
   const formattedCometCoord =
     `Base: Epoch of Perihelion=11\n` +
     `Inclination=123.534 degrees\n` +

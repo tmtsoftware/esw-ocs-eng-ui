@@ -29,7 +29,7 @@ const dateStringToISO = (date: string) => new Date(date).toISOString()
 
 const formatEqCoord = (value: EqCoord) => (
   <>
-    {value.tag.name}: RA={value.ra.toJSON()} DEC={value.dec.toJSON()} <br />
+    {value.tag.name}: RA={Angle.raToString(value.ra.toRadian())} DEC={Angle.deToString(value.dec.toRadian())} <br />
     {value.frame.toString()}, Catalog=&quot;{value.catalogName}&quot; <br />
     Proper Motion={value.pm.pmx}, {value.pm.pmy}
     <br />

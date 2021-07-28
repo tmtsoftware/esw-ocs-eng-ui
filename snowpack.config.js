@@ -6,7 +6,7 @@ export default {
   buildOptions: {
     clean: true,
     out: AppConfig.applicationName,
-    sourceMap: true
+    sourcemap: 'inline'
   },
   testOptions: { files: ['**/test/**/*.*'] },
   mount: {

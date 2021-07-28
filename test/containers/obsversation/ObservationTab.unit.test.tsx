@@ -163,6 +163,7 @@ describe('observation tabs', () => {
     expect(within(resourcesTable).getByRole('row', { name: 'IRIS Available' })).to.exist
     expect(within(resourcesTable).getByRole('row', { name: 'WFOS Available' })).to.exist
     expect(within(resourcesTable).getByRole('row', { name: 'ESW InUse' })).to.exist
+    expect(screen.queryByRole('alert')).to.not.exist
   })
 
   it('should render alert if sequence components are missing on non-configurable tab | ESW-529', async () => {

@@ -1,9 +1,9 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import { LocationService } from '@tmtsoftware/esw-ts'
+import { Auth, LocationService } from '@tmtsoftware/esw-ts'
 import { Layout, Result } from 'antd'
 import 'antd/dist/antd.css'
-import React from 'react'
-import { useQuery } from 'react-query'
+import React, { useEffect } from 'react'
+import { useQuery, useQueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { HeaderBar } from '../../components/headerBar/HeaderBar'
@@ -13,6 +13,7 @@ import { CombinedServiceContext } from '../../contexts/CombinedServiceContext'
 import { LOCATION_SERVICE } from '../../features/queryKeys'
 import { useAuth } from '../../hooks/useAuth'
 import { Routes } from '../../routes/index'
+import { getUsername } from '../../utils/getUsername'
 import styles from './app.module.css'
 import { Container } from './Container'
 
@@ -20,7 +21,10 @@ const { Header } = Layout
 
 const ROUTER_BASENAME = import.meta.env.NODE_ENV === 'production' ? `/${AppConfig.applicationName}` : ''
 
-const useLocationServiceQuery = () => useQuery(LOCATION_SERVICE.key, () => LocationService())
+const useLocationServiceQuery = () => {
+  const { auth } = useAuth()
+  return useQuery(LOCATION_SERVICE.key, () => LocationService({ username: getUsername(auth) }))
+}
 
 export const App = (): JSX.Element => {
   const { data: locationService, isLoading, isError } = useLocationServiceQuery()

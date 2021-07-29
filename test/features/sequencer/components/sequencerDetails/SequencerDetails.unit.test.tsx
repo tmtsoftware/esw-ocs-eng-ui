@@ -142,7 +142,7 @@ describe('sequencer details', () => {
     expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nPaused`)
   })
 
-  it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489', async () => {
+  it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489, ESW-537', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
     const filterKey = intArrayKey('filter')
@@ -187,12 +187,12 @@ describe('sequencer details', () => {
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
       within(parameterBodyTable).getByRole('row', {
-        name: 'filter [1,2,3], [4,5,6] NoUnits'
+        name: 'filter [1,2,3], [4,5,6] none'
       })
     ).to.exist
     expect(
       within(parameterBodyTable).getByRole('row', {
-        name: 'ra "12:13:14.1" NoUnits'
+        name: 'ra "12:13:14.1" none'
       })
     ).to.exist
   })

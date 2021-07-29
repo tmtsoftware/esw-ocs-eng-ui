@@ -21,7 +21,7 @@ import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestU
 import { renderWithAuth } from '../../../../utils/test-utils'
 
 describe('Parameters Table', () => {
-  it('should display all the parameters in a step of a Sequence | ESW-457, ESW-503', async () => {
+  it('should display all the parameters in a step of a Sequence | ESW-457, ESW-503, ESW-537', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flag').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
     const filterKey = intArrayKey('filter')
@@ -42,9 +42,9 @@ describe('Parameters Table', () => {
     assertTableHeader(paramHeaderTable, 'Unit')
     assertTableHeader(paramHeaderTable, 'Values')
 
-    assertTableBody(paramBodyTable, 'flag false NoUnits')
-    assertTableBody(paramBodyTable, 'randomKey 123, 12432 NoUnits')
-    assertTableBody(paramBodyTable, 'filter [1,2,3], [4,5,6] NoUnits')
-    assertTableBody(paramBodyTable, 'solarSystem Base: Jupiter NoUnits')
+    assertTableBody(paramBodyTable, 'flag false none')
+    assertTableBody(paramBodyTable, 'randomKey 123, 12432 none')
+    assertTableBody(paramBodyTable, 'filter [1,2,3], [4,5,6] none')
+    assertTableBody(paramBodyTable, 'solarSystem Base: Jupiter none')
   })
 })

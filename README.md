@@ -2,7 +2,7 @@
 
 This project is a React web application.
 
-## Prerequisites Required for Running OCS-UI Application
+## Prerequisites required for running ESW-OCS-ENG-UI application
 
 1. csw-services should be up & running.
     using sbt shell inside CSW `csw-services/run start -k -c`.
@@ -58,13 +58,17 @@ npm run build
 ## Running Tests
 
 To run test:
+
 ```bash
 npm test
 ```
+
 To run test in watch mode:
+
 ```bash
 npm run test:unit:watch
 ```
+
 ## How to Use the Project
 
 The project has following structure:

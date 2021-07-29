@@ -30,8 +30,8 @@ const obsModes: ObsModeDetails[] = [
     status: {
       _type: 'Configured'
     },
-    resources: ['ESW', 'TCS'],
-    sequencers: ['ESW', 'TCS']
+    resources: ['ESW', 'SOSS'],
+    sequencers: ['ESW', 'SOSS']
   },
   {
     obsMode: new ObsMode('DarkNight_6'),

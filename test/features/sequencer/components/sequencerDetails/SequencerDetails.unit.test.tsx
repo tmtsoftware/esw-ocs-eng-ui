@@ -145,7 +145,7 @@ describe('sequencer details', () => {
   it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489, ESW-537', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
-    const filterKey = intArrayKey('filter')
+    const filterKey = intArrayKey('filter', 'count')
     const filterParam: Parameter<IntArrayKey> = filterKey.set([
       [1, 2, 3],
       [4, 5, 6]
@@ -187,7 +187,7 @@ describe('sequencer details', () => {
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
       within(parameterBodyTable).getByRole('row', {
-        name: 'filter [1,2,3], [4,5,6] none'
+        name: 'filter [1,2,3], [4,5,6] ct'
       })
     ).to.exist
     expect(
@@ -284,8 +284,7 @@ describe('sequencer details', () => {
     const sourceValue = screen.getByLabelText('Source-Value')
 
     expect(commandNameValue.innerText).to.equals('Command-1')
-    // assert text to have ellipses at the end
-    expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/)
+    await waitFor(() => expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/))
   })
 
   it('should render error message on failure of step in step details pane | ESW-527', async () => {

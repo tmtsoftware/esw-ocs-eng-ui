@@ -6,10 +6,10 @@ ESW's UISTD provides style and layout guidelines and standards (look-and-feel) w
 
 UI has been developed based on the below technologies:
 
-* @link:[React](https://reactjs.org)
+* @link:[React](https://reactjs.org){ open=new }
 
-* @link:[Ant Design](https://ant.design)
+* @link:[Ant Design](https://ant.design){ open=new }
 
-* @link:[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+* @link:[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/){ open=new }
 
 To get started with pre-requisites go to @ref[Getting Started Page](./Getting-started.md).

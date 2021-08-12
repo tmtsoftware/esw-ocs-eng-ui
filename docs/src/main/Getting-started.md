@@ -93,4 +93,4 @@ esw-sm {
 
 To learn how to save a file in config service, visit @extref[here](csw:services/config.html#create).
 
-Follow along the guide to on how to start observation on UI @ref[here](./Login_HomePage.md).
+Follow along the guide to on user process flow to start and manage observation on UI @ref[here](./UI_processflow.md).

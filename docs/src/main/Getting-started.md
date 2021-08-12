@@ -21,21 +21,22 @@ The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/
    Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
 
 3. Start esw services
-  *  OCS-ENG-UI requires `AgentService` along with one or more agent should be up & running to manage observations on various agent/machine. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
-  * Sequence manager could be started from UI. However, Sometimes you may want to work in a simulation environment & to start a simulated Sequence Manager, use
+* OCS-ENG-UI requires `AgentService` along with one or more agent should be up & running to manage observations on various agent/machine. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
+
+* Sequence manager could be started from UI. However, Sometimes you may want to work in a simulation environment & to start a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
-  * Alternatively, You can use `esw-services/run start-eng-ui-services` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
+* Alternatively, You can use `esw-services/run start-eng-ui-services` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
 
 ## Run the ESW-OCS-ENG-UI Application in Local Environment
 
 Run following commands in the terminal.
 
-  ```bash
-    npm install
-    npm start
-  ```
+```bash
+  npm install
+  npm start
+```
 
 ## Required file configuration for an ObsMode
 

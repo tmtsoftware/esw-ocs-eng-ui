@@ -254,8 +254,7 @@ describe('sequencer details', () => {
     })
   })
 
-  //TODO Fix this
-  it.skip('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
+  it('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -282,9 +281,9 @@ describe('sequencer details', () => {
 
     const commandNameValue = screen.getByLabelText('Command-Value')
     const sourceValue = screen.getByLabelText('Source-Value')
-
     expect(commandNameValue.innerText).to.equals('Command-1')
-    await waitFor(() => expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/))
+    await waitFor(() => expect(sourceValue.classList.contains('ant-typography-ellipsis')).true)
+    await waitFor(() => expect(sourceValue.style.width).to.equal('20rem'))
   })
 
   it('should render error message on failure of step in step details pane | ESW-527', async () => {

@@ -16,7 +16,8 @@ import {
   Setup,
   StepList,
   stringKey,
-  StringKey
+  StringKey,
+  Units
 } from '@tmtsoftware/esw-ts'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
@@ -145,7 +146,7 @@ describe('sequencer details', () => {
   it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489, ESW-537', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
-    const filterKey = intArrayKey('filter', 'count')
+    const filterKey = intArrayKey('filter', Units.count)
     const filterParam: Parameter<IntArrayKey> = filterKey.set([
       [1, 2, 3],
       [4, 5, 6]

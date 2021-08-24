@@ -21,6 +21,13 @@ jobs:
           node-version: "15.x"
           registry-url: "https://registry.npmjs.org"
 
+      - uses: laughedelic/coursier-setup@v1
+        with:
+          jvm: 11
+          apps: sbt sbtn
+
+      - uses: coursier/cache-action@v5
+
       - name: Cache ~/.npm
         uses: actions/cache@v1
         with:
@@ -32,6 +39,11 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Docs makeSite
+        working-directory: ./docs
+        run: |
+          sbt clean
+          sbt makeSite
 
       - name: Build
         run: npm run build

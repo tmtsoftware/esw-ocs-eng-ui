@@ -14,5 +14,6 @@
    Note: `PROD=true` environment variable needs to be set before running `release.sh`
 
 After release pipeline is green:
-1. Merge this release branch to master.
 
+1. Merge this release branch to master.
+2. verify paradox documentation are published.

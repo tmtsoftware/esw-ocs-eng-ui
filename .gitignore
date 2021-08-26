@@ -17,6 +17,7 @@ target
 testStoryMappping.txt
 **/RTM/*.txt
 **/RTM/*.html
+RTM/index.html
 .log
 
 esw-ocs-eng-ui

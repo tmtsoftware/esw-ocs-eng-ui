@@ -15,8 +15,8 @@ target
 **/web_modules/*
 .metals
 testStoryMappping.txt
-**/RTM/*.txt
-**/RTM/*.html
+RTM/*.txt
+RTM/*.html
 .log
 
 esw-ocs-eng-ui

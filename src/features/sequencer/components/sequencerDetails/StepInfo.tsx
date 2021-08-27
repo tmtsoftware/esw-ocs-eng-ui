@@ -1,13 +1,14 @@
 import type { Step } from '@tmtsoftware/esw-ts'
 import type { StepStatusFailure } from '@tmtsoftware/esw-ts/dist/src/clients/sequencer/models/StepList'
-import { Alert, Descriptions, Empty, Space, Typography } from 'antd'
-import React from 'react'
+import { Alert, Descriptions, Empty, Space, Tooltip, Typography } from 'antd'
+import React, { useState } from 'react'
 import globalStyles from '../../../../index.module.css'
 import { stepConstants } from '../../sequencerConstants'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
 
 const StepItem = (label: string, item: string) => {
+  const [isVisible, setVisible] = useState<boolean>(false)
   return (
     <Descriptions.Item
       style={{ paddingBottom: '1px' }}
@@ -16,9 +17,11 @@ const StepItem = (label: string, item: string) => {
           {label}
         </Typography.Title>
       }>
-      <Typography.Text aria-label={`${label}-Value`} ellipsis={true}>
-        {item}
-      </Typography.Text>
+      <Tooltip title={isVisible ? item : undefined}>
+        <Typography.Text aria-label={`${label}-Value`} ellipsis={{ onEllipsis: setVisible }} style={{ width: '20rem' }}>
+          {item}
+        </Typography.Text>
+      </Tooltip>
     </Descriptions.Item>
   )
 }

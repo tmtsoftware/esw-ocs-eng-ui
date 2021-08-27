@@ -93,6 +93,25 @@ The project has following structure:
 * `test`: This directory contains all the tests for the UI application.
 * `types`: This directory contains all the types that needs to be imported externally for UI application.
 
+## Version compatibility
+
+| esw-ocs-eng-ui | esw | csw |
+|--------|-----|-----|
+| v0.1.0-RC1 | v0.3.0-RC1 | v4.0.0-RC1 |
+| v0.1.0-M1 | v0.3.0-M1 | v4.0.0-M1 |
+
+## Public Release History
+
+| Date | Tag | Source | Docs | Assets |
+|-----|-----|-----|-----|-----|
+
+## Pre-Release History
+
+| Date | Tag | Source | Docs | Assets |
+|-----|-----|-----|-----|-----|
+| 2021-08-24 | v0.1.0-RC1 | [esw-ocs-eng-ui-0.1.0-RC1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0-RC1) | [esw-ocs-eng-ui-0.1.0-RC1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-RC1/) | [esw-ocs-eng-ui-0.1.0-RC1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0-RC1) |
+| 2021-07-13 | v0.1.0-M1 | [esw-ocs-eng-ui-0.1.0-M1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0-M1) | [esw-ocs-eng-ui-0.1.0-M1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-M1/) | [esw-ocs-eng-ui-0.1.0-M1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0-M1) |
+
 ## References
 
 * ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)

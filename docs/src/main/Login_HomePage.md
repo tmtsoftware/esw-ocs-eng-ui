@@ -1,55 +1,68 @@
 # Login and Home Page
 
-## Login
-The below image shows a snapshot of the login screen : 
+To use OCS-ENG-UI the user must log in to the system. The user interface is integrated with the CSW Authentication and
+Authorization Service, which keeps track of users and their security roles in the system.
+
+## Logging In
+
+The below image shows a snapshot of the login screen :
 
 ![Login](./images/Login-Screen.png)
 
-To access the Engineering UI portal, the user has to login with roles and credentials as specified below. 
+To access the Engineering UI portal in this release version, a user should log in with roles and credentials as specified below.
 
-### Authorisation
+### Authentication and Authorization
 
-For testing purposes, we are creating `osw-user1, esw-user1 & tcs-user1` users while launching the Keycloak from csw-services
+OCS-ENG-UI is a proper UISTD user interface and requires the user be authenticated with the CSW Authentication and Authorization Service (AAS).
 
-Testing Purpose user-role osw-user can be used. 
+For testing purposes, we have created `osw-user1, esw-user1 & tcs-user1` users while launching the AAS from csw-services.
+
+For testing purposes, user-role `osw-user1` can be used.
 
     Username: osw-user1         Password: osw-user1
 
-For Auth Service esw-user role is required.
+For authorized commands, the esw-user role is required.
 
     Username: esw-user1         Password: esw-user1
 
+@@@note
+You may add new users to AAS/KeyCloak following procedures in the CSW documentation.  To operate OCS-ENG-UI properly the user must
+have the osw-user or esw-user roles.
+@@@
 
 ## Home Page
 
-Once login happens successfully the user should be able to see the below screen :
+Once log in happens successfully, the user should be able to see the screen below:
 
 ![Home Page](./images/HomePage.png)
 
-####  Spawn/Shutdown the Sequence Manager
+### Spawn/Shutdown the Sequence Manager
 
-This page shows a button to Spawn/Shutdown the Sequence Manager. 
+The top of this page shows a button to Spawn/Shutdown the Sequence Manager. Spawning means to startup the Sequence Manager.
 
-If Sequence Manager is spawned with agents then it shows label 'Shutdown' for the Sequence Manager. 
+If Sequence Manager is been spawned with agents (as with esw-services), then it shows the label 'Shutdown' for the Sequence Manager.
 
 ![ShutdownSequenceManager](./images/HomePage_SequenceManager-ShutdownButton.png)
 
-Clicking on 'Shutdown' button asks for confirmation before shutting down the Sequence Manager. 
+@@@ note
+Sequence Manager may be started without the OCS-ENG-UI from its application, and the system will still work.
+@@@
+
+Clicking on 'Shutdown' button asks for confirmation before shutting down the Sequence Manager.
 
 ![ConfirmShutdownSequenceManager](./images/HomePage-ShutdownSequenceManagerConfirm.png)
 
-Once Sequence Manager is shutdown then label changes to 'Spawn' and message of successful shutdown is displayed.
+Once Sequence Manager is shutdown, the label changes to 'Spawn' and a message of successful shutdown is displayed.
 
 ![Home Page](./images/HomePage_SequenceManager-SpawnButton.png)
 
-After clicking on 'Spawn' button, select an agent to run Sequence Manager on. 
+After clicking on 'Spawn' button, select an Agent to run Sequence Manager on.
 
 ![Home Page](./images/HomePage_SequenceManager-SpawnAfterShutdown.png)
 
-Clicking on one of the agents, spawns Sequence Manager on that machine.
+Clicking on one of the Agents, spawns Sequence Manager on that machine.
 
-
-### Home Page also shows tabs for links to :
+### Home Page also shows tabs for links to
 
 * @ref[Manage Infrastructure](./ManageInfrastructure.md)
 * @ref[Manage Observations](./ManageObservation.md)

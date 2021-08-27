@@ -6,7 +6,7 @@ The @link[esw-ocs-eng-ui](https://github.com/tmtsoftware/esw-ocs-eng-ui) provide
 
 ![Status when Paused](./images/ObservationStatus_Paused.png)
 
-UI has been developed based on the below technologies:
+OCS-ENG-UI does not necessarily represent the observing user interface that will be used at the telescope during operations.
 
 - @link:[React](https://reactjs.org){ open=new }
 

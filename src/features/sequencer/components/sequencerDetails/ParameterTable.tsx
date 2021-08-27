@@ -1,5 +1,4 @@
 import type { SequenceCommand } from '@tmtsoftware/esw-ts'
-import { Units } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import React from 'react'
@@ -39,7 +38,7 @@ const columns: ColumnsType<ParameterDataType> = [
 const createDataSource = (command: SequenceCommand): ParameterDataType[] => {
   return command.paramSet.map((parameter) => ({
     parameter: parameter.keyName,
-    unit: Units[parameter.units],
+    unit: parameter.units.name,
     values: formatParameters(parameter, command)
   }))
 }

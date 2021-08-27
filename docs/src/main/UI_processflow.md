@@ -2,27 +2,39 @@
 
 After following all steps as explained in page - @ref[Getting Started](./Getting-started.md), you should be able to see Login Page on the browser.
 
-Log in as an authenticated user with credentials specified @ref[here](./Login_HomePage.md#authorisation).
+Log in as an authenticated user with credentials specified @ref[here](./Login_HomePage.md#authentication-and-authorization).
 
-Once Login is successful, user shall be able to follow the below steps to manage an observation in the User Interface.
+## Log in to OCS-ENG-UI
+
+After following the installation and setup steps explained in @ref[Getting Started](./Getting-started.md), you should be able to see the `Login Page` of OCS-ENG-UI in the browser.
+Log in as an authenticated user with credentials specified @ref[here](./Login_HomePage.md#authentication-and-authorization).
+
+Once logging in is successful, the user will be in the `Home Page` of ESW-ENG-UI.
+From here, the user shall be able to follow the steps below to manage an observation in the User Interface.
 
 ## Spawn Sequence Manager
 
-Sequence Manager manages the configurations of Sequence Components using the observation mode. It helps in executing multiple Sequences concurrently. It also prevents resource conflicts when running sequences simultaneously. It can start , monitor and shutdown Sequence Components. Sequence Manager also determines which resources are required to execute a sequence. Hence it is mandatory that the Sequence Manager should be up and running on a machine. If Sequence Manager hasn't been started then on the Home Page, user can click on 'Spawn' Button to start Sequence Manager as explained @ref[here](./Login_HomePage.md#spawn-shutdown-the-sequence-manager)
+Sequence Manager is a critical OCS service that manages the configuration of Sequence Components and Sequencers based on an observation's observing mode or `obsMode`.
+It can start, monitor, and shutdown Sequence Components. Sequence Manager also determines which resources are required to execute a Sequence for an obsMode.
+It helps in executing multiple observation Sequences concurrently by preventing resource conflicts when attempting to run Sequences simultaneously.
+Hence, it is mandatory that the Sequence Manager be up and running on a machine/Agent.
+
+If Sequence Manager hasn't been started after logging in, then on the Home Page, the user can click on 'Spawn' Button to
+start Sequence Manager as explained @ref[here](./Login_HomePage.md#spawn-shutdown-the-sequence-manager)
 
 @@@ note
 
-To understand states of Sequence Manager please visit @extref[here](esw:////technical/sequence-manager-tech.html#sequence-manager-states)
+To understand the Sequence Manager states, please visit the Sequence Manager technical documentation @extref[here](esw:////technical/sequence-manager-tech.html#sequence-manager-states).
 
 @@@
 
 ## Provision Sequence Components
 
-Once the Sequence Manager has been spawned, now user can provision Sequence Components per Agent. As explained @ref[here](./ManageInfrastructure.md#provision) the user can specify the number of sequence component to be spawned per agent.
+Once the Sequence Manager has been spawned, now user can provision Sequence Components per Agent. As explained @ref[here](./ManageInfrastructure.md#provisioning) the user can specify the number of sequence component to be spawned per agent.
 
 @@@ note
 
-To know more about Provision functionality @extref[Read Here](esw:technical/sequence-manager-tech.html#provision-sequence-components)
+To know more about the provision functionality see @extref[here](esw:technical/sequence-manager-tech.html#provision-sequence-components).
 
 @@@
 
@@ -33,11 +45,14 @@ User can configure from either @ref[Manage Infrastructure](./ManageInfrastructur
 
 @@@ note
 
-To know more about Configure Functionality @extref[visit here](esw:technical/sequence-manager-tech.html#configuring-sequencers-for-an-observing-mode)
+To know more about configure functionality see @extref[here](esw:technical/sequence-manager-tech.html#configuring-sequencers-for-an-observing-mode).
 
 @@@
 
-User can also shutdown the running observation as explained @ref[here](./ManageObservation.md#shutdown-sequencer) and configure another sequencer.
+When changing instruments or observing modes, users will also shut down a running observation as explained @ref[here](./ManageObservation.md#shutdown-sequencer)
+and configure the system for another observation's Sequencers. This operation takes no more than a couple seconds.
+
+## Managing an Observation
 
 ## Manage Observation
 
@@ -55,15 +70,17 @@ In the Running tab as explained @ref[here](./ManageObservation.md#running) user 
 
 In the Configurable tab as explained @ref[here](./ManageObservation.md#configurable) user can view the resources available and also configure them using 'Configure' button.
 
-In the Non-Configurable tab as explained @ref[here](./ManageObservation.md#non-configurable) users can see resources in use and unavailable sequence components.
+In the Non-Configurable tab as explained @ref[here](./ManageObservation.md#non-configurable) users can see the reasons an obsMode is not configurable either due to resources already in use
+or unavailability of Sequence Components.
 
 ## Manage Sequencers
 
-Once Sequencers have been configured, user can go to @ref[Manage Sequencer](./ManageSequencer.md) page by clicking on gear icon next to name of the Sequencer.
+Once Sequencers have been configured, a user can go to the @ref[Manage Sequencer](./ManageSequencer.md) page by clicking on the gear icon next to name of the Sequencer.
 
 ### Load Sequence
 
-User can then Load Sequence as explained @ref[here](./ManageSequencer.md#loading-a-sequence). Once sequence is loaded, user should be able to see the each command as a step. Clicking on each steps should show the parameter table on the right.
+Users may load a Sequence as explained @ref[here](./ManageSequencer.md#loading-a-sequence). This is a low-level command for engineering purposes.
+Once a Sequence is loaded, a user should be able to see each Step of the Sequence before it executes. Clicking on a Step shows the Step's parameters on the right.
 
 ### Go Online/Go Offline
 
@@ -73,15 +90,16 @@ User can use Go Online/Go Offline @ref[functionality](./ManageSequencer.md#go-of
 
 Once Sequencer is Online and Loaded, user can start the sequence by clicking on start button as explained @ref[here](./ManageSequencer.md#starting-a-sequence). Once sequencer is started, the icon will change to Pause icon and also the first step will be in green color.
 
-Sequence can be paused/resumed as explained @ref[here](./ManageSequencer.md#pause-and-resume-sequence).
+A Sequence can be paused/resumed as explained @ref[here](./ManageSequencer.md#pause-and-resume-sequence).
 
 ### Stop, Abort Sequence
 
-Once sequence starts executing, following buttons get activated
+Sequencers support the familiar observing concept of observation/Sequence Stop and Abort. Once a Sequence starts executing, the following buttons get activated:
 
 * @ref[Stop Sequence](./ManageSequencer.md#stop-sequence) - This feature is used to clear/save Sequencer state before stopping.
 
-* @ref[Abort Sequence](./ManageSequencer.md#abort-sequence) - This feature is used to clean up tasks before aborting. Sequence is aborted in any case at the end.  
+* @ref[Abort Sequence](./ManageSequencer.md#abort-sequence) - This feature is used to clean up tasks before aborting. Sequence is aborted in any case at the end. Science data is saved if possible, but
+the Sequence ends as soon as possible.
 
 ### Step Functionalities
 

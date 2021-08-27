@@ -16,7 +16,8 @@ import {
   Setup,
   StepList,
   stringKey,
-  StringKey
+  StringKey,
+  Units
 } from '@tmtsoftware/esw-ts'
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
@@ -145,7 +146,7 @@ describe('sequencer details', () => {
   it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489, ESW-537', async () => {
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
-    const filterKey = intArrayKey('filter', 'count')
+    const filterKey = intArrayKey('filter', Units.count)
     const filterParam: Parameter<IntArrayKey> = filterKey.set([
       [1, 2, 3],
       [4, 5, 6]
@@ -254,8 +255,7 @@ describe('sequencer details', () => {
     })
   })
 
-  //TODO Fix this
-  it.skip('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
+  it('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,
@@ -282,9 +282,9 @@ describe('sequencer details', () => {
 
     const commandNameValue = screen.getByLabelText('Command-Value')
     const sourceValue = screen.getByLabelText('Source-Value')
-
     expect(commandNameValue.innerText).to.equals('Command-1')
-    await waitFor(() => expect(sourceValue.innerText).to.match(/^ESW.*\.\.\.$/))
+    await waitFor(() => expect(sourceValue.classList.contains('ant-typography-ellipsis')).true)
+    await waitFor(() => expect(sourceValue.style.width).to.equal('20rem'))
   })
 
   it('should render error message on failure of step in step details pane | ESW-527', async () => {

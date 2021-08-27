@@ -30,13 +30,13 @@ A screenshot of the OCS-ENG-UI showing the status of an executing Sequence is sh
 
 The UI has been developed based on the currently selected ESW UISTD tools and technologies for browser-based user interfaces:
 
-- @link:[React](https://reactjs.org){ open=new }
+* @link:[React](https://reactjs.org){ open=new }
 
-- @link:[Ant Design](https://ant.design){ open=new }
+* @link:[Ant Design](https://ant.design){ open=new }
 
-- @link:[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/){ open=new }
+* @link:[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/){ open=new }
 
-- @link:[TypeScript](https://www.typescriptlang.org/){ open=new }
+* @link:[TypeScript](https://www.typescriptlang.org/){ open=new }
 
 In addition, it is built using the [ESW-TS Typescript library](http://tmtsoftware.github.io/esw-ts/) that supports UI communication with CSW components including
 Sequencers, Assemblies, and HCDs, as well as the use of CSW Services in user interfaces.
@@ -45,10 +45,10 @@ Sequencers, Assemblies, and HCDs, as well as the use of CSW Services in user int
 
 This manual aims at helping users understand how the OCS Engineering User Interface works and its different features.
 
-- @ref:[Getting started](Getting-started.md) which describes the basic setup required to run this user interface on a browser.
-- @ref:[Process Flow](UI_processflow.md) describes the user process flow to work in the UI.
-- @ref:[Login and Home Page](Login_HomePage.md) explains login procedure and functionalities on the home page.
-- @ref:[Manage Infrastructure](ManageInfrastructure.md) shows the agents started on different machines and describes how to provision, configure sequence components.
-- @ref:[Manage Observation](ManageObservation.md) is where the sequences can be tracked for different observing modes. It also shows in-use, configurable and non-configurable resources
-- @ref:[Manage Sequencer](ManageSequencer.md) is where sequence can be loaded, started, paused and resumed. Once sequence is loaded, other important features get enabled as explained in this page of the manual.
-- @ref:[Resources](Resources.md) shows the resources and sequence components in-use and unavailable.
+* @ref:[Getting started](Getting-started.md) which describes the basic setup required to run this user interface on a browser.
+* @ref:[Process Flow](UI_processflow.md) describes the user process flow to work in the UI.
+* @ref:[Login and Home Page](Login_HomePage.md) explains login procedure and functionalities on the home page.
+* @ref:[Manage Infrastructure](ManageInfrastructure.md) shows the agents started on different machines and describes how to provision, configure sequence components.
+* @ref:[Manage Observation](ManageObservation.md) is where the sequences can be tracked for different observing modes. It also shows in-use, configurable and non-configurable resources
+* @ref:[Manage Sequencer](ManageSequencer.md) is where sequence can be loaded, started, paused and resumed. Once sequence is loaded, other important features get enabled as explained in this page of the manual.
+* @ref:[Resources](Resources.md) shows the resources and sequence components in-use and unavailable.

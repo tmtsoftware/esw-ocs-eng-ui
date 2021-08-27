@@ -23,22 +23,25 @@ To see the OCS-ENG-UI working, it is necessary to have a few pieces of infrastru
 ### Running backend services locally
 
 1. csw-services should be up & running.
-   using sbt shell inside CSW `csw-services/run start -k -c`.
 
-2. The latest binaries of ESW need to be present on machine with 0.1.0-SNAPSHOT version. (PLEASE REWRITE THIS TO DEPEND ON RELEASE version code (branch?) )
-   run `sbt publishLocal` inside ESW sbt shell.
-   Note: This step needs to be done at least once and/or whenever new changes of esw are pulled from GitHub.
+    To install and start the csw-services please follow the instruction given
+   @link:[here](https://tmtsoftware.github.io/csw/4.0.0-RC1/apps/cswservices.html)
 
-3. Start esw services
+2. The latest binaries of ESW need to be present on machine. Current latest : 0.3.0-RC1.
+  `cs install esw-services:0.3.0-RC1`
+  Note: This step needs to be done at least once and/or whenever new changes of esw are pulled from GitHub.
 
-* OCS-ENG-UI requires `AgentService` along with one or more agent should be up & running to manage observations on various agent/machine. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
+3. To start esw services follow instruction @link:[here](https://github.com/tmtsoftware/esw/tree/master/esw-services#running-the-esw-services-using-coursier)
+
+* OCS-ENG-UI requires `AgentService` along with one or more agent should be up & running to manage observations on various agent/machine. To start, run following command `esw-services start --agent --agent-service`.
 
 * Sequence manager could be started from UI. However, Sometimes you may want to work in a simulation environment & to start a simulated Sequence Manager, use
-    `esw-services/run start --agent-service -s --simulation`
-
-* Alternatively, You can use `esw-services/run start-eng-ui-services` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
+    `esw-services start --agent-service -s --simulation`
+* Alternatively, You can use `esw-services start-eng-ui-services` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
 
 ## Run the ESW-OCS-ENG-UI Application in Local Environment
+
+Open the cloned esw-ocs-eng-ui repository on your terminal and then follow the instruction below:
 
 Run following commands in the terminal.
 

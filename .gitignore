@@ -15,9 +15,10 @@ target
 **/web_modules/*
 .metals
 testStoryMappping.txt
-RTM/*.txt
-RTM/*.html
+**/RTM/*.txt
+**/RTM/*.html
+RTM/index.html
 .log
-
+.bsp
 esw-ocs-eng-ui
 .snowpack

@@ -22,6 +22,7 @@ testing.
 * Aborting and stopping a running Sequence
 
 ## Sequence Monitoring Overview
+
 When a Sequence is loaded, the left-hand side of the Sequencer's page shows the Steps that are part of the loaded
 Sequence. When no Sequence is loaded, the page is empty as shown below.
 
@@ -44,11 +45,60 @@ Step is re-selected, the automatic behavior restarts.
 ![StepExamples](images/StepExamples1.png)
 
 ### Loading a Sequence
+
 In most cases, the Sequence is sent by another application (such as future SOSS tools or esw-shell) or submitted by another Sequencer as when the ESW
 Sequencer sends a Sequence to the IRIS or TCS Sequencer. But sometimes it is helpful to load a Sequence
 directly into a Sequencer for testing.
 
-**Rajalakshmi, please insert an example of a correctly formated JSON Sequence HERE and add some text**
+@@@ note
+
+A sample Sequence.json file with some sequence of commands is shown below. While writing sequence please specify parameters like _type , source, commandName, maybeObsId, paramSet.
+
+@@@
+
+```bash
+[
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-iris",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": [
+      {
+        "StringKey": {
+          "keyName": "StringKey",
+          "values": [
+            "Str1",
+            "Str2"
+          ],
+          "units": "NoUnits"
+        }
+      }
+    ]
+  },
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-tcs",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": [
+      {
+        "IntKey": {
+          "keyName": "IntKey",
+          "values": [
+            70,
+            80
+          ],
+          "units": "NoUnits"
+        }
+      }
+    ]
+  }
+]
+
+
+
+```
 
 To load a Sequence from a file, click on the Load Sequence button which will open up a dialog box to select a Sequence in JSON format (.json) from the local disk.
 
@@ -62,6 +112,7 @@ It shows list of steps in Orange color, indicating they are not yet executed. Th
 Selecting a Step shows the Step's parameters, values, and units.
 
 ### Starting a Sequence
+
 Sequences can be started in two ways. A Sequence sent using the Command Service `submit` causes the Sequence to begin executing immediately just like a command
 sent to an Assembly.
 
@@ -79,6 +130,7 @@ Once started, the Stop Sequence and Abort Sequence Button are enabled and the Lo
 ![Started Sequence](images/ManageSequencer-SequenceStarted.png)
 
 ## Sequence Step Features
+
 There are a few actions available on a specific Step in a loaded Sequence in a Sequencer.
 Select the vertical ellipsis **&#8942;** icon on any of the Steps to view the actions for the Step.
 
@@ -92,6 +144,7 @@ The available actions are:
 * Delete Steps
 
 ### Insert and Remove Breakpoint
+
 During the execution of a Sequence or during an observation, it is sometimes needed to stop the Sequence before or after a specific Step.
 One can always wait and pause the Sequence, but setting a breakpoint is more convenient. The breakpoint can be set between Steps, and the Sequence will stop
 when it reaches the breakpoint.
@@ -104,21 +157,29 @@ Once the breakpoint is inserted on the Step, the Sequence will pause at that Ste
 
 Sequence pauses at the step where breakpoint was inserted.
 
-![Breakpoint Inserted](images/SequencePausedAtInsertedBreakpoint.png)
-
 To remove a previously inserted breakpoint, go to the Step where breakpoint was inserted and click on the vertical ellipsis **&#8942;** and select 'Remove Breakpoint' .
-
-If the Sequence is paused, once the breakpoint is removed, the Sequence will resume execution.  If the Sequence has not yet reached the breakpoint, it is just removed.
 
 ![Remove Breakpoint](images/ManageSequencer-RemoveBreakpoint.png)
 
+If the Sequence is paused, once the breakpoint is removed, the Sequence will resume execution.  If the Sequence has not yet reached the breakpoint, it is just removed.
+
+![Removed Breakpoint](images/ManageSequencer-RemovedBreakpoint.png)
+
 ### Step-Through
+
 Step-Through is a convenience for setting and removing breakpoints. Sometimes, it is desirable to execute a Sequence one step at a time.
 Sometimes this is called single-stepping. Step-Through is a way to execute a Sequence one step at a time.
 
-**Rajalasksmi -- add text and image here.
+Click on Step-Through button to execute one step at a time.
+
+![Step Through ](images/ManageSequence-StepThrough.png)
+
+After clicking on Step-Through Button, you can see the 'observe-command3' step is executed while 'setup-iris' has a breakpoint. Hence only one step is executed at one time.
+
+![Post Step Through ](images/ManageSequence-PostStepThrough.png)
 
 ## Sequence Editing
+
 Several Sequence editing functions are available from a Sequencer's Manage Sequence Page.  Of course, a Sequence must
 be loaded for editing to be possible.
 
@@ -129,12 +190,44 @@ Select the vertical ellipsis **&#8942;** at the Step after which more Steps are 
 
 ![Add Step](images/ManageSequencer-AddSteps.png)
 
-Once `Add Step` is clicked, it opens a file selection dialog box to select a file of Steps as a JSON formatted file (.json). After the file is read, the Steps are added to the Sequence as shown below.
+To add steps create a .json file. Sample step is shown below and can be saved as AddSteps.json.
+
+```bash
+
+[
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-iris",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": [
+      {
+        "StringKey": {
+          "keyName": "StringKey",
+          "values": [
+            "Str3",
+            "Str4"
+          ],
+          "units": "NoUnits"
+        }
+      }
+    ]
+  }
+]
+
+```
+
+Once `Add Step` is clicked, it opens a file selection dialog box to select a file of Steps as a JSON formatted file (.json).
+
+![Add Step](images/ManageSequencer_AddStepDialogBox.png)
+
+After the file is read, the Steps are added to the Sequence as shown below.
 This can only be done in areas of a Sequence that are not yet executed.
 
-![Add Step](images/ManageSequencer-AddedSteps.png)
+![Add Step](images/ManageSequencer-AddedStep.png)
 
 ### Duplicate Steps
+
 It is possible to select Steps and duplicate them, adding them to the end of the Sequence.
 
 Click on the vertical ellipsis **&#8942;** at a Step to duplicate and then click on 'Duplicate' in the Step menu.
@@ -153,6 +246,7 @@ It is possible to cause problems when editing Steps in a Sequence.  Make sure yo
 @@@
 
 ### Delete Step
+
 Sequence Steps can be deleted one at a time. Only unexecuted Steps can be deleted.
 
 To Delete a step, click on the vertical ellipsis **&#8942;** of that step and click on 'Delete'. A pop up box shows up warning of impending danger.
@@ -165,12 +259,14 @@ Once the Step is deleted, a message is displayed indicating a successful deletio
 ![Deleted Step](images/ManageSequencer-DeleteAStep.png)
 
 ## Sequence Management Functions
+
 This page also offers several functions for managing the state and behavior of an individual Sequencer. The
 Manage Observation Page has similar functions for the observaton, but this page controls an individual Sequencer.
 
 The buttons dicussed here are in the upper right of the Manage Sequencer page.
 
 ### Go Offline, Go Online
+
 The selected Sequencer can be told to go offline and online.
 
 The Go Offline button is only enabled when the Sequencer is idle or all its Steps have been executed or it has not yet started executing.
@@ -188,6 +284,7 @@ Once the Sequencer is offline, the 'Go offline' label is replaced by 'Go online'
 To read about Go offline and Go Online functionality @extref[visit here](esw:////scripts/dsl/constructs/handlers.html#online-and-offline-handlers).
 
 ## Pause and Resume Sequence
+
 The selected Sequencer can be paused and resumed independent of the rest of the observation. The pause is equivalent to setting a breakpoint on
 the first step after the currently executing step.
 
@@ -202,6 +299,7 @@ Once resumed, the Sequence will start executing again and the pause icon will ag
 ![Resume](images/ManageSequencer-ResumeSequence.png)
 
 ## Stop Sequence
+
 A single Sequencer can be sent the Stop command.
 
 To stop a Sequence in progress, click on 'Stop Sequence' button. This causes the Stop command to be sent to the Sequencer
@@ -220,6 +318,7 @@ Click on the 'Confirm' button to stop the Sequencer.
 To read about Stop Sequence functionality @extref[visit here](esw:////scripts/dsl/constructs//handlers.html#stop-handler).
 
 ## Abort Sequence
+
 A single Sequencer can be sent the Abort command.
 
 To immediately abort a Sequence click on the 'Abort' button. A warning pop-up is shown.

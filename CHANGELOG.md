@@ -10,7 +10,7 @@ This is the first release of ESW-OCS-ENG-UI for project stakeholders.
 
 ### Documentation
 
-* Reference paradox documentation: https://github.com/tmtsoftware/ESW-OCS-ENG-UI/0.1.0-RC1/
+* Reference paradox documentation: https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-RC1/
 
 ### Supporting Releases
 

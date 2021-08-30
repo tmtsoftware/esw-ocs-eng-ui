@@ -50,7 +50,7 @@ Once configured for an obsMode, the Sequencers can be used to run Sequences in t
 Unless there is a conflict in the resources required for an observation, TMT can run multiple observations at a time. The Configure feature hence checks for any
 resource conflicts with ongoing observations.
 
-Users can configure from either the @ref[Manage Infrastructure](./ManageInfrastructure.md#configure) page or the @ref[Manage Observation](./ManageObservation.md#configurable) page of the UI.
+Users can configure from either the @ref[Manage Infrastructure](./ManageInfrastructure.md#configure) page or the @ref[Manage Observation](./ManageObservation.md#the-configurable-tab) page of the UI.
 
 @@@ note
 
@@ -58,7 +58,7 @@ To know more about configure functionality see @extref[here](esw:technical/seque
 
 @@@
 
-When changing instruments or observing modes, users will also shut down a running observation as explained @ref[here](./ManageObservation.md#shutdown-sequencer)
+When changing instruments or observing modes, users will also shut down a running observation as explained @ref[here](./ManageObservation.md#shutdown-sequencers)
 and configure the system for another observation's Sequencers. This operation takes no more than a couple seconds.
 
 ## Managing an Observation
@@ -74,17 +74,17 @@ The Configurable tab shows obsModes that **may be configured** after considering
 Finally, the Non-Configurable tab shows
 which obsModes **can not be configured** and the reasons why they can not be configured.
 
-In the Running tab as explained @ref[here](./ManageObservation.md#running) the user can:
+In the Running tab as explained @ref[here](./ManageObservation.md#the-running-tab) the user can:
 
 * Configure Sequencers
 * Shut down a running observation
-* Track running Sequencers and sequences as explained @ref[here](./ManageObservation.md#tracking-sequence)
+* Track running Sequencers and sequences as explained @ref[here](./ManageObservation.md#tracking-a-sequence)
 * Reload a Script by stopping and restarting the sequencer.
 * View resources in use or available.
 
-In the Configurable tab as explained @ref[here](./ManageObservation.md#configurable) the user can view the obsModes and resources available and also configure a selected obsMode using the 'Configure' button.
+In the Configurable tab as explained @ref[here](./ManageObservation.md#the-configurable-tab) the user can view the obsModes and resources available and also configure a selected obsMode using the 'Configure' button.
 
-In the Non-Configurable tab as explained @ref[here](./ManageObservation.md#non-configurable) users can see the reasons an obsMode is not configurable either due to resources already in use
+In the Non-Configurable tab as explained @ref[here](./ManageObservation.md#the-non-configurable-tab) users can see the reasons an obsMode is not configurable either due to resources already in use
 or unavailability of Sequence Components.
 
 ## Manage Sequencers
@@ -127,15 +127,15 @@ Once a Sequence starts executing, each Step in the Sequence offers the following
 
 * @ref[Insert/remove breakpoint](./ManageSequencer.md#insert-and-remove-breakpoint)
 
-* @ref[Add Steps](./ManageSequencer.md#add-step)
+* @ref[Add Steps](./ManageSequencer.md#adding-steps)
 
 * @ref[Delete Steps](./ManageSequencer.md#delete-step)
 
-* @ref[Duplicate a Step](./ManageSequencer.md#duplicate-step)
+* @ref[Duplicate a Step](./ManageSequencer.md#duplicate-steps)
 
 ## Tracking Sequence Progress
 
-Once a Sequence is executing or completed, a user can track status of the Sequence or the Steps completed in the @ref[Manage Observation](./ManageObservation.md) page as explained @ref[here](./ManageObservation.md#tracking-sequence).
+Once a Sequence is executing or completed, a user can track status of the Sequence or the Steps completed in the @ref[Manage Observation](./ManageObservation.md) page as explained @ref[here](./ManageObservation.md#tracking-a-sequence).
 
 ## Resources Page
 

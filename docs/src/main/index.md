@@ -1,4 +1,4 @@
-# ESW-OCS-ENG-UI
+# OCS-ENG-UI - OCS Engineering User Interface
 
 @@toc { depth=2 }
 

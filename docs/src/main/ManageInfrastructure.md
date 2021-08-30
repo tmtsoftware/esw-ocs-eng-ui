@@ -7,7 +7,7 @@ running.
 This screenshot below shows the status of Sequence Manager in the upper left of the screen.
 It displays information that Sequence Manager is running properly on a machine called ESW.sm_machine.
 
-Below in the grey area, it shows in blocks, Agents on every machine that will host Sequence Components and Sequencers and HCD/Assembly components on respective subsystem machines.
+Below in the grey area, it shows in blocks or *cards*, Agents on every machine that will host Sequence Components and Sequencers and HCD/Assembly components on respective subsystem machines.
 
 ![ManageInfra](./images/Manage-Infrastructure.png)
 

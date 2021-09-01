@@ -18,6 +18,6 @@ testStoryMappping.txt
 RTM/*.txt
 RTM/*.html
 .log
-.bsp
+**/.bsp/*
 esw-ocs-eng-ui
 .snowpack

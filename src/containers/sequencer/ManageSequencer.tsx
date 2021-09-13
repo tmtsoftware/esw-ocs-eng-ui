@@ -18,6 +18,6 @@ export const ManageSequencer = (): JSX.Element => {
   try {
     return <SequencerDetails prefix={Prefix.fromString(maybePrefix)} />
   } catch (e) {
-    return <SequencerError title={invalidTitle} subtitle={e?.message} />
+    return <SequencerError title={invalidTitle} subtitle={(e as Error)?.message} />
   }
 }

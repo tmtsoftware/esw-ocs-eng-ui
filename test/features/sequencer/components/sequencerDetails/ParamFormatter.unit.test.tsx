@@ -22,6 +22,7 @@ import {
   utcTimeKey,
   Angle
 } from '@tmtsoftware/esw-ts'
+import { TAITime, UTCTime } from '@tmtsoftware/esw-ts/dist/src/models/TMTTime'
 import { expect } from 'chai'
 import React from 'react'
 import { formatParameters } from '../../../../../src/features/sequencer/components/sequencerDetails/ParamFormatter'
@@ -61,8 +62,10 @@ describe('Parameter Formatter', () => {
     new AltAzCoord(new Tag('Base'), Angle.fromDegree(141), Angle.fromDegree(88.88))
   ])
   // construct time parameters
-  const utcTime = utcTimeKey('utcTime').set(['1970-01-01T00:00:00Z'])
-  const taiTime = taiTimeKey('taiTime').set(['2017-09-04T19:00:00.123456789Z'])
+  const utcTimeValue = UTCTime.now()
+  const utcTime = utcTimeKey('utcTime').set([utcTimeValue])
+  const taiTimeValue = TAITime.now()
+  const taiTime = taiTimeKey('taiTime').set([taiTimeValue])
 
   // construct a parameter which has no custom formatting
   const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
@@ -100,8 +103,8 @@ describe('Parameter Formatter', () => {
 
   const formattedSolarSystemCoord = `Base: Jupiter`
   const formattedAltAzCoord = `Base: Alt=141.000 Az=88.880`
-  const formattedUtcTime = '1970-01-01T00:00:00.000Z'
-  const formattedTaiTime = '2017-09-04T19:00:00.123Z'
+  const formattedUtcTime = utcTimeValue.toJSON()
+  const formattedTaiTime = taiTimeValue.toJSON()
   const formattedIntValue = '123, 12432'
 
   const testCases: [Parameter<Key>, SequenceCommand, string][] = [
@@ -116,7 +119,7 @@ describe('Parameter Formatter', () => {
   ]
 
   testCases.forEach(([parameter, command, formattedParam]) => {
-    it(`should format ${parameter.keyTag} | ESW-503`, () => {
+    it(`should format ${parameter.keyTag} | ESW-503, ESW-542`, () => {
       render(<>{formatParameters(parameter, command)}</>)
 
       const element = screen.getByRole(parameter.keyTag)

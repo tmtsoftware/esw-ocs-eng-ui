@@ -27,7 +27,6 @@ import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
-import { LOCATION_SERVICE } from '../../src/features/queryKeys'
 import {
   defaultStepListTableContext,
   StepListContextProvider,
@@ -185,7 +184,6 @@ const getContextWithQueryClientProvider = (
 ): React.FC<{ children: React.ReactNode }> => {
   const queryClient = new QueryClient()
   const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
-  queryClient.setQueryData(LOCATION_SERVICE.key, mockServices.instance.locationService)
 
   const provider = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>

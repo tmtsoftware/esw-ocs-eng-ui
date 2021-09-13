@@ -5,7 +5,7 @@
   "license": "Apache License, Version 2.0",
   "type": "module",
   "dependencies": {
-    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#39083cba86ea5e2621249b45879eb3b4e3ecd41a",
+    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#463ae67867388c5bf8d060f46d1e87af4c1eb996",
     "antd": "^4.16.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -61,7 +61,7 @@
     "keycloak-js": "^15.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.3.2",
-    "snowpack": "^3.8.3",
+    "snowpack": "3.8.3",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
     "ts-mockito": "^2.6.1",

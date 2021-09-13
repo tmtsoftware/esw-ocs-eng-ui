@@ -25,8 +25,6 @@ const DIGITS_AFTER_DECIMAL = 3
 
 const uasToDegree = (angle: Angle) => angle.toDegree().toFixed(DIGITS_AFTER_DECIMAL)
 
-const dateStringToISO = (date: string) => new Date(date).toISOString()
-
 const formatEqCoord = (value: EqCoord) => (
   <>
     {value.tag.name}: RA={Angle.raToString(value.ra.toRadian())} DEC={Angle.deToString(value.dec.toRadian())} <br />
@@ -137,8 +135,8 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
         <FormattedParams
           role={keyTag}
           size={0}
-          values={utcTimeParams?.values.map((value, index) => (
-            <Typography.Text key={index}>{dateStringToISO(value)}</Typography.Text>
+          values={utcTimeParams?.values.map((utcTime, index) => (
+            <Typography.Text key={index}>{utcTime.toJSON()}</Typography.Text>
           ))}
         />
       )
@@ -149,8 +147,8 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
         <FormattedParams
           role={keyTag}
           size={0}
-          values={taiTimeParams?.values.map((value, index) => (
-            <Typography.Text key={index}>{dateStringToISO(value)}</Typography.Text>
+          values={taiTimeParams?.values.map((taiTime, index) => (
+            <Typography.Text key={index}>{taiTime.toJSON()}</Typography.Text>
           ))}
         />
       )

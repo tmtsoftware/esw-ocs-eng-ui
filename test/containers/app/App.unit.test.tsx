@@ -9,12 +9,12 @@ describe('App page', () => {
     cleanup()
   })
 
-  it('should render app with layout when user is logged in | ESW-441', async () => {
+  it('should render app with layout when user is logged in | ESW-441, ESW-542', async () => {
     renderWithAuth({ ui: <App /> })
 
-    const resources = screen.queryAllByText('Resources')
-    const manageObservations = screen.queryAllByText('Manage Observations')
-    const manageInfra = screen.queryAllByText('Manage Infrastructure')
+    const resources = await screen.findAllByText('Resources')
+    const manageObservations = await screen.findAllByText('Manage Observations')
+    const manageInfra = await screen.findAllByText('Manage Infrastructure')
     const logoutButton = await screen.findByText('ESW-USER')
 
     expect(resources).to.have.length(2)

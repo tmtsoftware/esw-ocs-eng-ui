@@ -96,10 +96,9 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
             break
           case 'LocationUpdated':
             subscriptions.push(
-              sequencerService.subscribeSequencerState()(
-                (sequencerState) => handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState),
-                handleError
-              )
+              sequencerService.subscribeSequencerState()((sequencerState) => {
+                handleSequencerStateChange(sequencerPrefix.toJSON(), sequencerState)
+              }, handleError)
             )
         }
       }, handleError)

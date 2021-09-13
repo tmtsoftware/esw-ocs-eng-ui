@@ -29,30 +29,30 @@ describe('Full app navigation', () => {
     cleanup()
   })
 
-  it('Infrastructure route | ESW-441', () => {
+  it('Infrastructure route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
 
-    const manageInfra = screen.getByRole('ManageInfrastructure')
+    const manageInfra = await screen.findByRole('ManageInfrastructure')
     expect(manageInfra).to.exist
 
     userEvent.click(manageInfra, leftClick)
     expect(window.location.pathname).equal(INFRASTRUCTURE)
   })
 
-  it('Observations route | ESW-441', () => {
+  it('Observations route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
 
-    const manageObservations = screen.getByRole('ManageObservations')
+    const manageObservations = await screen.findByRole('ManageObservations')
     expect(manageObservations).to.exist
 
     userEvent.click(manageObservations, leftClick)
     expect(window.location.pathname).equal(OBSERVATIONS)
   })
 
-  it('Resources | ESW-441', () => {
+  it('Resources | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
 
-    const resources = screen.getAllByRole('Resources')
+    const resources = await screen.findAllByRole('Resources')
     expect(resources).to.have.length(2)
 
     userEvent.click(resources[0], leftClick)

@@ -29,7 +29,7 @@ export default {
   ],
   reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
-    exclude: ['_snowpack/**/*'],
+    exclude: ['_snowpack/**/*', 'dist_test/**/*', '**/*.proxy.*', '**/AppConfig.js'],
     threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }
   }
 }

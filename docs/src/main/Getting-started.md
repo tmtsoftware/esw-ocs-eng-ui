@@ -28,7 +28,7 @@ To see the OCS-ENG-UI working, it is necessary to have a few pieces of infrastru
    @link:[here](https://tmtsoftware.github.io/csw/4.0.0-RC1/apps/cswservices.html)
 
 2. The latest binaries of ESW need to be present on machine. Current latest : 0.3.0-RC1.
-  `cs install esw-services:0.3.0-RC1`
+  `cs install esw-services`
   Note: This step needs to be done at least once and/or whenever new changes of esw are pulled from GitHub.
 
 3. To start esw services follow instruction @link:[here](https://github.com/tmtsoftware/esw/tree/master/esw-services#running-the-esw-services-using-coursier)

@@ -31,7 +31,7 @@ To see the OCS-ENG-UI working, it is necessary to have a few pieces of infrastru
   `cs install esw-services`
   Note: This step needs to be done at least once and/or whenever new changes of esw are pulled from GitHub.
 
-3. To start esw services follow instruction @link:[here](https://github.com/tmtsoftware/esw/tree/master/esw-services#running-the-esw-services-using-coursier)
+3. To start esw services follow section `Running the esw-services using coursier` @link:[here](https://github.com/tmtsoftware/esw/tree/master/esw-services)
 
 * OCS-ENG-UI requires `AgentService` along with one or more agent should be up & running to manage observations on various agent/machine. To start, run following command `esw-services start --agent --agent-service`.
 

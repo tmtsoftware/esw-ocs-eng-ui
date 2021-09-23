@@ -4,13 +4,13 @@ The ESW-OCS-ENG-UI provides a browser based User Interface to manage and track s
 
 This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tmtsoftware/esw-ocs-eng-ui))
 
-## [ESW-OCS-ENG-UI v0.1.0] - upcoming release
+## [ESW-OCS-ENG-UI v0.1.0] - 2021-09-23
 
 This is the first release of ESW-OCS-ENG-UI for project stakeholders.
 
 ### Documentation
 
-* Reference paradox documentation: https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-RC2/
+* Reference paradox documentation: https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0/
 
 ### Supporting Releases
 

@@ -1,8 +1,8 @@
-name: dev
+name: release
 
 on:
   push:
-    tags: 
+    tags:
       - "v*"
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/setup-node@v1
         with:
-          node-version: "15.x"
+          node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
 
       - uses: laughedelic/coursier-setup@v1

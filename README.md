@@ -19,7 +19,7 @@ This project is a React web application.
 
     * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
-The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## User role for login
 
@@ -97,6 +97,7 @@ The project has the following structure:
 
 | esw-ocs-eng-ui | esw | csw |
 |--------|-----|-----|
+| v0.1.0 | v0.3.0 | v4.0.0 |
 | v0.1.0-RC2 | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.1.0-RC1 | v0.3.0-RC1 | v4.0.0-RC1 |
 | v0.1.0-M1 | v0.3.0-M1 | v4.0.0-M1 |
@@ -105,6 +106,7 @@ The project has the following structure:
 
 | Date | Tag | Source | Docs | Assets |
 |-----|-----|-----|-----|-----|
+| 2021-09-23 | v0.1.0 | [esw-ocs-eng-ui-0.1.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0) | [esw-ocs-eng-ui-0.1.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0/) | [esw-ocs-eng-ui-0.1.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0) |
 
 ## Pre-Release History
 

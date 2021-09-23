@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ### Install the ESW-OCS-ENG-UI source repository
 

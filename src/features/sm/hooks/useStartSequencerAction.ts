@@ -5,7 +5,8 @@ import type {
   StartSequencerResponse,
   Subsystem
 } from '@tmtsoftware/esw-ts'
-import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
+import { useMutation } from '../../../hooks/useMutation'
+import type { UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { startSequencerConstants } from '../smConstants'

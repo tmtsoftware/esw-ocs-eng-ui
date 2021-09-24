@@ -1,6 +1,8 @@
-import { AgentStatus, AgentStatusSuccess, ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import type { AgentStatus, AgentStatusSuccess } from '@tmtsoftware/esw-ts'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
-import { useQuery, UseQueryResult } from '../../../hooks/useQuery'
+import type { UseQueryResult } from '../../../hooks/useQuery'
+import { useQuery } from '../../../hooks/useQuery'
 import { AGENTS_STATUS } from '../../queryKeys'
 
 export const UNKNOWN_AGENT = new ComponentId(new Prefix('ESW', 'Unknown'), 'Machine')

@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ObsMode, Prefix, SequencerState, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { SequencerState, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'

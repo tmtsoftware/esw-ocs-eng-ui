@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { OkOrUnhandledResponse, Prefix } from '@tmtsoftware/esw-ts'
+import { Prefix } from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { reset, verify, when } from 'ts-mockito'

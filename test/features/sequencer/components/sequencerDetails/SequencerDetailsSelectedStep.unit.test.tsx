@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Location, Prefix, SequencerStateResponse, StepList, StepStatus } from '@tmtsoftware/esw-ts'
+import { Prefix, StepList } from '@tmtsoftware/esw-ts'
+import type { Location, SequencerStateResponse, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

@@ -1,15 +1,13 @@
 import { screen, waitFor } from '@testing-library/react'
 import {
-  AgentStatus,
-  AgentStatusResponse,
   ComponentId,
   ObsMode,
   Prefix,
-  SequenceComponentStatus,
   AGENT_SERVICE_CONNECTION,
   CONFIG_CONNECTION,
   SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
+import type { AgentStatus, AgentStatusResponse, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'

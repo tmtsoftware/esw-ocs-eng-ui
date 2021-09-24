@@ -1,24 +1,27 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { SequencerState } from '@tmtsoftware/esw-ts'
+import type {
+  SequencerState,
+  BooleanKey,
+  IntKey,
+  IntArrayKey,
+  SequencerStateResponse,
+  StringKey
+} from '@tmtsoftware/esw-ts'
 import {
   booleanKey,
-  BooleanKey,
-  IntArrayKey,
   intArrayKey,
   intKey,
-  IntKey,
   Location,
   Parameter,
   Prefix,
-  SequencerStateResponse,
   ServiceError,
   Setup,
   StepList,
   stringKey,
-  StringKey,
   Units
 } from '@tmtsoftware/esw-ts'
+
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'

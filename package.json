@@ -14,10 +14,10 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
+    "start": "vite serve",
+    "build": "vite build",
     "build:reporter": "tsc --p tsconfig.test.json",
-    "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
+    "test:unit": "web-test-runner 'test/**/SmSequencerAction.unit.test.{ts,tsx}'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
@@ -47,6 +47,7 @@
     "@types/react-router-dom": "^5.1.8",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
     "@web/dev-server-import-maps": "^0.0.6",
     "@web/test-runner": "0.13.15",
     "chai": "^4.3.4",
@@ -65,6 +66,8 @@
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^22.0.0",
     "ts-mockito": "^2.6.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "vite": "^2.5.10",
+    "vite-web-test-runner-plugin": "^0.1.0"
   }
 }

@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Result, SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
+import { Result } from '@tmtsoftware/esw-ts'
+import type { SequencerState, SubmitResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'

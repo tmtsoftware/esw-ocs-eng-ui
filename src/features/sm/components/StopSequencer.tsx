@@ -1,12 +1,6 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
-import {
-  ObsMode,
-  Prefix,
-  SequenceManagerService,
-  SequencerState,
-  ShutdownSequencersResponse,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { SequenceManagerService, SequencerState, ShutdownSequencersResponse, Subsystem } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'

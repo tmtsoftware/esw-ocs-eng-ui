@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GenericResponse, Prefix, Setup, Step } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, Step } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { verify, when } from 'ts-mockito'
 import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'

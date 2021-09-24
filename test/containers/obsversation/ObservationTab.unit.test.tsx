@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { AgentStatus } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

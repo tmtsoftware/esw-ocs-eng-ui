@@ -1,11 +1,5 @@
-import {
-  AgentProvisionConfig,
-  ConfigService,
-  Prefix,
-  ProvisionConfig,
-  SequenceManagerService,
-  SpawningSequenceComponentsFailed
-} from '@tmtsoftware/esw-ts'
+import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
+import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
 import { useConfigService } from '../../../../contexts/ConfigServiceContext'

@@ -2,19 +2,21 @@ import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
-  AgentStatus,
-  AgentStatusResponse,
   ComponentId,
   ConfigData,
-  ConfigureResponse,
-  HttpLocation,
   ObsMode,
-  ObsModesDetailsResponse,
   Prefix,
   ProvisionConfig,
   AGENT_SERVICE_CONNECTION,
   SEQUENCE_MANAGER_CONNECTION,
   CONFIG_CONNECTION
+} from '@tmtsoftware/esw-ts'
+import type {
+  AgentStatus,
+  AgentStatusResponse,
+  ConfigureResponse,
+  HttpLocation,
+  ObsModesDetailsResponse
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'

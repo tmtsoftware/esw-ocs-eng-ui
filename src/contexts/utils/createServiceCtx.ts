@@ -6,7 +6,8 @@ import { createTokenFactory } from '../../utils/createTokenFactory'
 import { getUsername } from '../../utils/getUsername'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
-import { createCtx, CtxType } from './createCtx'
+import { createCtx } from './createCtx'
+import type { CtxType } from './createCtx'
 
 export const createServiceCtx = <T>(
   connection: Connection,

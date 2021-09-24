@@ -1,11 +1,12 @@
-import {
-  ObsMode,
+import { ObsMode } from '@tmtsoftware/esw-ts'
+import type {
+  Subsystem,
   RestartSequencerResponse,
   RestartSequencerSuccess,
-  SequenceManagerService,
-  Subsystem
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
+import { useMutation } from '../../../hooks/useMutation'
+import type { UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { reloadScriptConstants } from '../smConstants'

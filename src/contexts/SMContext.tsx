@@ -1,10 +1,5 @@
-import {
-  createSequenceManagerService,
-  Location,
-  SEQUENCE_MANAGER_CONNECTION,
-  SequenceManagerService,
-  TokenFactory
-} from '@tmtsoftware/esw-ts'
+import { createSequenceManagerService, SEQUENCE_MANAGER_CONNECTION, SequenceManagerService } from '@tmtsoftware/esw-ts'
+import type { Location, TokenFactory } from '@tmtsoftware/esw-ts'
 import { createServiceCtx } from './utils/createServiceCtx'
 
 export type SMContextType = [Location | undefined, boolean]

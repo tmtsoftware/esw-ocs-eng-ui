@@ -1,21 +1,18 @@
 import { screen } from '@testing-library/react'
 import {
   booleanKey,
-  BooleanKey,
-  IntArrayKey,
   intArrayKey,
   intKey,
-  IntKey,
   Parameter,
   Prefix,
   Setup,
   SolarSystemCoord,
   solarSystemCoordKey,
   stringKey,
-  StringKey,
   Tag,
   Units
 } from '@tmtsoftware/esw-ts'
+import type { BooleanKey, IntArrayKey, IntKey, StringKey } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
 import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestUtils'

@@ -1,4 +1,5 @@
-import { ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import { ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { SequencerState } from '@tmtsoftware/esw-ts'
 import { Popconfirm, Typography } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'

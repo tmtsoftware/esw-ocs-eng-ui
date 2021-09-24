@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ObsMode, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
+import { ObsMode } from '@tmtsoftware/esw-ts'
+import type { ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, verify, when } from 'ts-mockito'

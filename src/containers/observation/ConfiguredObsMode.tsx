@@ -1,12 +1,8 @@
-import {
-  AkkaConnection,
-  ObsMode,
-  Prefix,
+import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList } from '@tmtsoftware/esw-ts'
+import type {
   SequencerService,
   SequencerState,
   SequencerStateResponse,
-  ServiceError,
-  StepList,
   Subscription,
   Subsystem
 } from '@tmtsoftware/esw-ts'
@@ -18,7 +14,8 @@ import type { ResourceTableStatus } from '../../features/sequencer/components/Re
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
 import { SequencersTable } from '../../features/sequencer/components/SequencersTable'
 import { mkSequencerService } from '../../features/sequencer/hooks/useSequencerService'
-import { getCurrentStepCommandName, getStepListInfo, SequencerInfo } from '../../features/sequencer/utils'
+import { getCurrentStepCommandName, getStepListInfo } from '../../features/sequencer/utils'
+import type { SequencerInfo } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'

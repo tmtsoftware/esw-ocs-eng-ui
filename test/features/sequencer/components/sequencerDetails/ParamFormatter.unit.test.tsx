@@ -6,14 +6,11 @@ import {
   cometCoordKey,
   EqCoord,
   eqCoordKey,
-  IntKey,
   intKey,
-  Key,
   MinorPlanetCoord,
   minorPlanetCoordKey,
   Parameter,
   Prefix,
-  SequenceCommand,
   Setup,
   SolarSystemCoord,
   solarSystemCoordKey,
@@ -22,6 +19,7 @@ import {
   utcTimeKey,
   Angle
 } from '@tmtsoftware/esw-ts'
+import type { IntKey, Key, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { TAITime, UTCTime } from '@tmtsoftware/esw-ts/dist/src/models/TMTTime'
 import { expect } from 'chai'
 import React from 'react'

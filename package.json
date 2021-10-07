@@ -24,7 +24,7 @@
     "test": "npm run test:unit",
     "test:logsEnabled": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit",
     "clean": "rm -rf dist && mkdir dist",
-    "prebuild": "npm-run-all --parallel clean eslint:check style:check audit",
+    "prebuild": "npm-run-all --parallel clean eslint:check style:check",
     "eslint:check": "eslint --config .eslintrc.json './{src,test}/**/*.{ts,tsx}'",
     "fix": "npm-run-all --parallel clean fix:eslint fix:prettier style:check",
     "fix:eslint": "eslint --fix --config .eslintrc.json './**/*.{ts,tsx}'",

@@ -400,7 +400,7 @@ describe('sequencer details', () => {
     await waitFor(() => userEvent.click(actions))
 
     const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
+    expect(menuItems.length).to.equal(5)
 
     //asert step is not present before adding it
     expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null

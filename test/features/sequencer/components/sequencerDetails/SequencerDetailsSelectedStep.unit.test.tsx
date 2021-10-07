@@ -182,7 +182,9 @@ describe('sequencer details selected step', () => {
     //step18 is executing, ui should show step18 details on right side
     await assertRunningStepIs(/Command-18/i, 500)
     //wait and assert for auto scroll to happen
-    await waitFor(() => expect(window.scrollY).to.greaterThan(500))
+    await waitFor(() => {
+      expect(window.scrollY).to.greaterThan(100)
+    })
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep19InProgress)))
     //step19 is executing, ui should show step19 details on right side
     await assertRunningStepIs(/Command-19/i, 500)

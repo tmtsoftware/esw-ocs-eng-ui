@@ -20,7 +20,7 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
 import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
 import { SMServiceProvider } from '../../../src/contexts/SMContext'
@@ -28,6 +28,7 @@ import { ProvisionButton } from '../../../src/features/sm/components/provision/P
 import { PROVISION_CONF_PATH } from '../../../src/features/sm/constants'
 import { configureConstants, provisionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
+import { ConfigServiceProvider } from '../../../src/contexts/ConfigServiceContext'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',
@@ -56,6 +57,13 @@ const agentStatus: AgentStatus = {
 const successResponse: ConfigureResponse = {
   _type: 'Success',
   masterSequencerComponentId: new ComponentId(Prefix.fromString('ESW.primary'), 'Sequencer')
+}
+
+const smLocation: HttpLocation = {
+  _type: 'HttpLocation',
+  connection: SEQUENCE_MANAGER_CONNECTION,
+  uri: 'url',
+  metadata: {}
 }
 
 describe('Infrastructure page', () => {
@@ -131,13 +139,6 @@ describe('Infrastructure page', () => {
   })
 
   it('should render running on unknown status if sequence manager is running standalone(not on agent) | ESW-442', async () => {
-    const smLocation: HttpLocation = {
-      _type: 'HttpLocation',
-      connection: SEQUENCE_MANAGER_CONNECTION,
-      uri: 'url',
-      metadata: {}
-    }
-
     renderWithAuth({
       ui: (
         <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
@@ -226,7 +227,13 @@ describe('Infrastructure page', () => {
       _type: 'Success'
     })
     renderWithAuth({
-      ui: <ProvisionButton disabled={false} />
+      ui: (
+        <ConfigServiceProvider initialValue={[mockServices.instance.configService, false]}>
+          <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
+            <ProvisionButton disabled={false} />
+          </SMServiceProvider>
+        </ConfigServiceProvider>
+      )
     })
 
     const provisionButton = (await screen.findByRole('button', {

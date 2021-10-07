@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentId, KillResponse, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import type { KillResponse } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'

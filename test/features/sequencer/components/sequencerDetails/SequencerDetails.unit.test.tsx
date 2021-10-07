@@ -6,13 +6,13 @@ import type {
   IntKey,
   IntArrayKey,
   SequencerStateResponse,
-  StringKey
+  StringKey,
+  Location
 } from '@tmtsoftware/esw-ts'
 import {
   booleanKey,
   intArrayKey,
   intKey,
-  Location,
   Parameter,
   Prefix,
   ServiceError,
@@ -21,7 +21,6 @@ import {
   stringKey,
   Units
 } from '@tmtsoftware/esw-ts'
-
 import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
@@ -175,7 +174,7 @@ describe('sequencer details', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
-    await setViewport({ width: 1440, height: 900 })
+    // await setViewport({ width: 1440, height: 900 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -220,7 +219,7 @@ describe('sequencer details', () => {
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
     //Set bigger viewport so that values wont be elipsis
-    await setViewport({ width: 1440, height: 900 })
+    // await setViewport({ width: 1440, height: 900 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -275,7 +274,7 @@ describe('sequencer details', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
     //Set small viewport so that values will have elipsis
-    await setViewport({ width: 1000, height: 800 })
+    // await setViewport({ width: 1000, height: 800 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />

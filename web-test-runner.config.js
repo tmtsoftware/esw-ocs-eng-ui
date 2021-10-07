@@ -20,8 +20,11 @@ export default {
       inject: {
         importMap: {
           imports: {
-            './dist/features/sequencer/hooks/useSequencerService.js': './dist_test/mocks/useSequencerService.js',
-            './dist/contexts/ConfigServiceContext.js': './dist_test/mocks/ConfigServiceContext.js'
+            // this path needs to be absolute url whatever browser trys to load. cannot be relative path. prod file path: mocked file path
+            'http://localhost:3000/src/features/sequencer/hooks/useSequencerService.ts':
+              'http://localhost:3000/test/mocks/useSequencerService.ts',
+            'http://localhost:3000/src/contexts/ConfigServiceContext.tsx':
+              'http://localhost:3000/test/mocks/ConfigServiceContext.tsx'
           }
         }
       }

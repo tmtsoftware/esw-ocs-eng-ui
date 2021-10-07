@@ -71,7 +71,7 @@ describe('SM actions', () => {
       })
 
       const provisionButton = screen.getByRole('button', {
-        name: provisionConstants.buttonText
+        name: /Provision/
       }) as HTMLButtonElement
 
       const configureButton = screen.getByRole('button', {
@@ -91,7 +91,7 @@ describe('SM actions', () => {
         expect(
           (
             screen.getByRole('button', {
-              name: provisionConstants.buttonText
+              name: /Provision/
             }) as HTMLButtonElement
           ).disabled
         ).false

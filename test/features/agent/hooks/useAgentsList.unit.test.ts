@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks/dom'
-import { HttpConnection, HttpLocation, Prefix } from '@tmtsoftware/esw-ts'
+import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
+import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import { verify, when } from 'ts-mockito'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'

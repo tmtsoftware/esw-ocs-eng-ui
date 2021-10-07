@@ -34,7 +34,7 @@ export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): JSX.Element
         uploadErrorMsg={replaceStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>
-        <div role='addSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
+        <div role='replaceSteps' style={disabled ? { color: 'var(--disabledColor)' } : undefined}>
           <PlusCircleOutlined style={{ fontSize: '12px', marginRight: '8px' }} />
           {replaceStepConstants.menuItemText}
         </div>

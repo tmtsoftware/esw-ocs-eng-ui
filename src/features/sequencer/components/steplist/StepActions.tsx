@@ -20,7 +20,7 @@ const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element =>
     <Menu {...restProps} className={styles.menu}>
       <BreakpointAction step={step} isDisabled={isInProgressOrIsFinished} />
       <AddSteps disabled={isFinished} stepId={step.id} />
-      <ReplaceStep isDisabled={isFinished} step={step.id} />
+      <ReplaceStep disabled={isFinished} step={step.id} />
       <Menu.Item
         key='Duplicate'
         onClick={handleDuplicate}

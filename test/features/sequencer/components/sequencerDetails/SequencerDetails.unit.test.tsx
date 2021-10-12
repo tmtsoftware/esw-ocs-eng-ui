@@ -28,6 +28,7 @@ import { SequencerDetails } from '../../../../../src/features/sequencer/componen
 import {
   abortSequenceConstants,
   addStepConstants,
+  replaceStepConstants,
   goOfflineConstants,
   stepConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
@@ -418,6 +419,78 @@ describe('sequencer details', () => {
 
     // assert step is added
     await screen.findByRole('row', { name: /1 command-1/i })
+    await screen.findByRole('row', { name: /2 command-2/i })
+  })
+
+  it('replace steps should add uploaded steps at the selected step | ESW-550', async () => {
+    const sequencerPrefix = Prefix.fromString('ESW.iris_darknight')
+    const commandToInsert: Setup = new Setup(sequencerPrefix, 'command-2')
+
+    const file = new File([JSON.stringify([commandToInsert])], 'commands.json', {
+      type: 'application/json'
+    })
+
+    const stepList = getStepList('Pending', false)
+
+    const stepListAfterInsertion = new StepList([
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: new Setup(sequencerPrefix, 'Command-1'),
+        id: 'step1'
+      },
+      {
+        hasBreakpoint: false,
+        status: { _type: 'Pending' },
+        command: commandToInsert,
+        id: 'step2'
+      }
+    ])
+    let sendCommand: (sequencerStateRes: SequencerStateResponse) => void = () => ({})
+
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(
+      (onevent: (sequencerStateRes: SequencerStateResponse) => void) => {
+        sendCommand = onevent
+        return {
+          cancel: () => undefined
+        }
+      }
+    )
+
+    when(sequencerServiceMock.replace('step1', anything())).thenResolve({
+      _type: 'Ok'
+    })
+
+    renderWithAuth({
+      ui: (
+        <BrowserRouter>
+          <SequencerDetails prefix={sequencerPrefix} />
+        </BrowserRouter>
+      )
+    })
+    sendCommand(makeSeqStateResponse('Idle', stepList))
+    const actions = await screen.findByRole('stepActions')
+    await waitFor(() => userEvent.click(actions))
+
+    const menuItems = await screen.findAllByRole('menuitem')
+    expect(menuItems.length).to.equal(5)
+
+    //asert step is not present before adding it
+    expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null
+
+    const replaceSteps = await screen.findByRole('button', { name: /replace step/i })
+    await waitFor(() => userEvent.click(replaceSteps)) // click to open uplaod dialogue
+
+    // eslint-disable-next-line testing-library/no-node-access
+    const inputBox = replaceSteps.firstChild as HTMLInputElement
+    await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
+
+    await screen.findByText(replaceStepConstants.successMessage)
+    sendCommand(makeSeqStateResponse('Idle', stepListAfterInsertion))
+    verify(sequencerServiceMock.replace('step1', deepEqual([commandToInsert]))).called()
+
+    // assert step is added
+    //await screen.findByRole('row', { name: /1 command-1/i })
     await screen.findByRole('row', { name: /2 command-2/i })
   })
 

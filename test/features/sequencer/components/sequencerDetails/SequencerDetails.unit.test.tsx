@@ -21,7 +21,7 @@ import {
   stringKey,
   Units
 } from '@tmtsoftware/esw-ts'
-import { setViewport } from '@web/test-runner-commands'
+// import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -45,10 +45,10 @@ describe('sequencer details', () => {
   })
   afterEach(async () => {
     //Reset the viewport
-    await setViewport({
-      width: windowWidth,
-      height: windowHeight
-    })
+    // await setViewport({
+    //   width: windowWidth,
+    //   height: windowHeight
+    // })
     reset(sequencerServiceMock)
   })
   const darkNightSequencer = 'IRIS.IRIS_Darknight'

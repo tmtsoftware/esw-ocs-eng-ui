@@ -37,12 +37,6 @@ import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details', () => {
-  let windowWidth: number
-  let windowHeight: number
-  beforeEach(() => {
-    windowHeight = window.innerHeight
-    windowWidth = window.innerWidth
-  })
   afterEach(async () => {
     //Reset the viewport
     // await setViewport({

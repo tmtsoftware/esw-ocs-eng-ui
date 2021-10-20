@@ -20,15 +20,15 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, verify, when } from 'ts-mockito'
+import { deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
 import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
+import { ConfigServiceProvider } from '../../../src/contexts/ConfigServiceContext'
 import { SMServiceProvider } from '../../../src/contexts/SMContext'
 import { ProvisionButton } from '../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../src/features/sm/constants'
 import { configureConstants, provisionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
-import { ConfigServiceProvider } from '../../../src/contexts/ConfigServiceContext'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',

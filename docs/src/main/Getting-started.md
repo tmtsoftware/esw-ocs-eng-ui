@@ -87,7 +87,7 @@ Sequence Manager uses this information to configure an observation, i.e. start S
 esw-sm {
   obsModes: {
     IRIS_Darknight: {
-      resources: [ESW, TCS, IRIS]
+      resources: [TCS, IRIS]
       sequencers: [ESW, TCS, IRIS]
     }
   }

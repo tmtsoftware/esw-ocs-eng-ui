@@ -3,7 +3,8 @@ import type {
   ComponentId,
   SequenceManagerService,
   StartSequencerResponse,
-  Subsystem
+  Subsystem,
+  Prefix
 } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
@@ -35,15 +36,14 @@ const handleResponse = (res: StartSequencerResponse) => {
   }
 }
 
-const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
-  smService.startSequencer(subsystem, obsMode).then(handleResponse)
+const startSequencer = (prefix: Prefix) => (smService: SequenceManagerService) =>
+  smService.startSequencer(prefix).then(handleResponse)
 
 export const useStartSequencerAction = (
-  subsystem: Subsystem,
-  obsMode: ObsMode
+  prefix: Prefix
 ): UseMutationResult<ComponentId | undefined, unknown, SequenceManagerService> =>
   useMutation({
-    mutationFn: startSequencer(subsystem, obsMode),
+    mutationFn: startSequencer(prefix),
     onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
     onSuccess: () => successMessage(startSequencerConstants.successMessage),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

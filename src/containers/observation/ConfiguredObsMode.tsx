@@ -27,7 +27,7 @@ import { RunningActions } from './ObsModeActions'
 
 type ConfiguredObsModeProps = {
   obsMode: ObsMode
-  sequencers: Subsystem[]
+  sequencers: Prefix[]
   resources: ResourceTableStatus[]
 }
 
@@ -58,8 +58,8 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
   const tf = createTokenFactory(auth)
 
   const [loading, setLoading] = useState(true)
-  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
-    sequencers.map((sub) => [new Prefix(sub, obsMode.name).toJSON(), undefined])
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(() =>
+    sequencers.map((sequencerPrefix) => [sequencerPrefix.toJSON(), undefined])
   )
 
   const handleError = (error: ServiceError) => {
@@ -71,23 +71,19 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
-        const filteredSequencers = previousMap.filter(
-          ([sequencerPrefix]) =>
-            sequencerPrefix !== currentPrefix && Prefix.fromString(sequencerPrefix).componentName === obsMode.name
-        )
+        const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
         return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
       })
     }
 
     const services: [SequencerService, Prefix][] = gatewayLocation
-      ? sequencers.map((seq) => {
-          const seqPrefix = new Prefix(seq, obsMode.name)
+      ? sequencers.map((seqPrefix) => {
           return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
         })
       : []
 
     const subscriptions: Subscription[] = []
-    services.map(async ([sequencerService, sequencerPrefix]) => {
+    services.map(([sequencerService, sequencerPrefix]) => {
       const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
       const locationSubscription = locationService.track(seqConnection)((event) => {
         switch (event._type) {
@@ -106,7 +102,9 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     })
     return () => subscriptions.forEach((s) => s.cancel())
   }, [gatewayLocation, locationService, obsMode.name, sequencers, tf])
+
   const masterSequencerInfo = sequencersInfoMap.find((state) => Prefix.fromString(state[0]).subsystem === 'ESW')?.[1]
+
   const sequencersInfo: SequencerInfo[] = sequencersInfoMap.map(([prefix, sequencerStatus]) => {
     const stepList = sequencerStatus?.stepList || new StepList([])
     const stepListInfo = getStepListInfo(stepList, sequencerStatus?.sequencerState._type)
@@ -121,7 +119,6 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
       masterSequencerState: masterSequencerInfo && masterSequencerInfo.sequencerState
     }
   })
-
   const sortedSequencers = sortSequencers(sequencersInfo)
 
   const sequencerState: SequencerState | undefined = sortedSequencers[0]

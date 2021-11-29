@@ -59,7 +59,7 @@ describe('Stop Sequencer', () => {
 
     const modalTitleText = stopSequencerConstants.getModalTitleWithState(darkNight.toJSON(), running)
     it(`should return ${testname} | ESW-447, ESW-507`, async () => {
-      when(smService.shutdownSequencer('ESW', deepEqual(obsMode))).thenResolve(response)
+      when(smService.shutdownSequencer(deepEqual(new Prefix('ESW', obsMode.name)))).thenResolve(response)
 
       renderWithAuth({
         ui: (
@@ -84,13 +84,13 @@ describe('Stop Sequencer', () => {
 
       await screen.findByText(message)
 
-      verify(smService.shutdownSequencer('ESW', deepEqual(obsMode))).called()
+      verify(smService.shutdownSequencer(deepEqual(new Prefix('ESW', obsMode.name)))).called()
       await waitFor(() => expect(screen.queryByText(modalTitleText)).to.null)
     })
   })
 
   it(`should show confirm modal without state if sequencer is not inProgress | ESW-506`, async () => {
-    when(smService.shutdownSequencer('ESW', deepEqual(new ObsMode(darkNight.componentName)))).thenResolve({
+    when(smService.shutdownSequencer(deepEqual(darkNight))).thenResolve({
       _type: 'Success'
     })
     const sequencerState: SequencerState = {
@@ -116,6 +116,6 @@ describe('Stop Sequencer', () => {
     userEvent.click(confirmButton)
     await screen.findByText(stopSequencerConstants.successMessage(darkNight))
 
-    verify(smService.shutdownSequencer('ESW', deepEqual(new ObsMode(darkNight.componentName)))).called()
+    verify(smService.shutdownSequencer(deepEqual(darkNight))).called()
   })
 })

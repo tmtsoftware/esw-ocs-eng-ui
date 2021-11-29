@@ -1,9 +1,8 @@
-import {
-  ObsMode,
+import type {
+  Prefix,
   RestartSequencerResponse,
   RestartSequencerSuccess,
-  SequenceManagerService,
-  Subsystem
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
@@ -31,12 +30,11 @@ const handleReloadScriptResponse = (res: RestartSequencerResponse): RestartSeque
 }
 
 export const useReloadScriptAction = (
-  subsystem: Subsystem,
-  obsMode: string
+  prefix: Prefix
 ): UseMutationResult<RestartSequencerResponse | undefined, unknown, SequenceManagerService> => {
-  const reloadScript = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
+  const reloadScript = (prefix: Prefix) => (smService: SequenceManagerService) =>
     smService
-      .restartSequencer(subsystem, obsMode)
+      .restartSequencer(prefix)
       .then(handleReloadScriptResponse)
       /* we use locationService tracking api to decide action (Reload/Start sequencer).
        * when we do reload action, it internally shutdowns & tracking api receives LocationRemoved event,
@@ -46,9 +44,9 @@ export const useReloadScriptAction = (
       .then((res) => delay(200).then(() => res))
 
   return useMutation({
-    mutationFn: reloadScript(subsystem, new ObsMode(obsMode)),
-    onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${subsystem}.${obsMode}`), e),
-    onSuccess: () => successMessage(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode}`)),
+    mutationFn: reloadScript(prefix),
+    onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${prefix.toJSON()}`), e),
+    onSuccess: () => successMessage(reloadScriptConstants.getSuccessMessage(`${prefix.toJSON()}`)),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]
   })
 }

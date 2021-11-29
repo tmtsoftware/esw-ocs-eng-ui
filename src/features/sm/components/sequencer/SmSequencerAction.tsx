@@ -1,4 +1,4 @@
-import { ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Popconfirm, Typography } from 'antd'
 import React from 'react'
 import { Spinner } from '../../../../components/spinners/Spinner'
@@ -19,9 +19,8 @@ export const SmSequencerAction = ({
 }): JSX.Element => {
   const [smContext, smLoading] = useSMService()
   const smService = smContext?.smService
-  const { subsystem, componentName } = sequencerPrefix
-  const reloadAction = useReloadScriptAction(subsystem, componentName)
-  const startSequencerAction = useStartSequencerAction(subsystem, new ObsMode(componentName))
+  const reloadAction = useReloadScriptAction(sequencerPrefix)
+  const startSequencerAction = useStartSequencerAction(sequencerPrefix)
 
   if (reloadAction.isLoading || startSequencerAction.isLoading) return <Spinner />
 
@@ -42,8 +41,8 @@ export const SmSequencerAction = ({
   const popConfirmTitle = (): JSX.Element => (
     <div style={{ width: '22rem' }}>
       {masterSequencerState && isSequencerInProgress(masterSequencerState)
-        ? sequencerActionConstants.getPopConfirmTitleWithState(subsystem, componentName, masterSequencerState)
-        : sequencerActionConstants.getPopConfirmTitle(subsystem, componentName)}
+        ? sequencerActionConstants.getPopConfirmTitleWithState(sequencerPrefix, masterSequencerState)
+        : sequencerActionConstants.getPopConfirmTitle(sequencerPrefix)}
     </div>
   )
 

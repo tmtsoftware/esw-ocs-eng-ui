@@ -22,7 +22,7 @@ export const ReloadScript = ({ subsystem, obsMode, sequencerState }: ReloadScrip
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const sequencerPrefix = new Prefix(subsystem, obsMode)
-  const reloadScriptAction = useReloadScriptAction(subsystem, obsMode)
+  const reloadScriptAction = useReloadScriptAction(sequencerPrefix)
   const isInProgress = isSequencerInProgress(sequencerState)
 
   const handleOnClick = () => {

@@ -1,4 +1,4 @@
-import { ObsMode, Subsystem, subsystems } from '@tmtsoftware/esw-ts'
+import { Prefix, Subsystem, subsystems } from '@tmtsoftware/esw-ts'
 
 import { AutoComplete, Button, Form, message, Modal, Select } from 'antd'
 import React, { useState } from 'react'
@@ -14,25 +14,25 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
   const { data: obsModeDetails } = useObsModesDetails()
 
   const [subsystem, setSubsystem] = useState<Subsystem>()
-  const [obsMode, setObsMode] = useState<string>(emptyString)
+  const [componentName, setComponentName] = useState<string>(emptyString)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const obsModes = getAllObsModes(obsModeDetails)
-  obsModeDetails?.Configurable.map((e) => ({
-    value: e.obsMode.name
-  }))
+  // obsModeDetails?.Configurable.map((e) => ({
+  //   value: e.obsMode.name
+  // }))
   const resetInputData = () => {
-    setObsMode(emptyString)
+    setComponentName(emptyString)
     setSubsystem(undefined)
   }
 
-  const startSequencerAction = useStartSequencerAction(subsystem as Subsystem, new ObsMode(obsMode))
+  const startSequencerAction = useStartSequencerAction(new Prefix(subsystem as Subsystem, componentName))
   const showModal = () => {
     setIsModalVisible(true)
   }
 
   const handleOk = () => {
-    if (subsystem && obsMode) {
+    if (subsystem && componentName) {
       smContext && startSequencerAction.mutateAsync(smContext.smService)
       setIsModalVisible(false)
       resetInputData()
@@ -52,7 +52,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
     }
   }
 
-  const onObsModeChange = (data: string) => setObsMode(data)
+  const onComponentNameChange = (data: string) => setComponentName(data)
 
   return (
     <>
@@ -65,7 +65,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
         onOk={handleOk}
         okText={startSequencerConstants.modalOkText}
         okButtonProps={{
-          disabled: !subsystem || !obsMode
+          disabled: !subsystem || !componentName
         }}
         onCancel={handleCancel}
         destroyOnClose
@@ -86,13 +86,13 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label={startSequencerConstants.obsModeInputLabel} name='ObservationMode'>
+          <Form.Item label={startSequencerConstants.obsModeInputLabel} name='ComponentName'>
             <AutoComplete
-              value={obsMode}
+              value={componentName}
               options={obsModes}
               placeholder={startSequencerConstants.obsModeInputPlaceholder}
-              onChange={onObsModeChange}
-              onSelect={onObsModeChange}
+              onChange={onComponentNameChange}
+              onSelect={onComponentNameChange}
               filterOption={(inputValue, option) =>
                 option?.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
               }

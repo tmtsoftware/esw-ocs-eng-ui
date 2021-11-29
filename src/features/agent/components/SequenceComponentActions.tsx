@@ -41,8 +41,8 @@ const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceCom
 )
 
 const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => {
-  const masterSequencerPrefix = new Prefix('ESW', sequencerPrefix.componentName)
-  const { data: sequencerState } = useSequencerState(masterSequencerPrefix)
+  // const masterSequencerPrefix = new Prefix('ESW', sequencerPrefix.componentName)
+  const { data: sequencerState } = useSequencerState(sequencerPrefix)
   return (
     <Menu {...restProps}>
       <StopSequencer sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />

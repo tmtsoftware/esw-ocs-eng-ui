@@ -1,4 +1,4 @@
-import type { ObsMode, Subsystem } from '@tmtsoftware/esw-ts'
+import type { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
 import { Alert, Space, Typography } from 'antd'
 import React, { ReactElement } from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
@@ -15,7 +15,7 @@ const ObsModeTitle = ({ title }: { title: string }) => (
 type NonConfigurableObsModeProps = {
   obsMode: ObsMode
   resources: ResourceTableStatus[]
-  missingSequenceComponents: Subsystem[]
+  missingSequenceComponents: Prefix[]
   actions?: ReactElement
 }
 export const NonConfigurableObsMode = ({
@@ -30,7 +30,9 @@ export const NonConfigurableObsMode = ({
         {missingSequenceComponents.length && (
           <Alert
             type='warning'
-            message={`Sequence components are not available for ${missingSequenceComponents.join(', ')}`}
+            message={`Sequence components are not available for ${missingSequenceComponents
+              .map((x) => x.toJSON())
+              .join(', ')}`}
             showIcon
           />
         )}

@@ -1,12 +1,5 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
-import {
-  ObsMode,
-  Prefix,
-  SequenceManagerService,
-  SequencerState,
-  ShutdownSequencersResponse,
-  Subsystem
-} from '@tmtsoftware/esw-ts'
+import type { Prefix, SequenceManagerService, SequencerState, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
@@ -38,8 +31,8 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
     ? stopSequencerConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON())
 
-const stopSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
-  smService.shutdownSequencer(subsystem, obsMode).then(handleResponse)
+const stopSequencer = (prefix: Prefix) => (smService: SequenceManagerService) =>
+  smService.shutdownSequencer(prefix).then(handleResponse)
 
 export const StopSequencer = ({
   sequencerPrefix,
@@ -64,7 +57,7 @@ export const StopSequencer = ({
   }
 
   const stopAction = useMutation({
-    mutationFn: stopSequencer(sequencerPrefix.subsystem, new ObsMode(sequencerPrefix.componentName)),
+    mutationFn: stopSequencer(sequencerPrefix),
     onSuccess: () => successMessage(stopSequencerConstants.successMessage(sequencerPrefix)),
     onError: (e) => errorMessage(stopSequencerConstants.failureMessage(sequencerPrefix), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

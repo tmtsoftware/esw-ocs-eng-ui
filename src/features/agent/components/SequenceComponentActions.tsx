@@ -1,6 +1,6 @@
 import { MoreOutlined } from '@ant-design/icons'
-import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-import { Dropdown, Menu, Grid } from 'antd'
+import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import { Dropdown, Grid, Menu } from 'antd'
 import React from 'react'
 import { ReloadScript } from '../../sm/components/ReloadScript'
 import { StopSequencer } from '../../sm/components/StopSequencer'
@@ -41,16 +41,11 @@ const SequenceComponentActionsMenu = ({ componentId, ...restProps }: SequenceCom
 )
 
 const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: SequencerActionProps) => {
-  // const masterSequencerPrefix = new Prefix('ESW', sequencerPrefix.componentName)
   const { data: sequencerState } = useSequencerState(sequencerPrefix)
   return (
     <Menu {...restProps}>
       <StopSequencer sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
-      <ReloadScript
-        sequencerState={sequencerState}
-        subsystem={componentId.prefix.subsystem}
-        obsMode={sequencerPrefix.componentName}
-      />
+      <ReloadScript sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
       <KillSequenceComponent componentId={componentId} />
     </Menu>
   )

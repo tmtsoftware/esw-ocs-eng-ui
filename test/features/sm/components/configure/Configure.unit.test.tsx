@@ -7,7 +7,8 @@ import {
   ObsMode,
   ObsModesDetailsResponse,
   Prefix,
-  SequenceManagerService
+  SequenceManagerService,
+  VariationInfo
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -25,7 +26,7 @@ const obsModesDetails: ObsModesDetailsResponse = {
       status: {
         _type: 'Configurable'
       },
-      sequencers: ['ESW', 'TCS', 'WFOS']
+      sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS'), VariationInfo.fromString('WFOS')]
     },
     {
       obsMode: new ObsMode('ESW_CLEARSKY'),
@@ -40,7 +41,7 @@ const obsModesDetails: ObsModesDetailsResponse = {
       resources: [],
       status: {
         _type: 'NonConfigurable',
-        missingSequenceComponents: []
+        missingSequenceComponentsFor: []
       },
       sequencers: []
     }
@@ -77,7 +78,7 @@ const locationServiceError: ConfigureResponse = {
 const sequenceComponentNotAvailable: ConfigureResponse = {
   _type: 'SequenceComponentNotAvailable',
   msg: 'Not Available',
-  subsystems: ['IRIS']
+  variationInfos: [VariationInfo.fromString('IRIS')]
 }
 const unhandled: ConfigureResponse = {
   _type: 'Unhandled',

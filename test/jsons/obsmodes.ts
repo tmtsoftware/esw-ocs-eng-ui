@@ -1,4 +1,4 @@
-import { ObsMode, ObsModesDetailsResponseSuccess, ObsModeDetails } from '@tmtsoftware/esw-ts'
+import { ObsMode, ObsModeDetails, ObsModesDetailsResponseSuccess, VariationInfo } from '@tmtsoftware/esw-ts'
 const obsModes: ObsModeDetails[] = [
   {
     obsMode: new ObsMode('DarkNight_1'),
@@ -6,7 +6,7 @@ const obsModes: ObsModeDetails[] = [
       _type: 'Configured'
     },
     resources: ['ESW', 'TCS'],
-    sequencers: ['ESW', 'TCS']
+    sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS')]
   },
   {
     obsMode: new ObsMode('DarkNight_2'),
@@ -14,16 +14,16 @@ const obsModes: ObsModeDetails[] = [
       _type: 'Configurable'
     },
     resources: ['ESW', 'IRIS'],
-    sequencers: ['ESW']
+    sequencers: [VariationInfo.fromString('ESW')]
   },
   {
     obsMode: new ObsMode('DarkNight_3'),
     status: {
       _type: 'NonConfigurable',
-      missingSequenceComponents: []
+      missingSequenceComponentsFor: []
     },
     resources: ['ESW', 'IRIS', 'WFOS'],
-    sequencers: ['ESW', 'TCS']
+    sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS')]
   },
   {
     obsMode: new ObsMode('DarkNight_8'),
@@ -31,7 +31,7 @@ const obsModes: ObsModeDetails[] = [
       _type: 'Configured'
     },
     resources: ['ESW', 'SOSS'],
-    sequencers: ['ESW', 'SOSS']
+    sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('SOSS')]
   },
   {
     obsMode: new ObsMode('DarkNight_6'),
@@ -39,16 +39,16 @@ const obsModes: ObsModeDetails[] = [
       _type: 'Configurable'
     },
     resources: ['ESW', 'IRIS'],
-    sequencers: ['ESW']
+    sequencers: [VariationInfo.fromString('ESW')]
   },
   {
     obsMode: new ObsMode('DarkNight_5'),
     status: {
       _type: 'NonConfigurable',
-      missingSequenceComponents: ['TCS']
+      missingSequenceComponentsFor: [VariationInfo.fromString('TCS')]
     },
     resources: ['ESW', 'IRIS', 'WFOS'],
-    sequencers: ['ESW', 'TCS']
+    sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS')]
   }
 ]
 

@@ -7,9 +7,9 @@ import {
   SequencerStateResponse,
   ServiceError,
   StepList,
-  Subscription,
-  Subsystem
+  Subscription
 } from '@tmtsoftware/esw-ts'
+import type { VariationInfo } from '@tmtsoftware/esw-ts'
 import { Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
@@ -27,7 +27,7 @@ import { RunningActions } from './ObsModeActions'
 
 type ConfiguredObsModeProps = {
   obsMode: ObsMode
-  sequencers: Prefix[]
+  sequencers: VariationInfo[]
   resources: ResourceTableStatus[]
 }
 
@@ -59,7 +59,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
 
   const [loading, setLoading] = useState(true)
   const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(() =>
-    sequencers.map((sequencerPrefix) => [sequencerPrefix.toJSON(), undefined])
+    sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined])
   )
 
   const handleError = (error: ServiceError) => {
@@ -77,7 +77,8 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     }
 
     const services: [SequencerService, Prefix][] = gatewayLocation
-      ? sequencers.map((seqPrefix) => {
+      ? sequencers.map((variationInfos) => {
+          const seqPrefix = variationInfos.prefix(obsMode)
           return [mkSequencerService(seqPrefix, gatewayLocation, tf), seqPrefix]
         })
       : []

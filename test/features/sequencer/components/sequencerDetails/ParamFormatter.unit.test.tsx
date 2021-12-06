@@ -20,9 +20,10 @@ import {
   Tag,
   taiTimeKey,
   utcTimeKey,
-  Angle
+  Angle,
+  TAITime,
+  UTCTime
 } from '@tmtsoftware/esw-ts'
-import { TAITime, UTCTime } from '@tmtsoftware/esw-ts/dist/src/models/TMTTime'
 import { expect } from 'chai'
 import React from 'react'
 import { formatParameters } from '../../../../../src/features/sequencer/components/sequencerDetails/ParamFormatter'

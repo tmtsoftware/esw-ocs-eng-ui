@@ -1,11 +1,20 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
-import type { Prefix, SequenceManagerService, SequencerState, ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
+import type {
+  SequenceManagerService,
+  SequencerState,
+  ShutdownSequencersResponse,
+  Subsystem,
+  ObsMode,
+  Prefix,
+  Variation
+} from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
+import { obsModeAndVariationFrom } from '../../../utils/SMutils'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { isSequencerInProgress } from '../../sequencer/utils'
 import { stopSequencerConstants } from '../smConstants'
@@ -31,8 +40,9 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
     ? stopSequencerConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : stopSequencerConstants.getModalTitle(sequencerPrefix.toJSON())
 
-const stopSequencer = (prefix: Prefix) => (smService: SequenceManagerService) =>
-  smService.shutdownSequencer(prefix).then(handleResponse)
+const stopSequencer =
+  (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
+    smService.shutdownSequencer(subsystem, obsMode, variation).then(handleResponse)
 
 export const StopSequencer = ({
   sequencerPrefix,
@@ -43,7 +53,7 @@ export const StopSequencer = ({
 }): JSX.Element => {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
-
+  const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
   const handleOnClick = () => {
     sequencerState &&
       smContext?.smService &&
@@ -57,7 +67,7 @@ export const StopSequencer = ({
   }
 
   const stopAction = useMutation({
-    mutationFn: stopSequencer(sequencerPrefix),
+    mutationFn: stopSequencer(sequencerPrefix.subsystem, obsMode, variation),
     onSuccess: () => successMessage(stopSequencerConstants.successMessage(sequencerPrefix)),
     onError: (e) => errorMessage(stopSequencerConstants.failureMessage(sequencerPrefix), e),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

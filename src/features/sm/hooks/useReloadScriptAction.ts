@@ -1,9 +1,12 @@
 import type {
-  Prefix,
+  ObsMode,
   RestartSequencerResponse,
   RestartSequencerSuccess,
-  SequenceManagerService
+  SequenceManagerService,
+  Subsystem,
+  Variation
 } from '@tmtsoftware/esw-ts'
+import { Prefix } from '@tmtsoftware/esw-ts'
 import { useMutation, UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
@@ -30,21 +33,28 @@ const handleReloadScriptResponse = (res: RestartSequencerResponse): RestartSeque
 }
 
 export const useReloadScriptAction = (
-  prefix: Prefix
+  subsystem: Subsystem,
+  obsMode: ObsMode,
+  variation?: Variation
 ): UseMutationResult<RestartSequencerResponse | undefined, unknown, SequenceManagerService> => {
-  const reloadScript = (prefix: Prefix) => (smService: SequenceManagerService) =>
-    smService
-      .restartSequencer(prefix)
-      .then(handleReloadScriptResponse)
-      /* we use locationService tracking api to decide action (Reload/Start sequencer).
-       * when we do reload action, it internally shutdowns & tracking api receives LocationRemoved event,
-       * this changes reload => start in action column,
-       * after fraction of milliseconds, sequencers is restarted & action columns is updated accordingly.
-       * To avoid this transition at UI side, added delay at reload action. */
-      .then((res) => delay(200).then(() => res))
+  const reloadScript =
+    (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
+      smService
+        .restartSequencer(subsystem, obsMode, variation)
+        .then(handleReloadScriptResponse)
+        /* we use locationService tracking api to decide action (Reload/Start sequencer).
+         * when we do reload action, it internally shutdowns & tracking api receives LocationRemoved event,
+         * this changes reload => start in action column,
+         * after fraction of milliseconds, sequencers is restarted & action columns is updated accordingly.
+         * To avoid this transition at UI side, added delay at reload action. */
+        .then((res) => delay(200).then(() => res))
+
+  const prefix = variation
+    ? new Prefix(subsystem, obsMode.name + '.' + variation.name)
+    : new Prefix(subsystem, obsMode.name)
 
   return useMutation({
-    mutationFn: reloadScript(prefix),
+    mutationFn: reloadScript(subsystem, obsMode, variation),
     onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${prefix.toJSON()}`), e),
     onSuccess: () => successMessage(reloadScriptConstants.getSuccessMessage(`${prefix.toJSON()}`)),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

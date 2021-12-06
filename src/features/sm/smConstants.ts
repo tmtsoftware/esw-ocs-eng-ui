@@ -11,6 +11,8 @@ export const startSequencerConstants = {
   subsystemInputLabel: 'Subsystem',
   obsModeInputLabel: 'Observation Mode',
   obsModeInputPlaceholder: 'Enter Observation Mode',
+  variationInputLabel: 'Variation',
+  variationInputPlaceholder: 'Enter Variation',
   getAlreadyRunningErrorMessage: (prefix: string): string => `${prefix} is already running`
 }
 

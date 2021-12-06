@@ -4,7 +4,7 @@ import { ComponentId, ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-t
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
+import { anything, deepEqual, verify, when } from 'ts-mockito'
 import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
@@ -13,10 +13,11 @@ describe('Reload script', () => {
   const smService = mockServices.mock.smService
   const obsMode = new ObsMode('Darknight')
   const subsystem = 'ESW'
-  const componentId = new ComponentId(new Prefix(subsystem, obsMode.toJSON()), 'Sequencer')
+  const sequencerPrefix = new Prefix(subsystem, obsMode.toJSON())
+  const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
 
   it(`should return Success when Reload Script is clicked | ESW-502`, async () => {
-    when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve({
+    when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Success',
       componentId: componentId
     })
@@ -28,7 +29,7 @@ describe('Reload script', () => {
     renderWithAuth({
       ui: (
         <Menu>
-          <ReloadScript sequencerState={running} subsystem={subsystem} obsMode={obsMode.toJSON()} />
+          <ReloadScript sequencerState={running} sequencerPrefix={sequencerPrefix} />
         </Menu>
       )
     })
@@ -57,11 +58,11 @@ describe('Reload script', () => {
           )
         ).to.null
     )
-    verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
+    verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()
   })
 
   it(`should show confirm modal without state when sequencer is not inProgress | ESW-506`, async () => {
-    when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve({
+    when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode))).thenResolve({
       _type: 'Success',
       componentId: componentId
     })
@@ -71,7 +72,7 @@ describe('Reload script', () => {
     renderWithAuth({
       ui: (
         <Menu>
-          <ReloadScript sequencerState={sequencerState} subsystem={subsystem} obsMode={obsMode.toJSON()} />
+          <ReloadScript sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
         </Menu>
       )
     })
@@ -92,6 +93,6 @@ describe('Reload script', () => {
     await waitFor(() => userEvent.click(reloadConfirm))
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
-    verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).called()
+    verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()
   })
 })

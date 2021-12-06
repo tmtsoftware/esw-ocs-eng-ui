@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentId, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { deepEqual, reset, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SmSequencerAction } from '../../../../../src/features/sm/components/sequencer/SmSequencerAction'
 import {
   reloadScriptConstants,
@@ -14,14 +14,15 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 describe('SmSequencerAction', () => {
   const smService = mockServices.mock.smService
   const subsystem = 'ESW'
-  const sequencerPrefix = new Prefix(subsystem, 'IRIS_Darknight')
+  const obsMode = new ObsMode('IRIS_Darknight')
+  const sequencerPrefix = new Prefix(subsystem, obsMode.name)
   const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
 
   beforeEach(() => {
     reset(smService)
   })
   it('should reload scripts if sequencer state exists | ESW-506', async () => {
-    when(smService.restartSequencer(deepEqual(sequencerPrefix))).thenResolve({
+    when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Success',
       componentId: componentId
     })
@@ -40,11 +41,11 @@ describe('SmSequencerAction', () => {
     await waitFor(() => userEvent.click(yesButton))
     await screen.findByText(reloadScriptConstants.getSuccessMessage(sequencerPrefix.toJSON()))
 
-    verify(smService.restartSequencer(deepEqual(sequencerPrefix))).once()
+    verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
   })
 
   it('should start sequencer if sequencer is down | ESW-506', async () => {
-    when(smService.startSequencer(deepEqual(sequencerPrefix))).thenResolve({
+    when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Started',
       componentId: componentId
     })
@@ -57,11 +58,11 @@ describe('SmSequencerAction', () => {
     await waitFor(() => userEvent.click(link))
 
     await screen.findByText(startSequencerConstants.successMessage)
-    verify(smService.startSequencer(deepEqual(sequencerPrefix))).once()
+    verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
   })
 
   it(`should show confirm modal without state when sequencer is not inProgress | ESW-506`, async () => {
-    when(smService.restartSequencer(deepEqual(sequencerPrefix))).thenResolve({
+    when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Success',
       componentId: componentId
     })
@@ -85,6 +86,6 @@ describe('SmSequencerAction', () => {
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(sequencerPrefix.toJSON()))
 
-    verify(smService.restartSequencer(deepEqual(sequencerPrefix))).once()
+    verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
   })
 })

@@ -1,4 +1,4 @@
-import type { ObsMode, Prefix, Subsystem } from '@tmtsoftware/esw-ts'
+import type { ObsMode, VariationInfo } from '@tmtsoftware/esw-ts'
 import { Alert, Space, Typography } from 'antd'
 import React, { ReactElement } from 'react'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
@@ -15,7 +15,7 @@ const ObsModeTitle = ({ title }: { title: string }) => (
 type NonConfigurableObsModeProps = {
   obsMode: ObsMode
   resources: ResourceTableStatus[]
-  missingSequenceComponents: Prefix[]
+  missingSequenceComponents: VariationInfo[]
   actions?: ReactElement
 }
 export const NonConfigurableObsMode = ({

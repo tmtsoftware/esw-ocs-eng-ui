@@ -9,7 +9,8 @@ import {
   SequencerStateResponse,
   ServiceError,
   StepList,
-  TrackingEvent
+  TrackingEvent,
+  VariationInfo
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -40,7 +41,7 @@ describe('CurrentObsMode', () => {
       _type: 'Configured'
     },
     resources: ['ESW'],
-    sequencers: ['ESW']
+    sequencers: [VariationInfo.fromString('ESW')]
   }
 
   const obsModes: ObsModeDetails[] = [darknightObsModeDetails]

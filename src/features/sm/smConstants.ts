@@ -11,6 +11,8 @@ export const startSequencerConstants = {
   subsystemInputLabel: 'Subsystem',
   obsModeInputLabel: 'Observation Mode',
   obsModeInputPlaceholder: 'Enter Observation Mode',
+  variationInputLabel: 'Variation',
+  variationInputPlaceholder: 'Enter Variation',
   getAlreadyRunningErrorMessage: (prefix: string): string => `${prefix} is already running`
 }
 
@@ -84,10 +86,9 @@ export const spawnSMConstants = {
 }
 
 export const sequencerActionConstants = {
-  getPopConfirmTitleWithState: (subsystem: string, obsMode: string, sequencerState: SequencerState): string =>
-    `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${subsystem}.${obsMode}?`,
-  getPopConfirmTitle: (subsystem: string, obsMode: string): string =>
-    `Do you want to reload the sequencer ${subsystem}.${obsMode}?`,
+  getPopConfirmTitleWithState: (prefix: Prefix, sequencerState: SequencerState): string =>
+    `Sequencer is ${sequencerState._type}, do you still want to reload the sequencer ${prefix.toJSON()}?`,
+  getPopConfirmTitle: (prefix: Prefix): string => `Do you want to reload the sequencer ${prefix.toJSON()}?`,
   popConfirmOkText: 'Yes',
   reloadScript: 'Reload Script',
   startSequencer: 'Start Sequencer'

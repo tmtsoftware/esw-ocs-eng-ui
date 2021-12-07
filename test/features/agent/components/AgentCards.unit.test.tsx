@@ -276,16 +276,15 @@ describe('Agents Grid View', () => {
       )
     })
     // first find the dropdown menu
-    const sequenceCompActions = await screen.findByRole('sequencerActions')
-    await waitFor(() => userEvent.click(sequenceCompActions))
+    const sequencerActions = await screen.findByRole('sequencerActions')
+    await waitFor(() => userEvent.click(sequencerActions))
 
     // checking different menu items for sequencers and sequence components
     await screen.findByText(killSequenceComponentConstants.menuItemText)
     await screen.findByText(reloadScriptConstants.menuItemText)
     await screen.findByText(stopSequencerConstants.menuItemText)
     await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.null)
-    verify(sequencerServiceMock.getSequencerState()).called()
-    verify(sequencerServiceMockIris.getSequencerState()).never()
+    verify(sequencerServiceMockIris.getSequencerState()).called()
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {

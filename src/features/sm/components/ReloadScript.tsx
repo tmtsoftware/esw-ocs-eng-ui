@@ -1,16 +1,16 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import { Prefix, SequencerState, Subsystem } from '@tmtsoftware/esw-ts'
+import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
+import { obsModeAndVariationFrom } from '../../../utils/SMutils'
 import { isSequencerInProgress } from '../../sequencer/utils'
 import { useReloadScriptAction } from '../hooks/useReloadScriptAction'
 import { reloadScriptConstants } from '../smConstants'
 
 type ReloadScriptProps = {
-  subsystem: Subsystem
-  obsMode: string
+  sequencerPrefix: Prefix
   sequencerState: SequencerState | undefined
 }
 const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencerState: SequencerState) =>
@@ -18,11 +18,11 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
     ? reloadScriptConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : reloadScriptConstants.getModalTitle(sequencerPrefix.toJSON())
 
-export const ReloadScript = ({ subsystem, obsMode, sequencerState }: ReloadScriptProps): JSX.Element => {
+export const ReloadScript = ({ sequencerPrefix, sequencerState }: ReloadScriptProps): JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
-  const sequencerPrefix = new Prefix(subsystem, obsMode)
-  const reloadScriptAction = useReloadScriptAction(subsystem, obsMode)
+  const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
+  const reloadScriptAction = useReloadScriptAction(sequencerPrefix.subsystem, obsMode, variation)
   const isInProgress = isSequencerInProgress(sequencerState)
 
   const handleOnClick = () => {
@@ -36,6 +36,7 @@ export const ReloadScript = ({ subsystem, obsMode, sequencerState }: ReloadScrip
         reloadScriptConstants.modalOkText
       )
   }
+
   return (
     <Menu.Item
       key='ReloadScript'

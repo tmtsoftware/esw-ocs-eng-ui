@@ -32,7 +32,7 @@ export const SelectedObsMode = ({ currentTab, obsModeDetails, resources }: Selec
         <NonConfigurableObsMode
           obsMode={obsMode}
           resources={resources}
-          missingSequenceComponents={status._type === 'NonConfigurable' ? status.missingSequenceComponents : []}
+          missingSequenceComponents={status._type === 'NonConfigurable' ? status.missingSequenceComponentsFor : []}
         />
       )
   }

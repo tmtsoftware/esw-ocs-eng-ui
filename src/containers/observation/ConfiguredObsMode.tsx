@@ -102,7 +102,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
       subscriptions.push(locationSubscription)
     })
     return () => subscriptions.forEach((s) => s.cancel())
-  }, [gatewayLocation, locationService, obsMode.name, sequencers, tf])
+  }, [gatewayLocation, locationService, obsMode, sequencers, tf])
 
   const masterSequencerInfo = sequencersInfoMap.find((state) => Prefix.fromString(state[0]).subsystem === 'ESW')?.[1]
 

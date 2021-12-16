@@ -5,19 +5,18 @@ This project is a React web application.
 ## Prerequisites required for running ESW-OCS-ENG-UI application
 
 1. csw-services should be up & running.
-    using sbt shell inside CSW `csw-services/run start -k -c`.
+    - it starts location service, config-service & aas server.
+> `./scripts/start-csw-services.sh`
 
-2. The latest binaries of ESW need to be present on machine with 0.1.0-SNAPSHOT version.
-    run `sbt publishLocal` inside ESW sbt shell.
-    Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
-
-3. Start esw services
+2. Start esw services
     * `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
     * Alternatively, to run esw-services with a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
     * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
+
+> `./scripts/start-csw-services.sh` (recommended way).
 
 The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
@@ -34,10 +33,10 @@ Run following commands in the terminal.
 
   ```bash
     npm install
-    npm start
+    ./scripts/start-eng-ui.sh
   ```
 
-Then, open [localhost:8080](http://localhost:8080) in a browser
+Then, open [localhost:8080/esw-ocs-eng-ui](http://localhost:8000/esw-ocs-eng-ui/) in a browser
 
 ### Required backend services/components
 

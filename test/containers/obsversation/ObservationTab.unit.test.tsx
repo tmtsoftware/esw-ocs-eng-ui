@@ -189,15 +189,13 @@ describe('observation tabs', () => {
       ui: <ObservationTab tabName='Running' />
     })
 
-
-    const [sequencerTable, ] = await screen.findAllByRole('table')
+    const [sequencerTable] = await screen.findAllByRole('table')
     const darkNight1 = await screen.findByRole('menuitem', {
       name: /DarkNight_1/i
     })
 
     userEvent.click(darkNight1)
     expect(within(sequencerTable).queryAllByRole('row', { name: /DarkNight_1/i })).to.have.length(2)
-
 
     const darkNight8 = await screen.findByRole('menuitem', {
       name: /DarkNight_8/i
@@ -206,10 +204,10 @@ describe('observation tabs', () => {
     userEvent.click(darkNight8)
     // assert that previous obsMode's sequencers are removed from table.
     // and verify that new sequencers related to second obsMode are displayed.
-    const [sequencerTable2,] = await screen.findAllByRole('table')
+    const [sequencerTable2] = await screen.findAllByRole('table')
     await waitFor(async () => {
-      expect(within(sequencerTable2).queryAllByRole('row', {name: /DarkNight_1/i})).to.have.length(0)
-      expect(within(sequencerTable2).queryAllByRole('row', {name: /DarkNight_8/i})).to.have.length(2)
+      expect(within(sequencerTable2).queryAllByRole('row', { name: /DarkNight_1/i })).to.have.length(0)
+      expect(within(sequencerTable2).queryAllByRole('row', { name: /DarkNight_8/i })).to.have.length(2)
     })
   })
 })

@@ -11,7 +11,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import type { VariationInfo } from '@tmtsoftware/esw-ts'
 import { Typography } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import { useLocationService } from '../../contexts/LocationServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
@@ -51,16 +51,21 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
   return masterSequencer(sequencerInfo).concat(sortedSequencersWithoutMasterSequencer)
 }
 
+const extractObsModeFromComponentName = (str: string): string => Prefix.fromString(str).componentName.split(".")[0]
+
 export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): JSX.Element => {
   const [gatewayLocation] = useGatewayLocation()
   const locationService = useLocationService()
   const { auth } = useAuth()
   const tf = createTokenFactory(auth)
-
   const [loading, setLoading] = useState(true)
-  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(() =>
+  const resetSequencerInfoMap = (): SequencerInfoMap =>
     sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined])
-  )
+
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(() => resetSequencerInfoMap())
+  useEffect(() =>
+   setSequencerInfoMap(resetSequencerInfoMap())
+  ,[obsMode])
 
   const handleError = (error: ServiceError) => {
     errorMessage(error.message)
@@ -71,8 +76,11 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {
-        const filteredSequencers = previousMap.filter(([sequencerPrefix]) => sequencerPrefix !== currentPrefix)
-        return [...filteredSequencers, [currentPrefix, sequencerStateResponse]]
+        const filteredSequencers = previousMap.filter(([sequencerPrefix]) =>
+          extractObsModeFromComponentName(sequencerPrefix) === obsMode.name     //-> keep sequencers of current obsMode
+          && sequencerPrefix != currentPrefix                                   //-> also remove the sequencer of which, the state is updated.
+        )
+        return [...filteredSequencers, [currentPrefix, sequencerStateResponse]] //-> add the current sequencer with updated state.
       })
     }
 

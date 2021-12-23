@@ -58,18 +58,22 @@ Click on Start Sequencer Button to see the following dialog box.
 
 ![Click Start Sequencer Button](./images/ClickStartSequencerButton.png)
 
-Select a Subsystem and ObsMode to start the Sequencer.
+Select a Subsystem, ObsMode to start the Sequencer.
 
 ![SelectSubsystem](./images/StartSeq_selectSubsystem.png)
 
 ![SelectObsMode](./images/StartSeq_SelectSubsytem.png)
 
-After selecting Subsystem and ObsMode, the Sequencer will be started with the proper Script.
-In the following screenshot, a Sequencer has been started for the WFOS_Calib obsMode on WFOS.machine1.
+Optional parameter Variation can be used to differentiate between any two sequencers of one subsystem(eg. IRIS).
 
-![Started Sequencer](./images/StartedSequencer.png)
+![Write Variation](./images/ManageInfrastructure_StartSequencerWithVariationExample.png)
 
-Click : (three vertical dots!) on the Agent card with the started Sequencer to see some available options:
+After selecting Subsystem, ObsMode and optional Variation, the Sequencer will be started with the proper Script.
+In the following example, a Sequencer has been started for the IRIS_ImagerAndIFS obsMode on IRIS.machine1 with a variation as red.
+
+![Started Sequencer](./images/ManageInfrastructure_StartedSequencerWithVariation.png)
+
+Click : (three vertical dots!) on the Agent card with any of the started Sequencer to see some available options as shown in the example below:
 
 1. Stop Sequencer
 2. Reload Script

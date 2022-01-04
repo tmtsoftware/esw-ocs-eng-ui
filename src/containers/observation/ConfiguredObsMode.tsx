@@ -60,14 +60,9 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
   const tf = createTokenFactory(auth)
   const [loading, setLoading] = useState(true)
 
-  const resetSequencerInfoMap = useCallback(
-    (): SequencerInfoMap => sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined]),
-    [obsMode, sequencers]
+  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(
+    sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined])
   )
-
-  const [sequencersInfoMap, setSequencerInfoMap] = useState<SequencerInfoMap>(() => resetSequencerInfoMap())
-
-  useEffect(() => setSequencerInfoMap(resetSequencerInfoMap()), [resetSequencerInfoMap])
 
   const handleError = (error: ServiceError) => {
     errorMessage(error.message)

@@ -21,3 +21,4 @@ RTM/*.html
 **/.bsp/*
 esw-ocs-eng-ui
 .snowpack
+*.rdb

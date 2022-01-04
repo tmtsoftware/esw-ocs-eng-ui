@@ -11,7 +11,7 @@ import {
   Subscription
 } from '@tmtsoftware/esw-ts'
 import { Typography } from 'antd'
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import { useLocationService } from '../../contexts/LocationServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'

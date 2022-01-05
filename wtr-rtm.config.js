@@ -1,11 +1,10 @@
-import plugin from '@snowpack/web-test-runner-plugin'
 import { importMapsPlugin } from '@web/dev-server-import-maps'
 import { defaultReporter } from '@web/test-runner'
+import vite from 'vite-web-test-runner-plugin'
 // eslint-disable-next-line import/no-unresolved
 import ConsoleReporter from './ConsoleReporter.js'
 // eslint-disable-next-line import/no-unresolved
 import { RTMReporter } from './dist/test/utils/RTMReporter.js'
-// NODE_ENV=test - Needed by "@snowpack/web-test-runner-plugin"
 process.env.NODE_ENV = 'test'
 
 export default {
@@ -15,7 +14,7 @@ export default {
     }
   },
   plugins: [
-    plugin(),
+    vite(),
     importMapsPlugin({
       inject: {
         importMap: {
@@ -29,7 +28,6 @@ export default {
   ],
   reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
-    exclude: ['_snowpack/**/*', 'dist_test/**/*', '**/*.proxy.*', '**/AppConfig.js'],
     threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }
   }
 }

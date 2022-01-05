@@ -70,6 +70,10 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
   }
 
   useEffect(() => {
+    setSequencerInfoMap(sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined]))
+  },[obsMode.name])
+
+  useEffect(() => {
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {
       setLoading(false)
       setSequencerInfoMap((previousMap) => {

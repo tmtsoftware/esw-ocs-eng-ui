@@ -1,5 +1,4 @@
-import type { Step } from '@tmtsoftware/esw-ts'
-import type { StepStatusFailure } from '@tmtsoftware/esw-ts/dist/src/clients/sequencer/models/StepList'
+import type { Step, StepStatusFailure } from '@tmtsoftware/esw-ts'
 import { Alert, Descriptions, Empty, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
 import globalStyles from '../../../../index.module.css'

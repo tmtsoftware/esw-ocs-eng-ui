@@ -1,7 +1,7 @@
-import { ObsMode, subsystems } from '@tmtsoftware/esw-ts'
+import { ObsMode, subsystems, Variation } from '@tmtsoftware/esw-ts'
 import type { Subsystem } from '@tmtsoftware/esw-ts'
-import { AutoComplete, Button, Form, message, Modal, Select } from 'antd'
-import React, { useState } from 'react'
+import { AutoComplete, Button, Form, Input, message, Modal, Select } from 'antd'
+import React, { ChangeEvent, useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
 import { useObsModesDetails } from '../hooks/useObsModesDetails'
 import type { GroupedObsModeDetails } from '../hooks/useObsModesDetails'
@@ -16,18 +16,23 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   const [subsystem, setSubsystem] = useState<Subsystem>()
   const [obsMode, setObsMode] = useState<string>(emptyString)
+  const [variation, setVariation] = useState<string | undefined>(undefined)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const obsModes = getAllObsModes(obsModeDetails)
-  obsModeDetails?.Configurable.map((e) => ({
-    value: e.obsMode.name
-  }))
+
   const resetInputData = () => {
     setObsMode(emptyString)
+    setVariation(undefined)
     setSubsystem(undefined)
   }
 
-  const startSequencerAction = useStartSequencerAction(subsystem as Subsystem, new ObsMode(obsMode))
+  const startSequencerAction = useStartSequencerAction(
+    subsystem as Subsystem,
+    new ObsMode(obsMode),
+    variation ? new Variation(variation) : undefined
+  )
+
   const showModal = () => {
     setIsModalVisible(true)
   }
@@ -55,6 +60,10 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   const onObsModeChange = (data: string) => setObsMode(data)
 
+  const onVariationChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setVariation(event.target.value)
+  }
+
   return (
     <>
       <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isLoading}>
@@ -72,7 +81,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
         destroyOnClose
         centered>
         <Form labelCol={{ span: 7 }} wrapperCol={{ span: 17 }}>
-          <Form.Item label={startSequencerConstants.subsystemInputLabel} name='Subsystem'>
+          <Form.Item label={startSequencerConstants.subsystemInputLabel} name='Subsystem' required>
             <Select
               showSearch
               onClear={() => setSubsystem(undefined)}
@@ -87,7 +96,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label={startSequencerConstants.obsModeInputLabel} name='ObservationMode'>
+          <Form.Item label={startSequencerConstants.obsModeInputLabel} name='ObsMode' required>
             <AutoComplete
               value={obsMode}
               options={obsModes}
@@ -97,6 +106,13 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
               filterOption={(inputValue, option) =>
                 option?.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
               }
+            />
+          </Form.Item>
+          <Form.Item label={startSequencerConstants.variationInputLabel} name='Variation'>
+            <Input
+              placeholder={startSequencerConstants.variationInputPlaceholder}
+              value={variation}
+              onChange={onVariationChange}
             />
           </Form.Item>
         </Form>

@@ -5,13 +5,10 @@ This project is a React web application.
 ## Prerequisites required for running ESW-OCS-ENG-UI application
 
 1. csw-services should be up & running.
-    using sbt shell inside CSW `csw-services/run start -k -c`.
+    - it starts location service, config-service & aas server.
+> `./scripts/start-csw-services.sh`
 
-2. The latest binaries of ESW need to be present on machine with 0.1.0-SNAPSHOT version.
-    run `sbt publishLocal` inside ESW sbt shell.
-    Note: This step needs to be done atleast once and/or whenever new changes of esw are pulled from github.
-
-3. Start esw services
+2. Start esw services
     * `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
     * Alternatively, to run esw-services with a simulated Sequence Manager, use
@@ -19,7 +16,9 @@ This project is a React web application.
 
     * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
-The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+> `./scripts/start-csw-services.sh` (recommended way).
+
+The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## User role for login
 
@@ -34,10 +33,10 @@ Run following commands in the terminal.
 
   ```bash
     npm install
-    npm start
+    ./scripts/start-eng-ui.sh
   ```
 
-Then, open [localhost:8080](http://localhost:8080) in a browser
+Then, open [localhost:8080/esw-ocs-eng-ui](http://localhost:8000/esw-ocs-eng-ui/) in a browser
 
 ### Required backend services/components
 
@@ -97,6 +96,7 @@ The project has the following structure:
 
 | esw-ocs-eng-ui | esw | csw |
 |--------|-----|-----|
+| v0.1.0 | v0.3.0 | v4.0.0 |
 | v0.1.0-RC2 | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.1.0-RC1 | v0.3.0-RC1 | v4.0.0-RC1 |
 | v0.1.0-M1 | v0.3.0-M1 | v4.0.0-M1 |
@@ -105,6 +105,7 @@ The project has the following structure:
 
 | Date | Tag | Source | Docs | Assets |
 |-----|-----|-----|-----|-----|
+| 2021-09-23 | v0.1.0 | [esw-ocs-eng-ui-0.1.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0) | [esw-ocs-eng-ui-0.1.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0/) | [esw-ocs-eng-ui-0.1.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0) |
 
 ## Pre-Release History
 

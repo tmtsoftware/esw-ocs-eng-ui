@@ -1,5 +1,5 @@
 import { screen, waitFor, within } from '@testing-library/react'
-import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList } from '@tmtsoftware/esw-ts'
+import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
   AkkaLocation,
   ObsModeDetails,
@@ -36,7 +36,7 @@ describe('CurrentObsMode', () => {
       _type: 'Configured'
     },
     resources: ['ESW'],
-    sequencers: ['ESW']
+    sequencers: [VariationInfo.fromString('ESW')]
   }
 
   const obsModes: ObsModeDetails[] = [darknightObsModeDetails]

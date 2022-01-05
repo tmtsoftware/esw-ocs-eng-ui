@@ -63,6 +63,12 @@ export const addStepConstants = {
   menuItemText: 'Add steps'
 }
 
+export const replaceStepConstants = {
+  failureMessage: 'Failed to replace steps',
+  successMessage: 'Successfully replaced steps',
+  menuItemText: 'Replace Step'
+}
+
 export const insertBreakPointConstants = {
   successMessage: 'Successfully inserted breakpoint',
   failureMessage: 'Failed to insert breakpoint',

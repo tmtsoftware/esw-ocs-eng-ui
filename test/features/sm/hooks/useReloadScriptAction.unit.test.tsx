@@ -1,17 +1,25 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
-import type { RestartSequencerResponse, Subsystem } from '@tmtsoftware/esw-ts'
+import type { RestartSequencerResponse, Subsystem, Variation } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { deepEqual, resetCalls, verify, when } from 'ts-mockito'
+import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { useSMService } from '../../../../src/contexts/SMContext'
 import { useReloadScriptAction } from '../../../../src/features/sm/hooks/useReloadScriptAction'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
-const Component = ({ subsystem, obsMode }: { subsystem: Subsystem; obsMode: string }) => {
+const Component = ({
+  subsystem,
+  obsmode,
+  variation
+}: {
+  subsystem: Subsystem
+  obsmode: ObsMode
+  variation?: Variation
+}) => {
   const [smContext] = useSMService()
-  const reloadSequencerAction = useReloadScriptAction(subsystem, obsMode)
+  const reloadSequencerAction = useReloadScriptAction(subsystem, obsmode, variation)
   return (
     <button onClick={() => smContext && reloadSequencerAction.mutateAsync(smContext.smService)}>
       Restart sequencer
@@ -24,7 +32,8 @@ describe('Reload script', () => {
   const smService = mockServices.mock.smService
   const obsMode = new ObsMode('Darknight')
   const subsystem = 'ESW'
-  const componentId = new ComponentId(new Prefix(subsystem, obsMode.toJSON()), 'Sequencer')
+  const sequencerPrefix = new Prefix(subsystem, obsMode.toJSON())
+  const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
   const failureMessage = reloadScriptConstants.getFailureMessage(`${subsystem}.${obsMode.toJSON()}`)
 
   const responseScenarios: [string, RestartSequencerResponse, string][] = [
@@ -66,17 +75,17 @@ describe('Reload script', () => {
 
   responseScenarios.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Reload Script is clicked | ESW-502`, async () => {
-      when(smService.restartSequencer(subsystem, deepEqual(obsMode))).thenResolve(res)
+      when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve(res)
 
       renderWithAuth({
-        ui: <Component obsMode={obsMode.toJSON()} subsystem={subsystem} />
+        ui: <Component subsystem={subsystem} obsmode={obsMode} />
       })
 
       const button = screen.getByRole('button', { name: 'Restart sequencer' })
       userEvent.click(button)
 
       await screen.findByText(message)
-      verify(smService.restartSequencer(subsystem, deepEqual(obsMode))).once()
+      verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
     })
   })
 })

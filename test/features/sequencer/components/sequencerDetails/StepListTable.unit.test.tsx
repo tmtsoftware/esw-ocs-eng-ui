@@ -161,7 +161,7 @@ describe('stepList table', () => {
     userEvent.click(actions, { button: 0 })
 
     const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
+    expect(menuItems.length).to.equal(5)
 
     // ESW-459
     await screen.findByText(insertBreakPointConstants.menuItemText)
@@ -191,7 +191,7 @@ describe('stepList table', () => {
     userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
+    expect(menuItems.length).to.equal(5)
 
     // ESW-459
     const insertBreakpoint = await screen.findByText(insertBreakPointConstants.menuItemText)
@@ -227,7 +227,7 @@ describe('stepList table', () => {
     userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
-    expect(menuItems.length).to.equal(4)
+    expect(menuItems.length).to.equal(5)
 
     // ESW-459
     const removeBreakpoint = await screen.findByText(removeBreakPointConstants.menuItemText)

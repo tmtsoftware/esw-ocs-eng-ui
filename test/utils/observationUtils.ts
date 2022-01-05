@@ -1,4 +1,4 @@
-import { ObsMode } from '@tmtsoftware/esw-ts'
+import { ObsMode, VariationInfo } from '@tmtsoftware/esw-ts'
 import type { ObsModeDetails, ObsModesDetailsResponseSuccess, ObsModeStatus } from '@tmtsoftware/esw-ts'
 
 export const getObsModes = (status: ObsModeStatus): ObsModesDetailsResponseSuccess => {
@@ -7,7 +7,7 @@ export const getObsModes = (status: ObsModeStatus): ObsModesDetailsResponseSucce
       obsMode: new ObsMode('DarkNight_1'),
       status,
       resources: ['ESW', 'TCS'],
-      sequencers: ['ESW', 'TCS']
+      sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS')]
     }
   ]
   const obsModesData: ObsModesDetailsResponseSuccess = {

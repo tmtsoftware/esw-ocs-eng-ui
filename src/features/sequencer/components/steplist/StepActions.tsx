@@ -7,6 +7,7 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { AddSteps } from './AddSteps'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
+import { ReplaceStep } from './ReplaceStep'
 
 const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element => {
   const status = step.status._type
@@ -14,11 +15,12 @@ const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element =>
   const isInProgressOrIsFinished = status === 'InFlight' || isFinished
 
   const { handleDuplicate, stepListStatus } = useStepListContext()
-
+  //add the menu item that you want to support in the step list.
   return (
     <Menu {...restProps} className={styles.menu}>
       <BreakpointAction step={step} isDisabled={isInProgressOrIsFinished} />
       <AddSteps disabled={isFinished} stepId={step.id} />
+      <ReplaceStep disabled={isFinished} step={step.id} />
       <Menu.Item
         key='Duplicate'
         onClick={handleDuplicate}

@@ -1,12 +1,12 @@
 {
   "name": "esw-ocs-eng-ui",
   "author": "TMT",
-  "version": "0.1.0-RC2",
+  "version": "0.1.0",
   "license": "Apache License, Version 2.0",
   "type": "module",
   "dependencies": {
-    "@tmtsoftware/esw-ts": "0.2.0",
-    "antd": "^4.16.13",
+    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#8749db15ada81cc386751182ea4046e1194c11f4",
+    "antd": "^4.16.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.3",
@@ -14,7 +14,7 @@
     "react-router-dom": "^5.3.0"
   },
   "scripts": {
-    "start": "vite serve",
+    "start": "vite",
     "build": "vite build",
     "build:reporter": "tsc --p tsconfig.test.json",
     "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
@@ -24,7 +24,7 @@
     "test": "npm run test:unit",
     "test:logsEnabled": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit",
     "clean": "rm -rf dist && mkdir dist",
-    "prebuild": "npm-run-all --parallel clean eslint:check style:check audit",
+    "prebuild": "npm-run-all --parallel clean eslint:check style:check",
     "eslint:check": "eslint --config .eslintrc.json './{src,test}/**/*.{ts,tsx}'",
     "fix": "npm-run-all --parallel clean fix:eslint fix:prettier style:check",
     "fix:eslint": "eslint --fix --config .eslintrc.json './**/*.{ts,tsx}'",
@@ -55,7 +55,7 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.26.1",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-react-hooks": "^4.2.1-rc.0-next-42c30e8b1-20220104",
     "eslint-plugin-testing-library": "^5.0.0-alpha.10",
     "keycloak-js": "^15.0.2",
     "npm-run-all": "^4.1.5",

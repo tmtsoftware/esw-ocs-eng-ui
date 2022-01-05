@@ -2,10 +2,12 @@ import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-
 import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
+import { QueryClient, useQueryClient } from 'react-query'
 import { useConfigService } from '../../../../contexts/ConfigServiceContext'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage } from '../../../../utils/message'
+import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { provisionConfConstants, provisionConstants } from '../../smConstants'
@@ -16,25 +18,27 @@ type ProvisionRecord = Record<string, number>
 const sanitiseErrorMsg = (res: SpawningSequenceComponentsFailed) =>
   res.failureResponses.map((x) => x.split('reason')[0]).join('\n')
 
-const provision = (provisionRecord: ProvisionRecord) => async (sequenceManagerService: SequenceManagerService) => {
-  const provisionConfig = parseProvisionConf(provisionRecord)
-  const res = await sequenceManagerService.provision(provisionConfig)
-  switch (res._type) {
-    case 'Success':
-      return res
-    case 'LocationServiceError':
-      throw Error(res.reason)
-    case 'Unhandled':
-      throw Error(res.msg)
-    case 'SpawningSequenceComponentsFailed':
-      throw Error(`${sanitiseErrorMsg(res)}`)
-    case 'CouldNotFindMachines':
-      throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
-
-    case 'FailedResponse':
-      throw new Error(res.reason)
+const provision =
+  (provisionRecord: ProvisionRecord, queryClient: QueryClient) =>
+  async (sequenceManagerService: SequenceManagerService) => {
+    const provisionConfig = parseProvisionConf(provisionRecord)
+    const res = await sequenceManagerService.provision(provisionConfig)
+    await queryClient.invalidateQueries(OBS_MODES_DETAILS.key)
+    switch (res._type) {
+      case 'Success':
+        return res
+      case 'LocationServiceError':
+        throw Error(res.reason)
+      case 'Unhandled':
+        throw Error(res.msg)
+      case 'SpawningSequenceComponentsFailed':
+        throw Error(`${sanitiseErrorMsg(res)}`)
+      case 'CouldNotFindMachines':
+        throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
+      case 'FailedResponse':
+        throw new Error(res.reason)
+    }
   }
-}
 
 const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
   const agentProvisionConfigs = Object.entries(provisionRecord).map(([prefixStr, num]) => {
@@ -70,6 +74,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
   const [configService, isLoading] = useConfigService()
   const [smContext, smContextLoading] = useSMService()
   const smService = smContext?.smService
+  const queryClient = useQueryClient()
 
   const fetchProvisionConfAction = useMutation({
     mutationFn: fetchProvisionConf,
@@ -86,7 +91,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
   })
 
   const provisionAction = useProvisionAction(
-    provision(provisionRecord),
+    provision(provisionRecord, queryClient),
     provisionConstants.successMessage,
     provisionConstants.failureMessage,
     useErrorBoundary

@@ -3,8 +3,12 @@ import { defineConfig } from 'vite'
 import { AppConfig } from './src/config/AppConfig.js'
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 9000
+  },
   build: {
-    outDir: AppConfig.applicationName
+    outDir: AppConfig.applicationName,
+    sourcemap: 'inline'
   },
   plugins: [reactRefresh()]
 })

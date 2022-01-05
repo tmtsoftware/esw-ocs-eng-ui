@@ -9,7 +9,8 @@ import {
   ProvisionConfig,
   AGENT_SERVICE_CONNECTION,
   SEQUENCE_MANAGER_CONNECTION,
-  CONFIG_CONNECTION
+  CONFIG_CONNECTION,
+  VariationInfo
 } from '@tmtsoftware/esw-ts'
 import type {
   AgentStatus,
@@ -39,7 +40,7 @@ const obsModeDetails: ObsModesDetailsResponse = {
       status: {
         _type: 'Configurable'
       },
-      sequencers: ['ESW', 'TCS', 'WFOS']
+      sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS'), VariationInfo.fromString('WFOS')]
     }
   ]
 }

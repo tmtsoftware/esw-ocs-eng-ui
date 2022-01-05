@@ -1,9 +1,10 @@
 import type {
-  ObsMode,
   ComponentId,
+  ObsMode,
   SequenceManagerService,
   StartSequencerResponse,
-  Subsystem
+  Subsystem,
+  Variation
 } from '@tmtsoftware/esw-ts'
 import { useMutation } from '../../../hooks/useMutation'
 import type { UseMutationResult } from '../../../hooks/useMutation'
@@ -36,15 +37,17 @@ const handleResponse = (res: StartSequencerResponse) => {
   }
 }
 
-const startSequencer = (subsystem: Subsystem, obsMode: ObsMode) => (smService: SequenceManagerService) =>
-  smService.startSequencer(subsystem, obsMode).then(handleResponse)
+const startSequencer =
+  (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
+    smService.startSequencer(subsystem, obsMode, variation).then(handleResponse)
 
 export const useStartSequencerAction = (
   subsystem: Subsystem,
-  obsMode: ObsMode
+  obsMode: ObsMode,
+  variation?: Variation
 ): UseMutationResult<ComponentId | undefined, unknown, SequenceManagerService> =>
   useMutation({
-    mutationFn: startSequencer(subsystem, obsMode),
+    mutationFn: startSequencer(subsystem, obsMode, variation),
     onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
     onSuccess: () => successMessage(startSequencerConstants.successMessage),
     invalidateKeysOnSuccess: [AGENTS_STATUS.key]

@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
-import type { StartSequencerResponse, Subsystem } from '@tmtsoftware/esw-ts'
+import type { StartSequencerResponse, Subsystem, Variation } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { deepEqual, reset, verify, when } from 'ts-mockito'
+import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { useSMService } from '../../../../src/contexts/SMContext'
 import { useStartSequencerAction } from '../../../../src/features/sm/hooks/useStartSequencerAction'
 import { startSequencerConstants } from '../../../../src/features/sm/smConstants'
@@ -11,20 +11,28 @@ import { _createErrorMsg } from '../../../../src/utils/message'
 import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
-const FakeComponent = ({ subsystem, obsMode }: { subsystem: Subsystem; obsMode: ObsMode }) => {
+const FakeComponent = ({
+  subsystem,
+  obsmode,
+  variation
+}: {
+  subsystem: Subsystem
+  obsmode: ObsMode
+  variation?: Variation
+}) => {
   const [smContext] = useSMService()
-  const startSequencerAction = useStartSequencerAction(subsystem, obsMode)
+  const startSequencerAction = useStartSequencerAction(subsystem, obsmode, variation)
 
   return <button onClick={() => smContext && startSequencerAction.mutateAsync(smContext.smService)}></button>
 }
 
 describe('Component using useStartSequencerAction', () => {
   const subsystem = 'ESW'
-  const obsModeName = 'DarkNight_1'
-  const obsMode = new ObsMode(obsModeName)
+  const obsMode = new ObsMode('DarkNight_1')
   const smService = mockServices.mock.smService
 
-  const componentId = new ComponentId(new Prefix(subsystem, obsModeName), 'Sequencer')
+  const sequencerPrefix = new Prefix(subsystem, obsMode.name)
+  const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
   const tests: [string, StartSequencerResponse, string][] = [
     [
       'success',
@@ -76,7 +84,7 @@ describe('Component using useStartSequencerAction', () => {
       {
         _type: 'SequenceComponentNotAvailable',
         msg: 'Sequencer component not found',
-        subsystems: []
+        variationInfos: []
       },
       _createErrorMsg(startSequencerConstants.failureMessage, 'Sequencer component not found')
     ],
@@ -97,17 +105,17 @@ describe('Component using useStartSequencerAction', () => {
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447, ESW-507, ESW-506`, async () => {
       when(smService.getObsModesDetails()).thenResolve(obsModesData)
-      when(smService.startSequencer(subsystem, deepEqual(obsMode))).thenResolve(response)
+      when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve(response)
 
       renderWithAuth({
-        ui: <FakeComponent subsystem={subsystem} obsMode={obsMode} />
+        ui: <FakeComponent subsystem={subsystem} obsmode={obsMode} />
       })
 
       const button = screen.getByRole('button')
       userEvent.click(button)
 
       await screen.findByText(message)
-      verify(smService.startSequencer(subsystem, deepEqual(obsMode))).once()
+      verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
     })
   })
 })

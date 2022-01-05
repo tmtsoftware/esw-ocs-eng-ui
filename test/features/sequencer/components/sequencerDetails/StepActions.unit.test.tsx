@@ -8,6 +8,7 @@ import { StepActions } from '../../../../../src/features/sequencer/components/st
 import { StepListContextProvider } from '../../../../../src/features/sequencer/hooks/useStepListContext'
 import {
   addStepConstants,
+  replaceStepConstants,
   deleteStepConstants,
   duplicateStepConstants,
   insertBreakPointConstants,
@@ -62,7 +63,7 @@ describe('StepActions', () => {
     expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
   })
 
-  it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459, ESW-490', async () => {
+  it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459, ESW-490, ESW-550', async () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusFailure)} />
     })
@@ -79,12 +80,17 @@ describe('StepActions', () => {
       name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
+    const replaceStepMenu = (await screen.findByRole('menuitem', {
+      name: new RegExp(replaceStepConstants.menuItemText)
+    })) as HTMLMenuElement
+
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
     expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
     expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
+    expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
   })
 
-  it('should disable delete, insert breakpoint and add a step when status is success | ESW-459 ESW-490', async () => {
+  it('should disable delete, insert breakpoint and add a step when status is success | ESW-459 ESW-490, ESW-550', async () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
     })
@@ -101,12 +107,17 @@ describe('StepActions', () => {
       name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
+    const replaceStepMenu = (await screen.findByRole('menuitem', {
+      name: new RegExp(replaceStepConstants.menuItemText)
+    })) as HTMLMenuElement
+
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
     expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
     expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
+    expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
   })
 
-  it('should enable every menu item when status is pending | ESW-459, ESW-490', async () => {
+  it('should enable every menu item when status is pending | ESW-459, ESW-490, ESW-550', async () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
@@ -123,9 +134,14 @@ describe('StepActions', () => {
       name: new RegExp(addStepConstants.menuItemText)
     })) as HTMLMenuElement
 
+    const replaceStepMenu = (await screen.findByRole('menuitem', {
+      name: new RegExp(replaceStepConstants.menuItemText)
+    })) as HTMLMenuElement
+
     expect(insertMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
     expect(deleteMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
     expect(addAStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
+    expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
   })
 
   it('should disable duplicate if stepListStatus is completed | ESW-462', async () => {
@@ -178,5 +194,31 @@ describe('StepActions', () => {
 
     expect(addStepsMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
     expect(addStepsDiv.style.color).to.be.equal('var(--disabledColor)')
+  })
+  it('should disable replace steps if step Status is completed | ESW-550', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListContextProvider
+          value={{
+            handleDuplicate: () => undefined,
+            setFollowProgress: () => undefined,
+            isDuplicateEnabled: false,
+            stepListStatus: 'All Steps Completed',
+            sequencerService: sequencerServiceInstance
+          }}>
+          <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
+        </StepListContextProvider>
+      )
+    })
+
+    userEvent.click(await screen.findByRole('stepActions'))
+
+    const replaceStepMenu = (await screen.findByRole('menuitem', {
+      name: new RegExp(replaceStepConstants.menuItemText)
+    })) as HTMLMenuElement
+    // const replaceStepsDiv = (await screen.findByRole('replaceStep')) as HTMLDivElement
+
+    expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
+    //expect(replaceStepsDiv.style.color).to.be.equal('var(--disabledColor)')
   })
 })

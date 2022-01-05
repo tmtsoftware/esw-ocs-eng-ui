@@ -1,6 +1,6 @@
 import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
   ConfigureResponse,
   FailedResponse,
@@ -23,7 +23,7 @@ const obsModesDetails: ObsModesDetailsResponse = {
       status: {
         _type: 'Configurable'
       },
-      sequencers: ['ESW', 'TCS', 'WFOS']
+      sequencers: [VariationInfo.fromString('ESW'), VariationInfo.fromString('TCS'), VariationInfo.fromString('WFOS')]
     },
     {
       obsMode: new ObsMode('ESW_CLEARSKY'),
@@ -38,7 +38,7 @@ const obsModesDetails: ObsModesDetailsResponse = {
       resources: [],
       status: {
         _type: 'NonConfigurable',
-        missingSequenceComponents: []
+        missingSequenceComponentsFor: []
       },
       sequencers: []
     }
@@ -75,7 +75,7 @@ const locationServiceError: ConfigureResponse = {
 const sequenceComponentNotAvailable: ConfigureResponse = {
   _type: 'SequenceComponentNotAvailable',
   msg: 'Not Available',
-  subsystems: ['IRIS']
+  variationInfos: [VariationInfo.fromString('IRIS')]
 }
 const unhandled: ConfigureResponse = {
   _type: 'Unhandled',

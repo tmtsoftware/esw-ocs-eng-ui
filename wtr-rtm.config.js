@@ -19,15 +19,33 @@ export default {
       inject: {
         importMap: {
           imports: {
-            './dist/features/sequencer/hooks/useSequencerService.js': './dist_test/mocks/useSequencerService.js',
-            './dist/contexts/ConfigServiceContext.js': './dist_test/mocks/ConfigServiceContext.js'
+            'http://localhost:9000/src/features/sequencer/hooks/useSequencerService.ts':
+              'http://localhost:9000/test/mocks/useSequencerService.ts',
+            'http://localhost:9000/src/contexts/ConfigServiceContext.tsx':
+              'http://localhost:9000/test/mocks/ConfigServiceContext.tsx'
           }
         }
       }
     })
   ],
+  testRunnerHtml: (testFramework) => `
+    <html>
+      <head>
+        <script type="module">
+          // Note: globals expected by @testing-library/react
+          window.global = window;
+          window.process = { env: {} };
+          // Note: adapted from https://github.com/vitejs/vite/issues/1984#issuecomment-778289660
+          // Note: without this you'll run into https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201
+          window.__vite_plugin_react_preamble_installed__ = true;
+        </script>
+        <script type="module" src="${testFramework}"></script>
+      </head>
+    </html>
+  `,
   reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
+    include: ['src/**/*.{js,jsx,ts,tsx}'],
     threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }
   }
 }

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-The `v15.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ### Install the ESW-OCS-ENG-UI source repository
 
@@ -87,7 +87,7 @@ Sequence Manager uses this information to configure an observation, i.e. start S
 esw-sm {
   obsModes: {
     IRIS_Darknight: {
-      resources: [ESW, TCS, IRIS]
+      resources: [TCS, IRIS]
       sequencers: [ESW, TCS, IRIS]
     }
   }

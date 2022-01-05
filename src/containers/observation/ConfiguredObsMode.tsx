@@ -71,7 +71,8 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
 
   useEffect(() => {
     setSequencerInfoMap(sequencers.map((variationInfo) => [variationInfo.prefix(obsMode).toJSON(), undefined]))
-  },[obsMode.name])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [obsMode.name])
 
   useEffect(() => {
     const handleSequencerStateChange = (currentPrefix: string, sequencerStateResponse?: SequencerStateResponse) => {

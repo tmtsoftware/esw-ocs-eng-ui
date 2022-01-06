@@ -18,7 +18,7 @@ import { Container } from './Container'
 
 const { Header } = Layout
 
-const ROUTER_BASENAME = import.meta.env.NODE_ENV === 'production' ? `/${AppConfig.applicationName}` : ''
+const ROUTER_BASENAME = import.meta.env.PROD ? `/${AppConfig.applicationName}` : ''
 
 const useGlobalConfig = () => useQuery('GlobalConfig', () => loadGlobalConfig().then(() => true))
 

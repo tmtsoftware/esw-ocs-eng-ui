@@ -5,6 +5,7 @@ ROOT="$(
 )"
 
 npm run build
+rm -rf $ROOT/../apps/esw-ocs-eng-ui
 ## use following for installing latest eng-ui
 mv $ROOT/../esw-ocs-eng-ui $ROOT/../apps/esw-ocs-eng-ui
 cd $ROOT/../apps

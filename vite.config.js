@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import { AppConfig } from './src/config/AppConfig.js'
 // https://vitejs.dev/config/
 const testDeps =
-  process.env.MODE === 'TESTING'
+  process.env.NODE_ENV === 'test'
     ? [
         '@testing-library/react',
         '@testing-library/user-event',
@@ -12,7 +12,6 @@ const testDeps =
         '@testing-library/react-hooks/dom'
       ]
     : []
-
 export default defineConfig({
   server: {
     port: 9000

@@ -27,7 +27,7 @@ export const NonConfigurableObsMode = ({
   return (
     <ObsModeCard title={<ObsModeTitle title={obsMode.name} />} extra={actions}>
       <Space direction='vertical' size={20} style={{ width: '100%' }}>
-        {missingSequenceComponents.length && (
+        {missingSequenceComponents.length ? (
           <Alert
             type='warning'
             message={`Sequence components are not available for ${missingSequenceComponents
@@ -35,7 +35,7 @@ export const NonConfigurableObsMode = ({
               .join(', ')}`}
             showIcon
           />
-        )}
+        ) : undefined}
         <ResourcesTable resources={resources} />
       </Space>
     </ObsModeCard>

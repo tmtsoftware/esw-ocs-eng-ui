@@ -1,4 +1,5 @@
-import { Empty, Menu, Modal, ModalProps, Typography } from 'antd'
+import { Empty, Menu, Modal, Typography } from 'antd'
+import type { ModalProps } from 'antd'
 import type { SelectInfo } from 'rc-menu/lib/interface'
 import React from 'react'
 import styles from './selectionModal.module.css'

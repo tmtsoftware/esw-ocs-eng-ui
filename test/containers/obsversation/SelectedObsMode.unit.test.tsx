@@ -1,16 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
-import {
-  AkkaConnection,
+import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
+import type {
   AkkaLocation,
-  ObsMode,
   ObsModeDetails,
   ObsModesDetailsResponseSuccess,
-  Prefix,
   SequencerStateResponse,
-  ServiceError,
-  StepList,
-  TrackingEvent,
-  VariationInfo
+  TrackingEvent
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'

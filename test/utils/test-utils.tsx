@@ -1,23 +1,25 @@
-import { render, RenderOptions, RenderResult } from '@testing-library/react'
+import { render } from '@testing-library/react'
+import type { RenderOptions, RenderResult } from '@testing-library/react'
 import {
+  AuthContext,
+  ComponentId,
+  GATEWAY_CONNECTION,
+  Prefix,
+  SEQUENCE_MANAGER_CONNECTION,
+  setAppName,
+  TestUtils
+} from '@tmtsoftware/esw-ts'
+import type {
   AgentService,
   AgentStatus,
   Auth,
-  AuthContext,
-  ComponentId,
   ConfigService,
-  GATEWAY_CONNECTION,
   HttpLocation,
   LocationService,
-  Prefix,
   SequenceManagerService,
   SequencerService,
-  SEQUENCE_MANAGER_CONNECTION,
-  setAppName,
-  Subsystem,
-  TestUtils
+  Subsystem
 } from '@tmtsoftware/esw-ts'
-import type { TestUtils as KeyCloakTypes } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
@@ -29,9 +31,9 @@ import { LocationServiceProvider } from '../../src/contexts/LocationServiceConte
 import { SMServiceProvider } from '../../src/contexts/SMContext'
 import {
   defaultStepListTableContext,
-  StepListContextProvider,
-  StepListTableContextType
+  StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
+import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -41,16 +43,16 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as KeyCloakTypes.KeycloakPromise<void, void>
+      return Promise.resolve() as TestUtils.KeycloakPromise<void, void>
     },
     token: () => 'token string',
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      } as KeyCloakTypes.KeycloakTokenParsed),
-    realmAccess: () => [''] as unknown as KeyCloakTypes.KeycloakRoles,
-    resourceAccess: () => [''] as unknown as KeyCloakTypes.KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as KeyCloakTypes.KeycloakPromise<KeyCloakTypes.KeycloakProfile, void>
+      } as TestUtils.KeycloakTokenParsed),
+    realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
+    resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
+    loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
   }
 }
 

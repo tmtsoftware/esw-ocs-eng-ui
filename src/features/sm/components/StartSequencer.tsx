@@ -1,8 +1,10 @@
-import { ObsMode, Subsystem, subsystems, Variation } from '@tmtsoftware/esw-ts'
+import { ObsMode, subsystems, Variation } from '@tmtsoftware/esw-ts'
+import type { Subsystem } from '@tmtsoftware/esw-ts'
 import { AutoComplete, Button, Form, Input, message, Modal, Select } from 'antd'
 import React, { ChangeEvent, useState } from 'react'
 import { useSMService } from '../../../contexts/SMContext'
-import { GroupedObsModeDetails, useObsModesDetails } from '../hooks/useObsModesDetails'
+import { useObsModesDetails } from '../hooks/useObsModesDetails'
+import type { GroupedObsModeDetails } from '../hooks/useObsModesDetails'
 import { useStartSequencerAction } from '../hooks/useStartSequencerAction'
 import { startSequencerConstants } from '../smConstants'
 

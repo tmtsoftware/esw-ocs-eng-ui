@@ -4,20 +4,18 @@ import {
   Angle,
   CometCoord,
   cometCoordKey,
-  Coord,
   coordKey,
   EqCoord,
   eqCoordKey,
-  Key,
   MinorPlanetCoord,
   minorPlanetCoordKey,
   Parameter,
-  SequenceCommand,
   SolarSystemCoord,
   solarSystemCoordKey,
   taiTimeKey,
   utcTimeKey
 } from '@tmtsoftware/esw-ts'
+import type { Coord, Key, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { Space, Typography } from 'antd'
 import type { SpaceSize } from 'antd/lib/space'
 import React from 'react'

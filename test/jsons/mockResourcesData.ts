@@ -1,4 +1,5 @@
-import { ObsMode, ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
+import { ObsMode } from '@tmtsoftware/esw-ts'
+import type { ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
 export default <ObsModesDetailsResponseSuccess>(<unknown>{
   _type: 'Success',
   obsModes: [

@@ -1,4 +1,5 @@
-import { ObsMode, ObsModeDetails } from '@tmtsoftware/esw-ts'
+import { ObsMode } from '@tmtsoftware/esw-ts'
+import type { ObsModeDetails } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React, { useState } from 'react'
 import { SelectionModal } from '../../../components/modal/SelectionModal'

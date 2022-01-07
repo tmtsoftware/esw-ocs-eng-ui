@@ -1,11 +1,10 @@
-import plugin from '@snowpack/web-test-runner-plugin'
 import { importMapsPlugin } from '@web/dev-server-import-maps'
 import { defaultReporter } from '@web/test-runner'
+import vite from 'vite-web-test-runner-plugin'
 // eslint-disable-next-line import/no-unresolved
 import ConsoleReporter from './ConsoleReporter.js'
 // eslint-disable-next-line import/no-unresolved
 import { RTMReporter } from './dist/test/utils/RTMReporter.js'
-// NODE_ENV=test - Needed by "@snowpack/web-test-runner-plugin"
 process.env.NODE_ENV = 'test'
 
 export default {
@@ -15,21 +14,38 @@ export default {
     }
   },
   plugins: [
-    plugin(),
+    vite(),
     importMapsPlugin({
       inject: {
         importMap: {
           imports: {
-            './dist/features/sequencer/hooks/useSequencerService.js': './dist_test/mocks/useSequencerService.js',
-            './dist/contexts/ConfigServiceContext.js': './dist_test/mocks/ConfigServiceContext.js'
+            'http://localhost:9000/src/features/sequencer/hooks/useSequencerService.ts':
+              'http://localhost:9000/test/mocks/useSequencerService.ts',
+            'http://localhost:9000/src/contexts/ConfigServiceContext.tsx':
+              'http://localhost:9000/test/mocks/ConfigServiceContext.tsx'
           }
         }
       }
     })
   ],
+  testRunnerHtml: (testFramework) => `
+    <html>
+      <head>
+        <script type="module">
+          // Note: globals expected by @testing-library/react
+          window.global = window;
+          window.process = { env: {} };
+          // Note: adapted from https://github.com/vitejs/vite/issues/1984#issuecomment-778289660
+          // Note: without this you'll run into https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201
+          window.__vite_plugin_react_preamble_installed__ = true;
+        </script>
+        <script type="module" src="${testFramework}"></script>
+      </head>
+    </html>
+  `,
   reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
-    exclude: ['_snowpack/**/*', 'dist_test/**/*', '**/*.proxy.*', '**/AppConfig.js'],
-    threshold: { statements: 90, branches: 85, functions: 64, lines: 90 }
+    include: ['src/**/*.{ts,tsx}'],
+    threshold: { statements: 90, branches: 80, functions: 64, lines: 90 }
   }
 }

@@ -1,25 +1,26 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { SequencerState } from '@tmtsoftware/esw-ts'
+import type {
+  SequencerState,
+  BooleanKey,
+  IntKey,
+  IntArrayKey,
+  SequencerStateResponse,
+  StringKey,
+  Location
+} from '@tmtsoftware/esw-ts'
 import {
   booleanKey,
-  BooleanKey,
-  IntArrayKey,
   intArrayKey,
   intKey,
-  IntKey,
-  Location,
   Parameter,
   Prefix,
-  SequencerStateResponse,
   ServiceError,
   Setup,
   StepList,
   stringKey,
-  StringKey,
   Units
 } from '@tmtsoftware/esw-ts'
-import { setViewport } from '@web/test-runner-commands'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -36,18 +37,7 @@ import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details', () => {
-  let windowWidth: number
-  let windowHeight: number
-  beforeEach(() => {
-    windowHeight = window.innerHeight
-    windowWidth = window.innerWidth
-  })
   afterEach(async () => {
-    //Reset the viewport
-    await setViewport({
-      width: windowWidth,
-      height: windowHeight
-    })
     reset(sequencerServiceMock)
   })
   const darkNightSequencer = 'IRIS.IRIS_Darknight'
@@ -173,8 +163,6 @@ describe('sequencer details', () => {
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
 
-    await setViewport({ width: 1440, height: 900 })
-
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
@@ -216,9 +204,6 @@ describe('sequencer details', () => {
     ])
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
-
-    //Set bigger viewport so that values wont be elipsis
-    await setViewport({ width: 1440, height: 900 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
@@ -272,8 +257,6 @@ describe('sequencer details', () => {
     ])
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(getEvent('Running', stepList))
-    //Set small viewport so that values will have elipsis
-    await setViewport({ width: 1000, height: 800 })
 
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />

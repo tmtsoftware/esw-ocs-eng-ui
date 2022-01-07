@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { AgentStatus, ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { AgentStatus } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -205,8 +206,12 @@ describe('observation tabs', () => {
     // assert that previous obsMode's sequencers are removed from table.
     // and verify that new sequencers related to second obsMode are displayed.
     const [sequencerTable2] = await screen.findAllByRole('table')
-    await waitFor(async () => {
+
+    await waitFor(() => {
       expect(within(sequencerTable2).queryAllByRole('row', { name: /DarkNight_1/i })).to.have.length(0)
+    })
+
+    await waitFor(() => {
       expect(within(sequencerTable2).queryAllByRole('row', { name: /DarkNight_8/i })).to.have.length(2)
     })
   })

@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GenericResponse, Prefix, SequenceCommand, Setup } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup } from '@tmtsoftware/esw-ts'
+import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { ReplaceStep } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'

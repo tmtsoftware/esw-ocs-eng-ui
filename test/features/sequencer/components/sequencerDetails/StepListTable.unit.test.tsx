@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix, SequencerState, SequencerStateResponse, Setup, Step, StepList } from '@tmtsoftware/esw-ts'
+import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
+import type { SequencerState, SequencerStateResponse, Step } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { deepEqual, reset, verify, when } from 'ts-mockito'

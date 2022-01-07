@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
-import { HttpLocation, SEQUENCE_MANAGER_CONNECTION } from '@tmtsoftware/esw-ts'
+import { SEQUENCE_MANAGER_CONNECTION } from '@tmtsoftware/esw-ts'
+import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { when } from 'ts-mockito'

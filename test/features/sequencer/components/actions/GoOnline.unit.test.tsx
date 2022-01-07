@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { GoOnlineResponse, Prefix } from '@tmtsoftware/esw-ts'
+import { Prefix } from '@tmtsoftware/esw-ts'
+import type { GoOnlineResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { verify, when } from 'ts-mockito'

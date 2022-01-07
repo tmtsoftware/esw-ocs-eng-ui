@@ -1,5 +1,7 @@
-import { Prefix, SequencerState, SequencerStateResponse, Setup, Step, StepList, StepStatus } from '@tmtsoftware/esw-ts'
-import { getCurrentStepCommandName, SequencerInfo } from '../../src/features/sequencer/utils'
+import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
+import type { SequencerState, SequencerStateResponse, Step, StepStatus } from '@tmtsoftware/esw-ts'
+import { getCurrentStepCommandName } from '../../src/features/sequencer/utils'
+import type { SequencerInfo } from '../../src/features/sequencer/utils'
 
 export const getStep = (stepStatus: StepStatus['_type'], id: string, hasBreakpoint = false): Step => {
   return {

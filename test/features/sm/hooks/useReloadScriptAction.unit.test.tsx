@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ComponentId, ObsMode, Prefix, RestartSequencerResponse, Subsystem, Variation } from '@tmtsoftware/esw-ts'
+import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
+import type { RestartSequencerResponse, Subsystem, Variation } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { anything, deepEqual, resetCalls, verify, when } from 'ts-mockito'
 import { useSMService } from '../../../../src/contexts/SMContext'

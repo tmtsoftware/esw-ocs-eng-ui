@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { GATEWAY_CONNECTION, HttpLocation, ServiceError } from '@tmtsoftware/esw-ts'
+import { GATEWAY_CONNECTION, ServiceError } from '@tmtsoftware/esw-ts'
+import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, verify, when } from 'ts-mockito'

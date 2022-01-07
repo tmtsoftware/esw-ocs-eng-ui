@@ -1,4 +1,5 @@
-import { QueryKey, useMutation as useReactMutation, UseMutationResult, useQueryClient } from 'react-query'
+import { useMutation as useReactMutation, useQueryClient } from 'react-query'
+import type { QueryKey, UseMutationResult } from 'react-query'
 
 type UseMutationProps<S, T> = {
   mutationFn: (service: S) => Promise<T>

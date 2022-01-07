@@ -1,5 +1,5 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import type { SequencerState, Prefix } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'

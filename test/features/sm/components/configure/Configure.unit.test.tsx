@@ -1,14 +1,11 @@
 import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  ComponentId,
+import { ComponentId, ObsMode, Prefix, VariationInfo } from '@tmtsoftware/esw-ts'
+import type {
   ConfigureResponse,
   FailedResponse,
-  ObsMode,
   ObsModesDetailsResponse,
-  Prefix,
-  SequenceManagerService,
-  VariationInfo
+  SequenceManagerService
 } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'

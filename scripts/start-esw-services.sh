@@ -6,4 +6,3 @@ ROOT="$(
 ESW_VERSION=eaeaf82
 SEQ_SCRIPT_VERSION=71ac75e
 cs launch esw-services:$ESW_VERSION -- start-eng-ui-services  --scripts-version $SEQ_SCRIPT_VERSION
-

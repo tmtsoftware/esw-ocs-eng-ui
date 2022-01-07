@@ -1,11 +1,5 @@
-import {
-  ComponentId,
-  createSequencerService,
-  Location,
-  Prefix,
-  SequencerService,
-  TokenFactory
-} from '@tmtsoftware/esw-ts'
+import { ComponentId, createSequencerService, Prefix } from '@tmtsoftware/esw-ts'
+import type { Location, SequencerService, TokenFactory } from '@tmtsoftware/esw-ts'
 import { useGatewayLocation } from '../../../contexts/GatewayServiceContext'
 import { useAuth } from '../../../hooks/useAuth'
 import { createTokenFactory } from '../../../utils/createTokenFactory'

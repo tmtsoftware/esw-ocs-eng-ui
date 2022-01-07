@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Location, Prefix, SequencerStateResponse, StepList, StepStatus } from '@tmtsoftware/esw-ts'
+import { Prefix, StepList } from '@tmtsoftware/esw-ts'
+import type { Location, SequencerStateResponse, StepStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -181,7 +182,9 @@ describe('sequencer details selected step', () => {
     //step18 is executing, ui should show step18 details on right side
     await assertRunningStepIs(/Command-18/i, 500)
     //wait and assert for auto scroll to happen
-    await waitFor(() => expect(window.scrollY).to.greaterThan(500))
+    await waitFor(() => {
+      expect(window.scrollY).to.greaterThan(100)
+    })
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep19InProgress)))
     //step19 is executing, ui should show step19 details on right side
     await assertRunningStepIs(/Command-19/i, 500)

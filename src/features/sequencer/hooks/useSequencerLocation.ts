@@ -1,5 +1,7 @@
-import { AkkaConnection, Prefix, Location } from '@tmtsoftware/esw-ts'
-import { useQuery, UseQueryResult } from 'react-query'
+import { AkkaConnection, Prefix } from '@tmtsoftware/esw-ts'
+import type { Location } from '@tmtsoftware/esw-ts'
+import { useQuery } from 'react-query'
+import type { UseQueryResult } from 'react-query'
 import { useLocationService } from '../../../contexts/LocationServiceContext'
 import { SEQUENCER_LOCATION } from '../../queryKeys'
 

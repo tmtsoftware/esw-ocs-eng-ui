@@ -1,4 +1,5 @@
-import { ObsMode, ObsModeDetails, ObsModesDetailsResponseSuccess, VariationInfo } from '@tmtsoftware/esw-ts'
+import { ObsMode, VariationInfo } from '@tmtsoftware/esw-ts'
+import type { ObsModesDetailsResponseSuccess, ObsModeDetails } from '@tmtsoftware/esw-ts'
 const obsModes: ObsModeDetails[] = [
   {
     obsMode: new ObsMode('DarkNight_1'),

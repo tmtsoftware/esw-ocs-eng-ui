@@ -1,11 +1,11 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
 import type {
+  ObsMode,
+  Prefix,
   SequenceManagerService,
   SequencerState,
   ShutdownSequencersResponse,
   Subsystem,
-  ObsMode,
-  Prefix,
   Variation
 } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'

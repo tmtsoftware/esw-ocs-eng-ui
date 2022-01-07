@@ -1,20 +1,18 @@
 import { screen, waitFor } from '@testing-library/react'
 import {
-  AgentStatus,
-  AgentStatusResponse,
   ComponentId,
   ObsMode,
   Prefix,
-  SequenceComponentStatus,
   AGENT_SERVICE_CONNECTION,
   CONFIG_CONNECTION,
   SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
+import type { AgentStatus, AgentStatusResponse, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
-import { configureConstants, provisionConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'
+import { configureConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
 
 describe('SM actions', () => {
@@ -73,7 +71,7 @@ describe('SM actions', () => {
       })
 
       const provisionButton = screen.getByRole('button', {
-        name: provisionConstants.buttonText
+        name: /Provision/
       }) as HTMLButtonElement
 
       const configureButton = screen.getByRole('button', {
@@ -93,7 +91,7 @@ describe('SM actions', () => {
         expect(
           (
             screen.getByRole('button', {
-              name: provisionConstants.buttonText
+              name: /Provision/
             }) as HTMLButtonElement
           ).disabled
         ).false

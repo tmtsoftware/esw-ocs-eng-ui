@@ -1,14 +1,7 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {
-  Observe,
-  OkOrUnhandledResponse,
-  Prefix,
-  Sequence,
-  SequenceCommand,
-  SequencerState,
-  Setup
-} from '@tmtsoftware/esw-ts'
+import { Observe, Prefix, Sequence, Setup } from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse, SequenceCommand, SequencerState } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'

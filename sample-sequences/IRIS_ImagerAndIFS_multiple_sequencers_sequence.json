@@ -1,0 +1,9 @@
+[
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-iris-variation",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": []
+  }
+]

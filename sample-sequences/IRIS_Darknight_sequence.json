@@ -1,0 +1,59 @@
+[
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-iris",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": [
+      {
+        "StringKey": {
+          "keyName": "StringKey",
+          "values": [
+            "Str1",
+            "Str2"
+          ],
+          "units": "NoUnits"
+        }
+      }
+    ]
+  },
+  {
+    "_type": "Setup",
+    "source": "ESW.darknight",
+    "commandName": "setup-tcs",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": [
+      {
+        "IntKey": {
+          "keyName": "IntKey",
+          "values": [
+            70,
+            80
+          ],
+          "units": "NoUnits"
+        }
+      }
+    ]
+  },
+  {
+    "_type": "Observe",
+    "source": "ESW.darknight",
+    "commandName": "observe-command1",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": []
+  },
+  {
+    "_type": "Observe",
+    "source": "ESW.darknight",
+    "commandName": "observe-command2",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": []
+  },
+  {
+    "_type": "Observe",
+    "source": "ESW.darknight",
+    "commandName": "observe-command3",
+    "maybeObsId": "2020A-001-123",
+    "paramSet": []
+  }
+]

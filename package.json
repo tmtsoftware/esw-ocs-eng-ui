@@ -5,7 +5,7 @@
   "license": "Apache License, Version 2.0",
   "type": "module",
   "dependencies": {
-    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#8749db15ada81cc386751182ea4046e1194c11f4",
+    "@tmtsoftware/esw-ts": "git+https://github.com/tmtsoftware/esw-ts#5fb96f951d5ad417d3e58dbf67d9964883a44230",
     "antd": "^4.16.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

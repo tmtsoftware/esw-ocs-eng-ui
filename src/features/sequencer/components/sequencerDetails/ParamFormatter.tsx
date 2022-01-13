@@ -25,7 +25,7 @@ const uasToDegree = (angle: Angle) => angle.toDegree().toFixed(DIGITS_AFTER_DECI
 
 const formatEqCoord = (value: EqCoord) => (
   <>
-    {value.tag.name}: RA={Angle.raToString(value.ra.toRadian())} DEC={Angle.deToString(value.dec.toRadian())} <br />
+    {value.tag.name}: RA={Angle.raToString(value.ra.toRadian(), true)} DEC={Angle.deToString(value.dec.toRadian(), true)} <br />
     {value.frame.toString()}, Catalog=&quot;{value.catalogName}&quot; <br />
     Proper Motion={value.pm.pmx}, {value.pm.pmy}
     <br />

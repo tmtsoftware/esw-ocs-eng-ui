@@ -83,7 +83,7 @@ describe('Parameter Formatter', () => {
 
   //expectations
   const formattedEqCoord =
-    `Base: RA=6h DEC=123°25'30.72"\n` + `ICRS, Catalog="cat123"\n` + `Proper Motion=123, 123414\n`
+    `Base: RA=06:00:00.000 DEC=123:25:30.720\n` + `ICRS, Catalog="cat123"\n` + `Proper Motion=123, 123414\n`
   const formattedCometCoord =
     `Base: Epoch of Perihelion=11\n` +
     `Inclination=123.534 degrees\n` +

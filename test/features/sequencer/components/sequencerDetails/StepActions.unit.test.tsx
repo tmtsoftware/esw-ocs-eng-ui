@@ -90,7 +90,7 @@ describe('StepActions', () => {
     expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
   })
 
-  it('should disable delete, insert breakpoint and add a step when status is success | ESW-459 ESW-490, ESW-550', async () => {
+  it('should disable delete, insert breakpoint and add a step when status is success | ESW-459, ESW-490, ESW-550', async () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
     })

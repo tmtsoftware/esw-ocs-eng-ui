@@ -34,6 +34,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Get tag
+        uses: dawidd6/action-get-tag@v1
+        with:
+          #strip `v` prefix
+          strip_v: true
+
+      # This env variable is used when we do Docs Publish
+      - name: Set JITPACK_VERSION environment variable
+        run: echo "JITPACK_VERSION=${{steps.tag.outputs.tag}}" >> $GITHUB_ENV
+
       - name: Install
         run: npm ci
 
@@ -101,7 +111,7 @@ jobs:
           chmod +x /tmp/.git-askpass
           git config --global user.email "actions@github.com"
           git config --global user.name "Github Action"
-          sbt -Dprod.publish=true clean ghpagesPushSite
+          sbt clean ghpagesPushSite
         env:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GIT_ASKPASS: /tmp/.git-askpass

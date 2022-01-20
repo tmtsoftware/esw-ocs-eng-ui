@@ -7,12 +7,7 @@ ThisBuild / organizationName := "TMT Org"
 ThisBuild / docsRepo := "https://github.com/tmtsoftware/tmtsoftware.github.io.git"
 ThisBuild / docsParentDir := "esw-ocs-eng-ui"
 ThisBuild / gitCurrentRepo := "https://github.com/tmtsoftware/esw-ocs-eng-ui"
-version := {
-  sys.props.get("prod.publish") match {
-    case Some("true") => version.value
-    case _            => "0.1.0-SNAPSHOT"
-  }
-}
+version := sys.env.getOrElse("JITPACK_VERSION", "0.1.0-SNAPSHOT")
 
 lazy val openSite =
   Def.setting {

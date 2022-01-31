@@ -69,7 +69,7 @@ Optional parameter Variation can be used to differentiate between any two sequen
 ![Write Variation](./images/ManageInfrastructure_StartSequencerWithVariationExample.png)
 
 After selecting Subsystem, ObsMode and optional Variation, the Sequencer will be started with the proper Script.
-In the following example, a Sequencer has been started for the IRIS_ImagerAndIFS obsMode on IRIS.machine1 with a variation as red.
+In the following example, a Sequencer has been started for the IRIS_ImagerAndIFS obsMode on IRIS.machine1 with a variation as IRIS_Imager.
 
 ![Started Sequencer](./images/ManageInfrastructure_StartedSequencerWithVariation.png)
 
@@ -133,7 +133,6 @@ The figure below shows that the Sequence Components were configured successfully
 
 ![ClickConfigureButton](./images/ConfiguredSuccessfully.png)
 
-This screenshot shows that the IRIS_Darknight obsMode was started with Sequencers for TCS, IRIS, and ESW. The card shows what machine
-each Sequencer is running on and what Script is running in the Sequencer.
+This screenshot shows that the IRIS_ImagerAndIFS obsMode was started with Sequencers for IRIS, and ESW with variation as `IRIS_Imager` and `IRIS_Ifs`. The card shows what machine each Sequencer is running on and what Script is running in the Sequencer.
 
 Configure can also be done from @ref[Manage Observation Page](ManageObservation.md)

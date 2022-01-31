@@ -6,15 +6,16 @@ This project is a React web application.
 
 1. csw-services should be up & running.
     - it starts location service, config-service & aas server.
+
 > `./scripts/start-csw-services.sh`
 
 2. Start esw services
-    * `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
+    - `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
-    * Alternatively, to run esw-services with a simulated Sequence Manager, use
+    - Alternatively, to run esw-services with a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
-    * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
+    - You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
 > `./scripts/start-csw-services.sh` (recommended way).
 
@@ -40,10 +41,10 @@ Then, open [localhost:8080/esw-ocs-eng-ui](http://localhost:8000/esw-ocs-eng-ui/
 
 ### Required backend services/components
 
-* Location Service
-* Auth Service - user with esw-user role is required
-* Agent Service
-* One or more agents should be up and running.
+- Location Service
+- Auth Service - user with esw-user role is required
+- Agent Service
+- One or more agents should be up and running.
 
 ## Build the App for Production
 
@@ -85,12 +86,12 @@ The project has the following structure:
 ├── types
 ```
 
-* `assets`: This directory contains all the files (images, audio etc) that are used by the UI component.
-* `components`: App reusable functions / components created for this UI application.
-* `config`: This contains the application specific configurations.
-* `containers`: App reusable functions / utilities goes here.
-* `test`: This directory contains all the tests for the UI application.
-* `types`: This directory contains all the types that needs to be imported externally for UI application.
+- `assets`: This directory contains all the files (images, audio etc) that are used by the UI component.
+- `components`: App reusable functions / components created for this UI application.
+- `config`: This contains the application specific configurations.
+- `containers`: App reusable functions / utilities goes here.
+- `test`: This directory contains all the tests for the UI application.
+- `types`: This directory contains all the types that needs to be imported externally for UI application.
 
 ## Version compatibility
 
@@ -117,5 +118,5 @@ The project has the following structure:
 
 ## References
 
-* ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)
-* ESW-TS Library Documentation - [Link](https://tmtsoftware.github.io/esw-ts/)
+- ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)
+- ESW-TS Library Documentation - [Link](https://tmtsoftware.github.io/esw-ts/)

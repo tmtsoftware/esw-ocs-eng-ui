@@ -7,12 +7,12 @@
 }
 
 .settingsIcon {
-  color: rgba(0, 0, 0, 0.45);
+  color: #00000073;
 }
 
 .homePageCardsRow {
   min-height: 65vh;
-  margin: 1rem 1rem !important;
+  margin: 1rem !important;
   align-content: center;
 }
 

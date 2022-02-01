@@ -6,15 +6,16 @@ This project is a React web application.
 
 1. csw-services should be up & running.
     - it starts location service, config-service & aas server.
+
 > `./scripts/start-csw-services.sh`
 
 2. Start esw services
-    * `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
+    - `AgentService` along with one or more agent should be up & running. To start, run following command inside ESW sbt shell `esw-services/run start --agent --agent-service`.
 
-    * Alternatively, to run esw-services with a simulated Sequence Manager, use
+    - Alternatively, to run esw-services with a simulated Sequence Manager, use
     `esw-services/run start --agent-service -s --simulation`
 
-    * You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
+    - You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
 > `./scripts/start-csw-services.sh` (recommended way).
 
@@ -40,10 +41,10 @@ Then, open [localhost:8080/esw-ocs-eng-ui](http://localhost:8000/esw-ocs-eng-ui/
 
 ### Required backend services/components
 
-* Location Service
-* Auth Service - user with esw-user role is required
-* Agent Service
-* One or more agents should be up and running.
+- Location Service
+- Auth Service - user with esw-user role is required
+- Agent Service
+- One or more agents should be up and running.
 
 ## Build the App for Production
 
@@ -85,17 +86,18 @@ The project has the following structure:
 ├── types
 ```
 
-* `assets`: This directory contains all the files (images, audio etc) that are used by the UI component.
-* `components`: App reusable functions / components created for this UI application.
-* `config`: This contains the application specific configurations.
-* `containers`: App reusable functions / utilities goes here.
-* `test`: This directory contains all the tests for the UI application.
-* `types`: This directory contains all the types that needs to be imported externally for UI application.
+- `assets`: This directory contains all the files (images, audio etc) that are used by the UI component.
+- `components`: App reusable functions / components created for this UI application.
+- `config`: This contains the application specific configurations.
+- `containers`: App reusable functions / utilities goes here.
+- `test`: This directory contains all the tests for the UI application.
+- `types`: This directory contains all the types that needs to be imported externally for UI application.
 
 ## Version compatibility
 
 | esw-ocs-eng-ui | esw | csw |
 |--------|-----|-----|
+| v0.2.0-RC1 | v0.4.0-RC1 | v4.0.1-RC1 |
 | v0.1.0 | v0.3.0 | v4.0.0 |
 | v0.1.0-RC2 | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.1.0-RC1 | v0.3.0-RC1 | v4.0.0-RC1 |
@@ -111,11 +113,12 @@ The project has the following structure:
 
 | Date | Tag | Source | Docs | Assets |
 |-----|-----|-----|-----|-----|
+| 2022-02-01 | v0.2.0-RC1 | [esw-ocs-eng-ui-0.2.0-RC1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.2.0-RC1) | [esw-ocs-eng-ui-0.2.0-RC1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.2.0-RC1/) | [esw-ocs-eng-ui-0.2.0-RC1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.2.0-RC1) |
 | 2021-09-20 | v0.1.0-RC2 | [esw-ocs-eng-ui-0.1.0-RC2](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0-RC2) | [esw-ocs-eng-ui-0.1.0-RC2 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-RC2/) | [esw-ocs-eng-ui-0.1.0-RC2 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0-RC2) |
 | 2021-08-24 | v0.1.0-RC1 | [esw-ocs-eng-ui-0.1.0-RC1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0-RC1) | [esw-ocs-eng-ui-0.1.0-RC1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-RC1/) | [esw-ocs-eng-ui-0.1.0-RC1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0-RC1) |
 | 2021-07-13 | v0.1.0-M1 | [esw-ocs-eng-ui-0.1.0-M1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0-M1) | [esw-ocs-eng-ui-0.1.0-M1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0-M1/) | [esw-ocs-eng-ui-0.1.0-M1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0-M1) |
 
 ## References
 
-* ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)
-* ESW-TS Library Documentation - [Link](https://tmtsoftware.github.io/esw-ts/)
+- ESW-TS Library - [Link](https://github.com/tmtsoftware/esw-ts/)
+- ESW-TS Library Documentation - [Link](https://tmtsoftware.github.io/esw-ts/)

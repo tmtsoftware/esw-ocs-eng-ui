@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import { Result } from 'antd'
 import React, { useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes as RouterRoutes } from 'react-router-dom'
 import { Home } from '../containers/home/Home'
 import { Infrastructure } from '../containers/infrastructure/Infrastructure'
 import { Observations } from '../containers/observation/Observations'
@@ -21,14 +21,14 @@ const RedirectToLogin = () => {
 
 export const Routes = ({ loggedIn }: { loggedIn: boolean }): JSX.Element => {
   return loggedIn ? (
-    <Switch>
-      <Route exact path={HOME} component={Home} />
-      <Route path={INFRASTRUCTURE} component={Infrastructure} />
-      <Route path={OBSERVATIONS} component={Observations} />
-      <Route path={RESOURCES} component={Resources} />
-      <Route path={SEQUENCER_PATH} component={ManageSequencer} />
-      <Route path={NO_MATCH} component={NoMatch} />
-    </Switch>
+    <RouterRoutes>
+      <Route path={HOME} element={<Home />} />
+      <Route path={INFRASTRUCTURE} element={<Infrastructure />} />
+      <Route path={OBSERVATIONS} element={<Observations />} />
+      <Route path={RESOURCES} element={<Resources />} />
+      <Route path={SEQUENCER_PATH} element={<ManageSequencer />} />
+      <Route path={NO_MATCH} element={<NoMatch />} />
+    </RouterRoutes>
   ) : (
     <RedirectToLogin />
   )

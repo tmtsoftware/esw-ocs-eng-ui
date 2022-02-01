@@ -1,10 +1,10 @@
 import { Button, Result } from 'antd'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { HOME } from './RoutesConfig'
 
 export const NoMatch = (): JSX.Element => {
-  const history = useHistory()
+  const navigate = useNavigate()
   return (
     <Result
       title='404'
@@ -13,7 +13,7 @@ export const NoMatch = (): JSX.Element => {
         <Button
           type='primary'
           onClick={() => {
-            history.push(HOME)
+            navigate(HOME)
           }}>
           Back Home
         </Button>

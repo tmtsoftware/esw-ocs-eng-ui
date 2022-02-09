@@ -95,18 +95,20 @@ The project has the following structure:
 
 ## Version compatibility
 
-| esw-ocs-eng-ui | esw | csw |
-|--------|-----|-----|
-| v0.2.0-RC1 | v0.4.0-RC1 | v4.0.1-RC1 |
-| v0.1.0 | v0.3.0 | v4.0.0 |
-| v0.1.0-RC2 | v0.3.0-RC2 | v4.0.0-RC2 |
-| v0.1.0-RC1 | v0.3.0-RC1 | v4.0.0-RC1 |
-| v0.1.0-M1 | v0.3.0-M1 | v4.0.0-M1 |
+| esw-ocs-eng-ui | esw        | csw        |
+|----------------|------------|------------|
+| v0.2.0         | v0.4.0     | v4.0.1     |
+| v0.2.0-RC1     | v0.4.0-RC1 | v4.0.1-RC1 |
+| v0.1.0         | v0.3.0     | v4.0.0     |
+| v0.1.0-RC2     | v0.3.0-RC2 | v4.0.0-RC2 |
+| v0.1.0-RC1     | v0.3.0-RC1 | v4.0.0-RC1 |
+| v0.1.0-M1      | v0.3.0-M1  | v4.0.0-M1  |
 
 ## Public Release History
 
-| Date | Tag | Source | Docs | Assets |
-|-----|-----|-----|-----|-----|
+| Date       | Tag    | Source                                                                            | Docs                                                                             | Assets                                                                                           |
+|------------|--------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 2022-02-09 | v0.2.0 | [esw-ocs-eng-ui-0.2.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.2.0) | [esw-ocs-eng-ui-0.2.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.2.0/) | [esw-ocs-eng-ui-0.2.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.2.0) |
 | 2021-09-23 | v0.1.0 | [esw-ocs-eng-ui-0.1.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.1.0) | [esw-ocs-eng-ui-0.1.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.1.0/) | [esw-ocs-eng-ui-0.1.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.1.0) |
 
 ## Pre-Release History

@@ -6,7 +6,7 @@
 3. Update top-level `CHANGELOG.md`
 4. Update top-level `README.md`
 5. Update `@tmtsoftware/esw-ts` & other dependencies in the package.json
-6. Update `version` number in `package.json`
+6. Update `version` number in `package.json`, run `npm install` to update `package-lock.json`.
 7. Create a version compatibility table in the Readme.md (if there is none) - for esw, csw and esw-ocs-eng-ui
 8. Commit and push the changes to `branch-<major>.<minor>.x` branch. Ensure that pipeline is green for dev and paradox link check.
 9. Run `release.sh $VERSION$` script by providing version number argument (This triggers release workflow)

@@ -23,7 +23,7 @@ jobs:
           jvm: 11
           apps: sbt sbtn
 
-      - uses: coursier/cache-action@v5
+      - uses: coursier/cache-action@v6
 
       - name: Cache ~/.npm
         uses: actions/cache@v1

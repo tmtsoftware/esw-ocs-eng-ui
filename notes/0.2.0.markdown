@@ -1,0 +1,12 @@
+# ESW-OCS-ENG-UI - v0.2.0
+
+This is the v0.2.0 of the ESW-OCS-ENG-UI application
+
+See [CHANGELOG.md](CHANGELOG.md) for details of all releases.
+
+This version is compatible with `ESW` version v0.4.0
+This version is compatible with `CSW` version v4.0.1
+
+## Documentation
+
+Paradox documentation can be found [here](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.2.0/)

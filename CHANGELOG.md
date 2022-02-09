@@ -2,9 +2,9 @@
 
 The ESW-OCS-ENG-UI provides a browser based User Interface to manage and track sequences in different observing mode. It also provides features like running parallel observation in different observation modes by checking for any resource conflict.
 
-This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tmtsoftware/esw-ocs-eng-ui))
+This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tmtsoftware/esw-ocs-eng-ui)
 
-## [ESW-OCS-ENG-UI v0.2.0-RC1] - 2022-02-01
+## [ESW-OCS-ENG-UI v0.2.0] - 2022-02-09
 
 - Added replace step functionality on observations page.
 

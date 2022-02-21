@@ -510,6 +510,23 @@ describe('stepList table', () => {
     expect(reloadButton.disabled).to.false
   })
 
+  it('should enable Reload action when sequence execution is completed | ESW-583', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Idle', getStepList('Success'))}
+        />
+      )
+    })
+
+    await screen.findByRole('ReloadSequence')
+
+    const reloadButton = screen.queryByRole('ReloadSequence') as HTMLButtonElement
+    expect(reloadButton.disabled).to.false
+  })
+
   it('should disable Reload action when sequencer is in Running state | ESW-583', async () => {
     renderWithAuth({
       ui: (

@@ -5,6 +5,7 @@ import { Button, Tooltip } from 'antd'
 import React from 'react'
 import { useLoadAction } from '../../hooks/useLoadAction'
 import { useStepListContext } from '../../hooks/useStepListContext'
+import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 export const ReloadSequence = ({
@@ -19,8 +20,12 @@ export const ReloadSequence = ({
   const reloadSequence = useLoadAction(
     sequence && sequence.length > 0 ? new Sequence([sequence[0], ...sequence.slice(1)]) : undefined
   )
-
-  const disabled = !(sequencerState === 'Loaded' || stepList?.isFailed())
+  const stepListInfo = stepList && getStepListInfo(stepList)
+  const disabled = !(
+    sequencerState === 'Loaded' ||
+    stepList?.isFailed() ||
+    stepListInfo?.status === 'All Steps Completed'
+  )
   return (
     <Tooltip title={'Reload sequence'}>
       <Button

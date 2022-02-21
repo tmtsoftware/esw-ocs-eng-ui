@@ -10,8 +10,9 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { PlayPauseSequence } from './PlayPauseSequence'
-import { StepComponent } from './StepComponent'
+import { ReloadSequence } from './ReloadSequence'
 import type { StepData } from './StepComponent'
+import { StepComponent } from './StepComponent'
 import { StepThroughSequence } from './StepThroughSequence'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
@@ -103,6 +104,7 @@ const StepListHeader = ({
     <Row style={{ margin: '1rem' }} justify={'space-between'} align='middle'>
       <StepListTitle stepListStatus={stepListInfo.status} />
       <Space align='center'>
+        <ReloadSequence sequencerState={sequencerState._type} stepList={stepList} />
         <PlayPauseSequence
           sequencerState={sequencerState._type}
           isPaused={stepList.isPaused()}

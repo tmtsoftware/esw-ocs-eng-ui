@@ -492,6 +492,57 @@ describe('stepList table', () => {
     expect(screen.queryByRole('ResumeSequence')).to.null
     expect(screen.queryByRole('PauseSequence')).to.null
   })
+
+  it('should enable Reload action when sequencer is in Loaded state | ESW-583', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Loaded', getStepList('Pending'))}
+        />
+      )
+    })
+
+    await screen.findByRole('ReloadSequence')
+
+    const reloadButton = screen.queryByRole('ReloadSequence') as HTMLButtonElement
+    expect(reloadButton.disabled).to.false
+  })
+
+  it('should disable Reload action when sequencer is in Running state | ESW-583', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Running', getStepList('InFlight'))}
+        />
+      )
+    })
+
+    await screen.findByRole('ReloadSequence')
+
+    const reloadButton = screen.queryByRole('ReloadSequence') as HTMLButtonElement
+    expect(reloadButton.disabled).to.true
+  })
+
+  it('should enable Reload action when sequencer is in Failed state | ESW-583', async () => {
+    renderWithAuth({
+      ui: (
+        <StepListTable
+          sequencerPrefix={Prefix.fromString('ESW.irisDarkNight')}
+          setSelectedStep={() => ({})}
+          sequencerStateResponse={getSequencerStateResponse('Idle', getStepList('Failure'))}
+        />
+      )
+    })
+
+    await screen.findByRole('ReloadSequence')
+
+    const reloadButton = screen.queryByRole('ReloadSequence') as HTMLButtonElement
+    expect(reloadButton.disabled).to.false
+  })
 })
 
 const findCell = (name: string) => screen.findByRole('cell', { name })

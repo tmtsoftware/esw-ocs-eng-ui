@@ -21,6 +21,7 @@ export const ReloadSequence = ({
     sequence && sequence.length > 0 ? new Sequence([sequence[0], ...sequence.slice(1)]) : undefined
   )
   const stepListInfo = stepList && getStepListInfo(stepList)
+
   const disabled = !(
     sequencerState === 'Loaded' ||
     stepList?.isFailed() ||

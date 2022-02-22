@@ -1,15 +1,14 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Prefix, Sequence } from '@tmtsoftware/esw-ts'
-import type { OkOrUnhandledResponse, SequencerState } from '@tmtsoftware/esw-ts'
+import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
+import { Sequence } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
-import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { ReloadSequence } from '../../../../../src/features/sequencer/components/steplist/ReloadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList } from '../../../../utils/sequence-utils'
-import { renderWithAuth, renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('ReloadSequence', () => {
   afterEach(async () => {

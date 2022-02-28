@@ -31,9 +31,9 @@ describe('ReloadSequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-583`, async () => {
-      const stepList = getStepList('Pending')
+      const stepList = getStepList('Success')
       when(sequencerServiceMock.loadSequence(anything())).thenResolve(res)
-      renderWithStepListContext(<ReloadSequence sequencerState={'Loaded'} stepList={stepList} />)
+      renderWithStepListContext(<ReloadSequence stepList={stepList} />)
 
       const button = await screen.findByRole('ReloadSequence')
       expect(button).to.exist

@@ -104,7 +104,7 @@ const StepListHeader = ({
     <Row style={{ margin: '1rem' }} justify={'space-between'} align='middle'>
       <StepListTitle stepListStatus={stepListInfo.status} />
       <Space align='center'>
-        <ReloadSequence sequencerState={sequencerState._type} stepList={stepList} />
+        <ReloadSequence stepList={stepList} />
         <PlayPauseSequence
           sequencerState={sequencerState._type}
           isPaused={stepList.isPaused()}

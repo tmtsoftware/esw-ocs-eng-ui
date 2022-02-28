@@ -1,5 +1,4 @@
 import { ReloadOutlined } from '@ant-design/icons'
-import type { SequencerState } from '@tmtsoftware/esw-ts'
 import { Sequence, StepList } from '@tmtsoftware/esw-ts'
 import { Button, Tooltip } from 'antd'
 import React from 'react'
@@ -8,13 +7,7 @@ import { useStepListContext } from '../../hooks/useStepListContext'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
-export const ReloadSequence = ({
-  sequencerState,
-  stepList
-}: {
-  sequencerState: SequencerState['_type']
-  stepList?: StepList
-}): JSX.Element => {
+export const ReloadSequence = ({ stepList }: { stepList?: StepList }): JSX.Element => {
   const { sequencerService } = useStepListContext()
   const sequence = stepList?.steps.map((step) => step.command)
   const reloadSequence = useLoadAction(
@@ -22,11 +15,7 @@ export const ReloadSequence = ({
   )
   const stepListInfo = stepList && getStepListInfo(stepList)
 
-  const disabled = !(
-    sequencerState === 'Loaded' ||
-    stepList?.isFailed() ||
-    stepListInfo?.status === 'All Steps Completed'
-  )
+  const disabled = !(stepList?.isFailed() || stepListInfo?.status === 'All Steps Completed')
   return (
     <Tooltip title={'Reload sequence'}>
       <Button

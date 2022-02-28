@@ -493,7 +493,7 @@ describe('stepList table', () => {
     expect(screen.queryByRole('PauseSequence')).to.null
   })
 
-  it('should enable Reload action when sequencer is in Loaded state | ESW-583', async () => {
+  it('should disable Reload action when sequencer is in Loaded state | ESW-583', async () => {
     renderWithAuth({
       ui: (
         <StepListTable
@@ -507,7 +507,7 @@ describe('stepList table', () => {
     await screen.findByRole('ReloadSequence')
 
     const reloadButton = screen.queryByRole('ReloadSequence') as HTMLButtonElement
-    expect(reloadButton.disabled).to.false
+    expect(reloadButton.disabled).to.true
   })
 
   it('should enable Reload action when sequence execution is completed | ESW-583', async () => {

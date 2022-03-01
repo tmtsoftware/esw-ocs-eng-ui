@@ -7,7 +7,7 @@ ThisBuild / organizationName := "TMT Org"
 ThisBuild / docsRepo := "https://github.com/tmtsoftware/tmtsoftware.github.io.git"
 ThisBuild / docsParentDir := "esw-ocs-eng-ui"
 ThisBuild / gitCurrentRepo := "https://github.com/tmtsoftware/esw-ocs-eng-ui"
-version := sys.env.getOrElse("JITPACK_VERSION", "0.1.0-SNAPSHOT")
+ThisBuild / version := sys.env.getOrElse("JITPACK_VERSION", "0.1.0-SNAPSHOT")
 
 lazy val openSite =
   Def.setting {

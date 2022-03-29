@@ -42,8 +42,9 @@ const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): Resource
 
   const nonConfigurableResources = getResources(groupedObsModes['Non-configurable'])
   const nonConfigurableResourceData: ResourceData[] = nonConfigurableResources.flatMap((resource) => {
-    const found = inUseResourceData.find((data) => data.key === resource)
-    return found ? [] : [mkResourceData(resource, 'Available', 'NA')]
+    const foundInConfigurable = availableResourceData.find((data) => data.key === resource)
+    const foundInRunning = inUseResourceData.find((data) => data.key === resource)
+    return foundInRunning || foundInConfigurable ? [] : [mkResourceData(resource, 'Available', 'NA')]
   })
 
   return [...inUseResourceData, ...availableResourceData, ...nonConfigurableResourceData].sort(byStatus)

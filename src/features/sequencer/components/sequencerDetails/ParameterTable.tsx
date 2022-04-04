@@ -16,7 +16,10 @@ const columns: ColumnsType<ParameterDataType> = [
     title: <HeaderTitle title='Parameter' />,
     dataIndex: 'parameter',
     key: 'parameter',
-    width: '12rem'
+    width: '12rem',
+    sortDirections: [],
+    defaultSortOrder: 'ascend',
+    sorter: (a, b) => a.parameter.localeCompare(b.parameter)
   },
   {
     title: <HeaderTitle title='Values' />,

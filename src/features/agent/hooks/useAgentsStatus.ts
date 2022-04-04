@@ -5,7 +5,7 @@ import type { UseQueryResult } from '../../../hooks/useQuery'
 import { useQuery } from '../../../hooks/useQuery'
 import { AGENTS_STATUS } from '../../queryKeys'
 
-export const UNKNOWN_AGENT = new ComponentId(new Prefix('ESW', 'Unknown'), 'Machine')
+export const UNKNOWN_AGENT = new ComponentId(new Prefix('ESW', 'Standalone'), 'Machine')
 
 const assignUnknownAgents = (agentStatus: AgentStatusSuccess) => {
   if (agentStatus.seqCompsWithoutAgent.length === 0) {

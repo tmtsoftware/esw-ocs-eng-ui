@@ -20,7 +20,7 @@ const SMStatus = (): JSX.Element => {
   const [txtType, text]: [BaseType, string] = loading
     ? ['warning', 'Loading...']
     : smLocation?.metadata
-    ? ['success', `Running on ${smLocation.metadata.agentPrefix || 'unknown'}`]
+    ? ['success', `Running on ${smLocation.metadata.agentPrefix || 'Standalone'}`]
     : ['danger', 'Service down']
 
   return <Typography.Text type={txtType}>{text}</Typography.Text>

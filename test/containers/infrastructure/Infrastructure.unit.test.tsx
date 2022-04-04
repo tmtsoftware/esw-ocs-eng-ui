@@ -148,7 +148,7 @@ describe('Infrastructure page', () => {
       )
     })
 
-    await screen.findByText('Running on unknown')
+    await screen.findByText('Running on Standalone')
   })
 
   it('should refetch agent cards after configure success | ESW-443', async () => {

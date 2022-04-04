@@ -119,7 +119,7 @@ describe('Agents Grid View', () => {
     await screen.findByText('ESW.machine1')
     expect(screen.getByText('ESW.machine1')).exist
     expect(screen.getByText('IRIS.comp1')).exist
-    expect(screen.getByText('Unknown')).exist
+    expect(screen.getByText('Standalone')).exist
     expect(screen.getByText('IRIS.comp1')).exist
     expect(screen.getByText('[IRIS.clearskies]')).exist
     expect(screen.getByText('TCS.comp1')).exist

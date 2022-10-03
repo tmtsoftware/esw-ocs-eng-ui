@@ -67,7 +67,7 @@ describe('StopSequence', () => {
 
     userEvent.click(stopSeqButton1, { button: 0 })
     await screen.findByText(stopSequenceConstants.modalTitle)
-    const modalCancelButton = within(screen.getByRole('document')).getByRole('button', {
+    const modalCancelButton = within(screen.getAllByRole('document')[0]).getByRole('button', {
       name: 'Cancel'
     })
     userEvent.click(modalCancelButton)
@@ -79,7 +79,7 @@ describe('StopSequence', () => {
 
     userEvent.click(stopSeqButton2, { button: 0 })
     await screen.findByText(stopSequenceConstants.modalTitle)
-    const modalConfirmButton = within(screen.getByRole('document')).getByRole('button', {
+    const modalConfirmButton = within(screen.getAllByRole('document')[0]).getByRole('button', {
       name: stopSequenceConstants.modalOkText
     })
 

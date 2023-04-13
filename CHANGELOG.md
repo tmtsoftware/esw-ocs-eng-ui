@@ -4,7 +4,7 @@ The ESW-OCS-ENG-UI provides a browser based User Interface to manage and track s
 
 This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tmtsoftware/esw-ocs-eng-ui)
 
-## [ESW-OCS-ENG-UI v0.3.1] - 2023-03-28
+## [ESW-OCS-ENG-UI v0.3.1] - 2023-04-13
 
 - upgrading to the new versions: CSW v5.0.1, ESW v0.5.1, ESW-TS v0.4.1.
 

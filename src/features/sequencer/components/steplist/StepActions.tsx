@@ -2,12 +2,12 @@ import { CopyOutlined, MoreOutlined } from '@ant-design/icons'
 import type { Step } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu } from 'antd'
 import React from 'react'
-import { useStepListContext } from '../../hooks/useStepListContext'
-import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { AddSteps } from './AddSteps'
 import { BreakpointAction } from './BreakpointActions'
 import { DeleteAction } from './DeleteAction'
 import { ReplaceStep } from './ReplaceStep'
+import { useStepListContext } from '../../hooks/useStepListContext'
+import styles from '../sequencerDetails/sequencerDetails.module.css'
 
 const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element => {
   const status = step.status._type

@@ -65,7 +65,7 @@ describe('Shutdown button for Sequencer ', () => {
 
       await waitFor(() => expect(shutdownButton.disabled).false)
 
-      userEvent.click(shutdownButton, { button: 0 })
+      await userEvent.click(shutdownButton, { button: 0 })
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(modalMessage)
@@ -75,7 +75,7 @@ describe('Shutdown button for Sequencer ', () => {
         name: observationShutdownConstants.modalOkText
       })
 
-      userEvent.click(modalShutdownButton)
+      await userEvent.click(modalShutdownButton)
       await screen.findByText(message)
 
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()

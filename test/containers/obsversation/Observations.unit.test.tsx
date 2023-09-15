@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { AkkaLocation, ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
-import { AkkaConnection, ObsMode, Prefix, StepList } from '@tmtsoftware/esw-ts'
+import type { PekkoLocation, ObsModesDetailsResponseSuccess } from '@tmtsoftware/esw-ts'
+import { PekkoConnection, ObsMode, Prefix, StepList } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -63,12 +63,12 @@ describe('Observation page', () => {
     expect(noRunningObsModes).to.exist
 
     // User will click on configurable tab
-    userEvent.click(configurableTab)
+    await userEvent.click(configurableTab)
 
     await screen.findByText('No Configurable ObsModes')
 
     // User will click on non-configurable tab
-    userEvent.click(nonConfigurableTab)
+    await userEvent.click(nonConfigurableTab)
 
     await screen.findByText('No Non-configurable ObsModes')
 
@@ -124,14 +124,14 @@ describe('Observation page', () => {
       const tab = await screen.findByRole('tab', {
         name: tabName
       })
-      userEvent.click(tab)
+      await userEvent.click(tab)
 
       const menuItem = await screen.findByRole('menuitem', {
         name: obsModes[0]
       })
       await screen.findByRole('menuitem', { name: new RegExp(obsModes[0]) })
 
-      userEvent.click(menuItem)
+      await userEvent.click(menuItem)
       expect(screen.getAllByText(obsModes[0])).to.have.length(2)
 
       //Checking that obsMode status is NA
@@ -187,19 +187,19 @@ describe('Observation page', () => {
     const shutdownButton = within(runningTabPanel).getByRole('button', {
       name: observationShutdownConstants.buttonText
     })
-    userEvent.click(shutdownButton)
+    await userEvent.click(shutdownButton)
 
     const modalDocument = await screen.findByRole('document')
     const modalShutdownButton = within(modalDocument).getByRole('button', {
       name: observationShutdownConstants.modalOkText
     })
 
-    userEvent.click(modalShutdownButton)
+    await userEvent.click(modalShutdownButton)
 
     const configurableTab = await screen.findByRole('tab', {
       name: 'Configurable'
     })
-    userEvent.click(configurableTab)
+    await userEvent.click(configurableTab)
     await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
 
     const configurableTabPanel = await screen.findByRole('tabpanel')
@@ -228,9 +228,9 @@ describe('Observation page', () => {
 
   const setSequencerServiceMockForLoadedState = () => {
     const eswSequencerPrefix = new Prefix('ESW', 'DarkNight_1')
-    const eswSequencerConnection = AkkaConnection(eswSequencerPrefix, 'Sequencer')
-    const eswSequencerLocation: AkkaLocation = {
-      _type: 'AkkaLocation',
+    const eswSequencerConnection = PekkoConnection(eswSequencerPrefix, 'Sequencer')
+    const eswSequencerLocation: PekkoLocation = {
+      _type: 'PekkoLocation',
       connection: eswSequencerConnection,
       uri: 'http://localhost:5000/',
       metadata: {}

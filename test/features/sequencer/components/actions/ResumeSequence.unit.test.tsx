@@ -31,7 +31,7 @@ describe('Resume Sequence', () => {
 
       const button = await screen.findByRole('ResumeSequence')
 
-      userEvent.click(button)
+      await userEvent.click(button)
 
       await screen.findByText(msg)
 
@@ -46,7 +46,7 @@ describe('Resume Sequence', () => {
 
     const button = await screen.findByRole('ResumeSequence')
 
-    userEvent.click(button)
+    await userEvent.click(button)
 
     await screen.findByText(`${resumeSequenceConstants.failureMessage}, reason: Something went wrong`)
 

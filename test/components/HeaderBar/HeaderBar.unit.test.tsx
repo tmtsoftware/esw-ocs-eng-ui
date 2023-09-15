@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
@@ -10,7 +10,6 @@ import { renderWithAuth } from '../../utils/test-utils'
 
 const leftClick = { button: 0 }
 describe('header bar', () => {
-  afterEach(() => cleanup())
   it('renders with logout button & logo when user is logged in | ESW-441', async () => {
     renderWithAuth({
       ui: (
@@ -25,7 +24,7 @@ describe('header bar', () => {
     expect(logo).to.exist
 
     //should be able to click on logo
-    userEvent.click(logo, leftClick)
+    await userEvent.click(logo, leftClick)
     expect(window.location.pathname).to.equal(HOME)
 
     const logoutButton = await screen.findByText('ESW-USER')
@@ -46,7 +45,7 @@ describe('header bar', () => {
     })
 
     const logoutButton = await screen.findByText('ESW-USER')
-    userEvent.click(logoutButton, leftClick)
+    await userEvent.click(logoutButton, leftClick)
     // wait for dropdown to appear
     const logoutMenuItem = await screen.findByRole('menuitem')
     await waitFor(() => userEvent.click(logoutMenuItem))

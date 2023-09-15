@@ -75,7 +75,7 @@ describe('sequencer table', () => {
     })
 
     const sequencer = await screen.findByRole('link')
-    userEvent.click(sequencer)
+    await userEvent.click(sequencer)
 
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darknight')

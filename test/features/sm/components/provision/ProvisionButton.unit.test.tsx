@@ -47,7 +47,7 @@ describe('ProvisionButton component', () => {
     const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
-    userEvent.click(provisionButton)
+    await userEvent.click(provisionButton)
 
     //Provision config modal will appear with provision button
     await assertDialog()
@@ -59,7 +59,7 @@ describe('ProvisionButton component', () => {
       name: provisionConstants.modalOkText
     })
 
-    userEvent.click(confirmButton)
+    await userEvent.click(confirmButton)
     await screen.findByText(provisionConstants.successMessage)
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
@@ -74,7 +74,7 @@ describe('ProvisionButton component', () => {
     const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
-    userEvent.click(provisionButton)
+    await userEvent.click(provisionButton)
 
     //Provision config modal will not appear
     await waitFor(
@@ -128,7 +128,7 @@ describe('ProvisionButton component', () => {
       const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
-      userEvent.click(provisionButton)
+      await userEvent.click(provisionButton)
 
       //Provision config modal will not appear
       await waitFor(
@@ -215,7 +215,7 @@ describe('ProvisionButton component', () => {
       const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
-      userEvent.click(provisionButton)
+      await userEvent.click(provisionButton)
 
       //Provision config modal will appear with provision button
       await assertDialog()
@@ -227,7 +227,7 @@ describe('ProvisionButton component', () => {
         name: provisionConstants.modalOkText
       })
 
-      userEvent.click(confirmButton)
+      await userEvent.click(confirmButton)
       await screen.findByText(errMsg)
 
       verify(smService.provision(deepEqual(provisionConfig))).called()

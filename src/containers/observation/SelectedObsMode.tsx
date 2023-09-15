@@ -1,10 +1,10 @@
 import type { ObsModeDetails } from '@tmtsoftware/esw-ts'
 import React from 'react'
-import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ConfiguredObsMode } from './ConfiguredObsMode'
 import type { TabName } from './ObservationTabs'
 import { ConfigurableObsMode, NonConfigurableObsMode } from './ObsMode'
 import { ConfigurableActions } from './ObsModeActions'
+import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 
 type SelectedObsModeProps = {
   currentTab: TabName

@@ -1,10 +1,10 @@
 import { Card, Col, Row, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import styles from './home.module.css'
 import { InfraIcon, ResourceIcon, TelescopeIcon } from '../../components/icons'
 import { SMCard } from '../../features/sm/components/smcard/SMCard'
 import { INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../routes/RoutesConfig'
-import styles from './home.module.css'
 
 type CardDetail = {
   title: string

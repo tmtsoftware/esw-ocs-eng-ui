@@ -2,14 +2,14 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { Result } from 'antd'
 import React, { useEffect } from 'react'
 import { Route, Routes as RouterRoutes } from 'react-router-dom'
+import { NoMatch } from './NoMatch'
+import { HOME, INFRASTRUCTURE, NO_MATCH, OBSERVATIONS, RESOURCES, SEQUENCER_PATH } from './RoutesConfig'
 import { Home } from '../containers/home/Home'
 import { Infrastructure } from '../containers/infrastructure/Infrastructure'
 import { Observations } from '../containers/observation/Observations'
 import { Resources } from '../containers/resources/Resources'
 import { ManageSequencer } from '../containers/sequencer/ManageSequencer'
 import { useAuth } from '../hooks/useAuth'
-import { NoMatch } from './NoMatch'
-import { HOME, INFRASTRUCTURE, NO_MATCH, OBSERVATIONS, RESOURCES, SEQUENCER_PATH } from './RoutesConfig'
 
 const RedirectToLogin = () => {
   const { login } = useAuth()

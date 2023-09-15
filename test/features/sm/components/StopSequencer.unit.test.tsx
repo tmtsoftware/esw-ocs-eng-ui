@@ -73,7 +73,7 @@ describe('Stop Sequencer', () => {
 
       const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
 
-      userEvent.click(stopSequencer)
+      await userEvent.click(stopSequencer)
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(modalTitleText)
@@ -82,7 +82,7 @@ describe('Stop Sequencer', () => {
       const confirmButton = screen.getByRole('button', {
         name: stopSequencerConstants.modalOkText
       })
-      userEvent.click(confirmButton)
+      await userEvent.click(confirmButton)
 
       await screen.findByText(message)
 
@@ -108,14 +108,14 @@ describe('Stop Sequencer', () => {
 
     const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
     const modalTitleText = stopSequencerConstants.getModalTitle(darkNight.toJSON())
-    userEvent.click(stopSequencer)
+    await userEvent.click(stopSequencer)
     const modalTitle = await screen.findByText(modalTitleText)
     expect(modalTitle).to.exist
 
     const confirmButton = screen.getByRole('button', {
       name: stopSequencerConstants.modalOkText
     })
-    userEvent.click(confirmButton)
+    await userEvent.click(confirmButton)
     await screen.findByText(stopSequencerConstants.successMessage(darkNight))
 
     verify(smService.shutdownSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()

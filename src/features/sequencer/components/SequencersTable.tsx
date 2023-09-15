@@ -5,11 +5,11 @@ import type { ColumnsType } from 'antd/lib/table/interface'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import styles from './sequencerTable.module.css'
 import { HeaderTitle } from '../../../components/table/HeaderTitle'
 import { getSequencerPath } from '../../../routes/RoutesConfig'
 import { SmSequencerAction } from '../../sm/components/sequencer/SmSequencerAction'
 import type { SequencerInfo, StepListInfo } from '../utils'
-import styles from './sequencerTable.module.css'
 
 const Settings = ({ prefix, disabled }: { prefix: string; disabled: boolean }): JSX.Element => {
   const icon = (

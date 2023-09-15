@@ -1,11 +1,11 @@
 import type { ObsMode } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
+import type { TabName } from './ObservationTabs'
 import { useSMService } from '../../contexts/SMContext'
 import { ShutdownButton } from '../../features/sequencer/components/actions/ShutdownButton'
 import { useConfigureAction } from '../../features/sm/hooks/useConfigureAction'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
-import type { TabName } from './ObservationTabs'
 
 type ObsModeActionsProps = {
   tabName?: TabName

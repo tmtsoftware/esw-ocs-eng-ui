@@ -28,8 +28,8 @@ describe('Spawn sequence component icon', () => {
     await assertPopup()
     const textBox = screen.getByRole('textbox')
     await waitFor(() => userEvent.click(textBox))
-    userEvent.type(textBox, ' primary21 ')
-    userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await userEvent.type(textBox, ' primary21 ')
+    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.whiteSpaceValidation)
   })
 
@@ -40,8 +40,8 @@ describe('Spawn sequence component icon', () => {
     await assertPopup()
     const textBox = screen.getByRole('textbox')
     await waitFor(() => userEvent.click(textBox))
-    userEvent.type(textBox, 'primary-21')
-    userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await userEvent.type(textBox, 'primary-21')
+    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.hyphenValidation)
   })
 
@@ -71,8 +71,8 @@ describe('Spawn sequence component icon', () => {
       await assertPopup()
       const textBox = screen.getByRole('textbox')
       await waitFor(() => userEvent.click(textBox))
-      userEvent.type(textBox, seqCompName)
-      userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+      await userEvent.type(textBox, seqCompName)
+      await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
       await screen.findByText(message)
     })

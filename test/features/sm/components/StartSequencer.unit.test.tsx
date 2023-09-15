@@ -33,7 +33,7 @@ describe('Start Sequencer', () => {
     const startSequencerButton = screen.getByRole('button', {
       name: startSequencerConstants.buttonText
     })
-    userEvent.click(startSequencerButton)
+    await userEvent.click(startSequencerButton)
 
     const modal = await screen.findByRole('dialog', {
       name: startSequencerConstants.modalTitle
@@ -43,7 +43,7 @@ describe('Start Sequencer', () => {
     await enterUserInputInAutoComplete(modal, startSequencerConstants.obsModeInputLabel, 'dark', obsMode.name)
 
     const confirmButton = screen.getByRole('button', { name: startSequencerConstants.modalOkText })
-    userEvent.click(confirmButton)
+    await userEvent.click(confirmButton)
 
     await screen.findByText(startSequencerConstants.successMessage)
     verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()
@@ -63,7 +63,7 @@ describe('Start Sequencer', () => {
     const startSequencerButton = screen.getByRole('button', {
       name: startSequencerConstants.buttonText
     })
-    userEvent.click(startSequencerButton)
+    await userEvent.click(startSequencerButton)
 
     const modal = await screen.findByRole('dialog', {
       name: startSequencerConstants.modalTitle
@@ -76,7 +76,7 @@ describe('Start Sequencer', () => {
 
     const confirmButton = screen.getByRole('button', { name: startSequencerConstants.modalOkText })
 
-    userEvent.click(confirmButton)
+    await userEvent.click(confirmButton)
 
     await screen.findByText(startSequencerConstants.successMessage)
     verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), deepEqual(variation))).called()
@@ -91,7 +91,7 @@ describe('Start Sequencer', () => {
     })
 
     const startSequencerButton = screen.getByRole('button', { name: startSequencerConstants.buttonText })
-    userEvent.click(startSequencerButton)
+    await userEvent.click(startSequencerButton)
 
     const modal = await screen.findByRole('dialog', {
       name: startSequencerConstants.modalTitle
@@ -113,8 +113,8 @@ const enterUserInputInSelect = async (
   optionToChoose: string
 ) => {
   const combobox = within(withinElement).getByRole('combobox', { name: label })
-  userEvent.click(combobox)
-  userEvent.type(combobox, userInput)
+  await userEvent.click(combobox)
+  await userEvent.type(combobox, userInput)
   const option = await screen.findByText(optionToChoose)
 
   await waitFor(() => userEvent.click(option))
@@ -127,8 +127,8 @@ const enterUserInputInAutoComplete = async (
   optionToChoose: string
 ) => {
   const combobox = within(withinElement).getByRole('combobox', { name: label })
-  userEvent.click(combobox)
-  userEvent.type(combobox, userInput)
+  await userEvent.click(combobox)
+  await userEvent.type(combobox, userInput)
 
   const obsModeItem = await screen.findAllByText(optionToChoose)
   await waitFor(() => userEvent.click(obsModeItem[1]))
@@ -136,6 +136,6 @@ const enterUserInputInAutoComplete = async (
 
 const enterUserInputInInputBox = async (withinElement: HTMLElement, label: string, userInput: string) => {
   const combobox = within(withinElement).getByRole('textbox', { name: label })
-  userEvent.click(combobox)
-  userEvent.type(combobox, userInput)
+  await userEvent.click(combobox)
+  await userEvent.type(combobox, userInput)
 }

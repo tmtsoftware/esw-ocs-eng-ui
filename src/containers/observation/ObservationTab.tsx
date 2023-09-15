@@ -1,11 +1,11 @@
 import type { Subsystem } from '@tmtsoftware/esw-ts'
 import { Empty, Layout, Menu } from 'antd'
 import React, { useState } from 'react'
+import type { TabName } from './ObservationTabs'
+import { SelectedObsMode } from './SelectedObsMode'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import globalStyles from '../../index.module.css'
-import type { TabName } from './ObservationTabs'
-import { SelectedObsMode } from './SelectedObsMode'
 
 const { Sider, Content } = Layout
 

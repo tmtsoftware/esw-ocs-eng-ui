@@ -1,10 +1,10 @@
 import type { Step, StepStatusFailure } from '@tmtsoftware/esw-ts'
 import { Alert, Descriptions, Empty, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
-import globalStyles from '../../../../index.module.css'
-import { stepConstants } from '../../sequencerConstants'
 import { ParameterTable } from './ParameterTable'
 import styles from './sequencerDetails.module.css'
+import globalStyles from '../../../../index.module.css'
+import { stepConstants } from '../../sequencerConstants'
 
 const StepItem = (label: string, item: string) => {
   const [isVisible, setVisible] = useState<boolean>(false)

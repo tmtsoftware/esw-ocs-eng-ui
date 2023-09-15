@@ -33,7 +33,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
 
     await screen.findByText(insertBreakPointConstants.menuItemText)
   })
@@ -42,7 +42,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(true, stepStatusPending)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
     await screen.findByText(removeBreakPointConstants.menuItemText)
   })
 
@@ -50,7 +50,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
@@ -67,7 +67,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusFailure)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
@@ -94,7 +94,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
@@ -121,7 +121,7 @@ describe('StepActions', () => {
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
     const insertMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(insertBreakPointConstants.menuItemText)
     })) as HTMLMenuElement
@@ -160,7 +160,7 @@ describe('StepActions', () => {
       )
     })
 
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
 
     const duplicateMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(duplicateStepConstants.menuItemText)
@@ -185,7 +185,7 @@ describe('StepActions', () => {
       )
     })
 
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
 
     const addStepsMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(addStepConstants.menuItemText)
@@ -211,7 +211,7 @@ describe('StepActions', () => {
       )
     })
 
-    userEvent.click(await screen.findByRole('stepActions'))
+    await userEvent.click(await screen.findByRole('stepActions'))
 
     const replaceStepMenu = (await screen.findByRole('menuitem', {
       name: new RegExp(replaceStepConstants.menuItemText)

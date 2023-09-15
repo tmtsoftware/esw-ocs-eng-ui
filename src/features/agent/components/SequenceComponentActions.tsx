@@ -2,12 +2,12 @@ import { MoreOutlined } from '@ant-design/icons'
 import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Grid, Menu } from 'antd'
 import React from 'react'
+import styles from './agentCards.module.css'
+import { KillSequenceComponent } from './KillSequenceComponent'
 import { ReloadScript } from '../../sm/components/ReloadScript'
 import { StopSequencer } from '../../sm/components/StopSequencer'
 import { useSequencerState } from '../../sm/hooks/useSequencerState'
 import { disabledSequencerActions } from '../agentConstants'
-import styles from './agentCards.module.css'
-import { KillSequenceComponent } from './KillSequenceComponent'
 
 const { useBreakpoint } = Grid
 

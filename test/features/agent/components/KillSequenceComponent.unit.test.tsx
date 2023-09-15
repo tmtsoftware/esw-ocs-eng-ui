@@ -49,7 +49,7 @@ describe('Kill sequence component button', () => {
 
       const document = screen.getByRole('document')
       const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
-      userEvent.click(confirm)
+      await userEvent.click(confirm)
 
       await screen.findByText(message)
 

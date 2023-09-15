@@ -44,10 +44,10 @@ describe('sequencer details', () => {
   const sequenceComponentPrefix = 'ESW.ESW1'
 
   const sequencerLoc: Location = {
-    _type: 'AkkaLocation',
+    _type: 'PekkoLocation',
     connection: {
       componentType: 'Sequencer',
-      connectionType: 'akka',
+      connectionType: 'pekko',
       prefix: Prefix.fromString(darkNightSequencer)
     },
     metadata: {
@@ -172,7 +172,7 @@ describe('sequencer details', () => {
     const [, , , parameterBodyTable] = screen.queryAllByRole('table')
 
     const step = screen.getByRole('button', { name: /Command-2/i })
-    userEvent.click(step)
+    await userEvent.click(step)
 
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
@@ -224,7 +224,7 @@ describe('sequencer details', () => {
     ]
 
     const step1 = screen.getByRole('button', { name: /Command-1/i })
-    userEvent.click(step1)
+    await userEvent.click(step1)
     labels1.forEach(([key, value]) => {
       const keyLabel = screen.getByLabelText(`${key}-Key`)
       const valueLabel = screen.getByLabelText(`${key}-Value`)
@@ -232,7 +232,7 @@ describe('sequencer details', () => {
       expect(valueLabel.innerText).to.equals(value)
     })
     const step2 = screen.getByRole('button', { name: /Command-2/i })
-    userEvent.click(step2)
+    await userEvent.click(step2)
     labels2.forEach(([key, value]) => {
       const keyLabel = screen.getByLabelText(`${key}-Key`)
       const valueLabel = screen.getByLabelText(`${key}-Value`)

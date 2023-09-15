@@ -2,10 +2,10 @@ import { DownOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import styles from './headerBar.module.css'
 import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
 import { getUsername } from '../../utils/getUsername'
-import styles from './headerBar.module.css'
 
 export const HeaderBar = (): JSX.Element => {
   const { auth, logout } = useAuth()

@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
@@ -93,9 +93,6 @@ describe('Configure button', () => {
     reset(smService)
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
   })
-  afterEach(() => {
-    cleanup()
-  })
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({
       ui: <Configure disabled={true} />
@@ -104,7 +101,7 @@ describe('Configure button', () => {
     const button = await screen.findByRole('button', {
       name: configureConstants.modalOkText
     })
-    userEvent.click(button)
+    await userEvent.click(button)
 
     const dialog = screen.queryByRole('dialog', {
       name: configureConstants.modalTitle
@@ -119,7 +116,7 @@ describe('Configure button', () => {
       ui: <Configure disabled={false} />
     })
     const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
-    userEvent.click(button)
+    await userEvent.click(button)
 
     const dialog = await screen.findByRole('dialog', {
       name: configureConstants.modalTitle
@@ -186,7 +183,7 @@ describe('Configure button', () => {
 
 const openConfigureModalAndClickConfigureButton = async () => {
   const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
-  userEvent.click(button)
+  await userEvent.click(button)
   const dialog = screen.getByRole('dialog', {
     name: configureConstants.modalTitle
   })
@@ -196,14 +193,14 @@ const openConfigureModalAndClickConfigureButton = async () => {
   })
 
   //select item by clicking on it
-  userEvent.click(darkNightObsMode)
+  await userEvent.click(darkNightObsMode)
   const configureButton = within(dialog).getByRole('button', {
     name: configureConstants.modalOkText
 
     // wait for button to be enabled.
   }) as HTMLButtonElement
-  await waitFor(() => {
+  await waitFor(async () => {
     expect(configureButton.disabled).false
-    userEvent.click(configureButton)
+    await userEvent.click(configureButton)
   })
 }

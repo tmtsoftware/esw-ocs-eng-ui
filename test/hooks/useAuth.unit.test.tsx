@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
+import { renderHook, waitFor } from '@testing-library/react'
 import { AuthContext } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
@@ -8,7 +8,7 @@ import { getMockAuth } from '../utils/test-utils'
 
 describe('Auth hook', () => {
   it('Auth should return null if not initialised', async () => {
-    const { result, waitFor } = renderHook(() => useAuth())
+    const { result } = renderHook(() => useAuth())
     await waitFor(() => {
       return result.current !== null
     })
@@ -29,7 +29,7 @@ describe('Auth hook', () => {
       </AuthContext.Provider>
     )
 
-    const { result, waitFor } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper
     })
 

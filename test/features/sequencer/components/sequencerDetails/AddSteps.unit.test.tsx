@@ -73,11 +73,11 @@ describe('AddSteps', () => {
       const addStepsButton = await screen.findByRole('button', {
         name: new RegExp(addStepConstants.menuItemText)
       })
-      userEvent.click(addStepsButton)
+      await userEvent.click(addStepsButton)
 
       // eslint-disable-next-line testing-library/no-node-access
       const inputBox = addStepsButton.firstChild as HTMLInputElement
-      userEvent.upload(inputBox, file)
+      await userEvent.upload(inputBox, file)
 
       await screen.findByText(message)
       verify(sequencerServiceMock.insertAfter(id, deepEqual(commands))).called()
@@ -96,11 +96,11 @@ describe('AddSteps', () => {
     const addStepsButton = await screen.findByRole('button', {
       name: new RegExp(addStepConstants.menuItemText)
     })
-    userEvent.click(addStepsButton)
+    await userEvent.click(addStepsButton)
 
     // eslint-disable-next-line testing-library/no-node-access
     const inputBox = addStepsButton.firstChild as HTMLInputElement
-    userEvent.upload(inputBox, file)
+    await userEvent.upload(inputBox, file)
 
     await screen.findByText(
       _createErrorMsg(addStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserializeReason)

@@ -45,7 +45,7 @@ describe('observation tabs', () => {
     const shutdownButton = await screen.findByRole('button', {
       name: observationShutdownConstants.buttonText
     })
-    userEvent.click(shutdownButton)
+    await userEvent.click(shutdownButton)
 
     await screen.findByText(modalMessage)
 
@@ -54,7 +54,7 @@ describe('observation tabs', () => {
       name: observationShutdownConstants.modalOkText
     })
 
-    userEvent.click(modalShutdownButton)
+    await userEvent.click(modalShutdownButton)
 
     await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
     await waitFor(() => verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called())
@@ -89,7 +89,7 @@ describe('observation tabs', () => {
 
     await waitFor(() => expect(configureButton.disabled).false)
 
-    userEvent.click(configureButton)
+    await userEvent.click(configureButton)
 
     await screen.findByText(configureConstants.getSuccessMessage('DarkNight_2'))
 
@@ -178,7 +178,7 @@ describe('observation tabs', () => {
       name: /DarkNight_5/i
     })
 
-    userEvent.click(menuitem)
+    await userEvent.click(menuitem)
 
     const alert = await screen.findByRole('alert')
     expect(alert.innerText).to.equals('Sequence components are not available for TCS')
@@ -195,14 +195,14 @@ describe('observation tabs', () => {
       name: /DarkNight_1/i
     })
 
-    userEvent.click(darkNight1)
+    await userEvent.click(darkNight1)
     expect(within(sequencerTable).queryAllByRole('row', { name: /DarkNight_1/i })).to.have.length(2)
 
     const darkNight8 = await screen.findByRole('menuitem', {
       name: /DarkNight_8/i
     })
 
-    userEvent.click(darkNight8)
+    await userEvent.click(darkNight8)
     // assert that previous obsMode's sequencers are removed from table.
     // and verify that new sequencers related to second obsMode are displayed.
     const [sequencerTable2] = await screen.findAllByRole('table')

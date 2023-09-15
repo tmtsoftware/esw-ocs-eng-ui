@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { FailedResponse, ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -10,10 +10,6 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
   const modalTitle = unProvisionConstants.modalTitle
-
-  afterEach(() => {
-    cleanup()
-  })
 
   const unhandled: ShutdownSequenceComponentResponse = {
     _type: 'Unhandled',
@@ -67,7 +63,7 @@ describe('UnProvision button', () => {
       const { unProvisionButton } = await renderAndFindProvisionButton()
 
       //User clicks unprovision button
-      userEvent.click(unProvisionButton)
+      await userEvent.click(unProvisionButton)
 
       //modal will appear with shutdown button
       await screen.findByRole('dialog')
@@ -79,7 +75,7 @@ describe('UnProvision button', () => {
       })
 
       //User clicks modal's shutdown button
-      userEvent.click(modalShutdownButton)
+      await userEvent.click(modalShutdownButton)
 
       await waitFor(() => {
         expect(screen.queryByText(modalTitle)).to.null

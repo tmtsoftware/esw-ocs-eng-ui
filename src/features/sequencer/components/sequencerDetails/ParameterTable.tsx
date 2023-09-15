@@ -2,8 +2,8 @@ import type { SequenceCommand } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import React from 'react'
-import { HeaderTitle } from '../../../../components/table/HeaderTitle'
 import { formatParameters } from './ParamFormatter'
+import { HeaderTitle } from '../../../../components/table/HeaderTitle'
 
 type ParameterDataType = {
   parameter: string

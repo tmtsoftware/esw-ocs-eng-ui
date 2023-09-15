@@ -1,7 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
-import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
+import { PekkoConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
-  AkkaLocation,
+  PekkoLocation,
   ObsModeDetails,
   ObsModesDetailsResponseSuccess,
   SequencerStateResponse,
@@ -22,9 +22,9 @@ describe('CurrentObsMode', () => {
   })
 
   const eswSequencerPrefix = new Prefix('ESW', 'DarkNight_1')
-  const eswSequencerConnection = AkkaConnection(eswSequencerPrefix, 'Sequencer')
-  const eswSequencerLocation: AkkaLocation = {
-    _type: 'AkkaLocation',
+  const eswSequencerConnection = PekkoConnection(eswSequencerPrefix, 'Sequencer')
+  const eswSequencerLocation: PekkoLocation = {
+    _type: 'PekkoLocation',
     connection: eswSequencerConnection,
     uri: 'http://localhost:5000/',
     metadata: {}

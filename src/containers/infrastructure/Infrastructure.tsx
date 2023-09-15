@@ -1,11 +1,11 @@
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
+import { SmActions } from './SMActions'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import styles from '../../components/pageHeader/pageHeader.module.css'
 import { useSMService } from '../../contexts/SMContext'
 import { AgentCards } from '../../features/agent/components/AgentCards'
-import { SmActions } from './SMActions'
 
 const { Meta } = Card
 

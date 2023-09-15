@@ -27,7 +27,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks shutdown button
-    userEvent.click(shutdownButton)
+    await userEvent.click(shutdownButton)
 
     //Modal will appear with shutdown button
     await waitFor(() => expect(screen.getByText(modalTitle)).to.exist)
@@ -37,7 +37,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks modal's shutdown button
-    userEvent.click(modalShutdownButton)
+    await userEvent.click(modalShutdownButton)
     await screen.findByText(shutdownSMConstants.successMessage)
 
     await waitFor(() => {
@@ -63,7 +63,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks shutdown button
-    userEvent.click(shutdownButton)
+    await userEvent.click(shutdownButton)
 
     //Modal will appear with shutdown button
     const modalDocument = await screen.findByRole('document')
@@ -72,7 +72,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks modal's shutdown button
-    userEvent.click(modalShutdownButton)
+    await userEvent.click(modalShutdownButton)
     await screen.findByText(`${shutdownSMConstants.failureMessage}, reason: Cant kill`)
 
     verify(agentServiceMock.killComponent(SM_COMPONENT_ID)).called()

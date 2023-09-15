@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
@@ -29,9 +29,6 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
-  afterEach(() => {
-    cleanup()
-  })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(agentService.getAgentStatus()).thenResolve({
@@ -91,10 +88,10 @@ describe('Agents Grid View', () => {
           seqCompId: new ComponentId(Prefix.fromString('IRIS.comp1'), 'SequenceComponent'),
           sequencerLocation: [
             {
-              _type: 'AkkaLocation',
+              _type: 'PekkoLocation',
               connection: {
                 componentType: 'Sequencer',
-                connectionType: 'akka',
+                connectionType: 'pekko',
                 prefix: Prefix.fromString('IRIS.clearskies')
               },
               metadata: {},
@@ -184,14 +181,14 @@ describe('Agents Grid View', () => {
     })
     const icon = await screen.findByRole('addSeqCompIcon')
 
-    userEvent.click(icon)
+    await userEvent.click(icon)
     const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
     const textBox = screen.getByRole('textbox')
 
     await waitFor(() => userEvent.click(textBox))
-    userEvent.type(textBox, 'ESW_1')
-    userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await userEvent.type(textBox, 'ESW_1')
+    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
@@ -228,7 +225,7 @@ describe('Agents Grid View', () => {
     const document = screen.getByRole('document')
     const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
 
-    userEvent.click(confirm)
+    await userEvent.click(confirm)
 
     await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW2'))
 
@@ -304,7 +301,7 @@ describe('Agents Grid View', () => {
     })
 
     const sequencer = await screen.findByText('[ESW.darkNight]')
-    userEvent.click(sequencer)
+    await userEvent.click(sequencer)
 
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darkNight')

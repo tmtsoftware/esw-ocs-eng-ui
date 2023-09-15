@@ -1,10 +1,10 @@
 import { Card, Typography } from 'antd'
 import React from 'react'
+import styles from './smcard.module.css'
 import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
 import { useSMService } from '../../../../contexts/SMContext'
 import { ShutdownSMButton } from '../ShutdownButton'
 import { SpawnSMButton } from '../SpawnButton'
-import styles from './smcard.module.css'
 
 export const SMCard = (): JSX.Element => {
   const [smContext, isLoading] = useSMService()

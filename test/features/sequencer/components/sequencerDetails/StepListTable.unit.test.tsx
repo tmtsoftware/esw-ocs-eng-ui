@@ -158,7 +158,7 @@ describe('stepList table', () => {
 
     const actions = await screen.findByRole('stepActions')
 
-    userEvent.click(actions, { button: 0 })
+    await userEvent.click(actions, { button: 0 })
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(5)
@@ -188,7 +188,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findByRole('stepActions')
-    userEvent.click(actions)
+    await userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(5)
@@ -224,7 +224,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findByRole('stepActions')
-    userEvent.click(actions)
+    await userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(5)
@@ -252,7 +252,7 @@ describe('stepList table', () => {
 
     const actions = await screen.findByRole('stepActions')
 
-    userEvent.click(actions)
+    await userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -272,7 +272,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findByRole('stepActions')
-    userEvent.click(actions)
+    await userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -280,7 +280,7 @@ describe('stepList table', () => {
     const cancel = screen.getByRole('button', {
       name: 'Cancel'
     })
-    userEvent.click(cancel)
+    await userEvent.click(cancel)
 
     const stepAction = await screen.findAllByRole('stepActions')
     expect(stepAction.length).to.equal(1)
@@ -306,7 +306,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findAllByRole('stepActions')
-    userEvent.click(actions[0])
+    await userEvent.click(actions[0])
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -320,10 +320,10 @@ describe('stepList table', () => {
     })
 
     // click on the checkbox
-    userEvent.click(within(command1Row).getByRole('checkbox'))
-    userEvent.click(within(command2Row).getByRole('checkbox'))
+    await userEvent.click(within(command1Row).getByRole('checkbox'))
+    await userEvent.click(within(command2Row).getByRole('checkbox'))
     // click on duplicate
-    userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
+    await userEvent.click(screen.getByRole('button', { name: /copy duplicate/i }))
 
     await screen.findByText(duplicateStepConstants.successMessage)
     await waitFor(() => expect(screen.queryAllByRole('checkbox').length).to.equals(0))
@@ -350,7 +350,7 @@ describe('stepList table', () => {
     })
 
     const actions = await screen.findByRole('stepActions')
-    userEvent.click(actions)
+    await userEvent.click(actions)
 
     const duplicate = await screen.findByText(duplicateStepConstants.menuItemText)
     await waitFor(() => userEvent.click(duplicate))
@@ -367,9 +367,9 @@ describe('stepList table', () => {
     expect(duplicateAction.disabled).to.be.true
 
     // click on the checkbox
-    userEvent.click(within(row).getByRole('checkbox'))
+    await userEvent.click(within(row).getByRole('checkbox'))
     // click on duplicate
-    userEvent.click(duplicateAction)
+    await userEvent.click(duplicateAction)
 
     await screen.findByText(`${duplicateStepConstants.failureMessage}, reason: error`)
     const stepAction = await screen.findAllByRole('stepActions')

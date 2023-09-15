@@ -73,11 +73,11 @@ describe('ReplaceStep', () => {
       const replaceStepButton = await screen.findByRole('button', {
         name: new RegExp(replaceStepConstants.menuItemText)
       })
-      userEvent.click(replaceStepButton)
+      await userEvent.click(replaceStepButton)
 
       // eslint-disable-next-line testing-library/no-node-access
       const inputBox = replaceStepButton.firstChild as HTMLInputElement
-      userEvent.upload(inputBox, file)
+      await userEvent.upload(inputBox, file)
 
       await screen.findByText(message)
       verify(sequencerServiceMock.replace(id, deepEqual(commands))).called()
@@ -96,11 +96,11 @@ describe('ReplaceStep', () => {
     const replaceStepButton = await screen.findByRole('button', {
       name: new RegExp(replaceStepConstants.menuItemText)
     })
-    userEvent.click(replaceStepButton)
+    await userEvent.click(replaceStepButton)
 
     // eslint-disable-next-line testing-library/no-node-access
     const inputBox = replaceStepButton.firstChild as HTMLInputElement
-    userEvent.upload(inputBox, file)
+    await userEvent.upload(inputBox, file)
 
     await screen.findByText(
       _createErrorMsg(replaceStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserializeReason)

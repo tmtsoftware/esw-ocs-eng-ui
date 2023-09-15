@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'

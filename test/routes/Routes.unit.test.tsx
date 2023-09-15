@@ -1,4 +1,4 @@
-import { cleanup, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
@@ -24,17 +24,13 @@ const renderWithRouter = (ui: React.ReactElement) => {
 
 const leftClick = { button: 0 }
 describe('Full app navigation', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('Infrastructure route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
 
     const manageInfra = await screen.findByRole('ManageInfrastructure')
     expect(manageInfra).to.exist
 
-    userEvent.click(manageInfra, leftClick)
+    await userEvent.click(manageInfra, leftClick)
     expect(window.location.pathname).equal(INFRASTRUCTURE)
   })
 
@@ -44,7 +40,7 @@ describe('Full app navigation', () => {
     const manageObservations = await screen.findByRole('ManageObservations')
     expect(manageObservations).to.exist
 
-    userEvent.click(manageObservations, leftClick)
+    await userEvent.click(manageObservations, leftClick)
     expect(window.location.pathname).equal(OBSERVATIONS)
   })
 
@@ -54,7 +50,7 @@ describe('Full app navigation', () => {
     const resources = await screen.findAllByRole('Resources')
     expect(resources).to.have.length(2)
 
-    userEvent.click(resources[0], leftClick)
+    await userEvent.click(resources[0], leftClick)
     expect(window.location.pathname).equal(RESOURCES)
   })
 })

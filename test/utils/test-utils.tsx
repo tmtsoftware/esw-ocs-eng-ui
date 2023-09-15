@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
 import {
@@ -21,9 +22,7 @@ import type {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
-import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
@@ -49,7 +48,7 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      } as TestUtils.KeycloakTokenParsed),
+      }) as TestUtils.KeycloakTokenParsed,
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
     loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
@@ -122,10 +121,10 @@ export const getAgentStatusMock = (subsystem: Subsystem = 'ESW'): AgentStatus =>
         seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
         sequencerLocation: [
           {
-            _type: 'AkkaLocation',
+            _type: 'PekkoLocation',
             connection: {
               componentType: 'Sequencer',
-              connectionType: 'akka',
+              connectionType: 'pekko',
               prefix: Prefix.fromString(`${subsystem}.darkNight`)
             },
             metadata: {},

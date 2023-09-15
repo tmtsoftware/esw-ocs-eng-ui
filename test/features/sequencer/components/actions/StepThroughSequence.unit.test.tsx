@@ -24,7 +24,7 @@ describe('Step-Through Sequence', () => {
     )
 
     const button = await screen.findByRole('StepThroughSequence')
-    userEvent.click(button)
+    await userEvent.click(button)
 
     await waitFor(() => verify(sequencerServiceMock.addBreakpoint(nextStep.id)).called())
     await waitFor(() => verify(sequencerServiceMock.removeBreakpoint(currentStep.id)).called())
@@ -40,7 +40,7 @@ describe('Step-Through Sequence', () => {
     )
 
     const button = await screen.findByRole('StepThroughSequence')
-    userEvent.click(button)
+    await userEvent.click(button)
 
     await waitFor(() => verify(sequencerServiceMock.addBreakpoint(anything())).never())
     await waitFor(() => verify(sequencerServiceMock.removeBreakpoint(currentStep.id)).called())
@@ -86,7 +86,7 @@ describe('Step-Through Sequence', () => {
       )
 
       const button = await screen.findByRole('StepThroughSequence')
-      userEvent.click(button)
+      await userEvent.click(button)
 
       await screen.findByText(message)
 
@@ -129,7 +129,7 @@ describe('Step-Through Sequence', () => {
       )
 
       const button = await screen.findByRole('StepThroughSequence')
-      userEvent.click(button)
+      await userEvent.click(button)
 
       await screen.findByText(message)
 

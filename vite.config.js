@@ -1,6 +1,7 @@
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { AppConfig } from './src/config/AppConfig.js'
+
 // https://vitejs.dev/config/
 const testDeps =
   process.env.NODE_ENV === 'test'
@@ -9,11 +10,12 @@ const testDeps =
         '@testing-library/user-event',
         'chai',
         'ts-mockito',
-        '@testing-library/react-hooks/dom'
+        '@testing-library/react/dom'
       ]
     : []
 export default defineConfig({
   server: {
+    host: true,
     port: 9000
   },
   base: `./`,
@@ -27,5 +29,5 @@ export default defineConfig({
       input: ['./index.html']
     }
   },
-  plugins: [reactRefresh()]
+  plugins: [react()]
 })

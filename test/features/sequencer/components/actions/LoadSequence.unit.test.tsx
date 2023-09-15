@@ -53,7 +53,7 @@ describe('LoadSequence', () => {
       expect(input.type).equal('file')
       expect(input.style.display).equal('none')
 
-      userEvent.upload(input, file)
+      await userEvent.upload(input, file)
 
       await screen.findByText(msg)
 
@@ -75,7 +75,7 @@ describe('LoadSequence', () => {
     // eslint-disable-next-line testing-library/no-node-access
     const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
 
-    userEvent.upload(input, file0)
+    await userEvent.upload(input, file0)
 
     await screen.findByText(/failed to load the sequence, reason: /i)
 
@@ -96,7 +96,7 @@ describe('LoadSequence', () => {
     // eslint-disable-next-line testing-library/no-node-access
     const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
 
-    userEvent.upload(input, file)
+    await userEvent.upload(input, file)
 
     await screen.findByText(`${loadSequenceConstants.failureMessage}, reason: error occurred`)
 

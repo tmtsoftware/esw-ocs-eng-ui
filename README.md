@@ -19,7 +19,7 @@ This project is a React web application.
 
 > `./scripts/start-csw-services.sh` (recommended way).
 
-The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v20.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## User role for login
 

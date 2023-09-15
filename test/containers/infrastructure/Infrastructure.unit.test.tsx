@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
@@ -68,9 +68,6 @@ const smLocation: HttpLocation = {
 }
 
 describe('Infrastructure page', () => {
-  afterEach(() => {
-    cleanup()
-  })
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService
@@ -169,7 +166,7 @@ describe('Infrastructure page', () => {
       ui: <Infrastructure />
     })
     const button = await screen.findByRole('button', { name: configureConstants.buttonText })
-    userEvent.click(button, { button: 1 })
+    await userEvent.click(button, { button: 1 })
 
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {
@@ -181,14 +178,14 @@ describe('Infrastructure page', () => {
     })
 
     //select item by clicking on it
-    userEvent.click(darkNightObsMode)
+    await userEvent.click(darkNightObsMode)
     // wait for button to be enabled.
-    await waitFor(() => {
+    await waitFor(async () => {
       const configureButton = within(dialog).getByRole('button', {
         name: configureConstants.modalOkText
       }) as HTMLButtonElement
       expect(configureButton.disabled).false
-      userEvent.click(configureButton)
+      await userEvent.click(configureButton)
     })
 
     verify(smService.getObsModesDetails()).called()
@@ -244,14 +241,14 @@ describe('Infrastructure page', () => {
     await waitFor(() => expect(provisionButton.disabled).false)
 
     //User clicks provision button
-    userEvent.click(provisionButton)
+    await userEvent.click(provisionButton)
 
     const document = await screen.findByRole('document')
     const confirmButton = within(document).getByRole('button', {
       name: provisionConstants.modalOkText
     })
 
-    userEvent.click(confirmButton)
+    await userEvent.click(confirmButton)
 
     await screen.findByText(provisionConstants.successMessage)
 

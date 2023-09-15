@@ -29,7 +29,7 @@ describe('SelectionModal', () => {
     expect(data2.innerText).eq('data-2')
   })
 
-  it('should call onChange method when menu item is selected | ESW-441', () => {
+  it('should call onChange method when menu item is selected | ESW-441', async () => {
     let value = ''
     const modalProps = {
       data: ['data-1', 'data-2'],
@@ -45,12 +45,12 @@ describe('SelectionModal', () => {
       name: 'data-1'
     })
 
-    userEvent.click(data1)
+    await userEvent.click(data1)
 
     expect(value).eq('data-1')
   })
 
-  it('should handle onOk and onCancel event | ESW-441', () => {
+  it('should handle onOk and onCancel event | ESW-441', async () => {
     let value = ''
     const modalProps = {
       data: ['data-1'],
@@ -67,14 +67,14 @@ describe('SelectionModal', () => {
     const okButton = screen.getByRole('button', { name: 'Start' })
     const cancelButton = screen.getByRole('button', { name: 'Cancel' })
 
-    userEvent.click(okButton)
+    await userEvent.click(okButton)
     expect(value).eq('Ok')
 
-    userEvent.click(cancelButton)
+    await userEvent.click(cancelButton)
     expect(value).eq('canceled')
   })
 
-  it('should not call onOk if any item is not selected | ESW-441', () => {
+  it('should not call onOk if any item is not selected | ESW-441', async () => {
     let value = 'value not changed'
     const modalProps = {
       data: ['data-1'],
@@ -90,7 +90,7 @@ describe('SelectionModal', () => {
 
     const okButton = screen.getByRole('button', { name: 'Start' })
 
-    userEvent.click(okButton)
+    await userEvent.click(okButton)
     expect(value).eq('value not changed')
   })
 

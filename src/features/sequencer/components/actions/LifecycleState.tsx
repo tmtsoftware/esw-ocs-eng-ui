@@ -1,7 +1,7 @@
 import React from 'react'
-import type { SequencerProps } from '../Props'
 import { GoOffline } from './GoOffline'
 import { GoOnline } from './GoOnline'
+import type { SequencerProps } from '../Props'
 
 export const LifecycleState = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   return sequencerState === 'Offline' ? (

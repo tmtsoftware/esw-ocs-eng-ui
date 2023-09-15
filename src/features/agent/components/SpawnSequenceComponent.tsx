@@ -2,12 +2,12 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
 import { Button, Input, Popconfirm, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
+import styles from './agentCards.module.css'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
-import styles from './agentCards.module.css'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
   agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {

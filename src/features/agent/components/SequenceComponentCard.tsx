@@ -2,9 +2,9 @@ import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from './agentCards.module.css'
 import { SequenceComponentActions, SequencerActions } from './SequenceComponentActions'
+import { getSequencerPath } from '../../../routes/RoutesConfig'
 
 type SequencerProps = {
   seqCompPrefix: Prefix

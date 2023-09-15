@@ -35,7 +35,7 @@ describe('Pause Sequence', () => {
 
       const button = await screen.findByRole('PauseSequence')
 
-      userEvent.click(button)
+      await userEvent.click(button)
 
       await screen.findByText(msg)
 
@@ -50,7 +50,7 @@ describe('Pause Sequence', () => {
 
     const button = await screen.findByRole('PauseSequence')
 
-    userEvent.click(button)
+    await userEvent.click(button)
 
     await screen.findByText(`${pauseSequenceConstants.failureMessage}, reason: Something went wrong`)
 

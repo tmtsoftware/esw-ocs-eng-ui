@@ -1,9 +1,9 @@
 import type { SequenceCommand, Step, StepStatus } from '@tmtsoftware/esw-ts'
 import { Button, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
-import { useStepListContext } from '../../hooks/useStepListContext'
 import { StepActions } from './StepActions'
 import type { StepRefInfo } from './StepListTable'
+import { useStepListContext } from '../../hooks/useStepListContext'
 
 export type StepData = {
   id: string

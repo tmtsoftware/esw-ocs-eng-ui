@@ -37,7 +37,7 @@ describe('GoOnline', () => {
         name: goOnlineConstants.buttonText
       })
 
-      userEvent.click(onlineButton, { button: 0 })
+      await userEvent.click(onlineButton, { button: 0 })
 
       await screen.findByText(msg)
 
@@ -56,7 +56,7 @@ describe('GoOnline', () => {
       name: goOnlineConstants.buttonText
     })
 
-    userEvent.click(onlineButton, { button: 0 })
+    await userEvent.click(onlineButton, { button: 0 })
 
     await screen.findByText(`${goOnlineConstants.failureMessage}, reason: error occurred`)
 

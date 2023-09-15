@@ -37,7 +37,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    userEvent.click(spawnButton)
+    await userEvent.click(spawnButton)
 
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
@@ -48,14 +48,14 @@ describe('SpawnSMButton', () => {
     })
 
     //User selects agent machine
-    userEvent.click(
+    await userEvent.click(
       within(modalDocument).getByRole('menuitem', {
         name: agentPrefix.toJSON()
       })
     )
 
     //User clicks modal's spawn button
-    userEvent.click(modalSpawnButton)
+    await userEvent.click(modalSpawnButton)
 
     await screen.findByText(spawnSMConstants.successMessage)
 
@@ -75,7 +75,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    userEvent.click(spawnButton)
+    await userEvent.click(spawnButton)
 
     await screen.findByText(spawnSMConstants.agentNotRunningMessage)
 
@@ -106,7 +106,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    userEvent.click(spawnButton)
+    await userEvent.click(spawnButton)
 
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
@@ -117,14 +117,14 @@ describe('SpawnSMButton', () => {
     })
 
     //User selects agent machine
-    userEvent.click(
+    await userEvent.click(
       within(modalDocument).getByRole('menuitem', {
         name: agentPrefix.toJSON()
       })
     )
 
     //User clicks modal's spawn button
-    userEvent.click(modalSpawnButton)
+    await userEvent.click(modalSpawnButton)
 
     await screen.findByText(`${spawnSMConstants.failureMessage}, reason: Config file not found`)
   })

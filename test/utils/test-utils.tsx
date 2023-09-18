@@ -42,7 +42,7 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as TestUtils.KeycloakPromise<void, void>
+      return Promise.resolve() as Promise<void>
     },
     token: () => 'token string',
     tokenParsed: () =>
@@ -51,7 +51,7 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
       }) as TestUtils.KeycloakTokenParsed,
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
+    loadUserProfile: () => Promise.resolve({}) as Promise<TestUtils.KeycloakProfile>
   }
 }
 

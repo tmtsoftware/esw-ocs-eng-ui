@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
@@ -19,7 +19,7 @@ describe('useAgents', () => {
     when(locServiceMock.listByComponentType('Machine')).thenResolve([agentLocation])
     const ContextAndQueryClientProvider = getContextWithQueryClientProvider(true)
 
-    const { result, waitFor } = renderHook(() => useAgentsList(), {
+    const { result } = renderHook(() => useAgentsList(), {
       wrapper: ContextAndQueryClientProvider
     })
 

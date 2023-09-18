@@ -21,7 +21,11 @@
     "isolatedModules": true,
     "jsx": "react",
     "noEmit": true,
+
+    // XXX TODO FIXME!
+    "ignoreDeprecations": "5.0",
     "importsNotUsedAsValues": "error",
+
     "strictNullChecks": true
   },
   "include": [

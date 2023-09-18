@@ -54,7 +54,7 @@ describe('Auth hook', () => {
       </AuthContext.Provider>
     )
 
-    const { result, waitFor } = renderHook(() => useAuth(), {
+    const { result } = renderHook(() => useAuth(), {
       wrapper
     })
 

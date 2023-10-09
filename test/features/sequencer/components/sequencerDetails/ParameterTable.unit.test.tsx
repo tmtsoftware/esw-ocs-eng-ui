@@ -35,7 +35,9 @@ describe('Parameters Table', () => {
 
     renderWithAuth({ ui: <ParameterTable command={command} /> })
     await screen.findByRole('table')
-    const [paramHeaderTable, paramBodyTable] = screen.queryAllByRole('table')
+    // const [paramHeaderTable, paramBodyTable] = screen.queryAllByRole('table')
+    const paramHeaderTable = screen.getByRole('thead')
+    const paramBodyTable = screen.getByRole('tbody')
     assertTableHeader(paramHeaderTable, 'Parameter')
     assertTableHeader(paramHeaderTable, 'Unit')
     assertTableHeader(paramHeaderTable, 'Values')

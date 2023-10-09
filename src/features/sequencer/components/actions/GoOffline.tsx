@@ -24,7 +24,7 @@ const useGoOfflineAction = (): UseMutationResult<GoOfflineResponse, unknown, Seq
   })
 }
 
-export const GoOffline = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+export const GoOffline = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOfflineAction = useGoOfflineAction()
 

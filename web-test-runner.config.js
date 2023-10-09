@@ -1,6 +1,6 @@
 import { importMapsPlugin } from '@web/dev-server-import-maps'
 import { defaultReporter } from '@web/test-runner'
-import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
+import vite from 'vite-web-test-runner-plugin'
 // eslint-disable-next-line import/no-unresolved
 import ConsoleReporter from './ConsoleReporter.js'
 process.env.NODE_ENV = 'test'
@@ -12,7 +12,7 @@ export default {
     }
   },
   plugins: [
-    vitePlugin(),
+    vite(),
     importMapsPlugin({
       inject: {
         importMap: {

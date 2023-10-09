@@ -12,7 +12,7 @@ import { configureConstants } from '../smConstants'
 type ConfigureProps = {
   disabled: boolean | undefined
 }
-export const Configure = ({ disabled }: ConfigureProps): JSX.Element => {
+export const Configure = ({ disabled }: ConfigureProps): React.JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [obsMode, setObsMode] = useState<ObsMode>()
   const [obsModesDetails, setObsModesDetails] = useState<ObsModeDetails[]>([])

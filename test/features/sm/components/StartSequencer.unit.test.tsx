@@ -78,7 +78,7 @@ describe('Start Sequencer', () => {
 
     await userEvent.click(confirmButton)
 
-    await screen.findByText(startSequencerConstants.successMessage)
+    await screen.findAllByText(startSequencerConstants.successMessage)
     verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), deepEqual(variation))).called()
     await waitFor(() => expect(screen.queryByText(startSequencerConstants.modalTitle)).to.null)
   })

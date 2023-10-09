@@ -24,7 +24,7 @@ const useStopAction = (): UseMutationResult<OkOrUnhandledResponse, unknown, Sequ
 
 type StopSequenceProps = Omit<SequencerProps, 'sequencerState'>
 
-export const StopSequence = ({ prefix, isSequencerRunning }: StopSequenceProps): JSX.Element => {
+export const StopSequence = ({ prefix, isSequencerRunning }: StopSequenceProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const stopAction = useStopAction()
   const disabled = !isSequencerRunning

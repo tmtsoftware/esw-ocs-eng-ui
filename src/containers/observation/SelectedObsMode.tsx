@@ -12,7 +12,7 @@ type SelectedObsModeProps = {
   resources: ResourceTableStatus[]
 }
 
-export const SelectedObsMode = ({ currentTab, obsModeDetails, resources }: SelectedObsModeProps): JSX.Element => {
+export const SelectedObsMode = ({ currentTab, obsModeDetails, resources }: SelectedObsModeProps): React.JSX.Element => {
   const { obsMode, sequencers, status } = obsModeDetails
   switch (currentTab) {
     case 'Running':

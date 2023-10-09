@@ -7,7 +7,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
 import { getUsername } from '../../utils/getUsername'
 
-export const HeaderBar = (): JSX.Element => {
+export const HeaderBar = (): React.JSX.Element => {
   const { auth, logout } = useAuth()
   const [username, setUsername] = useState<string | undefined>(undefined)
 

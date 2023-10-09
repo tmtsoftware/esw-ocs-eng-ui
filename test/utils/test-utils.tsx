@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
 import {
@@ -22,7 +21,9 @@ import type {
   Subsystem
 } from '@tmtsoftware/esw-ts'
 import { Menu } from 'antd'
+import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
@@ -33,6 +34,7 @@ import {
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
 import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
+import { queryHelpers } from '@testing-library/dom';
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -42,16 +44,16 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as Promise<void>
+      return Promise.resolve() as TestUtils.KeycloakPromise<void, void>
     },
     token: () => 'token string',
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      }) as TestUtils.KeycloakTokenParsed,
+      } as TestUtils.KeycloakTokenParsed),
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as Promise<TestUtils.KeycloakProfile>
+    loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
   }
 }
 
@@ -223,9 +225,9 @@ const MenuWithStepListContext = ({
     sequencerService: sequencerServiceInstance
   }
 }: {
-  menuItem: JSX.Element
+  menuItem: React.JSX.Element
   value?: StepListTableContextType
-}): JSX.Element => {
+}): React.JSX.Element => {
   const MenuComponent = () => <Menu>{menuItem}</Menu>
   return (
     <StepListContextProvider value={value}>
@@ -245,3 +247,28 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
 // eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }
+
+// From https://stackoverflow.com/questions/54234515/get-by-html-element-with-react-testing-library
+// Use get Upload (input) item in menuitem
+export function getAllByTagName(
+  container: HTMLElement,
+  tagName: keyof React.JSX.IntrinsicElements,
+) {
+  return Array.from(container.querySelectorAll<HTMLElement>(tagName));
+}
+
+export function getByTagName(
+  container: HTMLElement,
+  tagName: keyof React.JSX.IntrinsicElements,
+) {
+  const result = getAllByTagName(container, tagName);
+
+  if (result.length > 1) {
+    throw queryHelpers.getElementError(
+      `Found multiple elements with the tag ${tagName}`,
+      container,
+    );
+  }
+  return result[0] || null;
+}
+

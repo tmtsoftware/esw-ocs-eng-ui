@@ -24,7 +24,7 @@ export const StepComponent = (
   step: StepData,
   setSelectedStep: (_: Step) => void,
   stepRefs: React.MutableRefObject<StepRefInfo>
-): JSX.Element => {
+): React.JSX.Element => {
   const stepsStyle = {
     borderColor: color[step.status._type],
     width: '15rem',

@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { HOME } from './RoutesConfig'
 
-export const NoMatch = (): JSX.Element => {
+export const NoMatch = (): React.JSX.Element => {
   const navigate = useNavigate()
   return (
     <Result

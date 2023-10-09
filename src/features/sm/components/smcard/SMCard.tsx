@@ -6,7 +6,7 @@ import { useSMService } from '../../../../contexts/SMContext'
 import { ShutdownSMButton } from '../ShutdownButton'
 import { SpawnSMButton } from '../SpawnButton'
 
-export const SMCard = (): JSX.Element => {
+export const SMCard = (): React.JSX.Element => {
   const [smContext, isLoading] = useSMService()
 
   return (

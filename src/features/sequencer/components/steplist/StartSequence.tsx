@@ -35,7 +35,7 @@ const useStartSequence = (): UseMutationResult<SubmitResponse, unknown, Sequence
   })
 }
 
-export const StartSequence = ({ sequencerState }: { sequencerState: SequencerState['_type'] }): JSX.Element => {
+export const StartSequence = ({ sequencerState }: { sequencerState: SequencerState['_type'] }): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const startSequence = useStartSequence()
 

@@ -17,7 +17,7 @@ export const SmSequencerAction = ({
   sequencerPrefix: Prefix
   masterSequencerState?: SequencerState
   sequencerState?: SequencerState
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [smContext, smLoading] = useSMService()
   const smService = smContext?.smService
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
@@ -40,7 +40,7 @@ export const SmSequencerAction = ({
     smService && reloadAction.mutateAsync(smService)
   }
 
-  const popConfirmTitle = (): JSX.Element => (
+  const popConfirmTitle = (): React.JSX.Element => (
     <div style={{ width: '22rem' }}>
       {masterSequencerState && isSequencerInProgress(masterSequencerState)
         ? sequencerActionConstants.getPopConfirmTitleWithState(sequencerPrefix, masterSequencerState)

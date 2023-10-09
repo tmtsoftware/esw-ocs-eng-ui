@@ -116,7 +116,7 @@ describe('Stop Sequencer', () => {
       name: stopSequencerConstants.modalOkText
     })
     await userEvent.click(confirmButton)
-    await screen.findByText(stopSequencerConstants.successMessage(darkNight))
+    await screen.findAllByText(stopSequencerConstants.successMessage(darkNight))
 
     verify(smService.shutdownSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()
   })

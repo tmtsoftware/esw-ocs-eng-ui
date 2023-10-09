@@ -7,7 +7,7 @@ import React from 'react'
 import { anything, capture, when } from 'ts-mockito'
 import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButton'
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
-import { spawnSMConstants } from '../../../../src/features/sm/smConstants'
+import {provisionConstants, spawnSMConstants} from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('SpawnSMButton', () => {
@@ -42,20 +42,22 @@ describe('SpawnSMButton', () => {
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
 
-    const modalDocument = screen.getByRole('document')
-    const modalSpawnButton = within(modalDocument).getByRole('button', {
+    // const modalDocument = screen.getByRole('document')
+    // const modalSpawnButton = within(modalDocument).getByRole('button', {
+    //   name: spawnSMConstants.modalOkText
+    // })
+    const modalSpawnButton = await screen.getAllByRole('button', {
       name: spawnSMConstants.modalOkText
     })
-
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    const menuItem = await screen.getByRole('menuitem', {
+      name: agentPrefix.toJSON()
+    })
     //User selects agent machine
-    await userEvent.click(
-      within(modalDocument).getByRole('menuitem', {
-        name: agentPrefix.toJSON()
-      })
-    )
+    await userEvent.click(menuItem)
 
     //User clicks modal's spawn button
-    await userEvent.click(modalSpawnButton)
+    await userEvent.click(modalSpawnButton[1])
 
     await screen.findByText(spawnSMConstants.successMessage)
 
@@ -111,20 +113,23 @@ describe('SpawnSMButton', () => {
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
 
-    const modalDocument = screen.getByRole('document')
-    const modalSpawnButton = within(modalDocument).getByRole('button', {
+    // const modalDocument = screen.getByRole('document')
+    // const modalSpawnButton = within(modalDocument).getByRole('button', {
+    //   name: spawnSMConstants.modalOkText
+    // })
+    const modalSpawnButton = await screen.getAllByRole('button', {
       name: spawnSMConstants.modalOkText
     })
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
 
+    const menuItem = await screen.getByRole('menuitem', {
+      name: agentPrefix.toJSON()
+    })
     //User selects agent machine
-    await userEvent.click(
-      within(modalDocument).getByRole('menuitem', {
-        name: agentPrefix.toJSON()
-      })
-    )
+    await userEvent.click(menuItem)
 
     //User clicks modal's spawn button
-    await userEvent.click(modalSpawnButton)
+    await userEvent.click(modalSpawnButton[1])
 
     await screen.findByText(`${spawnSMConstants.failureMessage}, reason: Config file not found`)
   })

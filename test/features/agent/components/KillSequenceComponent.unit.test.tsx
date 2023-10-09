@@ -9,6 +9,7 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import { killSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import {observationShutdownConstants} from "../../../../src/features/sequencer/sequencerConstants";
 
 describe('Kill sequence component button', () => {
   const prefix = new Prefix('ESW', 'ESW_1')
@@ -47,9 +48,13 @@ describe('Kill sequence component button', () => {
 
       await screen.findByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON()))
 
-      const document = screen.getByRole('document')
-      const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
-      await userEvent.click(confirm)
+      // const document = screen.getByRole('document')
+      // const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
+      const confirm = await screen.getAllByRole('button', {
+        name: killSequenceComponentConstants.modalOkText
+      })
+      // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+      await userEvent.click(confirm[0])
 
       await screen.findByText(message)
 

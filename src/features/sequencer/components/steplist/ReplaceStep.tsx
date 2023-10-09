@@ -16,7 +16,7 @@ type ReplaceActionProps = {
   step: string
 }
 
-export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): JSX.Element => {
+export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): React.JSX.Element => {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()
 

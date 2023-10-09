@@ -35,7 +35,7 @@ const ShutdownButtonAction = <QResult, MResult>(
     invalidateKeysOnSuccess: invalidateKeysOnSuccess
   })
 
-export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
+export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): React.JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const shutdownAction = ShutdownButtonAction(obsMode, shutdown(obsMode), [OBS_MODES_DETAILS.key])

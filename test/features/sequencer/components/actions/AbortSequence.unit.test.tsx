@@ -8,6 +8,7 @@ import { reset, verify, when } from 'ts-mockito'
 import { AbortSequence } from '../../../../../src/features/sequencer/components/actions/AbortSequence'
 import { abortSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import {provisionConstants} from "../../../../../src/features/sm/smConstants";
 
 describe('AbortSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
@@ -43,11 +44,14 @@ describe('AbortSequence', () => {
       await userEvent.click(abortSeqButton, { button: 0 })
 
       await screen.findByText(abortSequenceConstants.modalTitle)
-      const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
+      // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
+      //   name: abortSequenceConstants.modalOkText
+      // })
+      const modalAbortButton = await screen.getAllByRole('button', {
         name: abortSequenceConstants.modalOkText
       })
 
-      await userEvent.click(modalAbortButton, { button: 0 })
+      await userEvent.click(modalAbortButton[0], { button: 0 })
 
       await screen.findByText(msg)
 
@@ -71,10 +75,13 @@ describe('AbortSequence', () => {
 
     await userEvent.click(abortSeqButton1, { button: 0 })
     await screen.findByText(abortSequenceConstants.modalTitle)
-    const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
+    // const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
+    //   name: 'Cancel'
+    // })
+    const modalCancelButton = await screen.getAllByRole('button', {
       name: 'Cancel'
     })
-    await userEvent.click(modalCancelButton)
+    await userEvent.click(modalCancelButton[0])
 
     verify(sequencerServiceMock.abortSequence()).never()
 
@@ -85,11 +92,14 @@ describe('AbortSequence', () => {
 
     await userEvent.click(abortSeqButton2, { button: 0 })
     await screen.findByText(abortSequenceConstants.modalTitle)
-    const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
+    // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
+    //   name: abortSequenceConstants.modalOkText
+    // })
+    const modalAbortButton = await screen.getAllByRole('button', {
       name: abortSequenceConstants.modalOkText
     })
 
-    await userEvent.click(modalAbortButton)
+    await userEvent.click(modalAbortButton[0])
 
     await screen.findByText(`${abortSequenceConstants.failureMessage}, reason: error occurred`)
 

@@ -72,7 +72,7 @@ type StepListTitleProps = {
   stepListStatus: StepListStatus
 }
 
-const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => {
+const StepListTitle = ({ stepListStatus }: StepListTitleProps): React.JSX.Element => {
   const style = stepListStatus === 'All Steps Completed' ? { fontWeight: 'bold' as const } : {}
   return (
     <Col role='stepListTitle'>
@@ -134,7 +134,7 @@ export const StepListTable = ({
   selectedStep,
   setSelectedStep,
   sequencerStateResponse
-}: StepListTableProps): JSX.Element => {
+}: StepListTableProps): React.JSX.Element => {
   const { stepList } = sequencerStateResponse
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])

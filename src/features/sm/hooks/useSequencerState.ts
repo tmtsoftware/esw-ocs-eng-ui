@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import type { UseQueryResult } from '@tanstack/react-query'
 import type { Prefix, SequencerState } from '@tmtsoftware/esw-ts'
+import { useQuery } from 'react-query'
+import type { UseQueryResult } from 'react-query'
 import { SEQUENCER_STATE } from '../../queryKeys'
 import { useSequencerService } from '../../sequencer/hooks/useSequencerService'
 

@@ -114,7 +114,7 @@ describe('Component using useStartSequencerAction', () => {
       const button = screen.getByRole('button')
       await userEvent.click(button)
 
-      await screen.findByText(message)
+      await screen.findAllByText(message)
       verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
     })
   })

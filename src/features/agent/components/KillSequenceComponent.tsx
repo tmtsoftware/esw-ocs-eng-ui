@@ -15,7 +15,7 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): JSX.Element => {
+export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): React.JSX.Element => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({

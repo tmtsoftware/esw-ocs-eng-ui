@@ -8,7 +8,7 @@ type AppProps = {
   children: React.ReactNode
 }
 
-export const Container = ({ children }: AppProps): JSX.Element => {
+export const Container = ({ children }: AppProps): React.JSX.Element => {
   return (
     <Layout>
       <Sider />

@@ -1,9 +1,8 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
 import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
-import { ProvisionTable } from './ProvisionTable'
+import { QueryClient, useQueryClient } from 'react-query'
 import { useConfigService } from '../../../../contexts/ConfigServiceContext'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -12,6 +11,7 @@ import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { provisionConfConstants, provisionConstants } from '../../smConstants'
+import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
 
@@ -64,7 +64,7 @@ const fetchProvisionConf = async (configService: ConfigService): Promise<Provisi
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
-export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
+export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
   const useErrorBoundary = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})

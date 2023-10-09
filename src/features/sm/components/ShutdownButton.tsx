@@ -15,7 +15,7 @@ const shutdownSM = (agent: AgentService) =>
     return res
   })
 
-export const ShutdownSMButton = (): JSX.Element => {
+export const ShutdownSMButton = (): React.JSX.Element => {
   const [agentService, agentServiceLoading] = useAgentService()
 
   const shutdownSmAction = useMutation({

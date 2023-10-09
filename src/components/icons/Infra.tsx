@@ -3,7 +3,7 @@ type IconProps = {
   className?: string
   fill?: string
 }
-export const Infra = ({ className, fill }: IconProps): JSX.Element => {
+export const Infra = ({ className, fill }: IconProps): React.JSX.Element => {
   return (
     <svg
       width='1.5em'

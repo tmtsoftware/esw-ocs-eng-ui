@@ -8,7 +8,7 @@ type ProvisionProps = {
   disabled?: boolean
 }
 
-export const Provision = ({ provisionStatus, disabled = false }: ProvisionProps): JSX.Element =>
+export const Provision = ({ provisionStatus, disabled = false }: ProvisionProps): React.JSX.Element =>
   provisionStatus ? (
     <UnProvisionButton disabled={disabled} />
   ) : (

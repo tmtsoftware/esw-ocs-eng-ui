@@ -6,7 +6,7 @@ import { Provision } from '../../features/sm/components/provision/Provision'
 import { StartSequencer } from '../../features/sm/components/StartSequencer'
 import { useProvisionStatus } from '../../features/sm/hooks/useProvisionStatus'
 
-export const SmActions = (): JSX.Element => {
+export const SmActions = (): React.JSX.Element => {
   const provisionStatus = useProvisionStatus()
   const [smContext, loading] = useSMService()
   const smLocation = smContext?.smLocation

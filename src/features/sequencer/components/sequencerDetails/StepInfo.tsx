@@ -32,7 +32,7 @@ const StepErrorAlert = ({ message }: { message: string }) => (
   <Alert message='' description={<Typography.Text type='danger'>{message}</Typography.Text>} type='error' showIcon />
 )
 
-export const StepInfo = ({ step }: { step: Step }): JSX.Element => (
+export const StepInfo = ({ step }: { step: Step }): React.JSX.Element => (
   <div className={styles.stepInfo}>
     <Space direction='vertical' size='large'>
       {step.status._type === 'Failure' && <StepErrorAlert message={getStepFailureMessage(step.status)} />}
@@ -47,7 +47,7 @@ export const StepInfo = ({ step }: { step: Step }): JSX.Element => (
   </div>
 )
 
-export const EmptyStepInfo = (): JSX.Element => (
+export const EmptyStepInfo = (): React.JSX.Element => (
   <div className={globalStyles.centeredFlexElement + ' ' + styles.emptyStepInfo}>
     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   </div>

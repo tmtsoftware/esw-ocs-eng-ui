@@ -34,7 +34,7 @@ type DeleteActionProps = {
   isDisabled: boolean
 }
 
-export const DeleteAction = ({ step, isDisabled }: DeleteActionProps): JSX.Element => {
+export const DeleteAction = ({ step, isDisabled }: DeleteActionProps): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const deleteAction = useMutation({
     mutationFn: deleteStep(step.id),

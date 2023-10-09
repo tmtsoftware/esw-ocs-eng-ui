@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { observationShutdownConstants } from '../../../src/features/sequencer/sequencerConstants'
-import { configureConstants } from '../../../src/features/sm/smConstants'
+import {configureConstants, provisionConstants} from '../../../src/features/sm/smConstants'
 import { obsModesData } from '../../jsons/obsmodes'
 import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
 import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
@@ -49,12 +49,15 @@ describe('observation tabs', () => {
 
     await screen.findByText(modalMessage)
 
-    const modalDocument = await screen.findByRole('document')
-    const modalShutdownButton = within(modalDocument).getByRole('button', {
+    // const modalDocument = await screen.findByRole('document')
+    // const modalShutdownButton = within(modalDocument).getByRole('button', {
+    //   name: observationShutdownConstants.modalOkText
+    // })
+    const modalShutdownButtons = await screen.getAllByRole('button', {
       name: observationShutdownConstants.modalOkText
     })
-
-    await userEvent.click(modalShutdownButton)
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(modalShutdownButtons[1])
 
     await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
     await waitFor(() => verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called())

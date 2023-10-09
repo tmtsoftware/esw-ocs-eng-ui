@@ -8,7 +8,7 @@ import { prefixKey } from '../../routes/RoutesConfig'
 const invalidTitle = 'Invalid sequencer prefix'
 const notFound = 'Sequencer prefix not present'
 
-export const ManageSequencer = (): JSX.Element => {
+export const ManageSequencer = (): React.JSX.Element => {
   const { search } = useLocation()
   const query = new URLSearchParams(search)
   const maybePrefix = query.get(prefixKey)

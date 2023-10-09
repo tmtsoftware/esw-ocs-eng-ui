@@ -50,7 +50,7 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
 
 const extractObsModeFromComponentName = (str: string): string => Prefix.fromString(str).componentName.split('.')[0]
 
-export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): JSX.Element => {
+export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): React.JSX.Element => {
   const [gatewayLocation] = useGatewayLocation()
   const locationService = useLocationService()
   const { auth } = useAuth()

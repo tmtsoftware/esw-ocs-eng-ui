@@ -51,13 +51,13 @@ const SequencerActionsMenu = ({ componentId, sequencerPrefix, ...restProps }: Se
   )
 }
 
-export const SequenceComponentActions = ({ componentId }: SequenceComponentActionProps): JSX.Element => (
+export const SequenceComponentActions = ({ componentId }: SequenceComponentActionProps): React.JSX.Element => (
   <Dropdown overlay={() => <SequenceComponentActionsMenu componentId={componentId} />} trigger={['click']}>
     <MoreOutlined className={styles.icon} style={{ fontSize: '1.5rem' }} role='sequenceCompActions' />
   </Dropdown>
 )
 
-export const SequencerActions = ({ componentId, sequencerPrefix }: SequencerActionProps): JSX.Element => (
+export const SequencerActions = ({ componentId, sequencerPrefix }: SequencerActionProps): React.JSX.Element => (
   <Dropdown
     overlay={() => <SequencerActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix} />}
     trigger={['click']}>

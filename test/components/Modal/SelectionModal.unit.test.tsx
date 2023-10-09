@@ -124,7 +124,7 @@ describe('SelectionModal', () => {
 
     render(<SelectionModal {...modalProps} />)
 
-    expect(screen.getByText('No Data')).to.exist
+    expect(screen.getByText('No data')).to.exist
     expect(screen.queryByRole('menuitem')).to.null
     expect((screen.queryByRole('button', { name: 'Start' }) as HTMLButtonElement).disabled).to.true
   })

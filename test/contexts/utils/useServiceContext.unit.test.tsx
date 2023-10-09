@@ -20,7 +20,7 @@ const factory = () => {
 }
 const [useContext, Provider] = createServiceCtx(GATEWAY_CONNECTION, factory)
 
-const Component = (): JSX.Element => {
+const Component = (): React.JSX.Element => {
   const [str] = useContext()
   return <span>{str ? str : 'Unknown'}</span>
 }

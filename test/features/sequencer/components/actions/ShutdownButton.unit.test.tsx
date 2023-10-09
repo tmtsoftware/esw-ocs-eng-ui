@@ -8,6 +8,7 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
 import { observationShutdownConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import {provisionConstants} from "../../../../../src/features/sm/smConstants";
 
 describe('Shutdown button for Sequencer ', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
@@ -70,12 +71,15 @@ describe('Shutdown button for Sequencer ', () => {
       // expect modal to be visible
       const modalTitle = await screen.findByText(modalMessage)
       expect(modalTitle).to.exist
-      const modalDocument = screen.getByRole('document')
-      const modalShutdownButton = within(modalDocument).getByRole('button', {
+      // const modalDocument = screen.getByRole('document')
+      // const modalShutdownButton = within(modalDocument).getByRole('button', {
+      //   name: observationShutdownConstants.modalOkText
+      // })
+      const modalShutdownButton = await screen.getAllByRole('button', {
         name: observationShutdownConstants.modalOkText
       })
-
-      await userEvent.click(modalShutdownButton)
+      // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+      userEvent.click(modalShutdownButton[1])
       await screen.findByText(message)
 
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()

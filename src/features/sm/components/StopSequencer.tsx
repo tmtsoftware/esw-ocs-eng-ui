@@ -50,7 +50,7 @@ export const StopSequencer = ({
 }: {
   sequencerPrefix: Prefix
   sequencerState: SequencerState | undefined
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)

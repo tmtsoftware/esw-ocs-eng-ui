@@ -4,7 +4,7 @@ import { mockServices } from '../utils/test-utils'
 
 const useCtx = (): [ConfigService, boolean] => [mockServices.instance.configService, false]
 
-const ConfigServiceProvider0 = ({ children }: { children: React.ReactNode }): JSX.Element => {
+const ConfigServiceProvider0 = ({ children }: { children: React.ReactNode }): React.JSX.Element => {
   return <>{children}</>
 }
 

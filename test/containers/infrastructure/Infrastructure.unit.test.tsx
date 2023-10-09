@@ -243,12 +243,15 @@ describe('Infrastructure page', () => {
     //User clicks provision button
     await userEvent.click(provisionButton)
 
-    const document = await screen.findByRole('document')
-    const confirmButton = within(document).getByRole('button', {
+    // const document = await screen.findByRole('document')
+    // const confirmButton = within(document).getByRole('button', {
+    //   name: provisionConstants.modalOkText
+    // })
+    const confirmButtons = await screen.getAllByRole('button', {
       name: provisionConstants.modalOkText
     })
-
-    await userEvent.click(confirmButton)
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(confirmButtons[1])
 
     await screen.findByText(provisionConstants.successMessage)
 

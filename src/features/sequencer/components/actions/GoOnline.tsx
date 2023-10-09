@@ -24,7 +24,7 @@ const useGoOnlineAction = (): UseMutationResult<GoOnlineResponse, unknown, Seque
   })
 }
 
-export const GoOnline = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+export const GoOnline = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOnlineAction = useGoOnlineAction()
 

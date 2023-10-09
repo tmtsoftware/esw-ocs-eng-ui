@@ -9,7 +9,7 @@ import { UploadSequence } from '../UploadSequence'
 
 type LoadSequenceProps = Omit<SequencerProps, 'isSequencerRunning'>
 
-export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): JSX.Element => {
+export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const [sequence, setSequence] = useState<Sequence>()
   const loadSequenceAction = useLoadAction(sequence)

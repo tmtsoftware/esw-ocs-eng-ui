@@ -11,7 +11,7 @@ import { getSequencerPath } from '../../../routes/RoutesConfig'
 import { SmSequencerAction } from '../../sm/components/sequencer/SmSequencerAction'
 import type { SequencerInfo, StepListInfo } from '../utils'
 
-const Settings = ({ prefix, disabled }: { prefix: string; disabled: boolean }): JSX.Element => {
+const Settings = ({ prefix, disabled }: { prefix: string; disabled: boolean }): React.JSX.Element => {
   const icon = (
     <Button
       type={'text'}
@@ -102,7 +102,7 @@ type ObsModeSeqTableProps = {
   loading: boolean
 }
 
-export const SequencersTable = ({ sequencersInfo, loading }: ObsModeSeqTableProps): JSX.Element => (
+export const SequencersTable = ({ sequencersInfo, loading }: ObsModeSeqTableProps): React.JSX.Element => (
   <Table
     rowKey={(record) => record.prefix}
     style={{ paddingBottom: '1.5rem' }}

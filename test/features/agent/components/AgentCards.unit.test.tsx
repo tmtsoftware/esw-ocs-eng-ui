@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { cleanup, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
@@ -20,6 +20,7 @@ import {
   sequencerServiceMock,
   sequencerServiceMockIris
 } from '../../../utils/test-utils'
+import {observationShutdownConstants} from "../../../../src/features/sequencer/sequencerConstants";
 
 const emptyAgentStatus: AgentStatus = {
   agentId: new ComponentId(Prefix.fromString('ESW.machine2'), 'Machine'),
@@ -29,6 +30,9 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
+  afterEach(() => {
+    cleanup()
+  })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(agentService.getAgentStatus()).thenResolve({
@@ -222,10 +226,13 @@ describe('Agents Grid View', () => {
     await waitFor(() => userEvent.click(killSequenceComponent))
     await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
-    const document = screen.getByRole('document')
-    const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
-
-    await userEvent.click(confirm)
+    // const document = screen.getByRole('document')
+    // const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
+    const confirm = await screen.getAllByRole('button', {
+      name: killSequenceComponentConstants.modalOkText
+    })
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(confirm[1])
 
     await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW2'))
 

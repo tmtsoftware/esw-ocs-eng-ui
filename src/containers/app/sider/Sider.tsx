@@ -18,7 +18,7 @@ const menuItemLabels = [
   getMenuLabel('Resources', <ResourceIcon className={styles.menuIconSize} />, RESOURCES)
 ]
 
-export const Sider = (): JSX.Element => {
+export const Sider = (): React.JSX.Element => {
   const [collapsed, setCollapsed] = useState(true)
   const [selectedKey, setSelectedKey] = useState<string>('/')
   const location = useLocation()

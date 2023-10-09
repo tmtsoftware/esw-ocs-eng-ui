@@ -9,7 +9,7 @@ import { ReplaceStep } from './ReplaceStep'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
-const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element => {
+const StepActionsMenu = ({ step, ...restProps }: { step: Step }): React.JSX.Element => {
   const status = step.status._type
   const isFinished = status === 'Failure' || status === 'Success'
   const isInProgressOrIsFinished = status === 'InFlight' || isFinished
@@ -33,7 +33,7 @@ const StepActionsMenu = ({ step, ...restProps }: { step: Step }): JSX.Element =>
   )
 }
 
-export const StepActions = ({ step }: { step: Step }): JSX.Element => (
+export const StepActions = ({ step }: { step: Step }): React.JSX.Element => (
   <Dropdown overlay={() => <StepActionsMenu step={step} />} trigger={['click']}>
     <MoreOutlined className={styles.actionEnabled} style={{ fontSize: '1.5rem' }} role='stepActions' />
   </Dropdown>

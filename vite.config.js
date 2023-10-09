@@ -1,5 +1,4 @@
-import react from '@vitejs/plugin-react'
-import {nodePolyfills} from 'vite-plugin-node-polyfills'
+import reactRefresh from '@vitejs/plugin-react-refresh'
 import {defineConfig} from 'vite'
 import {AppConfig} from './src/config/AppConfig.js'
 
@@ -10,12 +9,11 @@ const testDeps =
       '@testing-library/react',
       '@testing-library/user-event',
       'chai',
-      'ts-mockito',
+      'ts-mockito'
     ]
     : []
 export default defineConfig({
   server: {
-    host: true,
     port: 9000
   },
   base: `./`,
@@ -26,14 +24,8 @@ export default defineConfig({
     outDir: AppConfig.applicationName,
     sourcemap: 'inline',
     rollupOptions: {
-      input: ['./index.html'],
-      onwarn(warning, warn) {
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
-          return
-        }
-        warn(warning)
-      }
+      input: ['./index.html']
     }
   },
-  plugins: [react(), nodePolyfills()]
+  plugins: [reactRefresh()]
 })

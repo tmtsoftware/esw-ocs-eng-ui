@@ -189,12 +189,15 @@ describe('Observation page', () => {
     })
     await userEvent.click(shutdownButton)
 
-    const modalDocument = await screen.findByRole('document')
-    const modalShutdownButton = within(modalDocument).getByRole('button', {
+    // const modalDocument = await screen.findByRole('document')
+    // const modalShutdownButton = within(modalDocument).getByRole('button', {
+    //   name: observationShutdownConstants.modalOkText
+    // })
+    const modalShutdownButtons = await screen.getAllByRole('button', {
       name: observationShutdownConstants.modalOkText
     })
-
-    await userEvent.click(modalShutdownButton)
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(modalShutdownButtons[1])
 
     const configurableTab = await screen.findByRole('tab', {
       name: 'Configurable'

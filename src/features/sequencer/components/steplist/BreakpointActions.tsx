@@ -14,7 +14,7 @@ const insertAction = (id: string) => (sequencerService: SequencerService) =>
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.removeBreakpoint(id).then(handleStepActionResponse)
 
-export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled: boolean }): JSX.Element => {
+export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled: boolean }): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
 
   const insertBreakpointAction = useMutation({

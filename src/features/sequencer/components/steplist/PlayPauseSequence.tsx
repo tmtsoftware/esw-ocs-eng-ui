@@ -12,7 +12,7 @@ export const PlayPauseSequence = ({
   isPaused: boolean
   sequencerState: SequencerState['_type']
   isCurrentStepRunningAndNextPaused: boolean
-}): JSX.Element => {
+}): React.JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   const canBePaused = isSequencerRunning && !isPaused
 

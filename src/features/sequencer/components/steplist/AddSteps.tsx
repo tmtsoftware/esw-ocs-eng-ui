@@ -15,7 +15,7 @@ type AddStepsProps = {
   stepId: string
 }
 
-export const AddSteps = ({ disabled, stepId }: AddStepsProps): JSX.Element => {
+export const AddSteps = ({ disabled, stepId }: AddStepsProps): React.JSX.Element => {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()
 

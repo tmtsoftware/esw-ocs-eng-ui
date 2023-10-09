@@ -8,7 +8,7 @@ import { INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../routes/RoutesConf
 
 type CardDetail = {
   title: string
-  icon: JSX.Element
+  icon: React.JSX.Element
   link: string
 }
 
@@ -59,7 +59,7 @@ const HomePageCards = (
   </Row>
 )
 
-export const Home = (): JSX.Element => (
+export const Home = (): React.JSX.Element => (
   <>
     {SMCardRow}
     {HomePageCards}

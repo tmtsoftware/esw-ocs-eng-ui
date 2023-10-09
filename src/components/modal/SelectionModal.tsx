@@ -40,7 +40,7 @@ export const SelectionModal = ({
   onOk,
   onCancel,
   onChange
-}: SelectionModalProps): JSX.Element => (
+}: SelectionModalProps): React.JSX.Element => (
   <Modal
     title={
       <Typography.Title level={5} style={{ marginBottom: 0 }}>

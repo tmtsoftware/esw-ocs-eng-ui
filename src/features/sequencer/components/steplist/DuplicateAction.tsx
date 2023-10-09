@@ -18,7 +18,7 @@ const addCommands = (commands: SequenceCommand[]) => async (sequencerService: Se
   }
 }
 
-export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): JSX.Element => {
+export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): React.JSX.Element => {
   const { sequencerService, handleDuplicate } = useStepListContext()
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),

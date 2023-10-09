@@ -11,7 +11,7 @@ import {
   uploadSequenceConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { _createErrorMsg } from '../../../../../src/utils/message'
-import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import {getByTagName, MenuWithStepListContext, renderWithAuth, sequencerServiceMock} from '../../../../utils/test-utils'
 
 type TestData = {
   testName: string
@@ -69,14 +69,14 @@ describe('AddSteps', () => {
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={<AddSteps disabled={false} stepId={id} />} />
       })
-
-      const addStepsButton = await screen.findByRole('button', {
+      const addStepsButton = await screen.findByRole('menuitem', {
         name: new RegExp(addStepConstants.menuItemText)
       })
       await userEvent.click(addStepsButton)
 
       // eslint-disable-next-line testing-library/no-node-access
-      const inputBox = addStepsButton.firstChild as HTMLInputElement
+      // const inputBox = addStepsButton.firstChild as HTMLInputElement
+      const inputBox = getByTagName(addStepsButton, "input")
       await userEvent.upload(inputBox, file)
 
       await screen.findByText(message)

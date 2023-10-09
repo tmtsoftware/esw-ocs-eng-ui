@@ -24,7 +24,7 @@ const useAbortSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, S
 
 type AbortSequenceProps = Omit<SequencerProps, 'sequencerState'>
 
-export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps): JSX.Element => {
+export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const abortAction = useAbortSequence()
 

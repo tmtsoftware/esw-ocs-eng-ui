@@ -54,7 +54,7 @@ const createColumnData = (provisionRecord: Record<string, number>) =>
     }
   })
 
-export const ProvisionTable = ({ provisionRecord, setProvisionRecord }: ProvisionProps): JSX.Element => {
+export const ProvisionTable = ({ provisionRecord, setProvisionRecord }: ProvisionProps): React.JSX.Element => {
   const data = createColumnData(provisionRecord)
   return (
     <Table

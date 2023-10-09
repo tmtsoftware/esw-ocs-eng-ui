@@ -19,7 +19,7 @@ const RedirectToLogin = () => {
   return <Result icon={<LoadingOutlined />} />
 }
 
-export const Routes = ({ loggedIn }: { loggedIn: boolean }): JSX.Element => {
+export const Routes = ({ loggedIn }: { loggedIn: boolean }): React.JSX.Element => {
   return loggedIn ? (
     <RouterRoutes>
       <Route path={HOME} element={<Home />} />

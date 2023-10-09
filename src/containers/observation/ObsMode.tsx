@@ -23,7 +23,7 @@ export const NonConfigurableObsMode = ({
   resources,
   actions,
   missingSequenceComponents
-}: NonConfigurableObsModeProps): JSX.Element => {
+}: NonConfigurableObsModeProps): React.JSX.Element => {
   return (
     <ObsModeCard title={<ObsModeTitle title={obsMode.name} />} extra={actions}>
       <Space direction='vertical' size={20} style={{ width: '100%' }}>
@@ -43,7 +43,7 @@ export const NonConfigurableObsMode = ({
 }
 
 type ConfigurableObsModeProps = Omit<NonConfigurableObsModeProps, 'missingSequenceComponents'>
-export const ConfigurableObsMode = ({ obsMode, resources, actions }: ConfigurableObsModeProps): JSX.Element => {
+export const ConfigurableObsMode = ({ obsMode, resources, actions }: ConfigurableObsModeProps): React.JSX.Element => {
   return (
     <ObsModeCard title={<ObsModeTitle title={obsMode.name} />} extra={actions}>
       <ResourcesTable resources={resources} />

@@ -20,7 +20,7 @@ export const UploadSequence = ({
   children,
   className,
   uploadErrorMsg
-}: UploadSequenceProps): JSX.Element => {
+}: UploadSequenceProps): React.JSX.Element => {
   const beforeUpload = (file: File): Promise<void> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()

@@ -27,7 +27,7 @@ const getTabBasedResources = (
   }))
 }
 
-export const ObservationTab = ({ tabName }: { tabName: TabName }): JSX.Element => {
+export const ObservationTab = ({ tabName }: { tabName: TabName }): React.JSX.Element => {
   const [selectedObservation, setSelectedObservation] = useState<string>('')
   const { data: allObsModesGrouped } = useObsModesDetails()
   const thisTabObsModes = allObsModesGrouped ? allObsModesGrouped[tabName] : []

@@ -3,7 +3,7 @@ import { GoOffline } from './GoOffline'
 import { GoOnline } from './GoOnline'
 import type { SequencerProps } from '../Props'
 
-export const LifecycleState = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+export const LifecycleState = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   return sequencerState === 'Offline' ? (
     <GoOnline prefix={prefix} sequencerState={sequencerState} />
   ) : (

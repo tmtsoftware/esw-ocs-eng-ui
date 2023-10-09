@@ -9,6 +9,7 @@ import { anything, deepEqual, verify, when } from 'ts-mockito'
 import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import {observationShutdownConstants} from "../../../../src/features/sequencer/sequencerConstants";
 
 describe('Reload script', () => {
   const smService = mockServices.mock.smService
@@ -44,11 +45,15 @@ describe('Reload script', () => {
     )
     expect(modalTitle).to.exist
 
-    const document = screen.getByRole('document')
-    const reloadConfirm = within(document).getByRole('button', {
+    // const document = screen.getByRole('document')
+    // const reloadConfirm = within(document).getByRole('button', {
+    //   name: reloadScriptConstants.modalOkText
+    // })
+    const reloadConfirm = await screen.getAllByRole('button', {
       name: reloadScriptConstants.modalOkText
     })
-    await waitFor(() => userEvent.click(reloadConfirm))
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(reloadConfirm[0])
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
     await waitFor(
@@ -87,11 +92,15 @@ describe('Reload script', () => {
     )
     expect(modalTitle).to.exist
 
-    const document = screen.getByRole('document')
-    const reloadConfirm = within(document).getByRole('button', {
+    // const document = screen.getByRole('document')
+    // const reloadConfirm = within(document).getByRole('button', {
+    //   name: reloadScriptConstants.modalOkText
+    // })
+    const reloadConfirm = await screen.getAllByRole('button', {
       name: reloadScriptConstants.modalOkText
     })
-    await waitFor(() => userEvent.click(reloadConfirm))
+    // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
+    await userEvent.click(reloadConfirm[0])
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
     verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()

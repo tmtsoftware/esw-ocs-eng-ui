@@ -7,7 +7,7 @@ import { useStepListContext } from '../../hooks/useStepListContext'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 
-export const ReloadSequence = ({ stepList }: { stepList?: StepList }): JSX.Element => {
+export const ReloadSequence = ({ stepList }: { stepList?: StepList }): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const sequence = stepList?.steps.map((step) => step.command)
   const reloadSequence = useLoadAction(

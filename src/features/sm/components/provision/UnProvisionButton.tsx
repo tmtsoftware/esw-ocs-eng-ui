@@ -21,7 +21,7 @@ const shutdownAllSequenceComps = (sequenceManagerService: SequenceManagerService
     }
   })
 
-export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
+export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
   const useErrorBoundary = false
   const [smContext, isLoading] = useSMService()
   const smService = smContext?.smService

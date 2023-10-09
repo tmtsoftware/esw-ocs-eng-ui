@@ -12,9 +12,9 @@ type ObsModeActionsProps = {
   obsMode: ObsMode
 }
 
-export const RunningActions = ({ obsMode }: ObsModeActionsProps): JSX.Element => <ShutdownButton obsMode={obsMode} />
+export const RunningActions = ({ obsMode }: ObsModeActionsProps): React.JSX.Element => <ShutdownButton obsMode={obsMode} />
 
-export const ConfigurableActions = ({ obsMode }: ObsModeActionsProps): JSX.Element => {
+export const ConfigurableActions = ({ obsMode }: ObsModeActionsProps): React.JSX.Element => {
   const configureAction = useConfigureAction(obsMode)
   const [smContext, isLoading] = useSMService()
   const smService = smContext?.smService

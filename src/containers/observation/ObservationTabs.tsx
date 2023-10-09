@@ -8,7 +8,7 @@ export const tabNames = ['Running', 'Configurable', 'Non-configurable'] as const
 
 export type TabName = (typeof tabNames)[number]
 
-export const ObservationTabs = (): JSX.Element => {
+export const ObservationTabs = (): React.JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<TabName>('Running')
 
   return (

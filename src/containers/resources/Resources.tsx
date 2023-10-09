@@ -50,7 +50,7 @@ const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): Resource
   return [...inUseResourceData, ...availableResourceData, ...nonConfigurableResourceData].sort(byStatus)
 }
 
-export const resourceStatusCol = (status: ResourceType): JSX.Element => (
+export const resourceStatusCol = (status: ResourceType): React.JSX.Element => (
   <Typography.Text
     strong
     style={{
@@ -76,7 +76,7 @@ const columns: ColumnsType<ResourceData> = [
   }
 ]
 
-export const Resources = (): JSX.Element => {
+export const Resources = (): React.JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
 
   return (

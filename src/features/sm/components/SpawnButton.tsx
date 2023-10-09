@@ -16,7 +16,7 @@ const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
     return res
   })
 
-export const SpawnSMButton = (): JSX.Element => {
+export const SpawnSMButton = (): React.JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const [agentPrefix, setAgentPrefix] = useState('')
 

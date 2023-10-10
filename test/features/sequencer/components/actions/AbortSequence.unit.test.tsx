@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix } from '@tmtsoftware/esw-ts'
 import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
@@ -8,7 +8,6 @@ import { reset, verify, when } from 'ts-mockito'
 import { AbortSequence } from '../../../../../src/features/sequencer/components/actions/AbortSequence'
 import { abortSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
-import {provisionConstants} from "../../../../../src/features/sm/smConstants";
 
 describe('AbortSequence', () => {
   const testData: [OkOrUnhandledResponse, string, string][] = [
@@ -47,7 +46,7 @@ describe('AbortSequence', () => {
       // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
       //   name: abortSequenceConstants.modalOkText
       // })
-      const modalAbortButton = await screen.getAllByRole('button', {
+      const modalAbortButton = screen.getAllByRole('button', {
         name: abortSequenceConstants.modalOkText
       })
 
@@ -78,7 +77,7 @@ describe('AbortSequence', () => {
     // const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
     //   name: 'Cancel'
     // })
-    const modalCancelButton = await screen.getAllByRole('button', {
+    const modalCancelButton = screen.getAllByRole('button', {
       name: 'Cancel'
     })
     await userEvent.click(modalCancelButton[0])
@@ -95,7 +94,7 @@ describe('AbortSequence', () => {
     // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
     //   name: abortSequenceConstants.modalOkText
     // })
-    const modalAbortButton = await screen.getAllByRole('button', {
+    const modalAbortButton = screen.getAllByRole('button', {
       name: abortSequenceConstants.modalOkText
     })
 

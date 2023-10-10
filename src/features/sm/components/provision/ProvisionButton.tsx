@@ -3,6 +3,7 @@ import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsF
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
 import { QueryClient, useQueryClient } from 'react-query'
+import { ProvisionTable } from './ProvisionTable'
 import { useConfigService } from '../../../../contexts/ConfigServiceContext'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -11,7 +12,6 @@ import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { provisionConfConstants, provisionConstants } from '../../smConstants'
-import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
 

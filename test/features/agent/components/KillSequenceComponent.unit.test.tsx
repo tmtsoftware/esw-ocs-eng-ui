@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import type { KillResponse } from '@tmtsoftware/esw-ts'
@@ -9,7 +9,6 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import { killSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
-import {observationShutdownConstants} from "../../../../src/features/sequencer/sequencerConstants";
 
 describe('Kill sequence component button', () => {
   const prefix = new Prefix('ESW', 'ESW_1')
@@ -50,7 +49,7 @@ describe('Kill sequence component button', () => {
 
       // const document = screen.getByRole('document')
       // const confirm = within(document).getByRole('button', { name: killSequenceComponentConstants.modalOkText })
-      const confirm = await screen.getAllByRole('button', {
+      const confirm = screen.getAllByRole('button', {
         name: killSequenceComponentConstants.modalOkText
       })
       // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update

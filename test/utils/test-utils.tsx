@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { queryHelpers, render } from '@testing-library/react'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
 import {
   AuthContext,
@@ -34,7 +34,6 @@ import {
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
 import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
-import { queryHelpers } from '@testing-library/dom';
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -44,16 +43,16 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as TestUtils.KeycloakPromise<void, void>
+      return Promise.resolve() as Promise<void>
     },
     token: () => 'token string',
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      } as TestUtils.KeycloakTokenParsed),
+      }) as TestUtils.KeycloakTokenParsed,
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
+    loadUserProfile: () => Promise.resolve({}) as Promise<TestUtils.KeycloakProfile>
   }
 }
 
@@ -158,7 +157,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
     uri: 'http://localhost:5000/',
     metadata: { agentPrefix: 'ESW.primary' }
   }
-  const contextProvider = ({ children }: { children: React.ReactNode }) => (
+  const contextProvider = ({ items }: { items: React.ReactNode }) => (
     <AuthContext.Provider
       value={{
         auth: auth,
@@ -169,7 +168,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
             <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
-              {children}
+              {items}
             </SMServiceProvider>
           </AgentServiceProvider>
         </GatewayLocationProvider>
@@ -184,13 +183,13 @@ const getContextWithQueryClientProvider = (
   loggedIn: boolean,
   loginFunc: () => void = () => ({}),
   logoutFunc: () => void = () => ({})
-): React.FC<{ children: React.ReactNode }> => {
+): React.FC<{ items: React.ReactNode }> => {
   const queryClient = new QueryClient()
   const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
 
-  const provider = ({ children }: { children: React.ReactNode }) => (
+  const provider = ({ items }: { items: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <ContextProvider>{children}</ContextProvider>
+      <ContextProvider>{items}</ContextProvider>
     </QueryClientProvider>
   )
   return provider
@@ -250,25 +249,15 @@ export type { MockServices }
 
 // From https://stackoverflow.com/questions/54234515/get-by-html-element-with-react-testing-library
 // Use get Upload (input) item in menuitem
-export function getAllByTagName(
-  container: HTMLElement,
-  tagName: keyof React.JSX.IntrinsicElements,
-) {
-  return Array.from(container.querySelectorAll<HTMLElement>(tagName));
+export function getAllByTagName(container: HTMLElement, tagName: keyof React.JSX.IntrinsicElements) {
+  return Array.from(container.querySelectorAll<HTMLElement>(tagName))
 }
 
-export function getByTagName(
-  container: HTMLElement,
-  tagName: keyof React.JSX.IntrinsicElements,
-) {
-  const result = getAllByTagName(container, tagName);
+export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.IntrinsicElements) {
+  const result = getAllByTagName(container, tagName)
 
   if (result.length > 1) {
-    throw queryHelpers.getElementError(
-      `Found multiple elements with the tag ${tagName}`,
-      container,
-    );
+    throw queryHelpers.getElementError(`Found multiple elements with the tag ${tagName}`, container)
   }
-  return result[0] || null;
+  return result[0] || null
 }
-

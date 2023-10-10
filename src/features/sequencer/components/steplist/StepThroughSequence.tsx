@@ -22,7 +22,11 @@ type StepThroughSequenceProps = {
   disabled: boolean
 }
 
-export const StepThroughSequence = ({ currentStepId, nextStepId, disabled }: StepThroughSequenceProps): React.JSX.Element => {
+export const StepThroughSequence = ({
+  currentStepId,
+  nextStepId,
+  disabled
+}: StepThroughSequenceProps): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const stepThroughAction = useMutation({
     mutationFn: stepThrough(currentStepId, nextStepId),

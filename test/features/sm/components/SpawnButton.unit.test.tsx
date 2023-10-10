@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
@@ -7,7 +7,7 @@ import React from 'react'
 import { anything, capture, when } from 'ts-mockito'
 import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButton'
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
-import {provisionConstants, spawnSMConstants} from '../../../../src/features/sm/smConstants'
+import { spawnSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('SpawnSMButton', () => {
@@ -46,11 +46,11 @@ describe('SpawnSMButton', () => {
     // const modalSpawnButton = within(modalDocument).getByRole('button', {
     //   name: spawnSMConstants.modalOkText
     // })
-    const modalSpawnButton = await screen.getAllByRole('button', {
+    const modalSpawnButton = screen.getAllByRole('button', {
       name: spawnSMConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    const menuItem = await screen.getByRole('menuitem', {
+    const menuItem = screen.getByRole('menuitem', {
       name: agentPrefix.toJSON()
     })
     //User selects agent machine
@@ -117,12 +117,12 @@ describe('SpawnSMButton', () => {
     // const modalSpawnButton = within(modalDocument).getByRole('button', {
     //   name: spawnSMConstants.modalOkText
     // })
-    const modalSpawnButton = await screen.getAllByRole('button', {
+    const modalSpawnButton = screen.getAllByRole('button', {
       name: spawnSMConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
 
-    const menuItem = await screen.getByRole('menuitem', {
+    const menuItem = screen.getByRole('menuitem', {
       name: agentPrefix.toJSON()
     })
     //User selects agent machine

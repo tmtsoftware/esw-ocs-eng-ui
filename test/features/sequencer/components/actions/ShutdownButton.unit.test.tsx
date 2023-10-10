@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ObsMode } from '@tmtsoftware/esw-ts'
 import type { ShutdownSequencersResponse } from '@tmtsoftware/esw-ts'
@@ -8,7 +8,6 @@ import { deepEqual, verify, when } from 'ts-mockito'
 import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
 import { observationShutdownConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
-import {provisionConstants} from "../../../../../src/features/sm/smConstants";
 
 describe('Shutdown button for Sequencer ', () => {
   const obsMode = new ObsMode('ESW.DarkNight')
@@ -75,7 +74,7 @@ describe('Shutdown button for Sequencer ', () => {
       // const modalShutdownButton = within(modalDocument).getByRole('button', {
       //   name: observationShutdownConstants.modalOkText
       // })
-      const modalShutdownButton = await screen.getAllByRole('button', {
+      const modalShutdownButton = screen.getAllByRole('button', {
         name: observationShutdownConstants.modalOkText
       })
       // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update

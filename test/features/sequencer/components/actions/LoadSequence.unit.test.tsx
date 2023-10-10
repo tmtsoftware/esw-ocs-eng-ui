@@ -7,7 +7,7 @@ import React from 'react'
 import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
-import {getByTagName, renderWithAuth, sequencerServiceMock} from '../../../../utils/test-utils'
+import { getByTagName, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('LoadSequence', () => {
   afterEach(async () => {
@@ -39,7 +39,7 @@ describe('LoadSequence', () => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-458`, async () => {
       when(sequencerServiceMock.loadSequence(anything())).thenResolve(res)
 
-      const renderResult = renderWithAuth({
+      const view = renderWithAuth({
         ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
       })
 
@@ -49,7 +49,7 @@ describe('LoadSequence', () => {
       //
       // // eslint-disable-next-line testing-library/no-node-access
       // const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
-      const input = getByTagName(renderResult.container, "input") as HTMLInputElement
+      const input = getByTagName(view.container, 'input') as HTMLInputElement
 
       expect(input.type).equal('file')
       expect(input.style.display).equal('none')

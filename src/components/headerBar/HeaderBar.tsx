@@ -39,7 +39,7 @@ export const HeaderBar = (): React.JSX.Element => {
   return (
     <>
       <Link to={HOME}>
-        <img role='tmt_logo' src={'TMT_Logo.png'} className={styles.logo} />
+        <img role='tmt_logo' src={'TMT_Logo.png'} className={styles.logo} alt='tmt_logo' />
       </Link>
       <Logout />
     </>

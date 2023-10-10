@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { ObservationTab } from '../../../src/containers/observation/ObservationTab'
 import { observationShutdownConstants } from '../../../src/features/sequencer/sequencerConstants'
-import {configureConstants, provisionConstants} from '../../../src/features/sm/smConstants'
+import { configureConstants } from '../../../src/features/sm/smConstants'
 import { obsModesData } from '../../jsons/obsmodes'
 import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
 import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
@@ -53,7 +53,7 @@ describe('observation tabs', () => {
     // const modalShutdownButton = within(modalDocument).getByRole('button', {
     //   name: observationShutdownConstants.modalOkText
     // })
-    const modalShutdownButtons = await screen.getAllByRole('button', {
+    const modalShutdownButtons = screen.getAllByRole('button', {
       name: observationShutdownConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update

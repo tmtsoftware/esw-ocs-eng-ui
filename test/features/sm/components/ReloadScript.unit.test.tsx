@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix } from '@tmtsoftware/esw-ts'
 import type { SequencerState } from '@tmtsoftware/esw-ts'
@@ -9,7 +9,6 @@ import { anything, deepEqual, verify, when } from 'ts-mockito'
 import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
-import {observationShutdownConstants} from "../../../../src/features/sequencer/sequencerConstants";
 
 describe('Reload script', () => {
   const smService = mockServices.mock.smService
@@ -49,7 +48,7 @@ describe('Reload script', () => {
     // const reloadConfirm = within(document).getByRole('button', {
     //   name: reloadScriptConstants.modalOkText
     // })
-    const reloadConfirm = await screen.getAllByRole('button', {
+    const reloadConfirm = screen.getAllByRole('button', {
       name: reloadScriptConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
@@ -96,7 +95,7 @@ describe('Reload script', () => {
     // const reloadConfirm = within(document).getByRole('button', {
     //   name: reloadScriptConstants.modalOkText
     // })
-    const reloadConfirm = await screen.getAllByRole('button', {
+    const reloadConfirm = screen.getAllByRole('button', {
       name: reloadScriptConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update

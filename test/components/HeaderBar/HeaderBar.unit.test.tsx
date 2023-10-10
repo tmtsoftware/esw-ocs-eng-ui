@@ -21,7 +21,8 @@ describe('header bar', () => {
       loggedIn: true
     })
 
-    const logo = screen.getByRole('tmt_logo')
+    // const logo = screen.getByRole('tmt_logo')
+    const logo = screen.getByAltText('tmt_logo')
     expect(logo).to.exist
 
     //should be able to click on logo

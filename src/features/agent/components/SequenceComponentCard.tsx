@@ -43,7 +43,10 @@ const SequenceComponent = ({ seqCompPrefix }: SequenceComponentProps): React.JSX
   </div>
 )
 
-export const SequenceComponentCard = ({ seqCompId, sequencerPrefix }: SequenceComponentCardProps): React.JSX.Element => {
+export const SequenceComponentCard = ({
+  seqCompId,
+  sequencerPrefix
+}: SequenceComponentCardProps): React.JSX.Element => {
   const seqComponentPrefix = seqCompId.prefix
   const SequenceComponentOrSequencer = () =>
     sequencerPrefix ? (

@@ -2,10 +2,10 @@ import { cleanup, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
+import { deepEqual, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { deepEqual, verify, when } from 'ts-mockito'
 import {
   disabledSequencerActions,
   killSequenceComponentConstants,

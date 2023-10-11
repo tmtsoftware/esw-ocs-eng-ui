@@ -19,9 +19,9 @@ import type {
   HttpLocation,
   ObsModesDetailsResponse
 } from '@tmtsoftware/esw-ts'
+import { deepEqual, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { deepEqual, verify, when } from 'ts-mockito'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
 import { AgentServiceProvider } from '../../../src/contexts/AgentServiceContext'
 import { ConfigServiceProvider } from '../../../src/contexts/ConfigServiceContext'

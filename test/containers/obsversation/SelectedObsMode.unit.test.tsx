@@ -7,10 +7,10 @@ import type {
   SequencerStateResponse,
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
+import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { deepEqual, reset, verify, when } from 'ts-mockito'
 import { SelectedObsMode } from '../../../src/containers/observation/SelectedObsMode'
 import { sequencerActionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'

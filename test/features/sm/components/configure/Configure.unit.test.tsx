@@ -7,9 +7,9 @@ import type {
   ObsModesDetailsResponse,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
+import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { Configure } from '../../../../../src/features/sm/components/Configure'
 import { configureConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'

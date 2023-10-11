@@ -9,7 +9,7 @@ const testDeps =
       '@testing-library/react',
       '@testing-library/user-event',
       'chai',
-      'ts-mockito'
+      '@typestrong/ts-mockito'
     ]
     : []
 export default defineConfig({

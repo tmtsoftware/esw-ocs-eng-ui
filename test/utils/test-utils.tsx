@@ -1,14 +1,5 @@
-import { queryHelpers, render } from '@testing-library/react'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
-import {
-  AuthContext,
-  ComponentId,
-  GATEWAY_CONNECTION,
-  Prefix,
-  SEQUENCE_MANAGER_CONNECTION,
-  setAppName,
-  TestUtils
-} from '@tmtsoftware/esw-ts'
+import { queryHelpers, render } from '@testing-library/react'
 import type {
   AgentService,
   AgentStatus,
@@ -20,20 +11,29 @@ import type {
   SequencerService,
   Subsystem
 } from '@tmtsoftware/esw-ts'
+import {
+  AuthContext,
+  ComponentId,
+  GATEWAY_CONNECTION,
+  Prefix,
+  SEQUENCE_MANAGER_CONNECTION,
+  setAppName,
+  TestUtils
+} from '@tmtsoftware/esw-ts'
+import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
 import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
+import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
 import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
-import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -157,7 +157,8 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
     uri: 'http://localhost:5000/',
     metadata: { agentPrefix: 'ESW.primary' }
   }
-  const contextProvider = ({ items }: { items: React.ReactNode }) => (
+  // noinspection UnnecessaryLocalVariableJS
+  const contextProvider = ({ children }: { children: React.ReactNode }) => (
     <AuthContext.Provider
       value={{
         auth: auth,
@@ -168,7 +169,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
         <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
           <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
             <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
-              {items}
+              {children}
             </SMServiceProvider>
           </AgentServiceProvider>
         </GatewayLocationProvider>
@@ -183,13 +184,14 @@ const getContextWithQueryClientProvider = (
   loggedIn: boolean,
   loginFunc: () => void = () => ({}),
   logoutFunc: () => void = () => ({})
-): React.FC<{ items: React.ReactNode }> => {
+): React.FC<{ children: React.ReactNode }> => {
   const queryClient = new QueryClient()
   const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
 
-  const provider = ({ items }: { items: React.ReactNode }) => (
+  // noinspection UnnecessaryLocalVariableJS
+  const provider = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <ContextProvider>{items}</ContextProvider>
+      <ContextProvider>{children}</ContextProvider>
     </QueryClientProvider>
   )
   return provider
@@ -214,6 +216,7 @@ const renderWithAuth = (
   })
 }
 
+// noinspection JSUnusedGlobalSymbols
 const MenuWithStepListContext = ({
   menuItem,
   value = {

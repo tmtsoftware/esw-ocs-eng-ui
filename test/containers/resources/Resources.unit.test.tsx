@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
+import { when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { when } from 'ts-mockito'
 import { Resources } from '../../../src/containers/resources/Resources'
 import obsModesData from '../../jsons/mockResourcesData'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'

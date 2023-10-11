@@ -8,9 +8,9 @@ import {
   SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import type { AgentStatus, AgentStatusResponse, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
+import { mock, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { mock, verify, when } from 'ts-mockito'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
 import { configureConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'

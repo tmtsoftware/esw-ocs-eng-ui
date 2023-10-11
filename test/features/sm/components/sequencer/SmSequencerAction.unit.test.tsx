@@ -2,8 +2,8 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, Prefix, ObsMode } from '@tmtsoftware/esw-ts'
 import type { SequencerState } from '@tmtsoftware/esw-ts'
+import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { SmSequencerAction } from '../../../../../src/features/sm/components/sequencer/SmSequencerAction'
 import {
   reloadScriptConstants,

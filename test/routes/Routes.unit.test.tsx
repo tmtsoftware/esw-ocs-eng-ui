@@ -1,8 +1,8 @@
-import { screen } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { anything, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, when } from 'ts-mockito'
 import { App } from '../../src/containers/app/App'
 import { HOME, INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth } from '../utils/test-utils'
@@ -22,15 +22,19 @@ const renderWithRouter = (ui: React.ReactElement) => {
   })
 }
 
-const leftClick = { button: 0 }
 describe('Full app navigation', () => {
+  afterEach(() => {
+    cleanup()
+  })
+  const user = userEvent.setup()
+
   it('Infrastructure route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
 
     const manageInfra = await screen.findByRole('ManageInfrastructure')
     expect(manageInfra).to.exist
 
-    await userEvent.click(manageInfra, leftClick)
+    await user.click(manageInfra)
     expect(window.location.pathname).equal(INFRASTRUCTURE)
   })
 
@@ -40,7 +44,7 @@ describe('Full app navigation', () => {
     const manageObservations = await screen.findByRole('ManageObservations')
     expect(manageObservations).to.exist
 
-    await userEvent.click(manageObservations, leftClick)
+    await user.click(manageObservations)
     expect(window.location.pathname).equal(OBSERVATIONS)
   })
 
@@ -50,7 +54,7 @@ describe('Full app navigation', () => {
     const resources = await screen.findAllByRole('Resources')
     expect(resources).to.have.length(2)
 
-    await userEvent.click(resources[0], leftClick)
+    await user.click(resources[0])
     expect(window.location.pathname).equal(RESOURCES)
   })
 })

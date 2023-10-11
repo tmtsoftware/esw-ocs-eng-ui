@@ -2,9 +2,9 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Observe, Prefix, Sequence, Setup } from '@tmtsoftware/esw-ts'
 import type { OkOrUnhandledResponse, SequenceCommand, SequencerState } from '@tmtsoftware/esw-ts'
+import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
-import { anything, deepEqual, reset, verify, when } from 'ts-mockito'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getByTagName, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
@@ -43,14 +43,13 @@ describe('LoadSequence', () => {
         ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
       })
 
-      // const button: HTMLElement[] = screen.getAllByRole('button', {
-      //   name: 'Load Sequence'
-      // })
-      //
-      // // eslint-disable-next-line testing-library/no-node-access
-      // const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
-      const input = getByTagName(view.container, 'input') as HTMLInputElement
+      const button: HTMLElement[] = screen.getAllByRole('button', {
+        name: 'Load Sequence'
+      })
 
+      // eslint-disable-next-line testing-library/no-node-access
+      const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
+      // const input = getByTagName(view.container, 'input') as HTMLInputElement
       expect(input.type).equal('file')
       expect(input.style.display).equal('none')
 

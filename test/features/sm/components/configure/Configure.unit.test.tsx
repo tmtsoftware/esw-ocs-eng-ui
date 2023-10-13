@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
@@ -92,9 +92,6 @@ describe('Configure button', () => {
   beforeEach(() => {
     reset(smService)
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
-  })
-  afterEach(() => {
-    cleanup()
   })
   it('should be disabled | ESW-445', async () => {
     renderWithAuth({

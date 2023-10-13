@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
 import { queryHelpers, render } from '@testing-library/react'
 import type {
@@ -22,9 +23,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
-import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'

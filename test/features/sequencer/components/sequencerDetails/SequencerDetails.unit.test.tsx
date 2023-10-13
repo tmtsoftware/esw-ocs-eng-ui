@@ -172,7 +172,7 @@ describe('sequencer details', () => {
     const [, , , parameterBodyTable] = screen.queryAllByRole('table')
 
     const step = screen.getByRole('button', { name: /Command-2/i })
-    userEvent.click(step)
+    await userEvent.click(step)
 
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(

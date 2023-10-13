@@ -78,7 +78,7 @@ describe('Shutdown button for Sequencer ', () => {
         name: observationShutdownConstants.modalOkText
       })
       // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-      userEvent.click(modalShutdownButton[1])
+      await userEvent.click(modalShutdownButton[1])
       await screen.findByText(message)
 
       verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called()

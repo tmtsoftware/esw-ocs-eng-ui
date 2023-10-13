@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { FailedResponse, ShutdownSequenceComponentResponse } from '@tmtsoftware/esw-ts'
 import { verify, when } from '@typestrong/ts-mockito'
@@ -10,10 +10,6 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
   const modalTitle = unProvisionConstants.modalTitle
-
-  afterEach(() => {
-    cleanup()
-  })
 
   const unhandled: ShutdownSequenceComponentResponse = {
     _type: 'Unhandled',

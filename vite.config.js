@@ -1,4 +1,5 @@
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
+import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import {defineConfig} from 'vite'
 import {AppConfig} from './src/config/AppConfig.js'
 
@@ -14,6 +15,7 @@ const testDeps =
     : []
 export default defineConfig({
   server: {
+    host: true,
     port: 9000
   },
   base: `./`,
@@ -27,5 +29,5 @@ export default defineConfig({
       input: ['./index.html']
     }
   },
-  plugins: [reactRefresh()]
+  plugins: [react(), nodePolyfills()]
 })

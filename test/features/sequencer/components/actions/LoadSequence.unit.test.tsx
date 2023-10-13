@@ -7,7 +7,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
-import { getByTagName, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('LoadSequence', () => {
   afterEach(async () => {
@@ -39,7 +39,7 @@ describe('LoadSequence', () => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-458`, async () => {
       when(sequencerServiceMock.loadSequence(anything())).thenResolve(res)
 
-      const view = renderWithAuth({
+      renderWithAuth({
         ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
       })
 

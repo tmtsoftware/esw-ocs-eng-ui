@@ -1,14 +1,10 @@
-import { cleanup, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { expect } from 'chai'
 import React from 'react'
 import { App } from '../../../src/containers/app/App' // fixed to absolute path
 import { renderWithAuth } from '../../utils/test-utils'
 
 describe('App page', () => {
-  afterEach(() => {
-    cleanup()
-  })
-
   it('should render app with layout when user is logged in | ESW-441, ESW-542', async () => {
     renderWithAuth({ ui: <App /> })
 

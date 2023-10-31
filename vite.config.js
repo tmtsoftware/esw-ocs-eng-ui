@@ -21,7 +21,7 @@ export default defineConfig({
   base: `./`,
   optimizeDeps: {
     include: testDeps
-  },
+},
   build: {
     outDir: AppConfig.applicationName,
     sourcemap: 'inline',

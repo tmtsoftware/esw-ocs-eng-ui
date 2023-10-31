@@ -19,7 +19,7 @@ const { Header } = Layout
 
 const ROUTER_BASENAME = import.meta.env.PROD ? `/${AppConfig.applicationName}` : ''
 
-const useGlobalConfig = () => useQuery('GlobalConfig', () => loadGlobalConfig().then(() => true))
+const useGlobalConfig = () => useQuery(['GlobalConfig'], () => loadGlobalConfig().then(() => true))
 
 export const App = (): React.JSX.Element => {
   const { data: initialised, error } = useGlobalConfig()

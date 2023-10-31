@@ -4,7 +4,8 @@ ROOT="$(
     pwd -P
 )"
 
-npm run build
+set -x
+npm run build || exit 1
 rm -rf $ROOT/../apps/esw-ocs-eng-ui
 ## use following for installing latest eng-ui
 mv $ROOT/../esw-ocs-eng-ui $ROOT/../apps/esw-ocs-eng-ui

@@ -35,7 +35,7 @@ export const useService = <T>(
     [auth, factory, username]
   )
   const track = useCallback(
-    (onEvent) =>
+    (onEvent: (trackingEvent: TrackingEvent) => void) =>
       locationService.track(connection)(onEvent, (error: ServiceError) => {
         errorMessage(error.message)
         setLoading(false)

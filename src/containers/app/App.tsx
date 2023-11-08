@@ -44,7 +44,7 @@ export const App = (): React.JSX.Element => {
         </Router>
       </CombinedServiceContext>
       <GlobalSpinner />
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+      <ReactQueryDevtools initialIsOpen={false} />
     </>
   )
 }

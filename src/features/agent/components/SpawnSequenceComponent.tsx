@@ -38,7 +38,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         )
       ),
     onError: (e) => errorMessage(spawnSequenceComponentConstants.getFailureMessage, e), //TODO should we add componentId?
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
   const resetComponentName = () => setComponentName('')
@@ -70,13 +70,13 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
           if (!visible) resetComponentName()
         }}
         onConfirm={onConfirm}
-        disabled={spawnSequenceComponentAction.isLoading}
+        disabled={spawnSequenceComponentAction.isPending}
         okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
           type='text'
           style={{ paddingTop: '0.33rem' }}
           icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
-          loading={isLoading || spawnSequenceComponentAction.isLoading}
+          loading={isLoading || spawnSequenceComponentAction.isPending}
         />
       </Popconfirm>
     </Tooltip>

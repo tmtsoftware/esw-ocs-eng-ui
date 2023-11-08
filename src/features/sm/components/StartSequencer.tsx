@@ -66,7 +66,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.
 
   return (
     <>
-      <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isLoading}>
+      <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isPending}>
         {startSequencerConstants.buttonText}
       </Button>
       <Modal

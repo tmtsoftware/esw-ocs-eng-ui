@@ -29,7 +29,8 @@ export const useAgentsStatus = (): UseQueryResult<AgentStatus[], unknown> => {
     },
     {
       enabled: !!agentService,
-      refetchInterval: AGENTS_STATUS.refetchInterval
+      refetchInterval: AGENTS_STATUS.refetchInterval,
+      queryKey: [AGENTS_STATUS.key]
     }
   )
 }

@@ -31,7 +31,7 @@ export const GoOnline = ({ prefix, sequencerState }: SequencerProps): React.JSX.
   const goOnline = () => sequencerService && goOnlineAction.mutate(sequencerService)
 
   return (
-    <Button disabled={sequencerState === 'Running'} loading={goOnlineAction.isLoading} onClick={() => goOnline()}>
+    <Button disabled={sequencerState === 'Running'} loading={goOnlineAction.isPending} onClick={() => goOnline()}>
       {goOnlineConstants.buttonText}
     </Button>
   )

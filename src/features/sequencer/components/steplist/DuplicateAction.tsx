@@ -32,7 +32,7 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
         <Button onClick={handleDuplicate}>Cancel</Button>
         <Button
           type='primary'
-          loading={duplicateAction.isLoading}
+          loading={duplicateAction.isPending}
           disabled={selectedCommands.length === 0}
           onClick={() => {
             sequencerService && duplicateAction.mutateAsync(sequencerService)

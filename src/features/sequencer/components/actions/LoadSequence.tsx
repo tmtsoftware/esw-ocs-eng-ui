@@ -20,7 +20,7 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): Rea
     <UploadSequence setSequence={setSequence} request={request} uploadErrorMsg={loadSequenceConstants.failureMessage}>
       <Button
         type='primary'
-        loading={loadSequenceAction.isLoading}
+        loading={loadSequenceAction.isPending}
         role={'LoadSequence'}
         disabled={!sequencerState || !(sequencerState === 'Idle' || sequencerState === 'Loaded')}>
         {loadSequenceConstants.buttonText}

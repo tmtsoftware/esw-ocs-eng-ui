@@ -6,11 +6,9 @@ import { useSequencerService } from '../../sequencer/hooks/useSequencerService'
 
 export const useSequencerState = (sequencerPrefix: Prefix): UseQueryResult<SequencerState> => {
   const sequencerService = useSequencerService(sequencerPrefix)
-  return useQuery(
-    [SEQUENCER_STATE.key, sequencerPrefix],
-    () => sequencerService && sequencerService.getSequencerState(),
-    {
-      enabled: !!sequencerService
-    }
-  )
+  return useQuery({
+    queryKey: [SEQUENCER_STATE.key, sequencerPrefix],
+    queryFn: () => sequencerService && sequencerService.getSequencerState(),
+    enabled: !!sequencerService
+  })
 }

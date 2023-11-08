@@ -7,7 +7,8 @@ import { SEQUENCER_LOCATION } from '../../queryKeys'
 
 export const useSequencerLocation = (prefix: Prefix): UseQueryResult<Location> => {
   const locationService = useLocationService()
-  return useQuery([SEQUENCER_LOCATION.key, prefix.toJSON()], {
+  return useQuery({
+    queryKey: [SEQUENCER_LOCATION.key, prefix.toJSON()],
     queryFn: () => locationService.find(PekkoConnection(prefix, 'Sequencer'))
   })
 }

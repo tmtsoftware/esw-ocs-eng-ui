@@ -1,5 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query'
 import type { ObsModeDetails, SequenceManagerService } from '@tmtsoftware/esw-ts'
+import type { MessageType } from 'antd/lib/message/interface'
 import type { TabName } from '../../../containers/observation/ObservationTabs'
 import { useSMService } from '../../../contexts/SMContext'
 import { useQuery } from '../../../hooks/useQuery'
@@ -11,7 +12,7 @@ export type GroupedObsModeDetails = {
   [key in TabName]: ObsModeDetails[]
 }
 
-const getObsModesDetails = async (smService: SequenceManagerService): Promise<GroupedObsModeDetails> => {
+const getObsModesDetails = async (smService: SequenceManagerService): Promise<GroupedObsModeDetails | MessageType> => {
   const response = await smService.getObsModesDetails()
   if (response._type === 'Failed') return errorMessage(response.msg)
   if (response._type === 'LocationServiceError') return errorMessage(response.reason)
@@ -30,6 +31,7 @@ export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
   return useQuery([OBS_MODES_DETAILS.key], () => smService && getObsModesDetails(smService), {
     // The query will not execute until the smService is resolved
     enabled: !!smService,
-    refetchInterval: OBS_MODES_DETAILS.refetchInterval
+    refetchInterval: OBS_MODES_DETAILS.refetchInterval,
+    queryKey: [OBS_MODES_DETAILS.key]
   })
 }

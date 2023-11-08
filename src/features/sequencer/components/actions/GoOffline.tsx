@@ -31,7 +31,7 @@ export const GoOffline = ({ prefix, sequencerState }: SequencerProps): React.JSX
   const goOffline = () => sequencerService && goOfflineAction.mutate(sequencerService)
 
   return (
-    <Button disabled={sequencerState === 'Running'} loading={goOfflineAction.isLoading} onClick={() => goOffline()}>
+    <Button disabled={sequencerState === 'Running'} loading={goOfflineAction.isPending} onClick={() => goOffline()}>
       {goOfflineConstants.buttonText}
     </Button>
   )

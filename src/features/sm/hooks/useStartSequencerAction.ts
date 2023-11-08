@@ -50,5 +50,5 @@ export const useStartSequencerAction = (
     mutationFn: startSequencer(subsystem, obsMode, variation),
     onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),
     onSuccess: () => successMessage(startSequencerConstants.successMessage),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })

@@ -6,7 +6,7 @@ type UseMutationProps<S, T> = {
   onSuccess: (a: T) => void
   onError: (e: unknown) => void
   invalidateKeysOnSuccess?: (QueryKey[] | QueryKey)[]
-  useErrorBoundary?: boolean
+  throwOnError?: boolean
 }
 
 export const useMutation = <S, T>({
@@ -14,17 +14,19 @@ export const useMutation = <S, T>({
   onSuccess,
   onError,
   invalidateKeysOnSuccess,
-  useErrorBoundary = false
+  throwOnError = false
 }: UseMutationProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
-  return useReactMutation(mutationFn, {
+  return useReactMutation({
+    mutationFn: mutationFn,
     onSuccess: async (data) => {
-      invalidateKeysOnSuccess && (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries(key))))
+      invalidateKeysOnSuccess &&
+        (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries({ queryKey: key }))))
       onSuccess(data)
     },
     onError: (e) => onError(e),
-    useErrorBoundary
+    throwOnError: throwOnError
   })
 }
 

@@ -8,12 +8,12 @@ export const useProvisionAction = <T>(
   mutationFn: (agent: SequenceManagerService) => Promise<T>,
   successMsg: string,
   errorMsg: string,
-  useErrorBoundary = true
+  throwOnError = true
 ): UseMutationResult<T, unknown, SequenceManagerService> =>
   useMutation({
     mutationFn,
     onSuccess: () => successMessage(successMsg),
     onError: (e) => errorMessage(errorMsg, e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key],
-    useErrorBoundary
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]],
+    throwOnError
   })

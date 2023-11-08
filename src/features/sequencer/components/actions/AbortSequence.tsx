@@ -31,7 +31,7 @@ export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps
   return (
     <Button
       danger
-      loading={abortAction.isLoading}
+      loading={abortAction.isPending}
       onClick={() =>
         sequencerService &&
         showConfirmModal(

@@ -23,7 +23,7 @@ const provision =
   async (sequenceManagerService: SequenceManagerService) => {
     const provisionConfig = parseProvisionConf(provisionRecord)
     const res = await sequenceManagerService.provision(provisionConfig)
-    await queryClient.invalidateQueries(OBS_MODES_DETAILS.key)
+    await queryClient.invalidateQueries({ queryKey: [OBS_MODES_DETAILS.key] })
     switch (res._type) {
       case 'Success':
         return res
@@ -65,7 +65,7 @@ const fetchProvisionConf = async (configService: ConfigService): Promise<Provisi
 }
 
 export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
-  const useErrorBoundary = false
+  const throwOnError = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
 
@@ -87,14 +87,14 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
       }
     },
     onError: (e) => errorMessage(provisionConfConstants.fetchFailureMessage, e),
-    useErrorBoundary
+    throwOnError
   })
 
   const provisionAction = useProvisionAction(
     provision(provisionRecord, queryClient),
     provisionConstants.successMessage,
     provisionConstants.failureMessage,
-    useErrorBoundary
+    throwOnError
   )
 
   const onProvisionClick = () => {
@@ -112,7 +112,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
         type='primary'
         size='middle'
         disabled={disabled}
-        loading={smContextLoading || isLoading || provisionAction.isLoading}
+        loading={smContextLoading || isLoading || provisionAction.isPending}
         onClick={onProvisionClick}>
         {provisionConstants.buttonText}
       </Button>
@@ -125,7 +125,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
         okText={provisionConstants.modalOkText}
         centered
         visible={modalVisibility}
-        confirmLoading={provisionAction.isLoading}
+        confirmLoading={provisionAction.isPending}
         bodyStyle={{ padding: 0 }}
         onOk={handleModalOk}
         onCancel={handleModalCancel}

@@ -24,12 +24,12 @@ export const SmSequencerAction = ({
   const reloadAction = useReloadScriptAction(sequencerPrefix.subsystem, obsMode, variation)
   const startSequencerAction = useStartSequencerAction(sequencerPrefix.subsystem, obsMode, variation)
 
-  if (reloadAction.isLoading || startSequencerAction.isLoading) return <Spinner />
+  if (reloadAction.isPending || startSequencerAction.isPending) return <Spinner />
 
   if (!sequencerState) {
     return (
       <Typography.Link
-        disabled={smLoading || startSequencerAction.isLoading}
+        disabled={smLoading || startSequencerAction.isPending}
         onClick={() => smService && startSequencerAction.mutateAsync(smService)}>
         {sequencerActionConstants.startSequencer}
       </Typography.Link>

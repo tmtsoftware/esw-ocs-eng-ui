@@ -51,7 +51,7 @@ export const Configure = ({ disabled }: ConfigureProps): React.JSX.Element => {
     <>
       <Button
         disabled={disabled || loading || !smService}
-        loading={configureAction.isLoading}
+        loading={configureAction.isPending}
         onClick={onConfigureClick}>
         {configureConstants.buttonText}
       </Button>

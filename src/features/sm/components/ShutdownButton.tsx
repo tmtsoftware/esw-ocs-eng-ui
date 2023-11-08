@@ -22,7 +22,7 @@ export const ShutdownSMButton = (): React.JSX.Element => {
     mutationFn: shutdownSM,
     onSuccess: () => successMessage(shutdownSMConstants.successMessage),
     onError: (e) => errorMessage(shutdownSMConstants.failureMessage, e),
-    useErrorBoundary: true //TODO : remove error boundary
+    throwOnError: true //TODO : remove error boundary
   })
 
   if (agentServiceLoading) return <Spinner />
@@ -30,7 +30,7 @@ export const ShutdownSMButton = (): React.JSX.Element => {
   return (
     <Button
       danger
-      loading={shutdownSmAction.isLoading}
+      loading={shutdownSmAction.isPending}
       onClick={() =>
         agentService &&
         showConfirmModal(

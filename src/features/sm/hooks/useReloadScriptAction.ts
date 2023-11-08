@@ -58,6 +58,6 @@ export const useReloadScriptAction = (
     mutationFn: reloadScript(subsystem, obsMode, variation),
     onError: (e) => errorMessage(reloadScriptConstants.getFailureMessage(`${prefix.toJSON()}`), e),
     onSuccess: () => successMessage(reloadScriptConstants.getSuccessMessage(`${prefix.toJSON()}`)),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 }

@@ -27,7 +27,7 @@ export const SpawnSMButton = (): React.JSX.Element => {
     mutationFn: spawnSM(agentPrefix),
     onSuccess: () => successMessage(spawnSMConstants.successMessage),
     onError: (e) => errorMessage(spawnSMConstants.failureMessage, e),
-    useErrorBoundary: true // TODO : Remove error boundary
+    throwOnError: true // TODO : Remove error boundary
   })
 
   const handleModalOk = () => {
@@ -54,14 +54,14 @@ export const SpawnSMButton = (): React.JSX.Element => {
 
   return (
     <>
-      <Button type='primary' size='middle' loading={spawnSmAction.isLoading} onClick={handleSpawnButtonClick}>
+      <Button type='primary' size='middle' loading={spawnSmAction.isPending} onClick={handleSpawnButtonClick}>
         {spawnSMConstants.buttonText}
       </Button>
       <SelectionModal
         title={spawnSMConstants.modalTitle}
         okText={spawnSMConstants.modalOkText}
         visible={modalVisibility}
-        confirmLoading={spawnSmAction.isLoading}
+        confirmLoading={spawnSmAction.isPending}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         data={allAgentsQuery.data?.map((prefix) => prefix.toJSON())}

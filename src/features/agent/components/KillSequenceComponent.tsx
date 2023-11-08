@@ -22,7 +22,7 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
     mutationFn: killComponent(componentId),
     onSuccess: () => successMessage(killSequenceComponentConstants.getSuccessMessage(componentId.prefix.toJSON())),
     onError: (e) => errorMessage(killSequenceComponentConstants.getFailureMessage(componentId.prefix.toJSON()), e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
   const handleOnClick = () => {

@@ -17,9 +17,9 @@ This project is a React web application.
 
     - You can use `esw-services/run start-eng-ui-services` command to start all the services and agents required to test the scripts written in repo sequncer-scripts/ui-setup branch.
 
-> `./scripts/start-csw-services.sh` (recommended way).
+> `./scripts/start-esw-services.sh` (recommended way).
 
-The `v16.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
+The `v20.x` version of [Node.js](https://nodejs.org/en/download/package-manager/) must be installed.
 
 ## User role for login
 

@@ -1,14 +1,6 @@
-import { render } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
-import {
-  AuthContext,
-  ComponentId,
-  GATEWAY_CONNECTION,
-  Prefix,
-  SEQUENCE_MANAGER_CONNECTION,
-  setAppName,
-  TestUtils
-} from '@tmtsoftware/esw-ts'
+import { queryHelpers, render } from '@testing-library/react'
 import type {
   AgentService,
   AgentStatus,
@@ -20,20 +12,27 @@ import type {
   SequencerService,
   Subsystem
 } from '@tmtsoftware/esw-ts'
+import {
+  AuthContext,
+  ComponentId,
+  GATEWAY_CONNECTION,
+  Prefix,
+  SEQUENCE_MANAGER_CONNECTION,
+  setAppName,
+  TestUtils
+} from '@tmtsoftware/esw-ts'
+import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
-import 'antd/dist/antd.css'
 import React, { ReactElement } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { anything, instance, mock, when } from 'ts-mockito'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
 import { LocationServiceProvider } from '../../src/contexts/LocationServiceContext'
 import { SMServiceProvider } from '../../src/contexts/SMContext'
+import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
 import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
-import type { StepListTableContextType } from '../../src/features/sequencer/hooks/useStepListContext'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -43,16 +42,16 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     isAuthenticated: () => loggedInValue,
     logout: () => {
       loggedInValue = false
-      return Promise.resolve() as TestUtils.KeycloakPromise<void, void>
+      return Promise.resolve() as Promise<void>
     },
     token: () => 'token string',
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      } as TestUtils.KeycloakTokenParsed),
+      }) as TestUtils.KeycloakTokenParsed,
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
-    loadUserProfile: () => Promise.resolve({}) as TestUtils.KeycloakPromise<TestUtils.KeycloakProfile, void>
+    loadUserProfile: () => Promise.resolve({}) as Promise<TestUtils.KeycloakProfile>
   }
 }
 
@@ -122,10 +121,10 @@ export const getAgentStatusMock = (subsystem: Subsystem = 'ESW'): AgentStatus =>
         seqCompId: new ComponentId(Prefix.fromString('ESW.ESW1'), 'SequenceComponent'),
         sequencerLocation: [
           {
-            _type: 'AkkaLocation',
+            _type: 'PekkoLocation',
             connection: {
               componentType: 'Sequencer',
-              connectionType: 'akka',
+              connectionType: 'pekko',
               prefix: Prefix.fromString(`${subsystem}.darkNight`)
             },
             metadata: {},
@@ -157,6 +156,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
     uri: 'http://localhost:5000/',
     metadata: { agentPrefix: 'ESW.primary' }
   }
+  // noinspection UnnecessaryLocalVariableJS
   const contextProvider = ({ children }: { children: React.ReactNode }) => (
     <AuthContext.Provider
       value={{
@@ -187,6 +187,7 @@ const getContextWithQueryClientProvider = (
   const queryClient = new QueryClient()
   const ContextProvider = getContextProvider(loggedIn, loginFunc, logoutFunc)
 
+  // noinspection UnnecessaryLocalVariableJS
   const provider = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
       <ContextProvider>{children}</ContextProvider>
@@ -214,6 +215,7 @@ const renderWithAuth = (
   })
 }
 
+// noinspection JSUnusedGlobalSymbols
 const MenuWithStepListContext = ({
   menuItem,
   value = {
@@ -224,9 +226,9 @@ const MenuWithStepListContext = ({
     sequencerService: sequencerServiceInstance
   }
 }: {
-  menuItem: JSX.Element
+  menuItem: React.JSX.Element
   value?: StepListTableContextType
-}): JSX.Element => {
+}): React.JSX.Element => {
   const MenuComponent = () => <Menu>{menuItem}</Menu>
   return (
     <StepListContextProvider value={value}>
@@ -246,3 +248,18 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
 // eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }
+
+// From https://stackoverflow.com/questions/54234515/get-by-html-element-with-react-testing-library
+// Use get Upload (input) item in menuitem
+export function getAllByTagName(container: HTMLElement, tagName: keyof React.JSX.IntrinsicElements) {
+  return Array.from(container.querySelectorAll<HTMLElement>(tagName))
+}
+
+export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.IntrinsicElements) {
+  const result = getAllByTagName(container, tagName)
+
+  if (result.length > 1) {
+    throw queryHelpers.getElementError(`Found multiple elements with the tag ${tagName}`, container)
+  }
+  return result[0] || null
+}

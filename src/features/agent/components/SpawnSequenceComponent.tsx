@@ -2,12 +2,12 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { AgentService, Prefix } from '@tmtsoftware/esw-ts'
 import { Button, Input, Popconfirm, Space, Tooltip, Typography } from 'antd'
 import React, { useState } from 'react'
+import styles from './agentCards.module.css'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
 import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
-import styles from './agentCards.module.css'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
   agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
@@ -24,7 +24,7 @@ const validateComponentName = (componentName: string) =>
   requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
   requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
 
-export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): JSX.Element => {
+export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): React.JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
   const [agentService, isLoading] = useAgentService()
@@ -38,7 +38,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         )
       ),
     onError: (e) => errorMessage(spawnSequenceComponentConstants.getFailureMessage, e), //TODO should we add componentId?
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
   const resetComponentName = () => setComponentName('')
@@ -70,13 +70,13 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
           if (!visible) resetComponentName()
         }}
         onConfirm={onConfirm}
-        disabled={spawnSequenceComponentAction.isLoading}
+        disabled={spawnSequenceComponentAction.isPending}
         okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
           type='text'
           style={{ paddingTop: '0.33rem' }}
           icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
-          loading={isLoading || spawnSequenceComponentAction.isLoading}
+          loading={isLoading || spawnSequenceComponentAction.isPending}
         />
       </Popconfirm>
     </Tooltip>

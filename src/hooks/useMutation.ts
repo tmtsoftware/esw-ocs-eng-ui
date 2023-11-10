@@ -1,31 +1,32 @@
-import { useMutation as useReactMutation, useQueryClient } from 'react-query'
-import type { QueryKey, UseMutationResult } from 'react-query'
+import {useMutation as useReactMutation, useQueryClient} from '@tanstack/react-query'
+import type {QueryKey, UseMutationResult} from '@tanstack/react-query'
 
 type UseMutationProps<S, T> = {
   mutationFn: (service: S) => Promise<T>
   onSuccess: (a: T) => void
   onError: (e: unknown) => void
   invalidateKeysOnSuccess?: (QueryKey[] | QueryKey)[]
-  useErrorBoundary?: boolean
+  throwOnError?: boolean
 }
 
 export const useMutation = <S, T>({
-  mutationFn,
-  onSuccess,
-  onError,
-  invalidateKeysOnSuccess,
-  useErrorBoundary = false
-}: UseMutationProps<S, T>): UseMutationResult<T, unknown, S> => {
+                                    mutationFn,
+                                    onSuccess,
+                                    onError,
+                                    invalidateKeysOnSuccess,
+                                    throwOnError = false
+                                  }: UseMutationProps<S, T>): UseMutationResult<T, unknown, S> => {
   const qc = useQueryClient()
 
-  return useReactMutation(mutationFn, {
+  return useReactMutation({
+    mutationFn: mutationFn,
     onSuccess: async (data) => {
-      invalidateKeysOnSuccess && (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries(key))))
+      invalidateKeysOnSuccess && (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries({queryKey: key}))))
       onSuccess(data)
     },
     onError: (e) => onError(e),
-    useErrorBoundary
+    throwOnError: throwOnError
   })
 }
 
-export type { UseMutationResult }
+export type {UseMutationResult}

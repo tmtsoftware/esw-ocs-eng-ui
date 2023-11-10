@@ -1,4 +1,4 @@
-import { AkkaConnection, ObsMode, Prefix, ServiceError, StepList } from '@tmtsoftware/esw-ts'
+import { PekkoConnection, ObsMode, Prefix, ServiceError, StepList } from '@tmtsoftware/esw-ts'
 import type {
   SequencerService,
   SequencerState,
@@ -8,6 +8,8 @@ import type {
 } from '@tmtsoftware/esw-ts'
 import { Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
+import { ObsModeCard, Status } from './CommonComponents'
+import { RunningActions } from './ObsModeActions'
 import { useGatewayLocation } from '../../contexts/GatewayServiceContext'
 import { useLocationService } from '../../contexts/LocationServiceContext'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
@@ -19,8 +21,6 @@ import type { SequencerInfo } from '../../features/sequencer/utils'
 import { useAuth } from '../../hooks/useAuth'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { errorMessage } from '../../utils/message'
-import { ObsModeCard, Status } from './CommonComponents'
-import { RunningActions } from './ObsModeActions'
 
 type ConfiguredObsModeProps = {
   obsMode: ObsMode
@@ -50,7 +50,7 @@ const sortSequencers = (sequencerInfo: SequencerInfo[]) => {
 
 const extractObsModeFromComponentName = (str: string): string => Prefix.fromString(str).componentName.split('.')[0]
 
-export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): JSX.Element => {
+export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: ConfiguredObsModeProps): React.JSX.Element => {
   const [gatewayLocation] = useGatewayLocation()
   const locationService = useLocationService()
   const { auth } = useAuth()
@@ -93,7 +93,7 @@ export const ConfiguredObsMode = ({ obsMode, sequencers, resources }: Configured
 
     const subscriptions: Subscription[] = []
     services.map(([sequencerService, sequencerPrefix]) => {
-      const seqConnection = AkkaConnection(sequencerPrefix, 'Sequencer')
+      const seqConnection = PekkoConnection(sequencerPrefix, 'Sequencer')
       const locationSubscription = locationService.track(seqConnection)((event) => {
         switch (event._type) {
           case 'LocationRemoved':

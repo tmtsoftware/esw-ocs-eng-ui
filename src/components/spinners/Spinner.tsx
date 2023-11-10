@@ -4,4 +4,4 @@ import React from 'react'
 
 const antIcon = <LoadingOutlined style={{ color: '#08c' }} spin />
 
-export const Spinner = (): JSX.Element => <Spin indicator={antIcon} />
+export const Spinner = (): React.JSX.Element => <Spin indicator={antIcon} />

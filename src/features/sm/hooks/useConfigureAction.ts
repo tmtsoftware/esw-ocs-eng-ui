@@ -45,6 +45,6 @@ export const useConfigureAction = (
     mutationFn: configure,
     onSuccess: () => successMessage(configureConstants.getSuccessMessage(obsMode?.name)),
     onError: (e) => errorMessage(configureConstants.getFailureMessage(obsMode?.name), e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key, OBS_MODES_DETAILS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key], [OBS_MODES_DETAILS.key]]
   })
 }

@@ -24,14 +24,14 @@ const useAbortSequence = (): UseMutationResult<OkOrUnhandledResponse, unknown, S
 
 type AbortSequenceProps = Omit<SequencerProps, 'sequencerState'>
 
-export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps): JSX.Element => {
+export const AbortSequence = ({ prefix, isSequencerRunning }: AbortSequenceProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const abortAction = useAbortSequence()
 
   return (
     <Button
       danger
-      loading={abortAction.isLoading}
+      loading={abortAction.isPending}
       onClick={() =>
         sequencerService &&
         showConfirmModal(

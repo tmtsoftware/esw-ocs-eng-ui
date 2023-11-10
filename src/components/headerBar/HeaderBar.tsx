@@ -2,12 +2,12 @@ import { DownOutlined, LogoutOutlined } from '@ant-design/icons'
 import { Button, Dropdown, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import styles from './headerBar.module.css'
 import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
 import { getUsername } from '../../utils/getUsername'
-import styles from './headerBar.module.css'
 
-export const HeaderBar = (): JSX.Element => {
+export const HeaderBar = (): React.JSX.Element => {
   const { auth, logout } = useAuth()
   const [username, setUsername] = useState<string | undefined>(undefined)
 
@@ -15,16 +15,17 @@ export const HeaderBar = (): JSX.Element => {
     setUsername(getUsername(auth))
   }, [auth])
 
-  const menu = (
-    <Menu>
-      <Menu.Item key='1' danger icon={<LogoutOutlined />} onClick={logout}>
-        Logout
-      </Menu.Item>
-    </Menu>
-  )
-
+  const items = [{
+    label: 'Logout',
+    danger: true,
+    key: '1',
+    onClick: () => logout
+  }];
+  const menuProps = {
+    items
+  }
   const Logout = () => (
-    <Dropdown trigger={['click']} overlay={menu}>
+    <Dropdown trigger={['click']} menu={menuProps}>
       {username ? (
         <Button type='text'>
           {username.toUpperCase()}
@@ -39,7 +40,7 @@ export const HeaderBar = (): JSX.Element => {
   return (
     <>
       <Link to={HOME}>
-        <img role='tmt_logo' src={'TMT_Logo.png'} className={styles.logo} />
+        <img role='tmt_logo' src={'TMT_Logo.png'} className={styles.logo} alt='tmt_logo' />
       </Link>
       <Logout />
     </>

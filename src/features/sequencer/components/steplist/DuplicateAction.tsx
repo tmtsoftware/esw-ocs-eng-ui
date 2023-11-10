@@ -18,7 +18,7 @@ const addCommands = (commands: SequenceCommand[]) => async (sequencerService: Se
   }
 }
 
-export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): JSX.Element => {
+export const DuplicateAction = ({ commands: selectedCommands }: { commands: SequenceCommand[] }): React.JSX.Element => {
   const { sequencerService, handleDuplicate } = useStepListContext()
   const duplicateAction = useMutation({
     mutationFn: addCommands(selectedCommands),
@@ -32,7 +32,7 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
         <Button onClick={handleDuplicate}>Cancel</Button>
         <Button
           type='primary'
-          loading={duplicateAction.isLoading}
+          loading={duplicateAction.isPending}
           disabled={selectedCommands.length === 0}
           onClick={() => {
             sequencerService && duplicateAction.mutateAsync(sequencerService)

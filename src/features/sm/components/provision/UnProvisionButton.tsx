@@ -21,8 +21,8 @@ const shutdownAllSequenceComps = (sequenceManagerService: SequenceManagerService
     }
   })
 
-export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
-  const useErrorBoundary = false
+export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
+  const throwOnError = false
   const [smContext, isLoading] = useSMService()
   const smService = smContext?.smService
 
@@ -30,7 +30,7 @@ export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }):
     shutdownAllSequenceComps,
     unProvisionConstants.successMessage,
     unProvisionConstants.failureMessage,
-    useErrorBoundary
+    throwOnError
   )
 
   if (isLoading) return <Spinner />
@@ -39,7 +39,7 @@ export const UnProvisionButton = ({ disabled = false }: { disabled?: boolean }):
     <Button
       danger
       disabled={disabled}
-      loading={unProvisionAction.isLoading}
+      loading={unProvisionAction.isPending}
       onClick={() =>
         smService &&
         showConfirmModal(

@@ -17,19 +17,19 @@ export const SmSequencerAction = ({
   sequencerPrefix: Prefix
   masterSequencerState?: SequencerState
   sequencerState?: SequencerState
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [smContext, smLoading] = useSMService()
   const smService = smContext?.smService
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
   const reloadAction = useReloadScriptAction(sequencerPrefix.subsystem, obsMode, variation)
   const startSequencerAction = useStartSequencerAction(sequencerPrefix.subsystem, obsMode, variation)
 
-  if (reloadAction.isLoading || startSequencerAction.isLoading) return <Spinner />
+  if (reloadAction.isPending || startSequencerAction.isPending) return <Spinner />
 
   if (!sequencerState) {
     return (
       <Typography.Link
-        disabled={smLoading || startSequencerAction.isLoading}
+        disabled={smLoading || startSequencerAction.isPending}
         onClick={() => smService && startSequencerAction.mutateAsync(smService)}>
         {sequencerActionConstants.startSequencer}
       </Typography.Link>
@@ -40,7 +40,7 @@ export const SmSequencerAction = ({
     smService && reloadAction.mutateAsync(smService)
   }
 
-  const popConfirmTitle = (): JSX.Element => (
+  const popConfirmTitle = (): React.JSX.Element => (
     <div style={{ width: '22rem' }}>
       {masterSequencerState && isSequencerInProgress(masterSequencerState)
         ? sequencerActionConstants.getPopConfirmTitleWithState(sequencerPrefix, masterSequencerState)

@@ -1,19 +1,19 @@
 import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React from 'react'
+import { SmActions } from './SMActions'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import styles from '../../components/pageHeader/pageHeader.module.css'
 import { useSMService } from '../../contexts/SMContext'
 import { AgentCards } from '../../features/agent/components/AgentCards'
-import { SmActions } from './SMActions'
 
 const { Meta } = Card
 
-const SMHeader = (): JSX.Element => {
+const SMHeader = (): React.JSX.Element => {
   return <Card title={<SmStatusCard />} bodyStyle={{ display: 'none' }} extra={<SmActions />} />
 }
 
-const SMStatus = (): JSX.Element => {
+const SMStatus = (): React.JSX.Element => {
   const [smContext, loading] = useSMService()
   const smLocation = smContext?.smLocation
 
@@ -26,7 +26,7 @@ const SMStatus = (): JSX.Element => {
   return <Typography.Text type={txtType}>{text}</Typography.Text>
 }
 
-const SmStatusCard = (): JSX.Element => {
+const SmStatusCard = (): React.JSX.Element => {
   return (
     <Space direction='vertical' size={3}>
       <Typography.Text className={styles.pageTitle}>Sequence Manager</Typography.Text>
@@ -42,7 +42,7 @@ const SmStatusCard = (): JSX.Element => {
   )
 }
 
-export const Infrastructure = (): JSX.Element => {
+export const Infrastructure = (): React.JSX.Element => {
   return (
     <>
       <PageHeader title='Manage Infrastructure' />

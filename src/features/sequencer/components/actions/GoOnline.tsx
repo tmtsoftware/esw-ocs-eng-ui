@@ -24,14 +24,14 @@ const useGoOnlineAction = (): UseMutationResult<GoOnlineResponse, unknown, Seque
   })
 }
 
-export const GoOnline = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+export const GoOnline = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOnlineAction = useGoOnlineAction()
 
   const goOnline = () => sequencerService && goOnlineAction.mutate(sequencerService)
 
   return (
-    <Button disabled={sequencerState === 'Running'} loading={goOnlineAction.isLoading} onClick={() => goOnline()}>
+    <Button disabled={sequencerState === 'Running'} loading={goOnlineAction.isPending} onClick={() => goOnline()}>
       {goOnlineConstants.buttonText}
     </Button>
   )

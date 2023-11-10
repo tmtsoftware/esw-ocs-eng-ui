@@ -1,3 +1,4 @@
+import type { QueryKey } from '@tanstack/react-query'
 import type { ObsMode, SequenceManagerService } from '@tmtsoftware/esw-ts'
 import { Button } from 'antd'
 import React from 'react'
@@ -26,16 +27,16 @@ const shutdown = (obsMode: ObsMode) => async (smService: SequenceManagerService)
 const ShutdownButtonAction = <QResult, MResult>(
   obsMode: ObsMode,
   onClick: (data: QResult) => Promise<MResult>,
-  invalidateKeysOnSuccess?: string[]
+  invalidateKeysOnSuccess: QueryKey
 ): UseMutationResult<MResult, unknown, QResult> =>
   useMutation({
     mutationFn: onClick,
     onSuccess: () => successMessage(observationShutdownConstants.getSuccessMessage(obsMode)),
     onError: (e) => errorMessage(observationShutdownConstants.getFailureMessage(obsMode), e),
-    invalidateKeysOnSuccess: invalidateKeysOnSuccess
+    invalidateKeysOnSuccess: [invalidateKeysOnSuccess]
   })
 
-export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element => {
+export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): React.JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const shutdownAction = ShutdownButtonAction(obsMode, shutdown(obsMode), [OBS_MODES_DETAILS.key])
@@ -43,7 +44,7 @@ export const ShutdownButton = ({ obsMode }: { obsMode: ObsMode }): JSX.Element =
   return (
     <Button
       disabled={loading || !smService}
-      loading={shutdownAction.isLoading}
+      loading={shutdownAction.isPending}
       onClick={() =>
         smService &&
         showConfirmModal(

@@ -18,7 +18,7 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
     ? reloadScriptConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : reloadScriptConstants.getModalTitle(sequencerPrefix.toJSON())
 
-export const ReloadScript = ({ sequencerPrefix, sequencerState }: ReloadScriptProps): JSX.Element => {
+export const ReloadScript = ({ sequencerPrefix, sequencerState }: ReloadScriptProps): React.JSX.Element => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)

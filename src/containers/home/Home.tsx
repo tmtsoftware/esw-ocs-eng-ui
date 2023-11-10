@@ -1,14 +1,14 @@
 import { Card, Col, Row, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import styles from './home.module.css'
 import { InfraIcon, ResourceIcon, TelescopeIcon } from '../../components/icons'
 import { SMCard } from '../../features/sm/components/smcard/SMCard'
 import { INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../routes/RoutesConfig'
-import styles from './home.module.css'
 
 type CardDetail = {
   title: string
-  icon: JSX.Element
+  icon: React.JSX.Element
   link: string
 }
 
@@ -59,7 +59,7 @@ const HomePageCards = (
   </Row>
 )
 
-export const Home = (): JSX.Element => (
+export const Home = (): React.JSX.Element => (
   <>
     {SMCardRow}
     {HomePageCards}

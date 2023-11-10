@@ -2,9 +2,9 @@ import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getSequencerPath } from '../../../routes/RoutesConfig'
 import styles from './agentCards.module.css'
 import { SequenceComponentActions, SequencerActions } from './SequenceComponentActions'
+import { getSequencerPath } from '../../../routes/RoutesConfig'
 
 type SequencerProps = {
   seqCompPrefix: Prefix
@@ -20,7 +20,7 @@ type SequenceComponentCardProps = {
   sequencerPrefix: Prefix | undefined
 }
 
-const Sequencer = ({ seqCompPrefix, sequencerPrefix }: SequencerProps): JSX.Element => {
+const Sequencer = ({ seqCompPrefix, sequencerPrefix }: SequencerProps): React.JSX.Element => {
   const Title = () => (
     <Space direction='vertical' size={1}>
       <Typography.Text style={{ color: '#237804' }}>[{sequencerPrefix.toJSON()}]</Typography.Text>
@@ -37,13 +37,16 @@ const Sequencer = ({ seqCompPrefix, sequencerPrefix }: SequencerProps): JSX.Elem
   )
 }
 
-const SequenceComponent = ({ seqCompPrefix }: SequenceComponentProps): JSX.Element => (
+const SequenceComponent = ({ seqCompPrefix }: SequenceComponentProps): React.JSX.Element => (
   <div className={styles.seqComp}>
     <Typography.Text style={{ color: 'var(--labelColor)' }}>{seqCompPrefix.toJSON()}</Typography.Text>
   </div>
 )
 
-export const SequenceComponentCard = ({ seqCompId, sequencerPrefix }: SequenceComponentCardProps): JSX.Element => {
+export const SequenceComponentCard = ({
+  seqCompId,
+  sequencerPrefix
+}: SequenceComponentCardProps): React.JSX.Element => {
   const seqComponentPrefix = seqCompId.prefix
   const SequenceComponentOrSequencer = () =>
     sequencerPrefix ? (

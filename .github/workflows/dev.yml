@@ -3,30 +3,28 @@ name: dev
 on:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [master]
   push:
-    branches: [main, 'branch-*']
+    branches: [master, 'branch-*']
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
-
-      - uses: coursier/setup-action@v1.2.0-M2
+      - uses: actions/checkout@v3
+      - uses: coursier/setup-action@v1
         with:
           jvm: temurin:1.17
           apps: sbt sbtn
-
       - uses: coursier/cache-action@v6
 
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "20.6.1"
+          registry-url: "https://registry.npmjs.org"
+
       - name: Cache ~/.npm
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -36,17 +34,20 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Docs makeSite
-        working-directory: ./docs
-        run: |
-          sbt clean
-          sbt makeSite
-
       - name: Build
         run: npm run build
 
-      - name: Unit tests
+      - name: Tests
         run: npm run test:ci
+
+      - name: Build - Example App
+        working-directory: ./example
+        run: |
+          npm ci
+          npm run build
+
+      - name: Selenium Test
+        run: sbt -Dprod.publish=true -DgenerateStoryReport=true -DRTM_PATH=./RTM -DOUTPUT_FILE=/testStoryMapping.txt clean test
 
       - name: Generate RTM
         if: always()
@@ -57,7 +58,7 @@ jobs:
       - name: Upload RTM
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: RTM
           path: ./RTM
@@ -65,7 +66,7 @@ jobs:
       - name: Upload Coverage
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Coverage
           path: ./coverage

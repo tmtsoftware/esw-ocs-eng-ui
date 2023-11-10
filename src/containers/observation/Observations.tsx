@@ -1,8 +1,8 @@
 import React from 'react'
-import { PageHeader } from '../../components/pageHeader/PageHeader'
 import { ObservationTabs } from './ObservationTabs'
+import { PageHeader } from '../../components/pageHeader/PageHeader'
 
-export const Observations = (): JSX.Element => (
+export const Observations = (): React.JSX.Element => (
   <>
     <PageHeader title='Manage Observation' />
     <ObservationTabs />

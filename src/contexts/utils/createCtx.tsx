@@ -8,7 +8,7 @@ export type Provider<Value> = ({
 }: {
   children: React.ReactNode
   initialValue?: Value
-}) => JSX.Element
+}) => React.JSX.Element
 
 export type CtxType<T> = readonly [Hook<T>, Provider<T>]
 

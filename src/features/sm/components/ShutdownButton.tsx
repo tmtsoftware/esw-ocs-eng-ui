@@ -15,14 +15,14 @@ const shutdownSM = (agent: AgentService) =>
     return res
   })
 
-export const ShutdownSMButton = (): JSX.Element => {
+export const ShutdownSMButton = (): React.JSX.Element => {
   const [agentService, agentServiceLoading] = useAgentService()
 
   const shutdownSmAction = useMutation({
     mutationFn: shutdownSM,
     onSuccess: () => successMessage(shutdownSMConstants.successMessage),
     onError: (e) => errorMessage(shutdownSMConstants.failureMessage, e),
-    useErrorBoundary: true //TODO : remove error boundary
+    throwOnError: true //TODO : remove error boundary
   })
 
   if (agentServiceLoading) return <Spinner />
@@ -30,7 +30,7 @@ export const ShutdownSMButton = (): JSX.Element => {
   return (
     <Button
       danger
-      loading={shutdownSmAction.isLoading}
+      loading={shutdownSmAction.isPending}
       onClick={() =>
         agentService &&
         showConfirmModal(

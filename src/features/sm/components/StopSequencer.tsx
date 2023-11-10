@@ -50,7 +50,7 @@ export const StopSequencer = ({
 }: {
   sequencerPrefix: Prefix
   sequencerState: SequencerState | undefined
-}): JSX.Element => {
+}): React.JSX.Element => {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
@@ -70,13 +70,13 @@ export const StopSequencer = ({
     mutationFn: stopSequencer(sequencerPrefix.subsystem, obsMode, variation),
     onSuccess: () => successMessage(stopSequencerConstants.successMessage(sequencerPrefix)),
     onError: (e) => errorMessage(stopSequencerConstants.failureMessage(sequencerPrefix), e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
   return (
     <Menu.Item
       icon={<CloseCircleOutlined />}
-      disabled={isLoading || stopAction.isLoading}
+      disabled={isLoading || stopAction.isPending}
       onClick={handleOnClick}
       key='stopSequencer'>
       {stopSequencerConstants.menuItemText}

@@ -92,7 +92,7 @@ const FormattedParams = ({
   size,
   role
 }: {
-  values: JSX.Element[] | undefined
+  values: React.JSX.Element[] | undefined
   role: string
   size?: SpaceSize
 }) => (
@@ -101,7 +101,7 @@ const FormattedParams = ({
   </Space>
 )
 
-export const formatParameters = (parameter: Parameter<Key>, command: SequenceCommand): JSX.Element => {
+export const formatParameters = (parameter: Parameter<Key>, command: SequenceCommand): React.JSX.Element => {
   const { keyName, keyTag } = parameter
   switch (keyTag) {
     case 'CoordKey':

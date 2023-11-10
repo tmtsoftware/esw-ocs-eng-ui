@@ -2,18 +2,18 @@ import type { Prefix, SequenceCommand, SequencerStateResponse, Step, StepList, S
 import { Col, Row, Space, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React, { useEffect, useRef, useState } from 'react'
-import { useSequencerService } from '../../hooks/useSequencerService'
-import { StepListContextProvider } from '../../hooks/useStepListContext'
-import type { StepListInfo, StepListStatus } from '../../utils'
-import { getStepListInfo } from '../../utils'
-import styles from '../sequencerDetails/sequencerDetails.module.css'
-import { statusTextType } from '../SequencersTable'
 import { DuplicateAction } from './DuplicateAction'
 import { PlayPauseSequence } from './PlayPauseSequence'
 import { ReloadSequence } from './ReloadSequence'
 import type { StepData } from './StepComponent'
 import { StepComponent } from './StepComponent'
 import { StepThroughSequence } from './StepThroughSequence'
+import { useSequencerService } from '../../hooks/useSequencerService'
+import { StepListContextProvider } from '../../hooks/useStepListContext'
+import type { StepListInfo, StepListStatus } from '../../utils'
+import { getStepListInfo } from '../../utils'
+import styles from '../sequencerDetails/sequencerDetails.module.css'
+import { statusTextType } from '../SequencersTable'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -72,7 +72,7 @@ type StepListTitleProps = {
   stepListStatus: StepListStatus
 }
 
-const StepListTitle = ({ stepListStatus }: StepListTitleProps): JSX.Element => {
+const StepListTitle = ({ stepListStatus }: StepListTitleProps): React.JSX.Element => {
   const style = stepListStatus === 'All Steps Completed' ? { fontWeight: 'bold' as const } : {}
   return (
     <Col role='stepListTitle'>
@@ -134,7 +134,7 @@ export const StepListTable = ({
   selectedStep,
   setSelectedStep,
   sequencerStateResponse
-}: StepListTableProps): JSX.Element => {
+}: StepListTableProps): React.JSX.Element => {
   const { stepList } = sequencerStateResponse
   const [isDuplicateEnabled, toggleDuplicateEnabled] = useState<boolean>(false)
   const [commands, setCommands] = useState<SequenceCommand[]>([])

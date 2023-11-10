@@ -3,23 +3,22 @@ name: Branch Link Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: "00 13 * * *" # run at 18:30 PM IST
+    - cron: "00 11 * * *" # run at 16:30 PM IST
 
 jobs:
   paradox:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
-          ref: branch-0.2.x
-      - uses: coursier/setup-action@v1.2.0-M2
+          ref: branch-0.3.x
+      - uses: coursier/setup-action@v1
         with:
           jvm: temurin:1.17
       - uses: coursier/cache-action@v6
 
       - name: Paradox Validate Links
-        working-directory: ./docs
         run: sbtn paradoxValidateLinks
 
       - name: Notify slack

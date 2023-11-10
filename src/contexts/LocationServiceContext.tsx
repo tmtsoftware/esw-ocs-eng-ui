@@ -6,7 +6,7 @@ const LocationServiceContext = createContext<LocationService | undefined>(undefi
 export const LocationServiceProvider = ({
   children,
   locationService
-}: PropsWithChildren<{ locationService: LocationService }>): JSX.Element => (
+}: PropsWithChildren<{ locationService: LocationService }>): React.JSX.Element => (
   <LocationServiceContext.Provider value={locationService}>{children}</LocationServiceContext.Provider>
 )
 

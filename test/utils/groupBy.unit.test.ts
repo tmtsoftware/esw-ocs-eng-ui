@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { expect } from 'vitest'
 import { groupBy } from '../../src/utils/groupBy'
 
 type randomType = {

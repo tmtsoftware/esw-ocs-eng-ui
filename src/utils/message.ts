@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import type { MessageType } from 'antd/lib/message'
+import { MessageType } from 'antd/lib/message/interface'
 
 // One place to modify configurations of success and error messages
 // For example, if we decide to change defaults like duration to show message

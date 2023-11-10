@@ -1,11 +1,11 @@
-import { cleanup, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { expect } from 'chai'
+import { anything, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { anything, when } from 'ts-mockito'
 import { App } from '../../src/containers/app/App'
 import { HOME, INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth } from '../utils/test-utils'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
@@ -22,11 +22,12 @@ const renderWithRouter = (ui: React.ReactElement) => {
   })
 }
 
-const leftClick = { button: 0 }
 describe('Full app navigation', () => {
   afterEach(() => {
-    cleanup()
+    vi.restoreAllMocks()
   })
+
+  const user = userEvent.setup()
 
   it('Infrastructure route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)
@@ -34,7 +35,7 @@ describe('Full app navigation', () => {
     const manageInfra = await screen.findByRole('ManageInfrastructure')
     expect(manageInfra).to.exist
 
-    userEvent.click(manageInfra, leftClick)
+    await user.click(manageInfra)
     expect(window.location.pathname).equal(INFRASTRUCTURE)
   })
 
@@ -44,7 +45,7 @@ describe('Full app navigation', () => {
     const manageObservations = await screen.findByRole('ManageObservations')
     expect(manageObservations).to.exist
 
-    userEvent.click(manageObservations, leftClick)
+    await user.click(manageObservations)
     expect(window.location.pathname).equal(OBSERVATIONS)
   })
 
@@ -54,7 +55,7 @@ describe('Full app navigation', () => {
     const resources = await screen.findAllByRole('Resources')
     expect(resources).to.have.length(2)
 
-    userEvent.click(resources[0], leftClick)
+    await user.click(resources[0])
     expect(window.location.pathname).equal(RESOURCES)
   })
 })

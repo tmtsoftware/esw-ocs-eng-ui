@@ -8,7 +8,7 @@ import type { GroupedObsModeDetails } from '../hooks/useObsModesDetails'
 import { useStartSequencerAction } from '../hooks/useStartSequencerAction'
 import { startSequencerConstants } from '../smConstants'
 
-export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Element => {
+export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.Element => {
   const emptyString = ''
 
   const [smContext] = useSMService()
@@ -66,7 +66,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): JSX.Elemen
 
   return (
     <>
-      <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isLoading}>
+      <Button onClick={showModal} disabled={disabled} loading={startSequencerAction.isPending}>
         {startSequencerConstants.buttonText}
       </Button>
       <Modal

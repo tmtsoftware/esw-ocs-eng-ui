@@ -10,18 +10,18 @@ type CustomIconComponentProps = {
   className?: string
 }
 
-export const TelescopeIcon = (props: CustomIconComponentProps): JSX.Element => (
+export const TelescopeIcon = (props: CustomIconComponentProps): React.JSX.Element => (
   <Icon component={() => <Telescope className={props.className} fill={props.fill} />} {...props} />
 )
 
-export const ResourceIcon = (props: CustomIconComponentProps): JSX.Element => (
+export const ResourceIcon = (props: CustomIconComponentProps): React.JSX.Element => (
   <Icon component={() => <Resource className={props.className} fill={props.fill} />} {...props} />
 )
 
-export const InfraIcon = (props: CustomIconComponentProps): JSX.Element => (
+export const InfraIcon = (props: CustomIconComponentProps): React.JSX.Element => (
   <Icon component={() => <Infra className={props.className} fill={props.fill} />} {...props} />
 )
 
-export const StepThroughIcon = (props: CustomIconComponentProps): JSX.Element => (
+export const StepThroughIcon = (props: CustomIconComponentProps): React.JSX.Element => (
   <Icon component={() => <StepThrough className={props.className} fill={props.fill} />} {...props} />
 )

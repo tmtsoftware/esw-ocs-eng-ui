@@ -1,6 +1,8 @@
 import type { Location, Prefix, SequencerState, Step } from '@tmtsoftware/esw-ts'
 import { Badge, Layout, Space, Typography } from 'antd'
 import React, { useState } from 'react'
+import styles from './sequencerDetails.module.css'
+import { StepInfo, EmptyStepInfo } from './StepInfo'
 import { PageHeader } from '../../../../components/pageHeader/PageHeader'
 import { Spinner } from '../../../../components/spinners/Spinner'
 import { useSequencerLocation } from '../../hooks/useSequencerLocation'
@@ -13,12 +15,10 @@ import { StopSequence } from '../actions/StopSequence'
 import type { SequencerProps } from '../Props'
 import { SequencerError } from '../SequencerError'
 import { StepListTable } from '../steplist/StepListTable'
-import styles from './sequencerDetails.module.css'
-import { StepInfo, EmptyStepInfo } from './StepInfo'
 
 const { Sider, Content } = Layout
 
-const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+const Actions = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   const isSequencerRunning = sequencerState === 'Running'
   return (
     <Space>
@@ -30,7 +30,7 @@ const Actions = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
   )
 }
 
-const SequenceComponentInfo = ({ seqLocation }: { seqLocation: Location }): JSX.Element => {
+const SequenceComponentInfo = ({ seqLocation }: { seqLocation: Location }): React.JSX.Element => {
   const componentName = seqLocation.metadata.sequenceComponentPrefix
 
   return (
@@ -48,7 +48,7 @@ const SequencerTitle = ({
 }: {
   sequencerState: SequencerState
   prefix: Prefix
-}): JSX.Element => {
+}): React.JSX.Element => {
   const isOnline = sequencerState._type !== 'Offline'
   return (
     <div data-testid={isOnline ? 'status-success' : 'status-error'}>
@@ -57,7 +57,7 @@ const SequencerTitle = ({
     </div>
   )
 }
-export const SequencerDetails = ({ prefix }: { prefix: Prefix }): JSX.Element => {
+export const SequencerDetails = ({ prefix }: { prefix: Prefix }): React.JSX.Element => {
   const { sequencerStateResponse, loading } = useSequencerStateSubscription(prefix)
   const seqLocation = useSequencerLocation(prefix)
 

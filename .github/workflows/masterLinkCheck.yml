@@ -3,21 +3,20 @@ name: Master Link Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 00 * * *" # run at 06:00 AM IST
+    - cron: "30 22 * * *" # run at 04:00 AM IST
 
 jobs:
   paradox:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: coursier/setup-action@v1.2.0-M2
+      - uses: actions/checkout@v3
+      - uses: coursier/setup-action@v1
         with:
           jvm: temurin:1.17
       - uses: coursier/cache-action@v6
 
       - name: Paradox Validate Links
-        working-directory: ./docs
         run: sbtn paradoxValidateLinks
 
       - name: Notify slack

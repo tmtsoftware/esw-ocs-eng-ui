@@ -2,11 +2,11 @@ import type { ObsModeDetails, Subsystem } from '@tmtsoftware/esw-ts'
 import { Card, Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/lib/table'
 import React from 'react'
+import styles from './resources.module.css'
 import { PageHeader } from '../../components/pageHeader/PageHeader'
 import { HeaderTitle } from '../../components/table/HeaderTitle'
 import { useObsModesDetails } from '../../features/sm/hooks/useObsModesDetails'
 import type { GroupedObsModeDetails } from '../../features/sm/hooks/useObsModesDetails'
-import styles from './resources.module.css'
 
 type ResourceType = 'InUse' | 'Available'
 
@@ -50,7 +50,7 @@ const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): Resource
   return [...inUseResourceData, ...availableResourceData, ...nonConfigurableResourceData].sort(byStatus)
 }
 
-export const resourceStatusCol = (status: ResourceType): JSX.Element => (
+export const resourceStatusCol = (status: ResourceType): React.JSX.Element => (
   <Typography.Text
     strong
     style={{
@@ -76,7 +76,7 @@ const columns: ColumnsType<ResourceData> = [
   }
 ]
 
-export const Resources = (): JSX.Element => {
+export const Resources = (): React.JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
 
   return (

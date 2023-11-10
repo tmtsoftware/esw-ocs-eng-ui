@@ -28,7 +28,7 @@ export const ResumeSequence = ({
 }: {
   isSequencerRunning: boolean
   isCurrentStepRunningAndNextPaused: boolean
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const resumeSequence = useResumeSequence()
 

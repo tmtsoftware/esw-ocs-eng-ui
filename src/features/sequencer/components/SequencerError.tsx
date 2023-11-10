@@ -7,7 +7,7 @@ type ErrorProps = {
   title: string
   subtitle: string
 }
-export const SequencerError = ({ title, subtitle }: ErrorProps): JSX.Element => (
+export const SequencerError = ({ title, subtitle }: ErrorProps): React.JSX.Element => (
   <Result
     status='error'
     title={title}

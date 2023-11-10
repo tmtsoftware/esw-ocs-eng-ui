@@ -1,8 +1,9 @@
-import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed } from '@tmtsoftware/esw-ts'
+import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
 import { Button, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
-import { QueryClient, useQueryClient } from 'react-query'
+import { ProvisionTable } from './ProvisionTable'
 import { useConfigService } from '../../../../contexts/ConfigServiceContext'
 import { useSMService } from '../../../../contexts/SMContext'
 import { useMutation } from '../../../../hooks/useMutation'
@@ -11,7 +12,6 @@ import { OBS_MODES_DETAILS } from '../../../queryKeys'
 import { PROVISION_CONF_PATH } from '../../constants'
 import { useProvisionAction } from '../../hooks/useProvisionAction'
 import { provisionConfConstants, provisionConstants } from '../../smConstants'
-import { ProvisionTable } from './ProvisionTable'
 
 type ProvisionRecord = Record<string, number>
 
@@ -23,7 +23,7 @@ const provision =
   async (sequenceManagerService: SequenceManagerService) => {
     const provisionConfig = parseProvisionConf(provisionRecord)
     const res = await sequenceManagerService.provision(provisionConfig)
-    await queryClient.invalidateQueries(OBS_MODES_DETAILS.key)
+    await queryClient.invalidateQueries({ queryKey: [OBS_MODES_DETAILS.key]})
     switch (res._type) {
       case 'Success':
         return res
@@ -64,8 +64,8 @@ const fetchProvisionConf = async (configService: ConfigService): Promise<Provisi
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
-export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): JSX.Element => {
-  const useErrorBoundary = false
+export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
+  const throwOnError = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
 
@@ -87,14 +87,14 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
       }
     },
     onError: (e) => errorMessage(provisionConfConstants.fetchFailureMessage, e),
-    useErrorBoundary
+    throwOnError
   })
 
   const provisionAction = useProvisionAction(
     provision(provisionRecord, queryClient),
     provisionConstants.successMessage,
     provisionConstants.failureMessage,
-    useErrorBoundary
+    throwOnError
   )
 
   const onProvisionClick = () => {
@@ -112,7 +112,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
         type='primary'
         size='middle'
         disabled={disabled}
-        loading={smContextLoading || isLoading || provisionAction.isLoading}
+        loading={smContextLoading || isLoading || provisionAction.isPending}
         onClick={onProvisionClick}>
         {provisionConstants.buttonText}
       </Button>
@@ -125,7 +125,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): J
         okText={provisionConstants.modalOkText}
         centered
         visible={modalVisibility}
-        confirmLoading={provisionAction.isLoading}
+        confirmLoading={provisionAction.isPending}
         bodyStyle={{ padding: 0 }}
         onOk={handleModalOk}
         onCancel={handleModalCancel}

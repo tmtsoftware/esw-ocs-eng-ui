@@ -1,9 +1,9 @@
 import { Layout, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import styles from './sider.module.css'
 import { InfraIcon, ResourceIcon, TelescopeIcon } from '../../../components/icons'
 import { INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../../routes/RoutesConfig'
-import styles from './sider.module.css'
 
 const getMenuLabel = (title: string, defaultIcon: React.ReactNode, link: string) => ({
   title,
@@ -18,7 +18,7 @@ const menuItemLabels = [
   getMenuLabel('Resources', <ResourceIcon className={styles.menuIconSize} />, RESOURCES)
 ]
 
-export const Sider = (): JSX.Element => {
+export const Sider = (): React.JSX.Element => {
   const [collapsed, setCollapsed] = useState(true)
   const [selectedKey, setSelectedKey] = useState<string>('/')
   const location = useLocation()

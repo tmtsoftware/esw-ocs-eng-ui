@@ -3,7 +3,7 @@ import { Card, Space, Typography } from 'antd'
 import type { BaseType } from 'antd/lib/typography/Base'
 import React, { ReactElement } from 'react'
 
-export const Text = ({ content, type }: { content: string; type: BaseType }): JSX.Element => (
+export const Text = ({ content, type }: { content: string; type: BaseType }): React.JSX.Element => (
   <Typography.Text strong type={type}>
     {content}
   </Typography.Text>
@@ -13,7 +13,7 @@ const getTextType = (runningObsModeStatus: SequencerState): BaseType => {
   return runningObsModeStatus._type === 'Offline' ? 'secondary' : 'success'
 }
 
-export const Status = ({ sequencerState }: { sequencerState?: SequencerState }): JSX.Element => {
+export const Status = ({ sequencerState }: { sequencerState?: SequencerState }): React.JSX.Element => {
   const status = sequencerState ? (
     <Text content={sequencerState._type} type={getTextType(sequencerState)} />
   ) : (
@@ -36,7 +36,7 @@ export const ObsModeCard = ({
   title: ReactElement
   extra?: ReactElement
   children: React.ReactNode
-}): JSX.Element => {
+}): React.JSX.Element => {
   return (
     <Card
       style={{ display: 'flex', flexDirection: 'column', height: '100%', borderTop: 'none' }}

@@ -15,14 +15,14 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): JSX.Element => {
+export const KillSequenceComponentProps = ({ componentId }: { componentId: ComponentId }) => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
     mutationFn: killComponent(componentId),
     onSuccess: () => successMessage(killSequenceComponentConstants.getSuccessMessage(componentId.prefix.toJSON())),
     onError: (e) => errorMessage(killSequenceComponentConstants.getFailureMessage(componentId.prefix.toJSON()), e),
-    invalidateKeysOnSuccess: [AGENTS_STATUS.key]
+    invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
   const handleOnClick = () => {
@@ -35,15 +35,13 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
         killSequenceComponentConstants.modalOkText
       )
   }
-  return (
-    <Menu.Item
-      key='KillSequenceComponent'
-      role='KillSequenceComponent'
-      danger={true}
-      disabled={isLoading}
-      icon={<PoweroffOutlined />}
-      onClick={handleOnClick}>
-      {killSequenceComponentConstants.menuItemText}
-    </Menu.Item>
-  )
+  return {
+    key: 'KillSequenceComponent',
+    role: 'KillSequenceComponent',
+    danger: true,
+    disabled: isLoading,
+    icon: <PoweroffOutlined />,
+    onClick: () => handleOnClick,
+    label: killSequenceComponentConstants.menuItemText,
+  }
 }

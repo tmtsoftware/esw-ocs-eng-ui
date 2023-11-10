@@ -1,10 +1,10 @@
 import type { Prefix, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { Card, Col, Grid, Row, Typography } from 'antd'
 import React from 'react'
-import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
 import styles from './agentCards.module.css'
 import { SequenceComponentCard } from './SequenceComponentCard'
 import { SpawnSequenceComponent } from './SpawnSequenceComponent'
+import { UNKNOWN_AGENT, useAgentsStatus } from '../hooks/useAgentsStatus'
 
 const { useBreakpoint } = Grid
 
@@ -13,7 +13,7 @@ type AgentCardProps = {
   seqCompsStatus: SequenceComponentStatus[]
 }
 
-const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element => {
+const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): React.JSX.Element => {
   const bodyStyle = seqCompsStatus.length === 0 ? { display: 'none' } : { padding: '1.5rem 1rem 0.5rem 1.5rem' }
 
   const agentName = agentPrefix === UNKNOWN_AGENT.prefix ? UNKNOWN_AGENT.prefix.componentName : agentPrefix.toJSON()
@@ -38,7 +38,7 @@ const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): JSX.Element
   )
 }
 
-export const AgentCards = (): JSX.Element => {
+export const AgentCards = (): React.JSX.Element => {
   const { data } = useAgentsStatus()
   const screen = useBreakpoint()
 

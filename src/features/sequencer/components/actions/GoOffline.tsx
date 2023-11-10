@@ -24,14 +24,14 @@ const useGoOfflineAction = (): UseMutationResult<GoOfflineResponse, unknown, Seq
   })
 }
 
-export const GoOffline = ({ prefix, sequencerState }: SequencerProps): JSX.Element => {
+export const GoOffline = ({ prefix, sequencerState }: SequencerProps): React.JSX.Element => {
   const sequencerService = useSequencerService(prefix)
   const goOfflineAction = useGoOfflineAction()
 
   const goOffline = () => sequencerService && goOfflineAction.mutate(sequencerService)
 
   return (
-    <Button disabled={sequencerState === 'Running'} loading={goOfflineAction.isLoading} onClick={() => goOffline()}>
+    <Button disabled={sequencerState === 'Running'} loading={goOfflineAction.isPending} onClick={() => goOffline()}>
       {goOfflineConstants.buttonText}
     </Button>
   )

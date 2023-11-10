@@ -8,7 +8,7 @@ import { SMServiceProvider } from './SMContext'
 export const CombinedServiceContext = ({
   children,
   locationService
-}: PropsWithChildren<{ locationService: LocationService }>): JSX.Element => (
+}: PropsWithChildren<{ locationService: LocationService }>): React.JSX.Element => (
   <LocationServiceProvider locationService={locationService}>
     <GatewayLocationProvider>
       <AgentServiceProvider>

@@ -6,30 +6,23 @@ on:
       - "v*"
 
 jobs:
-  test:
+  release:
+    env:
+      CSW_VERSION: "5.0.1" # Change before releasing (before tagging repo)
+      ESW_VERSION: "0.5.0"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "16.x"
-          registry-url: "https://registry.npmjs.org"
-
-      - uses: coursier/setup-action@v1.2.0-M2
+      - uses: actions/checkout@v3
+      - uses: coursier/setup-action@v1
         with:
           jvm: temurin:1.17
           apps: sbt sbtn
-
       - uses: coursier/cache-action@v6
 
-      - name: Cache ~/.npm
-        uses: actions/cache@v1
+      - uses: actions/setup-node@v1
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: "20.6.1"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Get tag
         id: tag
@@ -46,10 +39,23 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          sbtn scalafmtCheck
+          sbtn clean
+          sbt -Dprod.publish=true makeSite
+          npm run build
 
-      - name: Unit tests
+      - name: Tests
         run: npm run test:ci
+
+      - name: Build - Example App
+        working-directory: ./example
+        run: |
+          npm ci
+          npm run build
+
+      - name: Selenium Test
+        run: sbt -Dprod.publish=true -DgenerateStoryReport=true -DRTM_PATH=./RTM clean test
 
       - name: Generate RTM
         if: always()
@@ -60,7 +66,7 @@ jobs:
       - name: Upload RTM
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: RTM
           path: ./RTM
@@ -68,48 +74,47 @@ jobs:
       - name: Upload Coverage
         if: always()
         continue-on-error: true
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Coverage
           path: ./coverage
 
+      - name: NPM Publish
+        run: |
+          npm version v0.4.1 --allow-same-version --no-git-tag-version
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create rtm zip
         uses: thedoctor0/zip-release@master
         with:
-          filename: 'RTM.zip'
+          filename: '/tmp/RTM.zip'
           path: ./RTM
 
       - name: Create coverage zip
         uses: thedoctor0/zip-release@master
         with:
-          filename: 'coverage.zip'
+          filename: '/tmp/coverage.zip'
           path: ./coverage
-
-      - name: Create build zip
-        uses: thedoctor0/zip-release@master
-        with:
-          filename: 'esw-ocs-eng-ui.zip'
-          path: ./esw-ocs-eng-ui
 
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./RTM.zip
-            ./coverage.zip
-            ./esw-ocs-eng-ui.zip
+            /tmp/RTM.zip
+            /tmp/coverage.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name:  Docs Publish
-        working-directory: ./docs
+      - name: Docs Publish
         run: |
           echo 'echo $RELEASE_TOKEN' > /tmp/.git-askpass
           chmod +x /tmp/.git-askpass
           git config --global user.email "actions@github.com"
           git config --global user.name "Github Action"
-          sbt clean ghpagesPushSite
+          sbt -Dprod.publish=true clean makeSite ghpagesPushSite
         env:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           GIT_ASKPASS: /tmp/.git-askpass

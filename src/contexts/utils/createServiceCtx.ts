@@ -1,13 +1,13 @@
 import type { Connection, Location, ServiceError, TokenFactory, TrackingEvent } from '@tmtsoftware/esw-ts'
 import { useCallback, useEffect, useState } from 'react'
+import { createCtx } from './createCtx'
+import type { CtxType } from './createCtx'
 import { useAuth } from '../../hooks/useAuth'
 import { useStream } from '../../hooks/useStream'
 import { createTokenFactory } from '../../utils/createTokenFactory'
 import { getUsername } from '../../utils/getUsername'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
-import { createCtx } from './createCtx'
-import type { CtxType } from './createCtx'
 
 export const createServiceCtx = <T>(
   connection: Connection,
@@ -35,7 +35,7 @@ export const useService = <T>(
     [auth, factory, username]
   )
   const track = useCallback(
-    (onEvent) =>
+    (onEvent: (trackingEvent: TrackingEvent) => void) =>
       locationService.track(connection)(onEvent, (error: ServiceError) => {
         errorMessage(error.message)
         setLoading(false)

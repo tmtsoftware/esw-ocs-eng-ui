@@ -1,9 +1,9 @@
 import type { ObsMode, VariationInfo } from '@tmtsoftware/esw-ts'
 import { Alert, Space, Typography } from 'antd'
 import React, { ReactElement } from 'react'
+import { ObsModeCard, Status } from './CommonComponents'
 import type { ResourceTableStatus } from '../../features/sequencer/components/ResourcesTable'
 import { ResourcesTable } from '../../features/sequencer/components/ResourcesTable'
-import { ObsModeCard, Status } from './CommonComponents'
 
 const ObsModeTitle = ({ title }: { title: string }) => (
   <>
@@ -23,7 +23,7 @@ export const NonConfigurableObsMode = ({
   resources,
   actions,
   missingSequenceComponents
-}: NonConfigurableObsModeProps): JSX.Element => {
+}: NonConfigurableObsModeProps): React.JSX.Element => {
   return (
     <ObsModeCard title={<ObsModeTitle title={obsMode.name} />} extra={actions}>
       <Space direction='vertical' size={20} style={{ width: '100%' }}>
@@ -43,7 +43,7 @@ export const NonConfigurableObsMode = ({
 }
 
 type ConfigurableObsModeProps = Omit<NonConfigurableObsModeProps, 'missingSequenceComponents'>
-export const ConfigurableObsMode = ({ obsMode, resources, actions }: ConfigurableObsModeProps): JSX.Element => {
+export const ConfigurableObsMode = ({ obsMode, resources, actions }: ConfigurableObsModeProps): React.JSX.Element => {
   return (
     <ObsModeCard title={<ObsModeTitle title={obsMode.name} />} extra={actions}>
       <ResourcesTable resources={resources} />

@@ -25,7 +25,7 @@ const usePauseSequence = (): UseMutationResult<PauseResponse, unknown, Sequencer
   })
 }
 
-export const PauseSequence = (): JSX.Element => {
+export const PauseSequence = (): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const pauseSequence = usePauseSequence()
 

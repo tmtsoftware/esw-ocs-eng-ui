@@ -3,7 +3,7 @@ type IconProps = {
   className?: string
   fill?: string
 }
-export const Telescope = ({ className, fill }: IconProps): JSX.Element => {
+export const Telescope = ({ className, fill }: IconProps): React.JSX.Element => {
   const fillCOlor = fill ? fill : 'currentColor'
   return (
     <svg version='1.1' width='20' height='20' viewBox='0 0 64 64' className={className} fill={fillCOlor}>

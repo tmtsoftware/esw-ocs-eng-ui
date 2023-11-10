@@ -2,13 +2,13 @@ import type { SequenceCommand } from '@tmtsoftware/esw-ts'
 import { Table, Typography } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import React from 'react'
-import { HeaderTitle } from '../../../../components/table/HeaderTitle'
 import { formatParameters } from './ParamFormatter'
+import { HeaderTitle } from '../../../../components/table/HeaderTitle'
 
 type ParameterDataType = {
   parameter: string
   unit: string
-  values: JSX.Element
+  values: React.JSX.Element
 }
 
 const columns: ColumnsType<ParameterDataType> = [
@@ -26,7 +26,7 @@ const columns: ColumnsType<ParameterDataType> = [
     dataIndex: 'values',
     key: 'values',
     // eslint-disable-next-line react/display-name
-    render: (values: string): JSX.Element => (
+    render: (values: string): React.JSX.Element => (
       <Typography.Paragraph ellipsis={{ expandable: true, rows: 20, tooltip: true }}>{values}</Typography.Paragraph>
     )
   },
@@ -46,7 +46,7 @@ const createDataSource = (command: SequenceCommand): ParameterDataType[] => {
   }))
 }
 
-export const ParameterTable = ({ command }: { command: SequenceCommand }): JSX.Element => (
+export const ParameterTable = ({ command }: { command: SequenceCommand }): React.JSX.Element => (
   <div style={{ marginTop: '0.5rem', height: '100%', overflowY: 'scroll' }}>
     <Table
       sticky

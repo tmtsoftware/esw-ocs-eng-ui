@@ -1,14 +1,14 @@
 import React from 'react'
-import { ConfigServiceProvider } from '../../../../contexts/ConfigServiceContext'
 import { ProvisionButton } from './ProvisionButton'
 import { UnProvisionButton } from './UnProvisionButton'
+import { ConfigServiceProvider } from '../../../../contexts/ConfigServiceContext'
 
 type ProvisionProps = {
   provisionStatus: boolean | undefined
   disabled?: boolean
 }
 
-export const Provision = ({ provisionStatus, disabled = false }: ProvisionProps): JSX.Element =>
+export const Provision = ({ provisionStatus, disabled = false }: ProvisionProps): React.JSX.Element =>
   provisionStatus ? (
     <UnProvisionButton disabled={disabled} />
   ) : (

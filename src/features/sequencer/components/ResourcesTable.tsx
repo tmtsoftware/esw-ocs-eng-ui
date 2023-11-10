@@ -26,7 +26,7 @@ const columns = [
   }
 ]
 
-export const ResourcesTable = ({ resources }: ResourcesTableProps): JSX.Element => {
+export const ResourcesTable = ({ resources }: ResourcesTableProps): React.JSX.Element => {
   return (
     <Table
       style={{ marginBottom: '1rem' }}

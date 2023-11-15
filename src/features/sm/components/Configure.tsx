@@ -58,7 +58,7 @@ export const Configure = ({ disabled }: ConfigureProps): React.JSX.Element => {
       <SelectionModal
         title={configureConstants.modalTitle}
         okText={configureConstants.modalOkText}
-        visible={modalVisibility}
+        open={modalVisibility}
         onOk={handleModalOk}
         onCancel={handleCancel}
         data={obsModesDetails.map((obsModeDetail) => obsModeDetail.obsMode.name)}

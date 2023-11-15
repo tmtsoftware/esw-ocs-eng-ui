@@ -35,7 +35,7 @@ export const SelectionModal = ({
   data,
   title,
   okText,
-  visible,
+  open,
   confirmLoading,
   onOk,
   onCancel,
@@ -49,7 +49,7 @@ export const SelectionModal = ({
     }
     okText={okText}
     centered
-    visible={visible}
+    open={open}
     confirmLoading={confirmLoading}
     bodyStyle={{ padding: 0 }}
     okButtonProps={{

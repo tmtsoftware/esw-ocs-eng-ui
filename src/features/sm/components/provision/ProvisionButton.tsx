@@ -124,7 +124,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
         }
         okText={provisionConstants.modalOkText}
         centered
-        visible={modalVisibility}
+        open={modalVisibility}
         confirmLoading={provisionAction.isPending}
         bodyStyle={{ padding: 0 }}
         onOk={handleModalOk}

@@ -263,3 +263,10 @@ export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.In
   }
   return result[0] || null
 }
+
+export function getById<T extends Element>(container: HTMLElement, id: string): T {
+  const element = container.querySelector<T>(`#${id}`);
+  assert(element !== null, `Unable to find an element with ID #${id}.`)
+  return element;
+}
+

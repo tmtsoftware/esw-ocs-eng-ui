@@ -8,6 +8,7 @@ import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { killSequenceComponentConstants } from '../agentConstants'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 
 const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
   agentService.killComponent(componentId).then((res) => {
@@ -15,7 +16,7 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): React.JSX.Element => {
+export const KillSequenceComponent = (componentId: ComponentId): ItemType => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
@@ -35,15 +36,14 @@ export const KillSequenceComponent = ({ componentId }: { componentId: ComponentI
       killSequenceComponentConstants.modalOkText
     )
   }
-  return (
-    <Menu.Item
-      key='KillSequenceComponent'
-      role='KillSequenceComponent'
-      danger={true}
-      disabled={isLoading}
-      icon={<PoweroffOutlined />}
-      onClick={handleOnClick}>
-      {killSequenceComponentConstants.menuItemText}
-    </Menu.Item>
-  )
+
+  return {
+    key: 'KillSequenceComponent',
+    // role: 'KillSequenceComponent', // XXX TODO FIXME
+    danger: true,
+    disabled: isLoading,
+    icon: <PoweroffOutlined/>,
+    onClick: handleOnClick,
+    label: killSequenceComponentConstants.menuItemText,
+  }
 }

@@ -1,24 +1,23 @@
-import { ReloadOutlined } from '@ant-design/icons'
-import type { SequencerState, Prefix } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
+import {ReloadOutlined} from '@ant-design/icons'
+import type {SequencerState, Prefix} from '@tmtsoftware/esw-ts'
 import React from 'react'
-import { showConfirmModal } from '../../../components/modal/showConfirmModal'
-import { useSMService } from '../../../contexts/SMContext'
-import { obsModeAndVariationFrom } from '../../../utils/SMutils'
-import { isSequencerInProgress } from '../../sequencer/utils'
-import { useReloadScriptAction } from '../hooks/useReloadScriptAction'
-import { reloadScriptConstants } from '../smConstants'
+import {showConfirmModal} from '../../../components/modal/showConfirmModal'
+import {useSMService} from '../../../contexts/SMContext'
+import {obsModeAndVariationFrom} from '../../../utils/SMutils'
+import {isSequencerInProgress} from '../../sequencer/utils'
+import {useReloadScriptAction} from '../hooks/useReloadScriptAction'
+import {reloadScriptConstants} from '../smConstants'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 
-type ReloadScriptProps = {
-  sequencerPrefix: Prefix
-  sequencerState: SequencerState | undefined
-}
 const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencerState: SequencerState) =>
   isInProgress
     ? reloadScriptConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : reloadScriptConstants.getModalTitle(sequencerPrefix.toJSON())
 
-export const ReloadScript = ({ sequencerPrefix, sequencerState }: ReloadScriptProps): React.JSX.Element => {
+export const ReloadScript = (
+  sequencerPrefix: Prefix,
+  sequencerState: SequencerState | undefined
+): ItemType => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
@@ -27,24 +26,22 @@ export const ReloadScript = ({ sequencerPrefix, sequencerState }: ReloadScriptPr
 
   const handleOnClick = () => {
     sequencerState &&
-      smService &&
-      showConfirmModal(
-        () => {
-          reloadScriptAction.mutateAsync(smService)
-        },
-        getModalTitle(isInProgress, sequencerPrefix, sequencerState),
-        reloadScriptConstants.modalOkText
-      )
+    smService &&
+    showConfirmModal(
+      () => {
+        reloadScriptAction.mutateAsync(smService)
+      },
+      getModalTitle(isInProgress, sequencerPrefix, sequencerState),
+      reloadScriptConstants.modalOkText
+    )
   }
 
-  return (
-    <Menu.Item
-      key='ReloadScript'
-      icon={<ReloadOutlined />}
-      onClick={handleOnClick}
-      disabled={loading}
-      role='ReloadScript'>
-      {reloadScriptConstants.menuItemText}
-    </Menu.Item>
-  )
+  return {
+    key: 'ReloadScript',
+    itemIcon: <ReloadOutlined/>,
+    onClick: handleOnClick,
+    disabled: loading,
+    // role: 'ReloadScript', // XXX TODO FIXME
+    label: reloadScriptConstants.menuItemText,
+  }
 }

@@ -18,6 +18,7 @@ import { obsModeAndVariationFrom } from '../../../utils/SMutils'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { isSequencerInProgress } from '../../sequencer/utils'
 import { stopSequencerConstants } from '../smConstants'
+import { ItemType } from 'antd/es/menu/hooks/useItems'
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
   switch (res._type) {
@@ -44,13 +45,10 @@ const stopSequencer =
   (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
     smService.shutdownSequencer(subsystem, obsMode, variation).then(handleResponse)
 
-export const StopSequencer = ({
-  sequencerPrefix,
-  sequencerState
-}: {
-  sequencerPrefix: Prefix
+export const StopSequencer = (
+  sequencerPrefix: Prefix,
   sequencerState: SequencerState | undefined
-}): React.JSX.Element => {
+): ItemType => {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
@@ -73,13 +71,11 @@ export const StopSequencer = ({
     invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
-  return (
-    <Menu.Item
-      icon={<CloseCircleOutlined />}
-      disabled={isLoading || stopAction.isPending}
-      onClick={handleOnClick}
-      key='stopSequencer'>
-      {stopSequencerConstants.menuItemText}
-    </Menu.Item>
-  )
+  return {
+    itemIcon: <CloseCircleOutlined />,
+    disabled: isLoading || stopAction.isPending,
+    onClick: handleOnClick,
+    key: 'stopSequencer',
+    label: stopSequencerConstants.menuItemText,
+  }
 }

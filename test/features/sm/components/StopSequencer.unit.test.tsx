@@ -65,9 +65,7 @@ describe('Stop Sequencer', () => {
 
       renderWithAuth({
         ui: (
-          <Menu>
-            <StopSequencer sequencerState={running} sequencerPrefix={darkNight} />
-          </Menu>
+          <Menu items={[StopSequencer(darkNight, running)]}/>
         )
       })
 
@@ -98,11 +96,10 @@ describe('Stop Sequencer', () => {
     const sequencerState: SequencerState = {
       _type: 'Idle'
     }
+
     renderWithAuth({
       ui: (
-        <Menu>
-          <StopSequencer sequencerState={sequencerState} sequencerPrefix={darkNight} />
-        </Menu>
+        <Menu items={[StopSequencer(darkNight, sequencerState)]}/>
       )
     })
 

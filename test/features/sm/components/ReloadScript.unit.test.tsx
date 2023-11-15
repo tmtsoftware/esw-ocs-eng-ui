@@ -27,14 +27,14 @@ describe('Reload script', () => {
       _type: 'Running'
     }
 
+    const items = [ReloadScript(sequencerPrefix, running)]
     renderWithAuth({
       ui: (
-        <Menu>
-          <ReloadScript sequencerState={running} sequencerPrefix={sequencerPrefix} />
-        </Menu>
+        <Menu items={items}/>
       )
     })
 
+    // XXX TODO FIXME Check menu item props, missing role
     const reloadScriptItem = screen.getByRole('ReloadScript')
     await waitFor(() => userEvent.click(reloadScriptItem))
 
@@ -76,14 +76,14 @@ describe('Reload script', () => {
 
     const sequencerState: SequencerState = { _type: 'Idle' }
 
+    const items = [ReloadScript(sequencerPrefix, sequencerState)]
     renderWithAuth({
       ui: (
-        <Menu>
-          <ReloadScript sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
-        </Menu>
+        <Menu items={items}/>
       )
     })
 
+    // XXX TODO FIXME Check menu item props, missing role
     const reloadScriptItem = screen.getByRole('ReloadScript')
     await waitFor(() => userEvent.click(reloadScriptItem))
 

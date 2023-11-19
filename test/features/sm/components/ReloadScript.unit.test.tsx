@@ -27,15 +27,15 @@ describe('Reload script', () => {
       _type: 'Running'
     }
 
-    const items = [ReloadScript(sequencerPrefix, running)]
     renderWithAuth({
       ui: (
-        <Menu items={items}/>
+        <Menu items={[ReloadScript(sequencerPrefix, running)]}/>
       )
     })
 
     // XXX TODO FIXME Check menu item props, missing role
-    const reloadScriptItem = screen.getByRole('ReloadScript')
+    // const reloadScriptItem = screen.getByRole('ReloadScript')
+    const reloadScriptItem = screen.getByText(reloadScriptConstants.menuItemText)
     await waitFor(() => userEvent.click(reloadScriptItem))
 
     // expect modal to be visible
@@ -76,15 +76,15 @@ describe('Reload script', () => {
 
     const sequencerState: SequencerState = { _type: 'Idle' }
 
-    const items = [ReloadScript(sequencerPrefix, sequencerState)]
     renderWithAuth({
       ui: (
-        <Menu items={items}/>
+        <Menu items={[ReloadScript(sequencerPrefix, sequencerState)]}/>
       )
     })
 
     // XXX TODO FIXME Check menu item props, missing role
-    const reloadScriptItem = screen.getByRole('ReloadScript')
+    // const reloadScriptItem = screen.getByRole('ReloadScript')
+    const reloadScriptItem = screen.getByText(reloadScriptConstants.menuItemText)
     await waitFor(() => userEvent.click(reloadScriptItem))
 
     // expect modal to be visible

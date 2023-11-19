@@ -7,7 +7,7 @@ import {obsModeAndVariationFrom} from '../../../utils/SMutils'
 import {isSequencerInProgress} from '../../sequencer/utils'
 import {useReloadScriptAction} from '../hooks/useReloadScriptAction'
 import {reloadScriptConstants} from '../smConstants'
-import { ItemType } from 'antd/es/menu/hooks/useItems'
+import {MenuItem} from "../../../utils/menuTypes";
 
 const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencerState: SequencerState) =>
   isInProgress
@@ -17,7 +17,7 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
 export const ReloadScript = (
   sequencerPrefix: Prefix,
   sequencerState: SequencerState | undefined
-): ItemType => {
+): MenuItem => {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)

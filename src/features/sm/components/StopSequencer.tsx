@@ -8,7 +8,6 @@ import type {
   Subsystem,
   Variation
 } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
@@ -18,7 +17,7 @@ import { obsModeAndVariationFrom } from '../../../utils/SMutils'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { isSequencerInProgress } from '../../sequencer/utils'
 import { stopSequencerConstants } from '../smConstants'
-import { ItemType } from 'antd/es/menu/hooks/useItems'
+import {MenuItem} from "../../../utils/menuTypes";
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
   switch (res._type) {
@@ -48,7 +47,7 @@ const stopSequencer =
 export const StopSequencer = (
   sequencerPrefix: Prefix,
   sequencerState: SequencerState | undefined
-): ItemType => {
+): MenuItem => {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)

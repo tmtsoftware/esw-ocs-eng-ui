@@ -1,6 +1,5 @@
 import { PoweroffOutlined } from '@ant-design/icons'
 import type { AgentService, ComponentId } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useAgentService } from '../../../contexts/AgentServiceContext'
@@ -8,7 +7,7 @@ import { useMutation } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { killSequenceComponentConstants } from '../agentConstants'
-import { ItemType } from 'antd/es/menu/hooks/useItems'
+import {MenuItem} from "../../../utils/menuTypes";
 
 const killComponent = (componentId: ComponentId) => (agentService: AgentService) =>
   agentService.killComponent(componentId).then((res) => {
@@ -16,7 +15,7 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-export const KillSequenceComponent = (componentId: ComponentId): ItemType => {
+export const KillSequenceComponent = (componentId: ComponentId): MenuItem => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({

@@ -1,6 +1,6 @@
-import {CloseCircleOutlined, MoreOutlined} from '@ant-design/icons'
+import {MoreOutlined} from '@ant-design/icons'
 import type {ComponentId, Prefix} from '@tmtsoftware/esw-ts'
-import {Dropdown, Grid, Menu} from 'antd'
+import {Dropdown, Grid, Menu, MenuProps} from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
 import {KillSequenceComponent} from './KillSequenceComponent'
@@ -8,8 +8,9 @@ import {ReloadScript} from '../../sm/components/ReloadScript'
 import {StopSequencer} from '../../sm/components/StopSequencer'
 import {useSequencerState} from '../../sm/hooks/useSequencerState'
 import {disabledSequencerActions} from '../agentConstants'
-import {ItemType, MenuDividerType} from "antd/es/menu/hooks/useItems";
-import {stopSequencerConstants} from "../../sm/smConstants";
+import {MenuDividerType} from "antd/es/menu/hooks/useItems";
+import {MenuItem} from "../../../utils/menuTypes";
+import {useSMService} from "../../../contexts/SMContext";
 
 const {useBreakpoint} = Grid
 
@@ -22,7 +23,7 @@ type SequencerActionProps = {
   sequencerPrefix: Prefix
 }
 
-const DisabledSequencerActions = (): ItemType => {
+const DisabledSequencerActions = (): MenuItem => {
   const screen = useBreakpoint()
   const width = screen.lg ? '200px' : '150px'
   return {
@@ -36,40 +37,36 @@ const DisabledSequencerActions = (): ItemType => {
   }
 }
 
-const SequenceComponentActionsMenu = ({componentId, ...restProps}: SequenceComponentActionProps) => {
-  const dividerItem: MenuDividerType =  {type: 'divider'}
-  const items = [
+const SequenceComponentActionsMenu = (componentId: ComponentId): MenuProps['items'] => {
+  const dividerItem: MenuDividerType = {type: 'divider'}
+  return [
     KillSequenceComponent(componentId),
     dividerItem,
     DisabledSequencerActions()
   ]
-  return (
-    <Menu items={items} {...restProps}/>
-  )
 }
 
-const SequencerActionsMenu = ({componentId, sequencerPrefix, ...restProps}: SequencerActionProps) => {
+
+const SequencerActionsMenu = (componentId: ComponentId, sequencerPrefix: Prefix): MenuProps['items'] => {
   const {data: sequencerState} = useSequencerState(sequencerPrefix)
-  const items = [
+  return [
     StopSequencer(sequencerPrefix, sequencerState),
     ReloadScript(sequencerPrefix, sequencerState),
     KillSequenceComponent(componentId)
   ]
-  return (
-    <Menu items={items} {...restProps}/>
-  )
 }
 
 export const SequenceComponentActions = ({componentId}: SequenceComponentActionProps): React.JSX.Element => (
-  <Dropdown overlay={() => <SequenceComponentActionsMenu componentId={componentId}/>} trigger={['click']}>
+  <Dropdown menu={{items: SequenceComponentActionsMenu(componentId)}} trigger={['click']}>
     <MoreOutlined className={styles.icon} style={{fontSize: '1.5rem'}} role='sequenceCompActions'/>
   </Dropdown>
 )
 
-export const SequencerActions = ({componentId, sequencerPrefix}: SequencerActionProps): React.JSX.Element => (
-  <Dropdown
-    overlay={() => <SequencerActionsMenu componentId={componentId} sequencerPrefix={sequencerPrefix}/>}
+export const SequencerActions = ({componentId, sequencerPrefix}: SequencerActionProps): React.JSX.Element => {
+  return <Dropdown
+    menu={{items: SequencerActionsMenu(componentId, sequencerPrefix)}}
     trigger={['click']}>
     <MoreOutlined className={styles.icon} style={{fontSize: '1.5rem'}} role='sequencerActions'/>
   </Dropdown>
-)
+}
+

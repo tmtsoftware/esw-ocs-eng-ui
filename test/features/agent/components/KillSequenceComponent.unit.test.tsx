@@ -35,13 +35,13 @@ describe('Kill sequence component button', () => {
     it(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
       const agentService = mockServices.mock.agentService
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
-      const items = [KillSequenceComponent(sequenceComponentID),]
       renderWithAuth({
         ui: (
-          <Menu items={items}/>
+          <Menu items={[KillSequenceComponent(sequenceComponentID),]}/>
         )
       })
-      const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')
+      // const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')
+      const KillSequenceComponentItem = screen.getByText(killSequenceComponentConstants.menuItemText)
       await waitFor(() => userEvent.click(KillSequenceComponentItem))
 
       await screen.findByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON()))

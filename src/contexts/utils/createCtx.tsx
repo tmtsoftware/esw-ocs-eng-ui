@@ -17,7 +17,9 @@ export function createCtx<T>(useHook: () => T): CtxType<T> {
 
   const useCtx = () => {
     const c = useContext(ctx)
-    if (!c) throw new Error('useCtx must be inside a Provider with a value')
+    if (!c) {
+      throw new Error('useCtx must be inside a Provider with a value')
+    }
     return c
   }
 

@@ -1,17 +1,17 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import type { ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed } from '@tmtsoftware/esw-ts'
-import { AgentProvisionConfig, Prefix, ProvisionConfig } from '@tmtsoftware/esw-ts'
-import { Button, Modal, Typography } from 'antd'
-import React, { useState } from 'react'
-import { ProvisionTable } from './ProvisionTable'
-import { useConfigService } from '../../../../contexts/ConfigServiceContext'
-import { useSMService } from '../../../../contexts/SMContext'
-import { useMutation } from '../../../../hooks/useMutation'
-import { errorMessage } from '../../../../utils/message'
-import { OBS_MODES_DETAILS } from '../../../queryKeys'
-import { PROVISION_CONF_PATH } from '../../constants'
-import { useProvisionAction } from '../../hooks/useProvisionAction'
-import { provisionConfConstants, provisionConstants } from '../../smConstants'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
+import type {ConfigService, SequenceManagerService, SpawningSequenceComponentsFailed} from '@tmtsoftware/esw-ts'
+import {AgentProvisionConfig, Prefix, ProvisionConfig} from '@tmtsoftware/esw-ts'
+import {Button, Modal, Typography} from 'antd'
+import React, {useState} from 'react'
+import {ProvisionTable} from './ProvisionTable'
+import {useConfigService} from '../../../../contexts/ConfigServiceContext'
+import {useSMService} from '../../../../contexts/SMContext'
+import {useMutation} from '../../../../hooks/useMutation'
+import {errorMessage} from '../../../../utils/message'
+import {OBS_MODES_DETAILS} from '../../../queryKeys'
+import {PROVISION_CONF_PATH} from '../../constants'
+import {useProvisionAction} from '../../hooks/useProvisionAction'
+import {provisionConfConstants, provisionConstants} from '../../smConstants'
 
 type ProvisionRecord = Record<string, number>
 
@@ -20,25 +20,25 @@ const sanitiseErrorMsg = (res: SpawningSequenceComponentsFailed) =>
 
 const provision =
   (provisionRecord: ProvisionRecord, queryClient: QueryClient) =>
-  async (sequenceManagerService: SequenceManagerService) => {
-    const provisionConfig = parseProvisionConf(provisionRecord)
-    const res = await sequenceManagerService.provision(provisionConfig)
-    await queryClient.invalidateQueries({ queryKey: [OBS_MODES_DETAILS.key]})
-    switch (res._type) {
-      case 'Success':
-        return res
-      case 'LocationServiceError':
-        throw Error(res.reason)
-      case 'Unhandled':
-        throw Error(res.msg)
-      case 'SpawningSequenceComponentsFailed':
-        throw Error(`${sanitiseErrorMsg(res)}`)
-      case 'CouldNotFindMachines':
-        throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
-      case 'FailedResponse':
-        throw new Error(res.reason)
+    async (sequenceManagerService: SequenceManagerService) => {
+      const provisionConfig = parseProvisionConf(provisionRecord)
+      const res = await sequenceManagerService.provision(provisionConfig)
+      await queryClient.invalidateQueries({queryKey: [OBS_MODES_DETAILS.key]})
+      switch (res._type) {
+        case 'Success':
+          return res
+        case 'LocationServiceError':
+          throw Error(res.reason)
+        case 'Unhandled':
+          throw Error(res.msg)
+        case 'SpawningSequenceComponentsFailed':
+          throw Error(`${sanitiseErrorMsg(res)}`)
+        case 'CouldNotFindMachines':
+          throw Error(`Could not find following machine: ${res.prefix.map((x) => x.toJSON()).join(',')}`)
+        case 'FailedResponse':
+          throw new Error(res.reason)
+      }
     }
-  }
 
 const parseProvisionConf = (provisionRecord: ProvisionRecord) => {
   const agentProvisionConfigs = Object.entries(provisionRecord).map(([prefixStr, num]) => {
@@ -64,7 +64,7 @@ const fetchProvisionConf = async (configService: ConfigService): Promise<Provisi
   return validateProvisionConf(JSON.parse(provisionConfRecord))
 }
 
-export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): React.JSX.Element => {
+export const ProvisionButton = ({disabled = false}: { disabled?: boolean }): React.JSX.Element => {
   const throwOnError = false
   const [modalVisibility, setModalVisibility] = useState(false)
   const [provisionRecord, setProvisionRecord] = useState<ProvisionRecord>({})
@@ -118,7 +118,7 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
       </Button>
       <Modal
         title={
-          <Typography.Title level={5} style={{ marginBottom: 0 }}>
+          <Typography.Title level={5} style={{marginBottom: 0}}>
             {'Provision Configuration:'}
           </Typography.Title>
         }
@@ -126,11 +126,11 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
         centered
         visible={modalVisibility}
         confirmLoading={provisionAction.isPending}
-        bodyStyle={{ padding: 0 }}
+        bodyStyle={{padding: 0}}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         destroyOnClose>
-        <ProvisionTable provisionRecord={provisionRecord} setProvisionRecord={setProvisionRecord} />
+        <ProvisionTable provisionRecord={provisionRecord} setProvisionRecord={setProvisionRecord}/>
       </Modal>
     </>
   )

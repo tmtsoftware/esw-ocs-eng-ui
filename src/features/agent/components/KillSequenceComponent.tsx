@@ -15,7 +15,7 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-export const KillSequenceComponentProps = ({ componentId }: { componentId: ComponentId }) => {
+export const KillSequenceComponent = ({ componentId }: { componentId: ComponentId }): JSX.Element => {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({
@@ -35,13 +35,15 @@ export const KillSequenceComponentProps = ({ componentId }: { componentId: Compo
         killSequenceComponentConstants.modalOkText
       )
   }
-  return {
-    key: 'KillSequenceComponent',
-    role: 'KillSequenceComponent',
-    danger: true,
-    disabled: isLoading,
-    icon: <PoweroffOutlined />,
-    onClick: () => handleOnClick,
-    label: killSequenceComponentConstants.menuItemText,
-  }
+  return (
+    <Menu.Item
+      key='KillSequenceComponent'
+      role='KillSequenceComponent'
+      danger={true}
+      disabled={isLoading}
+      icon={<PoweroffOutlined />}
+      onClick={handleOnClick}>
+      {killSequenceComponentConstants.menuItemText}
+    </Menu.Item>
+  )
 }

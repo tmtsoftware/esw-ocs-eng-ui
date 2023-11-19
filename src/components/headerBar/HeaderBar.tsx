@@ -15,17 +15,16 @@ export const HeaderBar = (): React.JSX.Element => {
     setUsername(getUsername(auth))
   }, [auth])
 
-  const items = [{
-    label: 'Logout',
-    danger: true,
-    key: '1',
-    onClick: () => logout
-  }];
-  const menuProps = {
-    items
-  }
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' danger icon={<LogoutOutlined />} onClick={logout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  )
+
   const Logout = () => (
-    <Dropdown trigger={['click']} menu={menuProps}>
+    <Dropdown trigger={['click']} overlay={menu}>
       {username ? (
         <Button type='text'>
           {username.toUpperCase()}

@@ -1,5 +1,5 @@
-import { PageHeader as AntPageHeader } from '@ant-design/pro-layout'
-import type { PageHeaderProps } from '@ant-design/pro-layout'
+import { PageHeader as AntPageHeader } from 'antd'
+import type { PageHeaderProps } from 'antd'
 import React, { ReactNode } from 'react'
 import styles from './pageHeader.module.css'
 

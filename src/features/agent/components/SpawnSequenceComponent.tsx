@@ -24,7 +24,7 @@ const validateComponentName = (componentName: string) =>
   requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
   requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
 
-export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): React.JSX.Element => {
+export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): JSX.Element => {
   const [componentName, setComponentName] = useState('')
 
   const [agentService, isLoading] = useAgentService()

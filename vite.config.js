@@ -5,7 +5,7 @@ import {AppConfig} from './src/config/AppConfig.js'
 
 // https://vitejs.dev/config/
 const testDeps =
-  process.env.NODE_ENV === 'test'
+  process.env.NODE_ENV === 'development'
     ? [
       '@testing-library/react',
       '@testing-library/user-event',

@@ -19,14 +19,15 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
     globals: true,
-    environment: 'happy-dom',
+    // environment: 'happy-dom',
+    // environment: 'jsdom',
     setupFiles: '.vitest/setup',
     include: ['test/**/*.unit.test.{ts,tsx}'],
-    // browser: {
-    //   enabled: true,
-    //   name: 'chrome',
-    //   headless: true,
-    // },
+    browser: {
+      enabled: true,
+      name: 'chrome',
+      headless: true,
+    },
   },
   server: {
     host: true,

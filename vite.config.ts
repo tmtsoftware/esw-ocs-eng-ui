@@ -21,7 +21,12 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: '.vitest/setup',
-    include: ['test/**/*.unit.test.{ts,tsx}']
+    include: ['test/**/*.unit.test.{ts,tsx}'],
+    // browser: {
+    //   enabled: true,
+    //   name: 'chrome',
+    //   headless: true,
+    // },
   },
   server: {
     host: true,

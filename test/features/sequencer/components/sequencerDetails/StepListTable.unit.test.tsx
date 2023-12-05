@@ -158,7 +158,6 @@ describe('stepList table', () => {
 
     const actions = await screen.findByRole('stepActions')
 
-    // await userEvent.click(actions, { button: 0 })
     await userEvent.click(actions)
 
     const menuItems = await screen.findAllByRole('menuitem')

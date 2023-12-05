@@ -37,7 +37,9 @@ describe('Kill sequence component button', () => {
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
       renderWithAuth({
         ui: (
-          <Menu items={[KillSequenceComponent(sequenceComponentID),]}/>
+          <Menu>
+            <KillSequenceComponent componentId={sequenceComponentID} />
+          </Menu>
         )
       })
       // const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')

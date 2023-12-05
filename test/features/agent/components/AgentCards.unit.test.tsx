@@ -1,11 +1,11 @@
-import { screen, waitFor } from '@testing-library/react'
+import {cleanup, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-import { deepEqual, verify, when } from '@typestrong/ts-mockito'
 //import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { deepEqual, verify, when } from '@typestrong/ts-mockito'
 import {
   disabledSequencerActions,
   killSequenceComponentConstants,
@@ -29,6 +29,9 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
+  afterEach(() => {
+    cleanup()
+  })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(agentService.getAgentStatus()).thenResolve({

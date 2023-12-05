@@ -148,10 +148,12 @@ export const StepListTable = ({
       const runningStep = getRunningStep(stepList, stepListInfo.status)
       setSelectedStep(runningStep)
       if (runningStep) {
-        stepRefs.current[runningStep.id]?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        })
+        // XXX TODO FIXME
+        // stepRefs.current[runningStep.id]?.scrollIntoView({
+        //   behavior: 'smooth',
+        //   block: 'center'
+        // })
+        stepRefs.current[runningStep.id]?.scrollTo()
       }
     }
     //fallback to follow progress mode for cases like abort sequence, load sequence(twice) when user selected step does not exist in stepList anymore

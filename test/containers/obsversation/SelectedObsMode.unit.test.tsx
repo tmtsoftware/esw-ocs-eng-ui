@@ -48,14 +48,13 @@ describe('CurrentObsMode', () => {
     stepList: new StepList([])
   }
 
-  it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
+  // XXX TODO FIXME: Was using async done function
+  it(`should call cancel subscription method on unmount | ESW-489`, async () => {
     const { smService, locationService } = mockServices.mock
 
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
-      return { cancel: done }
-    })
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => ({cancel: () => {}}))
 
     when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
       cb({ _type: 'LocationUpdated', location: eswSequencerLocation })

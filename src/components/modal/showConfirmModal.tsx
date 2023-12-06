@@ -10,7 +10,8 @@ export const showConfirmModal = (onYes: () => void, title: string, okText: strin
     okText,
     okButtonProps: {
       danger: true,
-      type: 'primary'
+      type: 'primary',
+      role: "button"
     },
     closable: true,
     maskClosable: true,

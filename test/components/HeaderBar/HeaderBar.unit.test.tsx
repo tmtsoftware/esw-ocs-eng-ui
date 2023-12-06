@@ -1,13 +1,12 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { instance, mock, verify } from '@typestrong/ts-mockito'
-// //import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { HeaderBar } from '../../../src/components/headerBar/HeaderBar'
 import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const leftClick = { button: 0 }
 describe('header bar', () => {

@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { AuthContext } from '@tmtsoftware/esw-ts'
-// //import { expect } from 'chai'
+// import { expect } from 'chai'
 import React from 'react'
 import { useAuth } from '../../src/hooks/useAuth'
 import { getUsername } from '../../src/utils/getUsername'

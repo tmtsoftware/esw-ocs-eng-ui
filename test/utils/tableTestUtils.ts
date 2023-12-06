@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react'
-import { expect } from 'vitest'
+import { expect } from 'chai'
 
 export const assertTableHeader = (tableElement: HTMLElement, columnName: string | RegExp): void => {
   within(tableElement).getByRole('columnheader', { name: columnName })

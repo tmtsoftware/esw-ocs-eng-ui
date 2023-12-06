@@ -1,5 +1,5 @@
 import { screen, within } from '@testing-library/react'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { ResourcesTable } from '../../../src/features/sequencer/components/ResourcesTable'
 import type { ResourceTableStatus } from '../../../src/features/sequencer/components/ResourcesTable'

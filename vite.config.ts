@@ -1,6 +1,5 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import {AppConfig} from './src/config/AppConfig.js'
 
@@ -14,21 +13,8 @@ const testDeps =
     ]
     : []
 
-// https://vitejs.dev/config https://vitest.dev/config
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  test: {
-    globals: true,
-    // environment: 'happy-dom',
-    // environment: 'jsdom',
-    setupFiles: '.vitest/setup',
-    include: ['test/**/*.unit.test.{ts,tsx}'],
-    browser: {
-      enabled: true,
-      name: 'chrome',
-      headless: true,
-    },
-  },
   server: {
     host: true,
     port: 9000

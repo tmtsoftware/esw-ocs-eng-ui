@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { createCtx } from '../../../src/contexts/utils/createCtx'
 import { renderWithAuth } from '../../utils/test-utils'

@@ -22,7 +22,7 @@ import {
   UTCTime
 } from '@tmtsoftware/esw-ts'
 import type { IntKey, Key, SequenceCommand } from '@tmtsoftware/esw-ts'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { formatParameters } from '../../../../../src/features/sequencer/components/sequencerDetails/ParamFormatter'
 describe('Parameter Formatter', () => {

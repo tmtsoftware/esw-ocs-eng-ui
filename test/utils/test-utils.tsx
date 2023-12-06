@@ -33,6 +33,7 @@ import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
+import {assert} from "chai";
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn

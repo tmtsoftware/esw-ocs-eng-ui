@@ -1,11 +1,11 @@
-import { screen } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { expect } from 'chai'
 import { anything, when } from '@typestrong/ts-mockito'
 import React from 'react'
 import { App } from '../../src/containers/app/App'
 import { HOME, INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth } from '../utils/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)
@@ -24,7 +24,7 @@ const renderWithRouter = (ui: React.ReactElement) => {
 
 describe('Full app navigation', () => {
   afterEach(() => {
-    vi.restoreAllMocks()
+    cleanup()
   })
 
   const user = userEvent.setup()

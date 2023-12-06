@@ -9,7 +9,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import type { AgentStatus, AgentStatusResponse, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
 import { mock, verify, when } from '@typestrong/ts-mockito'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
 import { configureConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'

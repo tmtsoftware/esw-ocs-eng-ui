@@ -8,7 +8,7 @@ import type {
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
 import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { SelectedObsMode } from '../../../src/containers/observation/SelectedObsMode'
@@ -48,13 +48,14 @@ describe('CurrentObsMode', () => {
     stepList: new StepList([])
   }
 
-  // XXX TODO FIXME: Was using async done function
-  it(`should call cancel subscription method on unmount | ESW-489`, async () => {
+  it(`should call cancel subscription method on unmount | ESW-489`, async (done) => {
     const { smService, locationService } = mockServices.mock
 
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
-    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => ({cancel: () => {}}))
+    when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
+      return { cancel: done }
+    })
 
     when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
       cb({ _type: 'LocationUpdated', location: eswSequencerLocation })

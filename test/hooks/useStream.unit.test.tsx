@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import { useStream } from '../../src/hooks/useStream'
 
 describe('Stream hook', () => {

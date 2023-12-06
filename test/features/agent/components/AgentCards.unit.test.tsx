@@ -2,7 +2,7 @@ import {cleanup, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { deepEqual, verify, when } from '@typestrong/ts-mockito'
@@ -183,15 +183,20 @@ describe('Agents Grid View', () => {
       )
     })
     const icon = await screen.findByRole('addSeqCompIcon')
-
+    expect(icon).to.exist
     await userEvent.click(icon)
+
     const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
     const textBox = screen.getByRole('textbox')
+    expect(textBox).to.exist
 
     await waitFor(() => userEvent.click(textBox))
+    // await userEvent.click(textBox)
     await userEvent.type(textBox, 'ESW_1')
-    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    const button = screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText })
+    expect(button).to.exist
+    await userEvent.click(button)
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 

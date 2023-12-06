@@ -22,7 +22,7 @@ import {
   Units
 } from '@tmtsoftware/esw-ts'
 import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
-//import { expect } from 'chai'
+import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'

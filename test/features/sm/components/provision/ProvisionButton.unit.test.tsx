@@ -8,6 +8,7 @@ import { ProvisionButton } from '../../../../../src/features/sm/components/provi
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import { provisionConfConstants, provisionConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('ProvisionButton component', () => {
   const provisionRes: ProvisionResponse = {

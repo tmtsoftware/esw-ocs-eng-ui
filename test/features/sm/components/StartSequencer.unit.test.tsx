@@ -7,6 +7,7 @@ import { StartSequencer } from '../../../../src/features/sm/components/StartSequ
 import { startSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { obsModesData } from '../../../jsons/obsmodes'
 import {getById, mockServices, renderWithAuth} from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('Start Sequencer', () => {
   const ESW = 'ESW'

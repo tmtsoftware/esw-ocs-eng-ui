@@ -7,6 +7,7 @@ import { SMServiceProvider } from '../../../../src/contexts/SMContext'
 import { SMCard } from '../../../../src/features/sm/components/smcard/SMCard'
 import { shutdownSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('SMCard', () => {
   const locServiceMock = mockServices.mock.locationService

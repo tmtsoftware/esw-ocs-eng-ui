@@ -8,6 +8,7 @@ import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButto
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
 import { spawnSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('SpawnSMButton', () => {
   const locServiceMock = mockServices.mock.locationService

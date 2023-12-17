@@ -6,6 +6,7 @@ import { ShutdownSMButton } from '../../../../src/features/sm/components/Shutdow
 import { SM_COMPONENT_ID } from '../../../../src/features/sm/constants'
 import { shutdownSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('ShutdownSMButton', () => {
   it('should shutdown the sequence manager | ESW-441', async () => {

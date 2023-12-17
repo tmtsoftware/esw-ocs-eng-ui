@@ -8,6 +8,7 @@ import React from 'react'
 import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('Reload script', () => {
   const smService = mockServices.mock.smService

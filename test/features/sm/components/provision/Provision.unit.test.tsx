@@ -3,6 +3,7 @@ import React from 'react'
 import { Provision } from '../../../../../src/features/sm/components/provision/Provision'
 import { provisionConstants, unProvisionConstants } from '../../../../../src/features/sm/smConstants'
 import { renderWithAuth } from '../../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('Provision Component', () => {
   it(`should render Unprovision button if there is no sequence component running | ESW-444`, async () => {

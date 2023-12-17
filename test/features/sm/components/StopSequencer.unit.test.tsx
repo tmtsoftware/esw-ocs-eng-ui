@@ -9,6 +9,7 @@ import { StopSequencer } from '../../../../src/features/sm/components/StopSequen
 import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { _createErrorMsg } from '../../../../src/utils/message'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { expect } from 'chai'
 
 describe('Stop Sequencer', () => {
   beforeEach(() => reset(mockServices.mock.smService))

@@ -184,9 +184,6 @@ describe('Observation page', () => {
 
     await screen.findByRole('menuitem', { name: 'DarkNight_1' })
     const runningTabPanel = await screen.findByRole('tabpanel')
-    // XXX TODO FIXME
-    // await browser.debug() // jumping into the browser and change value of #input to 'BAR'
-    // await within(runningTabPanel).findByText('Loaded')
     const shutdownButton = within(runningTabPanel).getByRole('button', {
       name: observationShutdownConstants.buttonText
     })

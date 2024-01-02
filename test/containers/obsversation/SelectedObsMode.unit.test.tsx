@@ -1,5 +1,13 @@
 import { screen, waitFor, within } from '@testing-library/react'
-import { PekkoConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
+import {
+  PekkoConnection,
+  ObsMode,
+  Prefix,
+  ServiceError,
+  StepList,
+  VariationInfo,
+  type SequencerService, TestUtils
+} from '@tmtsoftware/esw-ts'
 import type {
   PekkoLocation,
   ObsModeDetails,
@@ -7,7 +15,7 @@ import type {
   SequencerStateResponse,
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
-import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
+import {deepEqual, mock, reset, verify, when} from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -54,10 +62,12 @@ describe('CurrentObsMode', () => {
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     when(sequencerServiceMock.subscribeSequencerState()).thenReturn(() => {
+      console.log("XXX 1")
       return { cancel: done }
     })
 
     when(locationService.track(deepEqual(eswSequencerConnection))).thenReturn((cb) => {
+      console.log("XXX 2")
       cb({ _type: 'LocationUpdated', location: eswSequencerLocation })
       return {
         cancel: () => ({})

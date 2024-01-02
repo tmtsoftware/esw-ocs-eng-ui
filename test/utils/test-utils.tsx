@@ -70,16 +70,17 @@ type MockServices = {
   mock: Services
 }
 
-export const sequencerServiceMock = mock<SequencerService>(TestUtils.SequencerServiceImpl)
-export const sequencerServiceMockIris = mock<SequencerService>(TestUtils.SequencerServiceImpl)
-export const sequencerServiceMockTcs = mock<SequencerService>(TestUtils.SequencerServiceImpl)
+export const sequencerServiceMock = mock<SequencerService>()
+export const sequencerServiceMockIris = mock<SequencerService>()
+export const sequencerServiceMockTcs = mock<SequencerService>()
 
+// export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
 export const sequencerServiceInstance = instance<SequencerService>(sequencerServiceMock)
 export const sequencerServiceInstanceIris = instance<SequencerService>(sequencerServiceMockIris)
 export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerServiceMockTcs)
 
 const getMockServices: () => MockServices = () => {
-  const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
+  const agentServiceMock = mock<AgentService>()
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
   const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)

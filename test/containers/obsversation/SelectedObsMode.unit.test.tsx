@@ -23,7 +23,17 @@ import { SelectedObsMode } from '../../../src/containers/observation/SelectedObs
 import { sequencerActionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
+// import { mock as wdioMock} from '@wdio/browser-runner'
+// wdioMock('../../hooks/useSequencerService.ts', async () => {
+//   const x = await import('../../mocks/useSequencerService')
+//   return {
+//     useSequencerService: x.useSequencerService,
+//     mkSequencerService: x.mkSequencerService
+//   }
+// })
+
 describe('CurrentObsMode', () => {
+
   beforeEach(() => {
     reset(mockServices.mock.smService)
     reset(sequencerServiceMock)

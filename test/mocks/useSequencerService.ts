@@ -6,6 +6,7 @@ import {
 } from '../utils/test-utils'
 
 export const useSequencerService = (prefix: Prefix): SequencerService => {
+  console.log("XXX called mock useSequencerService")
   switch (prefix.subsystem) {
     case 'IRIS':
       return sequencerServiceInstanceIris

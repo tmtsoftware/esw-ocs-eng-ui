@@ -3,7 +3,7 @@ import { defaultReporter } from '@web/test-runner'
 import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 // eslint-disable-next-line import/no-unresolved
 import ConsoleReporter from './ConsoleReporter.js'
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'development'
 console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
   testFramework: {

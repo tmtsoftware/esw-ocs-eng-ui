@@ -5,7 +5,7 @@ import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import ConsoleReporter from './ConsoleReporter.js'
 // eslint-disable-next-line import/no-unresolved
 import { RTMReporter } from './dist/test/utils/RTMReporter.js'
-process.env.NODE_ENV = 'test'
+process.env.NODE_ENV = 'development'
 
 export default {
   testFramework: {

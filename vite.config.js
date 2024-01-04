@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import {defineConfig} from 'vite'
 import {AppConfig} from './src/config/AppConfig.js'
 
@@ -29,5 +28,5 @@ export default defineConfig({
       input: ['./index.html']
     }
   },
-  plugins: [react(), nodePolyfills()]
+  plugins: [react()]
 })

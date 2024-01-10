@@ -33,6 +33,7 @@ import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
+import {assert} from "chai";
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -80,7 +81,7 @@ export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerS
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
-  const locationServiceMock = mock<LocationService>()
+  const locationServiceMock = mock<LocationService>(TestUtils.LocationServiceImpl)
   const locationServiceInstance = instance(locationServiceMock)
 
   when(locationServiceMock.track(anything())).thenReturn(() => {
@@ -90,11 +91,18 @@ const getMockServices: () => MockServices = () => {
   })
   when(locationServiceMock.find(anything())).thenResolve(undefined)
 
+  // XXX temp
+  locationServiceInstance.find(SEQUENCE_MANAGER_CONNECTION).then(x => {
+    console.log('XXX locationServiceInstance.find -> ', x)
+  })
+
   const smServiceMock = mock<SequenceManagerService>(TestUtils.SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
 
   const configServiceMock = mock<ConfigService>(TestUtils.ConfigServiceImpl)
   const configServiceInstance = instance<ConfigService>(configServiceMock)
+  console.log('XXX test-util: agentService = ', agentServiceInstance)
+
   return {
     mock: {
       agentService: agentServiceMock,
@@ -176,6 +184,7 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
     </AuthContext.Provider>
   )
 
+  // console.log('XXX in test-utils/getContextProvider: ', mockServices.instance)
   return contextProvider
 }
 
@@ -263,3 +272,10 @@ export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.In
   }
   return result[0] || null
 }
+
+export function getById<T extends Element>(container: HTMLElement, id: string): T {
+  const element = container.querySelector<T>(`#${id}`);
+  assert(element !== null, `Unable to find an element with ID #${id}.`)
+  return element;
+}
+

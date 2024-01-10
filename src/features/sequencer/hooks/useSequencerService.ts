@@ -6,6 +6,7 @@ import { createTokenFactory } from '../../../utils/createTokenFactory'
 import { getUsername } from '../../../utils/getUsername'
 
 export const useSequencerService = (sequencerPrefix: Prefix): SequencerService | undefined => {
+  console.log('XXX in hooks/useSequencerService')
   const [gatewayLocation] = useGatewayLocation()
   const { auth } = useAuth()
   const username = getUsername(auth)

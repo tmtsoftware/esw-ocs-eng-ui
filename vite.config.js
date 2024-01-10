@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
-import {defineConfig} from 'vite'
-import {AppConfig} from './src/config/AppConfig.js'
+import { defineConfig } from 'vite'
+import { AppConfig } from './src/config/AppConfig.js'
 
 // https://vitejs.dev/config/
 const testDeps =
@@ -12,6 +12,7 @@ const testDeps =
       '@typestrong/ts-mockito'
     ]
     : []
+
 export default defineConfig({
   server: {
     host: true,
@@ -20,7 +21,7 @@ export default defineConfig({
   base: `./`,
   optimizeDeps: {
     include: testDeps
-},
+  },
   build: {
     outDir: AppConfig.applicationName,
     sourcemap: 'inline',

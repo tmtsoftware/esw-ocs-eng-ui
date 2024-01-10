@@ -5,7 +5,7 @@ import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import ConsoleReporter from './ConsoleReporter.js'
 // eslint-disable-next-line import/no-unresolved
 import { RTMReporter } from './dist/test/utils/RTMReporter.js'
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = 'test'
 
 export default {
   testFramework: {
@@ -19,10 +19,10 @@ export default {
       inject: {
         importMap: {
           imports: {
-            'http://localhost:9000/src/features/sequencer/hooks/useSequencerService.ts':
-              'http://localhost:9000/test/mocks/useSequencerService.ts',
-            'http://localhost:9000/src/contexts/ConfigServiceContext.tsx':
-              'http://localhost:9000/test/mocks/ConfigServiceContext.tsx'
+            '/src/features/sequencer/hooks/useSequencerService.ts':
+              '/test/mocks/useSequencerService.ts',
+            '/src/contexts/ConfigServiceContext.tsx':
+              '/test/mocks/ConfigServiceContext.tsx'
           }
         }
       }

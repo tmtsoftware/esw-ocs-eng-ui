@@ -9,11 +9,18 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
 
-const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
-  agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+// const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
+//   agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+//     if (res._type === 'Failed') throw new Error(res.msg)
+//     return res
+//   })
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) => {
+  console.log('XXX spawnSequenceComponent: agentService = ', agentService)
+  return agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
+}
 
 const requirement = (predicate: boolean, msg: string) => {
   if (predicate) errorMessage(msg)
@@ -28,6 +35,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
   const [componentName, setComponentName] = useState('')
 
   const [agentService, isLoading] = useAgentService()
+  console.log('XXX SpawnSequenceComponent: componentName = ', componentName, ', agentPrefix = ', agentPrefix)
 
   const spawnSequenceComponentAction = useMutation({
     mutationFn: spawnSequenceComponent(agentPrefix, componentName),
@@ -37,7 +45,8 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
           `${new Prefix(agentPrefix.subsystem, componentName).toJSON()}`
         )
       ),
-    onError: (e) => errorMessage(spawnSequenceComponentConstants.getFailureMessage, e), //TODO should we add componentId?
+    onError: (e) =>
+      errorMessage(spawnSequenceComponentConstants.getFailureMessage, e), //TODO should we add componentId?
     invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 

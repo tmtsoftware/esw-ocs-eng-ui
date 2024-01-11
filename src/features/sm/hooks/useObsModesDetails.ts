@@ -1,6 +1,6 @@
 import type { UseQueryResult } from '@tanstack/react-query'
 import type { ObsModeDetails, SequenceManagerService } from '@tmtsoftware/esw-ts'
-import type { MessageType } from 'antd/lib/message/interface'
+import { MessageType } from 'antd/lib/message'
 import type { TabName } from '../../../containers/observation/ObservationTabs'
 import { useSMService } from '../../../contexts/SMContext'
 import { useQuery } from '../../../hooks/useQuery'

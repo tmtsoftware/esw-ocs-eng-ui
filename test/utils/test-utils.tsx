@@ -23,6 +23,7 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
+import { assert } from 'chai'
 import React, { ReactElement } from 'react'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
@@ -33,7 +34,6 @@ import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
-import {assert} from "chai";
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -91,17 +91,11 @@ const getMockServices: () => MockServices = () => {
   })
   when(locationServiceMock.find(anything())).thenResolve(undefined)
 
-  // XXX temp
-  locationServiceInstance.find(SEQUENCE_MANAGER_CONNECTION).then(x => {
-    console.log('XXX locationServiceInstance.find -> ', x)
-  })
-
   const smServiceMock = mock<SequenceManagerService>(TestUtils.SequenceManagerImpl)
   const smServiceInstance = instance<SequenceManagerService>(smServiceMock)
 
   const configServiceMock = mock<ConfigService>(TestUtils.ConfigServiceImpl)
   const configServiceInstance = instance<ConfigService>(configServiceMock)
-  console.log('XXX test-util: agentService = ', agentServiceInstance)
 
   return {
     mock: {
@@ -184,7 +178,6 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
     </AuthContext.Provider>
   )
 
-  // console.log('XXX in test-utils/getContextProvider: ', mockServices.instance)
   return contextProvider
 }
 
@@ -226,15 +219,15 @@ const renderWithAuth = (
 
 // noinspection JSUnusedGlobalSymbols
 const MenuWithStepListContext = ({
-  menuItem,
-  value = {
-    setFollowProgress: () => undefined,
-    handleDuplicate: () => undefined,
-    isDuplicateEnabled: false,
-    stepListStatus: 'In Progress',
-    sequencerService: sequencerServiceInstance
-  }
-}: {
+                                   menuItem,
+                                   value = {
+                                     setFollowProgress: () => undefined,
+                                     handleDuplicate: () => undefined,
+                                     isDuplicateEnabled: false,
+                                     stepListStatus: 'In Progress',
+                                     sequencerService: sequencerServiceInstance
+                                   }
+                                 }: {
   menuItem: React.JSX.Element
   value?: StepListTableContextType
 }): React.JSX.Element => {
@@ -274,8 +267,7 @@ export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.In
 }
 
 export function getById<T extends Element>(container: HTMLElement, id: string): T {
-  const element = container.querySelector<T>(`#${id}`);
+  const element = container.querySelector<T>(`#${id}`)
   assert(element !== null, `Unable to find an element with ID #${id}.`)
-  return element;
+  return element
 }
-

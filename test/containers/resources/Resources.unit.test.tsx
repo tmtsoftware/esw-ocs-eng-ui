@@ -26,6 +26,10 @@ describe('Resources page', () => {
 
     expect(screen.getAllByText('Resource')).to.length(1)
     //Find resources table
+
+    // XXX TODO FIXME
+    await screen.findAllByRole('table')
+
     const [, tableBody] = await screen.findAllByRole('table')
     const inUseResourcesRows: HTMLElement[] = within(tableBody).getAllByRole('row', {
       name: /InUse/i
@@ -45,6 +49,8 @@ describe('Resources page', () => {
     })
 
     expect(screen.getAllByText('Resource')).to.length(1)
+    // XXX TODO FIXME
+    await screen.findAllByRole('table')
     //Find resources table
     const [, tableBody] = await screen.findAllByRole('table')
     const availableResourcesRows: HTMLElement[] = within(tableBody).getAllByRole('row', {
@@ -65,6 +71,8 @@ describe('Resources page', () => {
 
     expect(screen.getAllByText('Resource')).to.length(1)
 
+    // XXX TODO FIXME
+    await screen.findAllByRole('table')
     const [, tableBody] = await screen.findAllByRole('table')
     const rows: HTMLElement[] = within(tableBody).getAllByRole('row')
 

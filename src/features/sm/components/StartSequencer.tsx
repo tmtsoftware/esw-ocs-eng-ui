@@ -27,6 +27,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.
     setSubsystem(undefined)
   }
 
+  console.log('XXX StartSequencer: subsystem=',subsystem,', obsMode=',obsMode)
   const startSequencerAction = useStartSequencerAction(
     subsystem as Subsystem,
     new ObsMode(obsMode),
@@ -37,9 +38,9 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.
     setIsModalVisible(true)
   }
 
-  const handleOk = () => {
+  const handleOk = async () => {
     if (subsystem && obsMode) {
-      smContext && startSequencerAction.mutateAsync(smContext.smService)
+      smContext && await startSequencerAction.mutateAsync(smContext.smService)
       setIsModalVisible(false)
       resetInputData()
     } else {

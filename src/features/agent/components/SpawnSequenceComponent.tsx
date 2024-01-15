@@ -9,19 +9,11 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
 
-// const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
-//   agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
-//     if (res._type === 'Failed') throw new Error(res.msg)
-//     return res
-//   })
-const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) => {
-  const f = agentService.spawnSequenceComponent(agentPrefix, componentName)
-  console.log('XXX spawnSequenceComponent: f = ', f, ', agentPrefix = ', agentPrefix, ', component = ', componentName)
-  return f.then((res) => {
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
+  agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
-}
 
 const requirement = (predicate: boolean, msg: string) => {
   if (predicate) errorMessage(msg)
@@ -50,32 +42,28 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
   })
 
   const resetComponentName = () => {
-    // TODO FIXME: Was causing AgentCards test to fail since component was empty and did not match mock args:
-    //       XXX spawnSequenceComponent: f =  null , agentPrefix =  ESW.machine1 , component =
-    console.log("XXX TODO FIXME resetComponentName (ignored)")
-    // setComponentName('')
+    setComponentName('')
   }
 
-  const onConfirm = () => {
-    !validateComponentName(componentName) && agentService && spawnSequenceComponentAction.mutateAsync(agentService)
+  const onConfirm = async () => {
+    !validateComponentName(componentName) && agentService && await spawnSequenceComponentAction.mutateAsync(agentService)
     resetComponentName()
   }
 
   return (
-    <Tooltip placement="bottom" title="Add sequence component">
+    <Tooltip placement='bottom' title='Add sequence component'>
       <Popconfirm
-        id="spawnSequenceComponent"
+        id='spawnSequenceComponent'
         style={{ paddingLeft: 0 }}
         title={
           <div>
-            <Space direction="vertical">
+            <Space direction='vertical'>
               <Typography.Text>Add a sequence component</Typography.Text>
               <Input
-                placeholder="Enter a name"
+                placeholder='Enter a name'
                 value={componentName}
                 // onChange={(e) => setComponentName(e.target.value)}
                 onChange={(e) => {
-                  console.log('XXX setComponentName: ', e.target.value)
                   setComponentName(e.target.value)
                 }}
               />
@@ -91,9 +79,9 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         disabled={spawnSequenceComponentAction.isPending}
         okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
-          type="text"
+          type='text'
           style={{ paddingTop: '0.33rem' }}
-          icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role="addSeqCompIcon" />}
+          icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
           loading={isLoading || spawnSequenceComponentAction.isPending}
         />
       </Popconfirm>

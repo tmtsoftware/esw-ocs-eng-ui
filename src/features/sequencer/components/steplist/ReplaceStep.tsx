@@ -30,7 +30,7 @@ export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): React.JSX.E
     <Menu.Item key='ReplaceStep' disabled={disabled}>
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
-        request={() => sequencerService && replaceAction.mutate(sequencerService)}
+        request={async () => sequencerService && (await replaceAction.mutate(sequencerService))}
         uploadErrorMsg={replaceStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>

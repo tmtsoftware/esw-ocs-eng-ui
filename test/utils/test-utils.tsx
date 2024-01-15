@@ -23,7 +23,6 @@ import {
 } from '@tmtsoftware/esw-ts'
 import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
-import { assert } from 'chai'
 import React, { ReactElement } from 'react'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
 import { GatewayLocationProvider } from '../../src/contexts/GatewayServiceContext'
@@ -219,15 +218,15 @@ const renderWithAuth = (
 
 // noinspection JSUnusedGlobalSymbols
 const MenuWithStepListContext = ({
-                                   menuItem,
-                                   value = {
-                                     setFollowProgress: () => undefined,
-                                     handleDuplicate: () => undefined,
-                                     isDuplicateEnabled: false,
-                                     stepListStatus: 'In Progress',
-                                     sequencerService: sequencerServiceInstance
-                                   }
-                                 }: {
+  menuItem,
+  value = {
+    setFollowProgress: () => undefined,
+    handleDuplicate: () => undefined,
+    isDuplicateEnabled: false,
+    stepListStatus: 'In Progress',
+    sequencerService: sequencerServiceInstance
+  }
+}: {
   menuItem: React.JSX.Element
   value?: StepListTableContextType
 }): React.JSX.Element => {
@@ -266,8 +265,8 @@ export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.In
   return result[0] || null
 }
 
-export function getById<T extends Element>(container: HTMLElement, id: string): T {
-  const element = container.querySelector<T>(`#${id}`)
-  assert(element !== null, `Unable to find an element with ID #${id}.`)
-  return element
-}
+// export function getById<T extends Element>(container: HTMLElement, id: string): T {
+//   const element = container.querySelector<T>(`#${id}`)
+//   assert(element !== null, `Unable to find an element with ID #${id}.`)
+//   return element
+// }

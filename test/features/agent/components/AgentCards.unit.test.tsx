@@ -164,8 +164,7 @@ describe('Agents Grid View', () => {
   it('should add sequence components on agent| ESW-446', async () => {
     const user = userEvent.setup()
     const prefix = Prefix.fromString('ESW.machine1')
-    when(agentService.spawnSequenceComponent(deepEqual(prefix), deepEqual('ESW_1')))
-      .thenResolve({ _type: 'Spawned' })
+    when(agentService.spawnSequenceComponent(deepEqual(prefix), deepEqual('ESW_1'))).thenResolve({ _type: 'Spawned' })
 
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',

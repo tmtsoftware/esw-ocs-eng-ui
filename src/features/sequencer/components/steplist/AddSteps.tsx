@@ -29,7 +29,7 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): React.JSX.Element
     <Menu.Item key='AddSteps' disabled={disabled}>
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
-        request={() => sequencerService && addStepAction.mutate(sequencerService)}
+        request={async () => sequencerService && (await addStepAction.mutate(sequencerService))}
         uploadErrorMsg={addStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>

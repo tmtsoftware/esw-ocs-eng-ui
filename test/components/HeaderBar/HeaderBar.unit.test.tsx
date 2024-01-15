@@ -8,7 +8,6 @@ import { HeaderBar } from '../../../src/components/headerBar/HeaderBar'
 import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
 
-const leftClick = { button: 0 }
 describe('header bar', () => {
   it('renders with logout button & logo when user is logged in | ESW-441', async () => {
     renderWithAuth({
@@ -25,7 +24,7 @@ describe('header bar', () => {
     expect(logo).to.exist
 
     //should be able to click on logo
-    await userEvent.click(logo, leftClick)
+    await userEvent.click(logo)
     expect(window.location.pathname).to.equal(HOME)
 
     const logoutButton = await screen.findByText('ESW-USER')
@@ -46,7 +45,7 @@ describe('header bar', () => {
     })
 
     const logoutButton = await screen.findByText('ESW-USER')
-    await userEvent.click(logoutButton, leftClick)
+    await userEvent.click(logoutButton)
     // wait for dropdown to appear
     const logoutMenuItem = await screen.findByRole('menuitem')
     await waitFor(() => userEvent.click(logoutMenuItem))

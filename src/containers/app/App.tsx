@@ -14,6 +14,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useQuery } from '../../hooks/useQuery'
 import { Routes } from '../../routes'
 import { getUsername } from '../../utils/getUsername'
+import { useLocationService } from '../../contexts/LocationServiceContext'
 
 const { Header } = Layout
 
@@ -24,7 +25,10 @@ const useGlobalConfig = () => useQuery(['GlobalConfig'], () => loadGlobalConfig(
 export const App = (): React.JSX.Element => {
   const { data: initialised, error } = useGlobalConfig()
   const { auth } = useAuth()
-  const locationService = LocationService({ username: getUsername(auth) })
+
+  // XXX TODO test this change
+  // const locationService = LocationService({ username: getUsername(auth) })
+  const locationService = useLocationService()
 
   if (error) return <Result status={'error'} title={'Global Config not found'} />
   if (!auth || !initialised) return <Result icon={<LoadingOutlined />} />

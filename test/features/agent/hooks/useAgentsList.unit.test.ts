@@ -2,7 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { verify, when } from '@typestrong/ts-mockito'
-import { expect } from 'chai'
+import { assert, expect } from 'chai'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
 import { getContextWithQueryClientProvider, mockServices } from '../../../utils/test-utils'
 
@@ -24,7 +24,7 @@ describe('useAgents', () => {
     })
 
     await waitFor(() => {
-      return result.current.isSuccess
+      assert(result.current.isSuccess)
     })
 
     verify(locServiceMock.listByComponentType('Machine')).called()

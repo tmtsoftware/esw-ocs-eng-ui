@@ -21,11 +21,14 @@ export const useMutation = <S, T>({
   return useReactMutation({
     mutationFn: mutationFn,
     onSuccess: async (data) => {
-      invalidateKeysOnSuccess &&
-        (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries({ queryKey: key }))))
+      console.log('XXX useReactMutation.onSuccess data = ', data)
+      invalidateKeysOnSuccess && (await Promise.all(invalidateKeysOnSuccess.map((key) => qc.invalidateQueries({ queryKey: key }))))
       onSuccess(data)
     },
-    onError: (e) => onError(e),
+    onError: (e) => {
+      console.log('XXX useReactMutation.onError: e = ', e)
+      onError(e)
+    },
     throwOnError: throwOnError
   })
 }

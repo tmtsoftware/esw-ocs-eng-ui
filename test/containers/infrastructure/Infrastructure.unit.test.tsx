@@ -167,7 +167,7 @@ describe('Infrastructure page', () => {
       ui: <Infrastructure />
     })
     const button = await screen.findByRole('button', { name: configureConstants.buttonText })
-    await userEvent.click(button, { button: 1 })
+    await userEvent.click(button)
 
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {

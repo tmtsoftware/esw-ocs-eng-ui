@@ -22,6 +22,7 @@ export const UploadSequence = ({
   uploadErrorMsg
 }: UploadSequenceProps): React.JSX.Element => {
   const beforeUpload = (file: File): Promise<void> => {
+    console.log('XXX beforeUpload')
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsText(file)
@@ -29,9 +30,11 @@ export const UploadSequence = ({
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           try {
+            console.log('XXX beforeUpload: setSequence: ', Sequence.from(JSON.parse(reader.result)))
             setSequence(Sequence.from(JSON.parse(reader.result)))
             resolve()
           } catch (e) {
+            console.log('XXX beforeUpload: error: ', e)
             errorMessage(uploadErrorMsg, Error(uploadSequenceConstants.couldNotDeserializeReason)).then(reject)
           }
         }

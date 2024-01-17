@@ -1,15 +1,17 @@
 import type { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
-import { useMutation } from '../../../hooks/useMutation'
-import type { UseMutationResult } from '../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { loadSequenceConstants } from '../sequencerConstants'
+import { useMutation, UseMutationResult } from '@tanstack/react-query'
 
 export const useLoadAction = (
   sequence?: Sequence
 ): UseMutationResult<OkOrUnhandledResponse | undefined, unknown, SequencerService> => {
   console.log('XXX useLoadAction: sequence  = ', sequence)
-  const mutationFn = async (sequencerService: SequencerService) =>
-    sequence && (await sequencerService.loadSequence(sequence))
+
+  const mutationFn = async (sequencerService: SequencerService) => {
+    console.log('XXX mutationFn: sequence  = ', sequence)
+    return sequence && (await sequencerService.loadSequence(sequence))
+  }
 
   return useMutation({
     mutationFn,

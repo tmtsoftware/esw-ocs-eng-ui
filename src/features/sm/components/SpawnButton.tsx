@@ -10,11 +10,14 @@ import { useAgentsList } from '../../agent/hooks/useAgentsList'
 import { OBS_MODE_CONFIG } from '../constants'
 import { spawnSMConstants } from '../smConstants'
 
-const spawnSM = (agentPrefix: string) => (agent: AgentService) =>
-  agent.spawnSequenceManager(Prefix.fromString(agentPrefix), OBS_MODE_CONFIG, false).then((res) => {
+const spawnSM = (agentPrefix: string) => (agent: AgentService) => {
+  console.log('XXX spawnSM: agentPrefix = ', agentPrefix, ', agent=',agent)
+  return agent.spawnSequenceManager(Prefix.fromString(agentPrefix), OBS_MODE_CONFIG, false).then((res) => {
+    console.log('XXX spawnSM: res=', res)
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
+}
 
 export const SpawnSMButton = (): React.JSX.Element => {
   const [modalVisibility, setModalVisibility] = useState(false)
@@ -27,7 +30,7 @@ export const SpawnSMButton = (): React.JSX.Element => {
     mutationFn: spawnSM(agentPrefix),
     onSuccess: () => successMessage(spawnSMConstants.successMessage),
     onError: (e) => errorMessage(spawnSMConstants.failureMessage, e),
-    throwOnError: true // TODO : Remove error boundary
+    throwOnError: false // XXX TODO FIXME: Why is config service being accessed? Call should be mocked.
   })
 
   const handleModalOk = () => {
@@ -60,7 +63,7 @@ export const SpawnSMButton = (): React.JSX.Element => {
       <SelectionModal
         title={spawnSMConstants.modalTitle}
         okText={spawnSMConstants.modalOkText}
-        visible={modalVisibility}
+        open={modalVisibility}
         confirmLoading={spawnSmAction.isPending}
         onOk={handleModalOk}
         onCancel={handleModalCancel}

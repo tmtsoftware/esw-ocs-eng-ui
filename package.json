@@ -20,7 +20,7 @@
     "build": "vite build",
     "build:reporter": "tsc --p tsconfig.test.json",
     "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
-    "test:x": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/actions/LoadSequence.unit.test.tsx'",
+    "test:x": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/agent/components/SpawnSequenceComponent.unit.test.tsx'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
@@ -69,6 +69,6 @@
     "stylelint": "^16.1.0",
     "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11"
+    "vite": "^5.1.0-beta.0"
   }
 }

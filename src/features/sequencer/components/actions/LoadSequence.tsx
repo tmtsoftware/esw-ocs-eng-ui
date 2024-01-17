@@ -6,7 +6,6 @@ import { useSequencerService } from '../../hooks/useSequencerService'
 import { loadSequenceConstants } from '../../sequencerConstants'
 import type { SequencerProps } from '../Props'
 import { UploadSequence } from '../UploadSequence'
-import { dataTagSymbol } from '@tanstack/react-query'
 
 type LoadSequenceProps = Omit<SequencerProps, 'isSequencerRunning'>
 

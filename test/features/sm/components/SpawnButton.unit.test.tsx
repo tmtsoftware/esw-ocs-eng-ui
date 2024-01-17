@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
-import { anything, capture, when } from '@typestrong/ts-mockito'
+import { anything, capture, deepEqual, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButton'
@@ -97,7 +97,7 @@ describe('SpawnSMButton', () => {
 
     when(locServiceMock.listByComponentType('Machine')).thenResolve([agentLocation])
 
-    when(agentServiceMock.spawnSequenceManager(anything(), OBS_MODE_CONFIG, false)).thenResolve({
+    when(agentServiceMock.spawnSequenceManager(deepEqual(agentPrefix), deepEqual(OBS_MODE_CONFIG), false)).thenResolve({
       _type: 'Failed',
       msg: 'Config file not found'
     })

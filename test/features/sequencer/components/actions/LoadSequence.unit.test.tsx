@@ -7,7 +7,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
-import { renderWithAuth, sequencerServiceInstance, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('LoadSequence', () => {
   afterEach(async () => {
@@ -45,6 +45,7 @@ describe('LoadSequence', () => {
       const button: HTMLElement[] = screen.getAllByRole('button', {
         name: 'Load Sequence'
       })
+      console.log('XXX button = ', button)
 
       // eslint-disable-next-line testing-library/no-node-access
       const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement

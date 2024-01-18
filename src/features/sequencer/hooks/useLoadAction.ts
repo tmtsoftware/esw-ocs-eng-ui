@@ -1,7 +1,7 @@
+import { useMutation, UseMutationResult } from '@tanstack/react-query'
 import type { OkOrUnhandledResponse, Sequence, SequencerService } from '@tmtsoftware/esw-ts'
 import { errorMessage, successMessage } from '../../../utils/message'
 import { loadSequenceConstants } from '../sequencerConstants'
-import { useMutation, UseMutationResult } from '@tanstack/react-query'
 
 export const useLoadAction = (
   sequence?: Sequence

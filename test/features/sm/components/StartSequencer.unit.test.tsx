@@ -2,7 +2,6 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent, { UserEvent } from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, Variation } from '@tmtsoftware/esw-ts'
 import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
-import { expect } from 'chai'
 import React from 'react'
 import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
 import { startSequencerConstants } from '../../../../src/features/sm/smConstants'
@@ -139,8 +138,12 @@ const enterUserInputInAutoComplete = async (
   await waitFor(() => user.click(obsModeItem[1]))
 }
 
-const enterUserInputInInputBox: (user: UserEvent, withinElement: HTMLElement, label: string, userInput: string) => Promise<void>
-  = async (user: UserEvent, withinElement: HTMLElement, label: string, userInput: string) => {
+const enterUserInputInInputBox: (
+  user: UserEvent,
+  withinElement: HTMLElement,
+  label: string,
+  userInput: string
+) => Promise<void> = async (user: UserEvent, withinElement: HTMLElement, label: string, userInput: string) => {
   const combobox = within(withinElement).getByRole('textbox', { name: label })
   await user.click(combobox)
   await user.type(combobox, userInput)

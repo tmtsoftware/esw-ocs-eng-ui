@@ -39,7 +39,7 @@ const handleResponse = (res: StartSequencerResponse) => {
 
 const startSequencer =
   (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) => {
-  const f = smService.startSequencer(subsystem, obsMode, variation)
+    const f = smService.startSequencer(subsystem, obsMode, variation)
     console.log('XXX startSequencer subsystem=', subsystem, ' obsMode=', obsMode, ' variation=', variation, ', f=', f)
     return f.then(handleResponse)
   }

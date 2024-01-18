@@ -65,7 +65,7 @@ describe('Shutdown button for Sequencer ', () => {
 
       await waitFor(() => expect(shutdownButton.disabled).false)
 
-      await userEvent.click(shutdownButton, { button: 0 })
+      await userEvent.click(shutdownButton)
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(modalMessage)

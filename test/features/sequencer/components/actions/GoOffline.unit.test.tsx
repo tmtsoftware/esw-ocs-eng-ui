@@ -37,7 +37,7 @@ describe('GoOffline', () => {
         name: goOfflineConstants.buttonText
       })
 
-      await userEvent.click(offlineButton, { button: 0 })
+      await userEvent.click(offlineButton)
 
       await screen.findByText(msg)
 
@@ -56,7 +56,7 @@ describe('GoOffline', () => {
       name: goOfflineConstants.buttonText
     })
 
-    await userEvent.click(offlineButton, { button: 0 })
+    await userEvent.click(offlineButton)
 
     await screen.findByText(`${goOfflineConstants.failureMessage}, reason: error occurred`)
 

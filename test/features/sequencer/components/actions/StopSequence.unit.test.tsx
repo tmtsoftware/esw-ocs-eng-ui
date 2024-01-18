@@ -38,14 +38,14 @@ describe('StopSequence', () => {
 
       const stopSeqButton = await screen.findByRole('StopSequence')
 
-      await userEvent.click(stopSeqButton, { button: 0 })
+      await userEvent.click(stopSeqButton)
 
       await screen.findByText(stopSequenceConstants.modalTitle)
       const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
         name: stopSequenceConstants.modalOkText
       })
 
-      await userEvent.click(modalConfirmButton, { button: 0 })
+      await userEvent.click(modalConfirmButton)
 
       await screen.findByText(msg)
 
@@ -65,7 +65,7 @@ describe('StopSequence', () => {
     //*********testing cancel button ***********************
     const stopSeqButton1 = await screen.findByRole('StopSequence')
 
-    await userEvent.click(stopSeqButton1, { button: 0 })
+    await userEvent.click(stopSeqButton1)
     await screen.findByText(stopSequenceConstants.modalTitle)
     const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
       name: 'Cancel'
@@ -77,7 +77,7 @@ describe('StopSequence', () => {
     //*********testing stop(confirm) button ***********************
     const stopSeqButton2 = await screen.findByRole('StopSequence')
 
-    await userEvent.click(stopSeqButton2, { button: 0 })
+    await userEvent.click(stopSeqButton2)
     await screen.findByText(stopSequenceConstants.modalTitle)
     const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
       name: stopSequenceConstants.modalOkText

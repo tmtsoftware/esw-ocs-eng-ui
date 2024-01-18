@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:reporter": "tsc --p tsconfig.test.json",
     "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
     "test:x": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/agent/components/SpawnSequenceComponent.unit.test.tsx'",
@@ -68,6 +68,6 @@
     "stylelint": "^16.1.0",
     "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.11"
+    "vite": "^5.1.0-beta.1"
   }
 }

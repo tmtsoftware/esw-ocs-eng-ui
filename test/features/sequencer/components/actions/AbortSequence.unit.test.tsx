@@ -40,7 +40,7 @@ describe('AbortSequence', () => {
         name: abortSequenceConstants.buttonText
       })
 
-      await userEvent.click(abortSeqButton, { button: 0 })
+      await userEvent.click(abortSeqButton)
 
       await screen.findByText(abortSequenceConstants.modalTitle)
       // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
@@ -50,7 +50,7 @@ describe('AbortSequence', () => {
         name: abortSequenceConstants.modalOkText
       })
 
-      await userEvent.click(modalAbortButton[0], { button: 0 })
+      await userEvent.click(modalAbortButton[0])
 
       await screen.findByText(msg)
 
@@ -72,7 +72,7 @@ describe('AbortSequence', () => {
       name: abortSequenceConstants.buttonText
     })
 
-    await userEvent.click(abortSeqButton1, { button: 0 })
+    await userEvent.click(abortSeqButton1)
     await screen.findByText(abortSequenceConstants.modalTitle)
     // const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
     //   name: 'Cancel'
@@ -89,7 +89,7 @@ describe('AbortSequence', () => {
       name: abortSequenceConstants.buttonText
     })
 
-    await userEvent.click(abortSeqButton2, { button: 0 })
+    await userEvent.click(abortSeqButton2)
     await screen.findByText(abortSequenceConstants.modalTitle)
     // const modalAbortButton = await within(await screen.findByRole('document')).findByRole('button', {
     //   name: abortSequenceConstants.modalOkText

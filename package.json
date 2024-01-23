@@ -26,6 +26,7 @@
     "test:x5": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/sequencerDetails/ReplaceStep.unit.test.tsx'",
     "test:x6": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/sequencerDetails/SequencerDetails.unit.test.tsx'",
     "test:x7": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/sequencerDetails/StepListTable.unit.test.tsx'",
+    "test:x8": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/agent/components/SpawnSequenceComponent.unit.test.tsx'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
@@ -74,6 +75,6 @@
     "stylelint": "^16.2.0",
     "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.3.3",
-    "vite": "^4.5.2"
+    "vite": "^5.1.0-beta.3"
   }
 }

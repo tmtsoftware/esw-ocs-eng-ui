@@ -6,7 +6,7 @@ import ConsoleReporter from './ConsoleReporter.js'
 process.env.NODE_ENV = 'test'
 console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
-  concurrency: 1,
+  // concurrency: 1,
   testFramework: {
     config: {
       timeout: '3000'

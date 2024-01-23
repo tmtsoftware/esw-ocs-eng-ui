@@ -9,20 +9,33 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
 
-const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
-  agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) => {
+  return agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+    console.log(
+      'XXX spawnSequenceComponent: agentPrefix=',
+      agentPrefix,
+      ', componentName=',
+      componentName,
+      ', res=',
+      res
+    )
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
+}
 
 const requirement = (predicate: boolean, msg: string) => {
   if (predicate) errorMessage(msg)
   return predicate
 }
 
-const validateComponentName = (componentName: string) =>
-  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
-  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
+const validateComponentName = (componentName: string) => {
+  console.log('XXX validateComponentName: componentName=', componentName)
+  return (
+    requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
+    requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
+  )
+}
 
 export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): React.JSX.Element => {
   const [componentName, setComponentName] = useState('')
@@ -64,7 +77,6 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
               <Input
                 placeholder='Enter a name'
                 value={componentName}
-                // onChange={(e) => setComponentName(e.target.value)}
                 onChange={(e) => {
                   setComponentName(e.target.value)
                 }}

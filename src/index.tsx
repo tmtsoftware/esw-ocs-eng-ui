@@ -8,8 +8,8 @@ import './index.module.css'
 
 setAppName(AppConfig.applicationName)
 const queryClient = new QueryClient()
-const container = document.getElementById('root')
-const root = createRoot(container!)
+const domNode = document.getElementById('root')
+const root = createRoot(domNode!)
 root.render(
   <React.StrictMode>
     <AuthContextProvider>

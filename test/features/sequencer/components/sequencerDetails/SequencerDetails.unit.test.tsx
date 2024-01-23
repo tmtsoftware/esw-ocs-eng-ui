@@ -69,7 +69,6 @@ describe('sequencer details', () => {
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
-
     const sequencerTitle = await screen.findByTestId('status-error')
     expect(sequencerTitle.innerText).to.equal(darkNightSequencer)
 

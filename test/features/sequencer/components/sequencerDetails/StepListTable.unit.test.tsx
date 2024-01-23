@@ -27,6 +27,8 @@ const getSequencerStateResponse = (state: SequencerState['_type'], stepList: Ste
   sequencerState: { _type: state },
   stepList
 })
+
+
 describe('stepList table', () => {
   beforeEach(() => reset(sequencerServiceMock))
 
@@ -65,7 +67,6 @@ describe('stepList table', () => {
           />
         )
       })
-
       const title = `Sequence Steps\nStatus:\n${stepListStatus}`
 
       const stepListTitle = await screen.findByRole('stepListTitle')
@@ -562,7 +563,7 @@ describe('stepList table', () => {
   })
 })
 
-const findCell = (name: string) => screen.findByRole('cell', { name })
+  const findCell = (name: string) => screen.findByRole('cell', { name })
 
 describe('getRunningStep', () => {
   it('should return first step when step is in Loaded state | ESW-501 ', () => {

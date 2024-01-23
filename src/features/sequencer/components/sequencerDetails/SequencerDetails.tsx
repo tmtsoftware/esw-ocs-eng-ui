@@ -59,7 +59,9 @@ const SequencerTitle = ({
 }
 export const SequencerDetails = ({ prefix }: { prefix: Prefix }): React.JSX.Element => {
   const { sequencerStateResponse, loading } = useSequencerStateSubscription(prefix)
+  console.log('XXX sequencerStateResponse = ', sequencerStateResponse, ', loading = ', loading)
   const seqLocation = useSequencerLocation(prefix)
+  console.log('XXX seqLocation = ', seqLocation, ', prefix = ', prefix)
 
   const [selectedStep, setSelectedStep] = useState<Step>()
 

@@ -9,8 +9,7 @@ const testDeps =
       '@testing-library/react',
       '@testing-library/user-event',
       'chai',
-      '@typestrong/ts-mockito',
-      '@testing-library/react-hooks/dom'
+      '@typestrong/ts-mockito'
     ]
     : []
 
@@ -21,7 +20,8 @@ export default defineConfig({
   },
   base: `./`,
   optimizeDeps: {
-    include: testDeps
+    include: testDeps,
+    exclude: ['@vite/client', '@vite/env']
   },
   build: {
     outDir: AppConfig.applicationName,

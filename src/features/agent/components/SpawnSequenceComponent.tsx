@@ -11,14 +11,6 @@ import { spawnSequenceComponentConstants } from '../agentConstants'
 
 const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) => {
   return agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
-    console.log(
-      'XXX spawnSequenceComponent: agentPrefix=',
-      agentPrefix,
-      ', componentName=',
-      componentName,
-      ', res=',
-      res
-    )
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
@@ -30,7 +22,6 @@ const requirement = (predicate: boolean, msg: string) => {
 }
 
 const validateComponentName = (componentName: string) => {
-  console.log('XXX validateComponentName: componentName=', componentName)
   return (
     requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
     requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)

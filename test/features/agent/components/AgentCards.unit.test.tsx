@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { cleanup, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
@@ -29,6 +29,9 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
+  afterEach(() => {
+    cleanup()
+  })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(agentService.getAgentStatus()).thenResolve({
@@ -218,10 +221,10 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequenceCompActions = await screen.findByRole('sequenceCompActions')
-    await user.click(sequenceCompActions)
+    await waitFor(() => userEvent.click(sequenceCompActions))
 
     const killSequenceComponent = await screen.findByText(killSequenceComponentConstants.menuItemText)
-    await user.click(killSequenceComponent)
+    await waitFor(() => userEvent.click(killSequenceComponent))
     await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
     // const document = screen.getByRole('document')
@@ -254,7 +257,7 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequenceCompActions = await screen.findByRole('sequenceCompActions')
-    await user.click(sequenceCompActions)
+    await waitFor(() => userEvent.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
     await waitFor(() => expect(screen.queryByText(killSequenceComponentConstants.menuItemText)).to.exist)
@@ -282,7 +285,7 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequencerActions = await screen.findByRole('sequencerActions')
-    await user.click(sequencerActions)
+    await waitFor(() => userEvent.click(sequencerActions))
 
     // checking different menu items for sequencers and sequence components
     await screen.findByText(killSequenceComponentConstants.menuItemText)

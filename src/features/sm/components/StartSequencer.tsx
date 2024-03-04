@@ -27,7 +27,6 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.
     setSubsystem(undefined)
   }
 
-  console.log('XXX StartSequencer: subsystem=', subsystem, ', obsMode=', obsMode)
   const startSequencerAction = useStartSequencerAction(
     subsystem as Subsystem,
     new ObsMode(obsMode),

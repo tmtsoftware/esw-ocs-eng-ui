@@ -11,9 +11,7 @@ import { OBS_MODE_CONFIG } from '../constants'
 import { spawnSMConstants } from '../smConstants'
 
 const spawnSM = (agentPrefix: string) => (agent: AgentService) => {
-  console.log('XXX spawnSM: agentPrefix = ', agentPrefix, ', agent=', agent)
   return agent.spawnSequenceManager(Prefix.fromString(agentPrefix), OBS_MODE_CONFIG, false).then((res) => {
-    console.log('XXX spawnSM: res=', res)
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })

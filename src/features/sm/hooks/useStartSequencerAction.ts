@@ -40,7 +40,6 @@ const handleResponse = (res: StartSequencerResponse) => {
 const startSequencer =
   (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) => {
     const f = smService.startSequencer(subsystem, obsMode, variation)
-    console.log('XXX startSequencer subsystem=', subsystem, ' obsMode=', obsMode, ' variation=', variation, ', f=', f)
     return f.then(handleResponse)
   }
 
@@ -49,7 +48,6 @@ export const useStartSequencerAction = (
   obsMode: ObsMode,
   variation?: Variation
 ): UseMutationResult<ComponentId | undefined, unknown, SequenceManagerService> => {
-  console.log('XXX useStartSequencerAction subsystem=', subsystem, ' obsMode=', obsMode, ' variation=', variation)
   return useMutation({
     mutationFn: startSequencer(subsystem, obsMode, variation),
     onError: (e) => errorMessage(startSequencerConstants.failureMessage, e),

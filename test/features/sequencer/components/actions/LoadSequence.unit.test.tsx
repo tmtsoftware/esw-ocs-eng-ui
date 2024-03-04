@@ -47,7 +47,6 @@ describe('LoadSequence', () => {
       const button: HTMLElement[] = screen.getAllByRole('button', {
         name: 'Load Sequence'
       })
-      console.log('XXX button = ', button)
 
       // eslint-disable-next-line testing-library/no-node-access
       const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement

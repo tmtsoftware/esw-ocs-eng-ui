@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
@@ -29,9 +29,6 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const agentService = mockServices.mock.agentService
-  afterEach(() => {
-    cleanup()
-  })
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
     when(agentService.getAgentStatus()).thenResolve({
@@ -241,7 +238,6 @@ describe('Agents Grid View', () => {
   })
 
   it('should display menu items applicable to sequence components| ESW-502', async () => {
-    const user = userEvent.setup()
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
@@ -266,7 +262,6 @@ describe('Agents Grid View', () => {
   })
 
   it('should display menu items applicable to sequencer | ESW-502, ESW-506', async () => {
-    const user = userEvent.setup()
     const agentStatus = getAgentStatusMock('IRIS')
     when(agentService.getAgentStatus()).thenResolve({
       _type: 'Success',

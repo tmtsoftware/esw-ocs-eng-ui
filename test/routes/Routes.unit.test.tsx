@@ -1,4 +1,4 @@
-import { cleanup, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { anything, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
@@ -24,10 +24,6 @@ const renderWithRouter = (ui: React.ReactElement) => {
 
 describe('Full app navigation', () => {
   const user = userEvent.setup()
-
-  afterEach(() => {
-    cleanup()
-  })
 
   it('Infrastructure route | ESW-441, ESW-542', async () => {
     renderWithRouter(<App />)

@@ -161,6 +161,8 @@ describe('Observation page', () => {
       verify(smService.getObsModesDetails()).called()
     })
   })
+
+  // XXX TODO FIXME
   it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
     const smService = mockServices.mock.smService
 

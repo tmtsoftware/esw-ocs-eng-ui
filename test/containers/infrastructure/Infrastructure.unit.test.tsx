@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   AgentProvisionConfig,
@@ -68,9 +68,6 @@ const smLocation: HttpLocation = {
 }
 
 describe('Infrastructure page', () => {
-  afterEach(() => {
-    cleanup()
-  })
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService

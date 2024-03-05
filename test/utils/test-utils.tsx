@@ -80,7 +80,7 @@ export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerS
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
-  const locationServiceMock = mock<LocationService>(TestUtils.LocationServiceImpl)
+  const locationServiceMock = mock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
 
   when(locationServiceMock.track(anything())).thenReturn(() => {

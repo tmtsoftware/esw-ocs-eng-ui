@@ -27,9 +27,9 @@ describe('LoadSequence', () => {
     [
       {
         _type: 'Unhandled',
-        state: 'Offline',
+        msg: 'LoadSequence message is not handled in Offline state',
         messageType: 'LoadSequence',
-        msg: 'LoadSequence message is not handled in Offline state'
+        state: 'Offline'
       },
       `${loadSequenceConstants.failureMessage}, reason: LoadSequence message is not handled in Offline state`,
       'failed'
@@ -54,6 +54,7 @@ describe('LoadSequence', () => {
       expect(input.style.display).equal('none')
 
       await user.upload(input, file)
+
       await screen.findByText(msg)
 
       await waitFor(() => verify(sequencerServiceMock.loadSequence(deepEqual(sequence))).called())

@@ -1,4 +1,4 @@
-import { cleanup, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { instance, mock, verify } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
@@ -9,7 +9,6 @@ import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
 
 describe('header bar', () => {
-  afterEach(() => cleanup())
   it('renders with logout button & logo when user is logged in | ESW-441', async () => {
     renderWithAuth({
       ui: (

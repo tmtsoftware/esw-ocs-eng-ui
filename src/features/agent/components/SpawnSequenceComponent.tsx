@@ -9,24 +9,20 @@ import { errorMessage, successMessage } from '../../../utils/message'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { spawnSequenceComponentConstants } from '../agentConstants'
 
-const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) => {
-  return agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
+const spawnSequenceComponent = (agentPrefix: Prefix, componentName: string) => (agentService: AgentService) =>
+  agentService.spawnSequenceComponent(agentPrefix, componentName).then((res) => {
     if (res._type === 'Failed') throw new Error(res.msg)
     return res
   })
-}
 
 const requirement = (predicate: boolean, msg: string) => {
   if (predicate) errorMessage(msg)
   return predicate
 }
 
-const validateComponentName = (componentName: string) => {
-  return (
-    requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
-    requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
-  )
-}
+const validateComponentName = (componentName: string) =>
+  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
+  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
 
 export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): React.JSX.Element => {
   const [componentName, setComponentName] = useState('')
@@ -45,14 +41,10 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
     invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
-  const resetComponentName = () => {
-    setComponentName('')
-  }
+  const resetComponentName = () => setComponentName('')
 
-  const onConfirm = async () => {
-    !validateComponentName(componentName) &&
-      agentService &&
-      (await spawnSequenceComponentAction.mutateAsync(agentService))
+  const onConfirm = () => {
+    !validateComponentName(componentName) && agentService && spawnSequenceComponentAction.mutateAsync(agentService)
     resetComponentName()
   }
 

@@ -7,8 +7,9 @@ import { loadSequenceConstants } from '../sequencerConstants'
 export const useLoadAction = (
   sequence?: Sequence
 ): UseMutationResult<OkOrUnhandledResponse | undefined, unknown, SequencerService> => {
-  const mutationFn = async (sequencerService: SequencerService) =>
-    sequence && (await sequencerService.loadSequence(sequence))
+  const mutationFn = async (sequencerService: SequencerService) => {
+    return sequence && (await sequencerService.loadSequence(sequence))
+  }
 
   return useMutation({
     mutationFn,

@@ -31,6 +31,8 @@
     "test:x10": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/routes/Routes.unit.test.tsx'",
     "test:x11": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/containers/obsversation/Observations.unit.test.tsx'",
     "test:x12": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/**/*.unit.test.tsx'",
+    "test:x13": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/agent/components/KillSequenceComponent.unit.test.tsx'",
+    "test:x14": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner 'test/features/sequencer/components/sequencerDetails/AddSteps.unit.test.tsx'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",

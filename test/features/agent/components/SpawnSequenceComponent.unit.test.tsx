@@ -70,6 +70,10 @@ describe('Spawn sequence component icon', () => {
       const user = userEvent.setup()
       when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve(response)
 
+      // XXX TEMP
+      const x = await agentService.spawnSequenceComponent(agentPrefix, seqCompName)
+      console.log('XXX x = ', x)
+
       renderWithAuth({
         ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
       })

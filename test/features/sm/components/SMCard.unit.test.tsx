@@ -1,7 +1,7 @@
+import { when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor } from '@testing-library/react'
 import { SEQUENCE_MANAGER_CONNECTION } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
-import { when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { SMServiceProvider } from '../../../../src/contexts/SMContext'

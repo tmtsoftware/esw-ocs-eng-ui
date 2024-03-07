@@ -1,3 +1,4 @@
+import { deepEqual, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
@@ -19,7 +20,6 @@ import type {
   HttpLocation,
   ObsModesDetailsResponse
 } from '@tmtsoftware/esw-ts'
-import { deepEqual, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'

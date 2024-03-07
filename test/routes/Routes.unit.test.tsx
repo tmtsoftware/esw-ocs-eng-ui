@@ -1,6 +1,6 @@
+import { anything, when } from '@johanblumenberg/ts-mockito'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { anything, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { App } from '../../src/containers/app/App'

@@ -1,3 +1,4 @@
+import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, VariationInfo } from '@tmtsoftware/esw-ts'
@@ -7,7 +8,6 @@ import type {
   ObsModesDetailsResponse,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { Configure } from '../../../../../src/features/sm/components/Configure'

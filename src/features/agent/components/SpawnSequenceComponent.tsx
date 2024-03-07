@@ -20,9 +20,13 @@ const requirement = (predicate: boolean, msg: string) => {
   return predicate
 }
 
-const validateComponentName = (componentName: string) =>
-  requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
-  requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
+const validateComponentName = (componentName: string) => {
+  if (componentName !== componentName.trim()) {
+    console.log('XXX componentName has spaces!: "', componentName, '"')
+  }
+  return requirement(componentName !== componentName.trim(), spawnSequenceComponentConstants.whiteSpaceValidation) ||
+    requirement(componentName.includes('-'), spawnSequenceComponentConstants.hyphenValidation)
+}
 
 export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix }): React.JSX.Element => {
   const [componentName, setComponentName] = useState('')
@@ -49,16 +53,16 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
   }
 
   return (
-    <Tooltip placement='bottom' title='Add sequence component'>
+    <Tooltip placement="bottom" title="Add sequence component">
       <Popconfirm
-        id='spawnSequenceComponent'
+        id="spawnSequenceComponent"
         style={{ paddingLeft: 0 }}
         title={
           <div>
-            <Space direction='vertical'>
+            <Space direction="vertical">
               <Typography.Text>Add a sequence component</Typography.Text>
               <Input
-                placeholder='Enter a name'
+                placeholder="Enter a name"
                 value={componentName}
                 onChange={(e) => {
                   setComponentName(e.target.value)
@@ -76,9 +80,9 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         disabled={spawnSequenceComponentAction.isPending}
         okText={spawnSequenceComponentConstants.modalOkText}>
         <Button
-          type='text'
+          type="text"
           style={{ paddingTop: '0.33rem' }}
-          icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role='addSeqCompIcon' />}
+          icon={<PlusCircleOutlined className={styles.addSeqCompIcon} role="addSeqCompIcon" />}
           loading={isLoading || spawnSequenceComponentAction.isPending}
         />
       </Popconfirm>

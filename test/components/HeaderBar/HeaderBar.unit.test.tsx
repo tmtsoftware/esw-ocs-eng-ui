@@ -1,6 +1,6 @@
+import { fnmock, instance, verify } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { instance, mock, verify } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -32,8 +32,10 @@ describe('header bar', () => {
   })
 
   it('open logout modal on click of username button when user is logged in | ESW-441', async () => {
-    const mockAuthFunctions = mock<{ logout: () => void }>()
-    const authFunctionsInstance = instance(mockAuthFunctions)
+    // const mockAuthFunctions = mock<{ logout: () => void }>()
+    const logout: () => void = fnmock()
+    const logoutInstance = instance(logout)
+    // const authFunctionsInstance = instance(mockAuthFunctions)
     renderWithAuth({
       ui: (
         <BrowserRouter>
@@ -41,7 +43,8 @@ describe('header bar', () => {
         </BrowserRouter>
       ),
       loggedIn: true,
-      logoutFunc: () => authFunctionsInstance.logout()
+      // logoutFunc: () => authFunctionsInstance.logout()
+      logoutFunc: () => logoutInstance()
     })
 
     const logoutButton = await screen.findByText('ESW-USER')
@@ -51,6 +54,7 @@ describe('header bar', () => {
     await waitFor(() => userEvent.click(logoutMenuItem))
 
     //verify that the logout function passed by auth context is called on click of logout button of modal
-    verify(mockAuthFunctions.logout()).called()
+    // verify(mockAuthFunctions.logout()).called()
+    verify(logout()).called()
   })
 })

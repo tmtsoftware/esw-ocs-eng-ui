@@ -1,7 +1,7 @@
+import { verify, when } from '@johanblumenberg/ts-mockito'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpConnection, Prefix } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
-import { verify, when } from '@typestrong/ts-mockito'
 import { assert, expect } from 'chai'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
 import { getContextWithQueryClientProvider, mockServices } from '../../../utils/test-utils'

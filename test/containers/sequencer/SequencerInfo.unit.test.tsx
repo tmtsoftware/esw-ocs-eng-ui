@@ -1,6 +1,6 @@
+import { anything, when } from '@johanblumenberg/ts-mockito'
 import { screen } from '@testing-library/react'
 import { HttpConnection, Prefix, StepList } from '@tmtsoftware/esw-ts'
-import { anything, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

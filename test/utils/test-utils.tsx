@@ -1,3 +1,4 @@
+import { anything, imock, instance, mock, when } from '@johanblumenberg/ts-mockito'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { RenderOptions, RenderResult } from '@testing-library/react'
 import { queryHelpers, render } from '@testing-library/react'
@@ -21,7 +22,6 @@ import {
   setAppName,
   TestUtils
 } from '@tmtsoftware/esw-ts'
-import { anything, instance, mock, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
 import React, { ReactElement } from 'react'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
@@ -80,7 +80,7 @@ export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerS
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
-  const locationServiceMock = mock<LocationService>()
+  const locationServiceMock: LocationService = imock()
   const locationServiceInstance = instance(locationServiceMock)
 
   when(locationServiceMock.track(anything())).thenReturn(() => {

@@ -1,3 +1,4 @@
+import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type {
@@ -21,7 +22,6 @@ import {
   stringKey,
   Units
 } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

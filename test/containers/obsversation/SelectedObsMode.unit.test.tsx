@@ -1,3 +1,4 @@
+import { deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor, within } from '@testing-library/react'
 import { PekkoConnection, ObsMode, Prefix, ServiceError, StepList, VariationInfo } from '@tmtsoftware/esw-ts'
 import type {
@@ -7,7 +8,6 @@ import type {
   SequencerStateResponse,
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
-import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

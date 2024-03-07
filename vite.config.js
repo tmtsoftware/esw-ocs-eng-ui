@@ -9,7 +9,7 @@ const testDeps =
       '@testing-library/react',
       '@testing-library/user-event',
       'chai',
-      '@typestrong/ts-mockito'
+      '@johanblumenberg/ts-mockito'
     ]
     : []
 

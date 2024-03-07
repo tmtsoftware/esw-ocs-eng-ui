@@ -1,7 +1,7 @@
+import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent, { UserEvent } from '@testing-library/user-event'
 import { ComponentId, ObsMode, Prefix, Variation } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
 import { StartSequencer } from '../../../../src/features/sm/components/StartSequencer'
 import { startSequencerConstants } from '../../../../src/features/sm/smConstants'

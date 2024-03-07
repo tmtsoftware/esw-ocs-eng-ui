@@ -1,7 +1,7 @@
+import { anything, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { RemoveBreakpointResponse, GenericResponse } from '@tmtsoftware/esw-ts'
-import { anything, reset, verify, when } from '@typestrong/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { StepThroughSequence } from '../../../../../src/features/sequencer/components/steplist/StepThroughSequence'

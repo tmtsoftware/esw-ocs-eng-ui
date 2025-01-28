@@ -75,7 +75,6 @@ describe('ReplaceStep', () => {
       })
       await userEvent.click(replaceStepButton)
 
-      // eslint-disable-next-line testing-library/no-node-access
       const inputBox = replaceStepButton.firstChild as HTMLInputElement
       await userEvent.upload(inputBox, file)
 
@@ -98,7 +97,6 @@ describe('ReplaceStep', () => {
     })
     await userEvent.click(replaceStepButton)
 
-    // eslint-disable-next-line testing-library/no-node-access
     const inputBox = replaceStepButton.firstChild as HTMLInputElement
     await userEvent.upload(inputBox, file)
 

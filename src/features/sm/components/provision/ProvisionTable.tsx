@@ -31,7 +31,6 @@ const columns = (
     key: 'numOfSequenceComps',
     fixed: 'left',
     sorter: (f, s) => f.numOfSequenceComps - s.numOfSequenceComps,
-    // eslint-disable-next-line react/display-name
     render: (value: number, record) => (
       <InputNumber
         min={0}

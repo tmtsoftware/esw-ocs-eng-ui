@@ -1,7 +1,5 @@
 import type { TestSuiteResult } from '@web/test-runner'
-// eslint-disable-next-line import/no-nodejs-modules
 import * as fs from 'fs'
-// eslint-disable-next-line import/no-nodejs-modules
 import * as os from 'os'
 
 const PIPE = '|'
@@ -51,7 +49,7 @@ const sanitizeTestSuite = (suite: TestSuiteResult): string[] => {
     suite.tests.forEach((test) => {
       const [testName, storyIds] = test.name.split(PIPE)
       const name = suite.name + SPACE + testName
-      if (Boolean(storyIds)) {
+      if (storyIds) {
         storyIds
           .trim()
           .split(COMMA)

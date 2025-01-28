@@ -2,12 +2,12 @@
   "compilerOptions": {
     "declaration": true,
     "target": "ESNext",
-    "module": "ESNEXT",
+    "module": "NodeNext",
     "allowJs": true,
     "checkJs": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "rootDir": ".",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "strict": true,
     "baseUrl": "./",
@@ -21,8 +21,6 @@
     "isolatedModules": true,
     "jsx": "react",
     "noEmit": true,
-    "importsNotUsedAsValues": "error",
-
     "strictNullChecks": true
   },
   "include": [

@@ -392,7 +392,6 @@ describe('sequencer details', () => {
     const addSteps = await screen.findByRole('button', { name: /add steps/i })
     await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
 
-    // eslint-disable-next-line testing-library/no-node-access
     const inputBox = addSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 
@@ -464,7 +463,6 @@ describe('sequencer details', () => {
     const replaceSteps = await screen.findByRole('button', { name: /replace step/i })
     await waitFor(() => userEvent.click(replaceSteps)) // click to open uplaod dialogue
 
-    // eslint-disable-next-line testing-library/no-node-access
     const inputBox = replaceSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
 

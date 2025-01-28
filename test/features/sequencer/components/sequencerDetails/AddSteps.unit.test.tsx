@@ -74,7 +74,6 @@ describe('AddSteps', () => {
       })
       await userEvent.click(addStepsButton)
 
-      // eslint-disable-next-line testing-library/no-node-access
       const inputBox = addStepsButton.firstChild as HTMLInputElement
       await userEvent.upload(inputBox, file)
 
@@ -98,7 +97,6 @@ describe('AddSteps', () => {
     })
     await userEvent.click(addStepsButton)
 
-    // eslint-disable-next-line testing-library/no-node-access
     const inputBox = addStepsButton.firstChild as HTMLInputElement
     await userEvent.upload(inputBox, file)
 

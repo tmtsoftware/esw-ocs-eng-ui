@@ -76,7 +76,6 @@ describe('stepList table', () => {
       const stepButton = within(htmlElement).getByRole('button')
 
       expect(stepButton.style.borderColor).to.equal(borderColor)
-      // eslint-disable-next-line testing-library/no-node-access
       const spanElement = stepButton.firstChild as HTMLSpanElement
       await waitFor(() => expect(spanElement.style.color).to.equal(borderColor))
     })
@@ -103,7 +102,6 @@ describe('stepList table', () => {
     const stepButton = within(htmlElement).getByRole('button')
 
     expect(stepButton.style.borderColor).to.equal('rgb(255, 197, 61) rgb(255, 197, 61) rgb(255, 197, 61) red')
-    // eslint-disable-next-line testing-library/no-node-access
     const spanElement = stepButton.firstChild as HTMLSpanElement
     await waitFor(() => expect(spanElement.style.color).to.equal('rgb(255, 197, 61)'))
   })

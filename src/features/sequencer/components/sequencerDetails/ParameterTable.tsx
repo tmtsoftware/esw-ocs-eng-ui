@@ -25,7 +25,6 @@ const columns: ColumnsType<ParameterDataType> = [
     title: <HeaderTitle title='Values' />,
     dataIndex: 'values',
     key: 'values',
-    // eslint-disable-next-line react/display-name
     render: (values: string): React.JSX.Element => (
       <Typography.Paragraph ellipsis={{ expandable: true, rows: 20, tooltip: true }}>{values}</Typography.Paragraph>
     )

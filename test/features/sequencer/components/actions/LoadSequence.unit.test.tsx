@@ -47,7 +47,6 @@ describe('LoadSequence', () => {
         name: 'Load Sequence'
       })
 
-      // eslint-disable-next-line testing-library/no-node-access
       const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
       // const input = getByTagName(view.container, 'input') as HTMLInputElement
       expect(input.type).equal('file')
@@ -72,7 +71,6 @@ describe('LoadSequence', () => {
       name: 'Load Sequence'
     })
 
-    // eslint-disable-next-line testing-library/no-node-access
     const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
 
     await userEvent.upload(input, file0)
@@ -93,7 +91,6 @@ describe('LoadSequence', () => {
       name: 'Load Sequence'
     })
 
-    // eslint-disable-next-line testing-library/no-node-access
     const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
 
     await userEvent.upload(input, file)

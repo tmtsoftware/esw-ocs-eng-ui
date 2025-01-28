@@ -104,31 +104,37 @@ const FormattedParams = ({
 export const formatParameters = (parameter: Parameter<Key>, command: SequenceCommand): React.JSX.Element => {
   const { keyName, keyTag } = parameter
   switch (keyTag) {
-    case 'CoordKey':
+    case 'CoordKey': {
       const coordParam = command.get(coordKey(keyName))
       return <FormattedParams values={coordParam?.values.map(formatCoord)} role={keyTag} />
+    }
 
-    case 'EqCoordKey':
+    case 'EqCoordKey': {
       const eqCoordParam = command.get(eqCoordKey(keyName))
       return <FormattedParams values={eqCoordParam?.values.map(formatEqCoord)} role={keyTag} />
+    }
 
-    case 'AltAzCoordKey':
+    case 'AltAzCoordKey': {
       const solarSystemParams = command.get(altAzCoordKey(keyName))
       return <FormattedParams values={solarSystemParams?.values.map(formatAltAzCoord)} role={keyTag} />
+    }
 
-    case 'CometCoordKey':
+    case 'CometCoordKey': {
       const cometCoordParam = command.get(cometCoordKey(keyName))
       return <FormattedParams values={cometCoordParam?.values.map(formatCometCoord)} role={keyTag} />
+    }
 
-    case 'MinorPlanetCoordKey':
+    case 'MinorPlanetCoordKey': {
       const minorPlantCoordParam = command.get(minorPlanetCoordKey(keyName))
       return <FormattedParams values={minorPlantCoordParam?.values.map(formatMinorPlanetCoord)} role={keyTag} />
+    }
 
-    case 'SolarSystemCoordKey':
+    case 'SolarSystemCoordKey': {
       const solarSystemCoordParam = command.get(solarSystemCoordKey(keyName))
       return <FormattedParams values={solarSystemCoordParam?.values.map(formatSolarSystemCoord)} role={keyTag} />
+    }
 
-    case 'UTCTimeKey':
+    case 'UTCTimeKey': {
       const utcTimeParams = command.get(utcTimeKey(keyName))
       return (
         <FormattedParams
@@ -139,8 +145,9 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
           ))}
         />
       )
+    }
 
-    case 'TAITimeKey':
+    case 'TAITimeKey': {
       const taiTimeParams = command.get(taiTimeKey(keyName))
       return (
         <FormattedParams
@@ -151,6 +158,7 @@ export const formatParameters = (parameter: Parameter<Key>, command: SequenceCom
           ))}
         />
       )
+    }
 
     default:
       return (

@@ -245,7 +245,6 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
       </StepListContextProvider>
     )
   })
-// eslint-disable-next-line import/export
 export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
 export type { MockServices }
 

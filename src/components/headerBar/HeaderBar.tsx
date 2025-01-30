@@ -1,5 +1,5 @@
 import { DownOutlined, LogoutOutlined } from '@ant-design/icons'
-import { Button, Dropdown, Menu } from 'antd'
+import { Button, Dropdown, MenuProps, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './headerBar.module.css'
@@ -15,20 +15,28 @@ export const HeaderBar = (): React.JSX.Element => {
     setUsername(getUsername(auth))
   }, [auth])
 
-  const menu = (
-    <Menu>
-      <Menu.Item key='1' danger icon={<LogoutOutlined />} onClick={logout}>
-        Logout
-      </Menu.Item>
-    </Menu>
-  )
+  const items: MenuProps['items'] = [
+    {
+      label: 'Logout',
+      key: '1',
+      icon: <LogoutOutlined />,
+      danger: true
+    }
+  ]
+
+  const menuProps = {
+    items,
+    onClick: logout
+  }
 
   const Logout = () => (
-    <Dropdown trigger={['click']} overlay={menu}>
+    <Dropdown menu={menuProps}>
       {username ? (
         <Button type='text'>
-          {username.toUpperCase()}
-          <DownOutlined />
+          <Space>
+            {username!.toUpperCase()}
+            <DownOutlined />
+          </Space>
         </Button>
       ) : (
         <></>

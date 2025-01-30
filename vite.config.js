@@ -4,15 +4,16 @@ import { defineConfig } from 'vite'
 import { AppConfig } from './src/config/AppConfig.js'
 
 // https://vitejs.dev/config/
-const testDeps =
-  process.env.NODE_ENV === 'development'
-    ? [
-        '@testing-library/react',
-        '@testing-library/user-event',
-        'chai',
-        '@typestrong/ts-mockito'
-      ]
-    : []
+// const testDeps =
+//   process.env.NODE_ENV === 'development'
+//     ? [
+//         '@testing-library/react',
+//         '@testing-library/user-event',
+//         'chai',
+//         '@typestrong/ts-mockito'
+//       ]
+//     : []
+const testDeps = []
 export default defineConfig({
   server: {
     host: true,
@@ -20,7 +21,7 @@ export default defineConfig({
   },
   base: `./`,
   optimizeDeps: {
-    include: testDeps
+    include: testDeps,
   },
   css: {
     preprocessorOptions: {
@@ -34,6 +35,7 @@ export default defineConfig({
     outDir: AppConfig.applicationName,
     // sourcemap: 'inline',
     sourcemap: true,
+    minify: false,
     rollupOptions: {
       input: ['./index.html'],
       onLog(level, log, handler) {

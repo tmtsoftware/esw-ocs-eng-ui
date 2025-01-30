@@ -35,7 +35,6 @@ export const RTMReporter = ({ reportResults = true } = {}): Reporter => {
      * guard against race conditions when re-running tests in watch mode while reporting.
      *
      * @param logger the logger to use for logging tests
-     * @param testFile the test file to report for
      * @param sessionsForTestFile the sessions for this test file. each browser is a
      * different session
      */

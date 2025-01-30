@@ -21,6 +21,7 @@
     "build:reporter": "tsc --p tsconfig.test.json",
     "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
+    "xxx": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/hooks/useAuth.unit.test.tsx --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
     "test": "npm run test:unit",
@@ -42,6 +43,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/chai": "^5.0.1",
+    "@types/mocha": "^10.0.10",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",
@@ -50,6 +52,7 @@
     "@web/dev-server-import-maps": "^0.2.1",
     "@web/test-runner": "^0.19.0",
     "chai": "^5.1.2",
+    "eslint-plugin-react": "^7.37.4",
     "keycloak-js": "^25.0.6",
     "less": "^4.2.2",
     "npm-run-all": "^4.1.5",
@@ -58,7 +61,6 @@
     "stylelint-config-standard": "^37.0.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.22.0",
-    "eslint-plugin-react": "^7.37.4",
     "vite": "^6.0.11",
     "vite-plugin-node-polyfills": "^0.23.0"
   }

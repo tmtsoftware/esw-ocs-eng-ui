@@ -10,6 +10,7 @@ import { getStep } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Step-Through Sequence', () => {
+  const user = userEvent.setup()
   beforeEach(() => reset(sequencerServiceMock))
 
   it(`should add breakpoint in next step and remove from current step | ESW-509`, async () => {
@@ -24,7 +25,7 @@ describe('Step-Through Sequence', () => {
     )
 
     const button = await screen.findByRole('StepThroughSequence')
-    await userEvent.click(button)
+    await user.click(button)
 
     await waitFor(() => verify(sequencerServiceMock.addBreakpoint(nextStep.id)).called())
     await waitFor(() => verify(sequencerServiceMock.removeBreakpoint(currentStep.id)).called())
@@ -40,7 +41,7 @@ describe('Step-Through Sequence', () => {
     )
 
     const button = await screen.findByRole('StepThroughSequence')
-    await userEvent.click(button)
+    await user.click(button)
 
     await waitFor(() => verify(sequencerServiceMock.addBreakpoint(anything())).never())
     await waitFor(() => verify(sequencerServiceMock.removeBreakpoint(currentStep.id)).called())
@@ -86,7 +87,7 @@ describe('Step-Through Sequence', () => {
       )
 
       const button = await screen.findByRole('StepThroughSequence')
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(message)
 
@@ -129,7 +130,7 @@ describe('Step-Through Sequence', () => {
       )
 
       const button = await screen.findByRole('StepThroughSequence')
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(message)
 

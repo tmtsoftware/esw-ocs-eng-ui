@@ -10,6 +10,7 @@ import { goOnlineConstants } from '../../../../../src/features/sequencer/sequenc
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOnline', () => {
+  const user = userEvent.setup()
   const testData: [GoOnlineResponse, string, string][] = [
     [{ _type: 'Ok' }, goOnlineConstants.successMessage, 'successful'],
     [{ _type: 'GoOnlineHookFailed' }, `${goOnlineConstants.failureMessage}, reason: GoOnlineHookFailed`, 'failed'],
@@ -37,7 +38,7 @@ describe('GoOnline', () => {
         name: goOnlineConstants.buttonText
       })
 
-      await userEvent.click(onlineButton, { button: 0 })
+      await user.click(onlineButton)
 
       await screen.findByText(msg)
 
@@ -56,7 +57,7 @@ describe('GoOnline', () => {
       name: goOnlineConstants.buttonText
     })
 
-    await userEvent.click(onlineButton, { button: 0 })
+    await user.click(onlineButton)
 
     await screen.findByText(`${goOnlineConstants.failureMessage}, reason: error occurred`)
 

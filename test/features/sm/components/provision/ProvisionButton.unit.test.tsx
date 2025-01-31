@@ -11,6 +11,7 @@ import { provisionConfConstants, provisionConstants } from '../../../../../src/f
 import { mockServices, renderWithAuth } from '../../../../../test/utils/test-utils'
 
 describe('ProvisionButton component', () => {
+  const user = userEvent.setup()
   const provisionRes: ProvisionResponse = {
     _type: 'Success'
   }
@@ -47,7 +48,7 @@ describe('ProvisionButton component', () => {
     const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
-    await userEvent.click(provisionButton)
+    await user.click(provisionButton)
 
     //Provision config modal will appear with provision button
     await assertDialog()
@@ -59,7 +60,7 @@ describe('ProvisionButton component', () => {
       name: provisionConstants.modalOkText
     })
 
-    await userEvent.click(confirmButton)
+    await user.click(confirmButton)
     await screen.findByText(provisionConstants.successMessage)
 
     verify(smService.provision(deepEqual(provisionConfig))).called()
@@ -74,7 +75,7 @@ describe('ProvisionButton component', () => {
     const { provisionButton } = await renderAndFindProvision()
 
     //User clicks provision button
-    await userEvent.click(provisionButton)
+    await user.click(provisionButton)
 
     //Provision config modal will not appear
     await waitFor(
@@ -128,7 +129,7 @@ describe('ProvisionButton component', () => {
       const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
-      await userEvent.click(provisionButton)
+      await user.click(provisionButton)
 
       //Provision config modal will not appear
       await waitFor(
@@ -215,7 +216,7 @@ describe('ProvisionButton component', () => {
       const { provisionButton } = await renderAndFindProvision()
 
       //User clicks provision button
-      await userEvent.click(provisionButton)
+      await user.click(provisionButton)
 
       //Provision config modal will appear with provision button
       await assertDialog()
@@ -227,7 +228,7 @@ describe('ProvisionButton component', () => {
         name: provisionConstants.modalOkText
       })
 
-      await userEvent.click(confirmButton)
+      await user.click(confirmButton)
       await screen.findByText(errMsg)
 
       verify(smService.provision(deepEqual(provisionConfig))).called()

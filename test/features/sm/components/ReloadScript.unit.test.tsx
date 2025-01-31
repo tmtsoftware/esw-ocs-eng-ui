@@ -6,11 +6,12 @@ import { anything, deepEqual, verify, when } from '@typestrong/ts-mockito'
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
-import { ReloadScript } from '../../../../src/features/sm/components/ReloadScript'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { reloadScriptItem } from '../../../../src/features/sm/components/ReloadScript'
 
 describe('Reload script', () => {
+  const user = userEvent.setup()
   const smService = mockServices.mock.smService
   const obsMode = new ObsMode('Darknight')
   const subsystem = 'ESW'
@@ -29,14 +30,12 @@ describe('Reload script', () => {
 
     renderWithAuth({
       ui: (
-        <Menu>
-          <ReloadScript sequencerState={running} sequencerPrefix={sequencerPrefix} />
-        </Menu>
+        <Menu items={[reloadScriptItem(sequencerPrefix, running)]}/>
       )
     })
 
-    const reloadScriptItem = screen.getByRole('ReloadScript')
-    await waitFor(() => userEvent.click(reloadScriptItem))
+    const ReloadScriptItem = screen.getByRole('ReloadScript')
+    await waitFor(() => user.click(ReloadScriptItem))
 
     // expect modal to be visible
     const modalTitle = await screen.findByText(
@@ -52,7 +51,7 @@ describe('Reload script', () => {
       name: reloadScriptConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(reloadConfirm[0])
+    await user.click(reloadConfirm[0])
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
     await waitFor(
@@ -76,14 +75,12 @@ describe('Reload script', () => {
 
     renderWithAuth({
       ui: (
-        <Menu>
-          <ReloadScript sequencerState={sequencerState} sequencerPrefix={sequencerPrefix} />
-        </Menu>
+        <Menu items={[reloadScriptItem(sequencerPrefix, sequencerState)]}/>
       )
     })
 
-    const reloadScriptItem = screen.getByRole('ReloadScript')
-    await waitFor(() => userEvent.click(reloadScriptItem))
+    const ReloadScriptItem = screen.getByRole('ReloadScript')
+    await waitFor(() => user.click(ReloadScriptItem))
 
     // expect modal to be visible
     const modalTitle = await screen.findByText(
@@ -99,7 +96,7 @@ describe('Reload script', () => {
       name: reloadScriptConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(reloadConfirm[0])
+    await user.click(reloadConfirm[0])
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(`${subsystem}.${obsMode.toJSON()}`))
     verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()

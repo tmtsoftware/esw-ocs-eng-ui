@@ -37,6 +37,7 @@ import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('sequencer details', () => {
+  const user = userEvent.setup()
   afterEach(async () => {
     reset(sequencerServiceMock)
   })
@@ -172,7 +173,7 @@ describe('sequencer details', () => {
     const [, , , parameterBodyTable] = screen.queryAllByRole('table')
 
     const step = screen.getByRole('button', { name: /Command-2/i })
-    await userEvent.click(step)
+    await user.click(step)
 
     expect(within(parameterBodyTable).queryAllByRole('row')).to.have.length(2)
     expect(
@@ -224,7 +225,7 @@ describe('sequencer details', () => {
     ]
 
     const step1 = screen.getByRole('button', { name: /Command-1/i })
-    await userEvent.click(step1)
+    await user.click(step1)
     labels1.forEach(([key, value]) => {
       const keyLabel = screen.getByLabelText(`${key}-Key`)
       const valueLabel = screen.getByLabelText(`${key}-Value`)
@@ -232,7 +233,7 @@ describe('sequencer details', () => {
       expect(valueLabel.innerText).to.equals(value)
     })
     const step2 = screen.getByRole('button', { name: /Command-2/i })
-    await userEvent.click(step2)
+    await user.click(step2)
     labels2.forEach(([key, value]) => {
       const keyLabel = screen.getByLabelText(`${key}-Key`)
       const valueLabel = screen.getByLabelText(`${key}-Value`)
@@ -381,7 +382,7 @@ describe('sequencer details', () => {
     })
     sendCommand(makeSeqStateResponse('Idle', stepList))
     const actions = await screen.findByRole('stepActions')
-    await waitFor(() => userEvent.click(actions))
+    await waitFor(() => user.click(actions))
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(5)
@@ -390,7 +391,7 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null
 
     const addSteps = await screen.findByRole('button', { name: /add steps/i })
-    await waitFor(() => userEvent.click(addSteps)) // click to open uplaod dialogue
+    await waitFor(() => user.click(addSteps)) // click to open uplaod dialogue
 
     const inputBox = addSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command
@@ -452,7 +453,7 @@ describe('sequencer details', () => {
     })
     sendCommand(makeSeqStateResponse('Idle', stepList))
     const actions = await screen.findByRole('stepActions')
-    await waitFor(() => userEvent.click(actions))
+    await waitFor(() => user.click(actions))
 
     const menuItems = await screen.findAllByRole('menuitem')
     expect(menuItems.length).to.equal(5)
@@ -461,7 +462,7 @@ describe('sequencer details', () => {
     expect(screen.queryByRole('row', { name: /2 command-2/i })).to.null
 
     const replaceSteps = await screen.findByRole('button', { name: /replace step/i })
-    await waitFor(() => userEvent.click(replaceSteps)) // click to open uplaod dialogue
+    await waitFor(() => user.click(replaceSteps)) // click to open uplaod dialogue
 
     const inputBox = replaceSteps.firstChild as HTMLInputElement
     await waitFor(() => userEvent.upload(inputBox, file)) // upload the file with command

@@ -4,7 +4,7 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { ReplaceStep } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'
+import { replaceStepItem } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'
 import {
   replaceStepConstants,
   stepConstants,
@@ -24,6 +24,7 @@ afterEach(async () => {
 })
 
 describe('ReplaceStep', () => {
+  const user = userEvent.setup()
   const unhandledMsg = 'unhandled'
   const id = 'step_1'
   const seqPrefix = Prefix.fromString('ESW.darknight')
@@ -66,14 +67,15 @@ describe('ReplaceStep', () => {
     it(testName, async () => {
       when(sequencerServiceMock.replace(id, anything())).thenResolve(response)
 
+      const menuItem = replaceStepItem(false, id)
       renderWithAuth({
-        ui: <MenuWithStepListContext menuItem={<ReplaceStep disabled={false} step={id} />} />
+        ui: <MenuWithStepListContext menuItem={menuItem} />
       })
 
       const replaceStepButton = await screen.findByRole('button', {
         name: new RegExp(replaceStepConstants.menuItemText)
       })
-      await userEvent.click(replaceStepButton)
+      await user.click(replaceStepButton)
 
       const inputBox = replaceStepButton.firstChild as HTMLInputElement
       await userEvent.upload(inputBox, file)
@@ -88,14 +90,15 @@ describe('ReplaceStep', () => {
       type: 'application/json'
     })
 
+    const menuItem = replaceStepItem(false, id)
     renderWithAuth({
-      ui: <MenuWithStepListContext menuItem={<ReplaceStep disabled={false} step={id} />} />
+      ui: <MenuWithStepListContext menuItem={menuItem} />
     })
 
     const replaceStepButton = await screen.findByRole('button', {
       name: new RegExp(replaceStepConstants.menuItemText)
     })
-    await userEvent.click(replaceStepButton)
+    await user.click(replaceStepButton)
 
     const inputBox = replaceStepButton.firstChild as HTMLInputElement
     await userEvent.upload(inputBox, file)

@@ -8,7 +8,6 @@ import type {
   Subsystem,
   Variation
 } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React from 'react'
 import { showConfirmModal } from '../../../components/modal/showConfirmModal'
 import { useSMService } from '../../../contexts/SMContext'
@@ -18,6 +17,7 @@ import { obsModeAndVariationFrom } from '../../../utils/SMutils'
 import { AGENTS_STATUS } from '../../queryKeys'
 import { isSequencerInProgress } from '../../sequencer/utils'
 import { stopSequencerConstants } from '../smConstants'
+import type { ItemType } from 'antd/es/menu/interface'
 
 const handleResponse = (res: ShutdownSequencersResponse) => {
   switch (res._type) {
@@ -44,26 +44,20 @@ const stopSequencer =
   (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
     smService.shutdownSequencer(subsystem, obsMode, variation).then(handleResponse)
 
-export const StopSequencer = ({
-  sequencerPrefix,
-  sequencerState
-}: {
-  sequencerPrefix: Prefix
-  sequencerState: SequencerState | undefined
-}): React.JSX.Element => {
+export function stopSequencerItem(sequencerPrefix: Prefix, sequencerState: SequencerState | undefined): ItemType {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)
   const [obsMode, variation] = obsModeAndVariationFrom(sequencerPrefix.componentName)
   const handleOnClick = () => {
     sequencerState &&
-      smContext?.smService &&
-      showConfirmModal(
-        () => {
-          stopAction.mutate(smContext.smService)
-        },
-        getModalTitle(isInProgress, sequencerPrefix, sequencerState),
-        stopSequencerConstants.modalOkText
-      )
+    smContext?.smService &&
+    showConfirmModal(
+      () => {
+        stopAction.mutate(smContext.smService)
+      },
+      getModalTitle(isInProgress, sequencerPrefix, sequencerState),
+      stopSequencerConstants.modalOkText
+    )
   }
 
   const stopAction = useMutation({
@@ -73,13 +67,12 @@ export const StopSequencer = ({
     invalidateKeysOnSuccess: [[AGENTS_STATUS.key]]
   })
 
-  return (
-    <Menu.Item
-      icon={<CloseCircleOutlined />}
-      disabled={isLoading || stopAction.isPending}
-      onClick={handleOnClick}
-      key='stopSequencer'>
-      {stopSequencerConstants.menuItemText}
-    </Menu.Item>
-  )
+  return ({
+    icon: <CloseCircleOutlined />,
+    disabled: isLoading || stopAction.isPending,
+    onClick: handleOnClick,
+    key: 'stopSequencer',
+    label: stopSequencerConstants.menuItemText
+  })
 }
+

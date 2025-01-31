@@ -4,11 +4,12 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, Step } from '@tmtsoftware/esw-ts'
 import { verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { DeleteAction } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
+import { deleteActionItem } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
 import { deleteStepConstants, stepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Delete action', () => {
+  const user = userEvent.setup()
   const deleteActionTests: [string, GenericResponse, string][] = [
     [
       'success',
@@ -54,17 +55,18 @@ describe('Delete action', () => {
       }
 
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
+      const menuItem = deleteActionItem(step, false)
       renderWithAuth({
-        ui: <MenuWithStepListContext menuItem={<DeleteAction step={step} isDisabled={false} />} />
+        ui: <MenuWithStepListContext menuItem={menuItem} />
       })
 
       const deleteButton = await screen.findByText(deleteStepConstants.menuItemText)
-      await userEvent.click(deleteButton, { button: 0 })
+      await user.click(deleteButton)
 
       await screen.findByText(deleteStepConstants.getModalTitle('Command-1'))
       const deleteStep = screen.getByRole('button', { name: deleteStepConstants.modalOkText })
 
-      await userEvent.click(deleteStep)
+      await user.click(deleteStep)
 
       await screen.findByText(message)
 

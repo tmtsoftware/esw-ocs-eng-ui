@@ -9,6 +9,7 @@ import { unProvisionConstants } from '../../../../../src/features/sm/smConstants
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 
 describe('UnProvision button', () => {
+  const user = userEvent.setup()
   const modalTitle = unProvisionConstants.modalTitle
 
   const unhandled: ShutdownSequenceComponentResponse = {
@@ -63,7 +64,7 @@ describe('UnProvision button', () => {
       const { unProvisionButton } = await renderAndFindProvisionButton()
 
       //User clicks unprovision button
-      await userEvent.click(unProvisionButton)
+      await user.click(unProvisionButton)
 
       //modal will appear with shutdown button
       await screen.findByRole('dialog')
@@ -75,7 +76,7 @@ describe('UnProvision button', () => {
       })
 
       //User clicks modal's shutdown button
-      await userEvent.click(modalShutdownButton)
+      await user.click(modalShutdownButton)
 
       await waitFor(() => {
         expect(screen.queryByText(modalTitle)).to.null

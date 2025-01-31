@@ -6,12 +6,13 @@ import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito
 import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
-import { StopSequencer } from '../../../../src/features/sm/components/StopSequencer'
+import { stopSequencerItem } from '../../../../src/features/sm/components/StopSequencer'
 import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 import { _createErrorMsg } from '../../../../src/utils/message'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('Stop Sequencer', () => {
+  const user = userEvent.setup()
   beforeEach(() => reset(mockServices.mock.smService))
   const obsMode = new ObsMode('DarkNight')
   const subsystem: Subsystem = 'ESW'
@@ -64,16 +65,12 @@ describe('Stop Sequencer', () => {
       when(smService.shutdownSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve(response)
 
       renderWithAuth({
-        ui: (
-          <Menu>
-            <StopSequencer sequencerState={running} sequencerPrefix={darkNight} />
-          </Menu>
-        )
+        ui: (<Menu items={[stopSequencerItem(darkNight, running)]}/>)
       })
 
       const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
 
-      await userEvent.click(stopSequencer)
+      await user.click(stopSequencer)
 
       // expect modal to be visible
       const modalTitle = await screen.findByText(modalTitleText)
@@ -82,7 +79,7 @@ describe('Stop Sequencer', () => {
       const confirmButton = screen.getByRole('button', {
         name: stopSequencerConstants.modalOkText
       })
-      await userEvent.click(confirmButton)
+      await user.click(confirmButton)
 
       await screen.findByText(message)
 
@@ -100,22 +97,20 @@ describe('Stop Sequencer', () => {
     }
     renderWithAuth({
       ui: (
-        <Menu>
-          <StopSequencer sequencerState={sequencerState} sequencerPrefix={darkNight} />
-        </Menu>
+        <Menu items={[stopSequencerItem(darkNight, sequencerState)]}/>
       )
     })
 
     const stopSequencer = screen.getByText(stopSequencerConstants.menuItemText)
     const modalTitleText = stopSequencerConstants.getModalTitle(darkNight.toJSON())
-    await userEvent.click(stopSequencer)
+    await user.click(stopSequencer)
     const modalTitle = await screen.findByText(modalTitleText)
     expect(modalTitle).to.exist
 
     const confirmButton = screen.getByRole('button', {
       name: stopSequencerConstants.modalOkText
     })
-    await userEvent.click(confirmButton)
+    await user.click(confirmButton)
     await screen.findAllByText(stopSequencerConstants.successMessage(darkNight))
 
     verify(smService.shutdownSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).called()

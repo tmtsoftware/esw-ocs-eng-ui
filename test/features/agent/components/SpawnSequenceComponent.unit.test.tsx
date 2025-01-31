@@ -10,6 +10,7 @@ import { SpawnSequenceComponent } from '../../../../src/features/agent/component
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('Spawn sequence component icon', () => {
+  const user = userEvent.setup()
   const agentPrefix = new Prefix('ESW', 'primary')
   const agentService = mockServices.mock.agentService
   const seqCompName = 'ESW_1'
@@ -27,9 +28,9 @@ describe('Spawn sequence component icon', () => {
     })
     await assertPopup()
     const textBox = screen.getByRole('textbox')
-    await waitFor(() => userEvent.click(textBox))
+    await waitFor(() => user.click(textBox))
     await userEvent.type(textBox, ' primary21 ')
-    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.whiteSpaceValidation)
   })
 
@@ -39,9 +40,9 @@ describe('Spawn sequence component icon', () => {
     })
     await assertPopup()
     const textBox = screen.getByRole('textbox')
-    await waitFor(() => userEvent.click(textBox))
+    await waitFor(() => user.click(textBox))
     await userEvent.type(textBox, 'primary-21')
-    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.hyphenValidation)
   })
 
@@ -70,9 +71,9 @@ describe('Spawn sequence component icon', () => {
       })
       await assertPopup()
       const textBox = screen.getByRole('textbox')
-      await waitFor(() => userEvent.click(textBox))
+      await waitFor(() => user.click(textBox))
       await userEvent.type(textBox, seqCompName)
-      await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+      await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
       await screen.findByText(message)
     })
@@ -80,7 +81,7 @@ describe('Spawn sequence component icon', () => {
 
   const assertPopup = async () => {
     const icon = await screen.findByRole('addSeqCompIcon')
-    await waitFor(() => userEvent.click(icon))
+    await waitFor(() => user.click(icon))
     const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
   }

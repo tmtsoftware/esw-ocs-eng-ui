@@ -28,6 +28,7 @@ const emptyAgentStatus: AgentStatus = {
 const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
+  const user = userEvent.setup()
   const agentService = mockServices.mock.agentService
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
@@ -181,14 +182,14 @@ describe('Agents Grid View', () => {
     })
     const icon = await screen.findByRole('addSeqCompIcon')
 
-    await userEvent.click(icon)
+    await user.click(icon)
     const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
     const textBox = screen.getByRole('textbox')
 
-    await waitFor(() => userEvent.click(textBox))
+    await waitFor(() => user.click(textBox))
     await userEvent.type(textBox, 'ESW_1')
-    await userEvent.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
@@ -216,10 +217,10 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequenceCompActions = await screen.findByRole('sequenceCompActions')
-    await waitFor(() => userEvent.click(sequenceCompActions))
+    await waitFor(() => user.click(sequenceCompActions))
 
     const killSequenceComponent = await screen.findByText(killSequenceComponentConstants.menuItemText)
-    await waitFor(() => userEvent.click(killSequenceComponent))
+    await waitFor(() => user.click(killSequenceComponent))
     await screen.findByText(killSequenceComponentConstants.getModalTitle(seqCompPrefix.toJSON()))
 
     // const document = screen.getByRole('document')
@@ -228,7 +229,7 @@ describe('Agents Grid View', () => {
       name: killSequenceComponentConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(confirm[0])
+    await user.click(confirm[0])
 
     await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW2'))
 
@@ -251,7 +252,7 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequenceCompActions = await screen.findByRole('sequenceCompActions')
-    await waitFor(() => userEvent.click(sequenceCompActions))
+    await waitFor(() => user.click(sequenceCompActions))
 
     // checking different menu items for sequencers and sequence components
     await waitFor(() => expect(screen.queryByText(killSequenceComponentConstants.menuItemText)).to.exist)
@@ -278,7 +279,7 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequencerActions = await screen.findByRole('sequencerActions')
-    await waitFor(() => userEvent.click(sequencerActions))
+    await waitFor(() => user.click(sequencerActions))
 
     // checking different menu items for sequencers and sequence components
     await screen.findByText(killSequenceComponentConstants.menuItemText)
@@ -304,7 +305,7 @@ describe('Agents Grid View', () => {
     })
 
     const sequencer = await screen.findByText('[ESW.darkNight]')
-    await userEvent.click(sequencer)
+    await user.click(sequencer)
 
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darkNight')

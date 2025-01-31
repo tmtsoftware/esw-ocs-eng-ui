@@ -2,39 +2,41 @@ import { CopyOutlined, MoreOutlined } from '@ant-design/icons'
 import type { Step } from '@tmtsoftware/esw-ts'
 import { Dropdown, Menu } from 'antd'
 import React from 'react'
-import { AddSteps } from './AddSteps'
-import { BreakpointAction } from './BreakpointActions'
-import { DeleteAction } from './DeleteAction'
-import { ReplaceStep } from './ReplaceStep'
+import { addStepsItem } from './AddSteps'
+import { breakpointActionItem } from './BreakpointActions'
+import { deleteActionItem } from './DeleteAction'
+import { replaceStepItem } from './ReplaceStep'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
+import type { ItemType } from 'antd/es/menu/interface'
 
-const StepActionsMenu = ({ step, ...restProps }: { step: Step }): React.JSX.Element => {
+function stepActionsMenuItems(step: Step): ItemType[] {
   const status = step.status._type
   const isFinished = status === 'Failure' || status === 'Success'
   const isInProgressOrIsFinished = status === 'InFlight' || isFinished
 
   const { handleDuplicate, stepListStatus } = useStepListContext()
+
   //add the menu item that you want to support in the step list.
-  return (
-    <Menu {...restProps} className={styles.menu}>
-      <BreakpointAction step={step} isDisabled={isInProgressOrIsFinished} />
-      <AddSteps disabled={isFinished} stepId={step.id} />
-      <ReplaceStep disabled={isFinished} step={step.id} />
-      <Menu.Item
-        key='Duplicate'
-        onClick={handleDuplicate}
-        disabled={stepListStatus === 'All Steps Completed'}
-        icon={<CopyOutlined />}>
-        Duplicate
-      </Menu.Item>
-      <DeleteAction step={step} isDisabled={isInProgressOrIsFinished} />
-    </Menu>
-  )
+  return [
+    breakpointActionItem(step, isInProgressOrIsFinished),
+    addStepsItem(isFinished, step.id),
+    replaceStepItem(isFinished, step.id),
+    {
+      key: 'Duplicate',
+      onClick: handleDuplicate,
+      disabled: stepListStatus === 'All Steps Completed',
+      icon: <CopyOutlined />
+    },
+    deleteActionItem(step, isInProgressOrIsFinished)
+  ]
 }
 
-export const StepActions = ({ step }: { step: Step }): React.JSX.Element => (
-  <Dropdown overlay={() => <StepActionsMenu step={step} />} trigger={['click']}>
-    <MoreOutlined className={styles.actionEnabled} style={{ fontSize: '1.5rem' }} role='stepActions' />
-  </Dropdown>
-)
+export const StepActions = ({ step }: { step: Step }): React.JSX.Element => {
+  const items = stepActionsMenuItems(step)
+  return (
+    <Dropdown menu={{ items }} trigger={['click']}>
+      <MoreOutlined className={styles.actionEnabled} style={{ fontSize: '1.5rem' }} role='stepActions' />
+    </Dropdown>
+  )
+}

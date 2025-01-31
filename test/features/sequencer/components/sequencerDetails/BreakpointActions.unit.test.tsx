@@ -4,7 +4,9 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, RemoveBreakpointResponse, Step } from '@tmtsoftware/esw-ts'
 import { reset, verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { BreakpointAction } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
+import {
+  breakpointActionItem
+} from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
 import {
   insertBreakPointConstants,
   removeBreakPointConstants,
@@ -52,6 +54,7 @@ describe('Breakpoint actions', () => {
 
   insertBreakpointTests.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Insert breakpoint is clicked | ESW-459`, async () => {
+      const user = userEvent.setup()
       const step: Step = {
         hasBreakpoint: false,
         status: { _type: 'Pending' },
@@ -61,12 +64,13 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
+      const menuItem = breakpointActionItem(step, false)
       renderWithAuth({
-        ui: <MenuWithStepListContext menuItem={<BreakpointAction step={step} isDisabled={false} />} />
+        ui: <MenuWithStepListContext menuItem={menuItem} />
       })
 
       const insertBreakpoint = await screen.findByText(insertBreakPointConstants.menuItemText)
-      await userEvent.click(insertBreakpoint, { button: 0 })
+      await user.click(insertBreakpoint)
 
       await screen.findByText(message)
 
@@ -104,6 +108,7 @@ describe('Breakpoint actions', () => {
 
   removeBreakpointTests.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Remove breakpoint is clicked | ESW-459`, async () => {
+      const user = userEvent.setup()
       const step: Step = {
         hasBreakpoint: true,
         status: { _type: 'Pending' },
@@ -113,12 +118,13 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
+      const menuItem = breakpointActionItem(step, false)
       renderWithAuth({
-        ui: <MenuWithStepListContext menuItem={<BreakpointAction step={step} isDisabled={false} />} />
+        ui: <MenuWithStepListContext menuItem={menuItem} />
       })
 
       const removeBreakpoint = await screen.findByText(removeBreakPointConstants.menuItemText)
-      await userEvent.click(removeBreakpoint, { button: 0 })
+      await user.click(removeBreakpoint)
 
       await screen.findByText(message)
 

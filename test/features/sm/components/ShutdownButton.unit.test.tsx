@@ -9,6 +9,7 @@ import { shutdownSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('ShutdownSMButton', () => {
+  const user = userEvent.setup()
   it('should shutdown the sequence manager | ESW-441', async () => {
     const modalTitle = shutdownSMConstants.modalTitle
 
@@ -27,7 +28,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks shutdown button
-    await userEvent.click(shutdownButton)
+    await user.click(shutdownButton)
 
     //Modal will appear with shutdown button
     await waitFor(() => expect(screen.getByText(modalTitle)).to.exist)
@@ -41,7 +42,7 @@ describe('ShutdownSMButton', () => {
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
 
     //User clicks modal's shutdown button
-    await userEvent.click(modalShutdownButton[1])
+    await user.click(modalShutdownButton[1])
     await screen.findByText(shutdownSMConstants.successMessage)
 
     await waitFor(() => {
@@ -67,7 +68,7 @@ describe('ShutdownSMButton', () => {
     })
 
     //User clicks shutdown button
-    await userEvent.click(shutdownButton)
+    await user.click(shutdownButton)
 
     //Modal will appear with shutdown button
     // const modalDocument = await screen.findByRole('document')
@@ -80,7 +81,7 @@ describe('ShutdownSMButton', () => {
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
 
     //User clicks modal's shutdown button
-    await userEvent.click(modalShutdownButton[1])
+    await user.click(modalShutdownButton[1])
     await screen.findByText(`${shutdownSMConstants.failureMessage}, reason: Cant kill`)
 
     verify(agentServiceMock.killComponent(SM_COMPONENT_ID)).called()

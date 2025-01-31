@@ -27,6 +27,7 @@ const FakeComponent = ({
 }
 
 describe('Component using useStartSequencerAction', () => {
+  const user = userEvent.setup()
   const subsystem = 'ESW'
   const obsMode = new ObsMode('DarkNight_1')
   const smService = mockServices.mock.smService
@@ -112,7 +113,7 @@ describe('Component using useStartSequencerAction', () => {
       })
 
       const button = screen.getByRole('button')
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findAllByText(message)
       verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()

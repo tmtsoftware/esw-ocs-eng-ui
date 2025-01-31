@@ -4,7 +4,7 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { anything, reset, verify, when } from '@typestrong/ts-mockito'
 import React from 'react'
-import { AddSteps } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
+import { addStepsItem } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
 import {
   addStepConstants,
   stepConstants,
@@ -24,6 +24,7 @@ afterEach(async () => {
 })
 
 describe('AddSteps', () => {
+  const user = userEvent.setup()
   const unhandledMsg = 'unhandled'
   const id = 'step_1'
   const seqPrefix = Prefix.fromString('ESW.darknight')
@@ -65,14 +66,14 @@ describe('AddSteps', () => {
   testCases.forEach(({ testName, response, message }) => {
     it(testName, async () => {
       when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(response)
-
+      const menuItem = addStepsItem(false, id)
       renderWithAuth({
-        ui: <MenuWithStepListContext menuItem={<AddSteps disabled={false} stepId={id} />} />
+        ui: <MenuWithStepListContext menuItem={menuItem} />
       })
       const addStepsButton = await screen.findByRole('button', {
         name: new RegExp(addStepConstants.menuItemText)
       })
-      await userEvent.click(addStepsButton)
+      await user.click(addStepsButton)
 
       const inputBox = addStepsButton.firstChild as HTMLInputElement
       await userEvent.upload(inputBox, file)
@@ -88,14 +89,15 @@ describe('AddSteps', () => {
       type: 'application/json'
     })
 
+    const menuItem = addStepsItem(false, id)
     renderWithAuth({
-      ui: <MenuWithStepListContext menuItem={<AddSteps disabled={false} stepId={id} />} />
+      ui: <MenuWithStepListContext menuItem={menuItem} />
     })
 
     const addStepsButton = await screen.findByRole('button', {
       name: new RegExp(addStepConstants.menuItemText)
     })
-    await userEvent.click(addStepsButton)
+    await user.click(addStepsButton)
 
     const inputBox = addStepsButton.firstChild as HTMLInputElement
     await userEvent.upload(inputBox, file)

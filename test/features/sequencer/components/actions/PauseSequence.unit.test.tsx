@@ -8,6 +8,7 @@ import { pauseSequenceConstants } from '../../../../../src/features/sequencer/se
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Pause Sequence', () => {
+  const user = userEvent.setup()
   const testData: [PauseResponse, string, string][] = [
     [{ _type: 'Ok' }, pauseSequenceConstants.successMessage, 'successful'],
     [
@@ -35,7 +36,7 @@ describe('Pause Sequence', () => {
 
       const button = await screen.findByRole('PauseSequence')
 
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(msg)
 
@@ -50,7 +51,7 @@ describe('Pause Sequence', () => {
 
     const button = await screen.findByRole('PauseSequence')
 
-    await userEvent.click(button)
+    await user.click(button)
 
     await screen.findByText(`${pauseSequenceConstants.failureMessage}, reason: Something went wrong`)
 

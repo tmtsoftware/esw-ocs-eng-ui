@@ -28,6 +28,7 @@ const Component = ({
 }
 
 describe('Reload script', () => {
+  const user = userEvent.setup()
   beforeEach(() => resetCalls(smService))
   const smService = mockServices.mock.smService
   const obsMode = new ObsMode('Darknight')
@@ -82,7 +83,7 @@ describe('Reload script', () => {
       })
 
       const button = screen.getByRole('button', { name: 'Restart sequencer' })
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(message)
       verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()

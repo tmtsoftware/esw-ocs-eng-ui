@@ -17,6 +17,7 @@ const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 
 describe('observation tabs', () => {
+  const user = userEvent.setup()
   beforeEach(() => {
     reset(smService)
     reset(agentService)
@@ -45,7 +46,7 @@ describe('observation tabs', () => {
     const shutdownButton = await screen.findByRole('button', {
       name: observationShutdownConstants.buttonText
     })
-    await userEvent.click(shutdownButton)
+    await user.click(shutdownButton)
 
     await screen.findByText(modalMessage)
 
@@ -57,7 +58,7 @@ describe('observation tabs', () => {
       name: observationShutdownConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(modalShutdownButtons[1])
+    await user.click(modalShutdownButtons[1])
 
     await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
     await waitFor(() => verify(smService.shutdownObsModeSequencers(deepEqual(obsMode))).called())
@@ -92,7 +93,7 @@ describe('observation tabs', () => {
 
     await waitFor(() => expect(configureButton.disabled).false)
 
-    await userEvent.click(configureButton)
+    await user.click(configureButton)
 
     await screen.findByText(configureConstants.getSuccessMessage('DarkNight_2'))
 
@@ -181,7 +182,7 @@ describe('observation tabs', () => {
       name: /DarkNight_5/i
     })
 
-    await userEvent.click(menuitem)
+    await user.click(menuitem)
 
     const alert = await screen.findByRole('alert')
     expect(alert.innerText).to.equals('Sequence components are not available for TCS')
@@ -198,14 +199,14 @@ describe('observation tabs', () => {
       name: /DarkNight_1/i
     })
 
-    await userEvent.click(darkNight1)
+    await user.click(darkNight1)
     expect(within(sequencerTable).queryAllByRole('row', { name: /DarkNight_1/i })).to.have.length(2)
 
     const darkNight8 = await screen.findByRole('menuitem', {
       name: /DarkNight_8/i
     })
 
-    await userEvent.click(darkNight8)
+    await user.click(darkNight8)
     // assert that previous obsMode's sequencers are removed from table.
     // and verify that new sequencers related to second obsMode are displayed.
     const [sequencerTable2] = await screen.findAllByRole('table')

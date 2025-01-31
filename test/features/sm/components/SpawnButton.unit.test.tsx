@@ -11,6 +11,7 @@ import { spawnSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 
 describe('SpawnSMButton', () => {
+  const user = userEvent.setup()
   const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.track(anything())).thenReturn(() => {
     return {
@@ -37,7 +38,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    await userEvent.click(spawnButton)
+    await user.click(spawnButton)
 
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
@@ -54,10 +55,10 @@ describe('SpawnSMButton', () => {
       name: agentPrefix.toJSON()
     })
     //User selects agent machine
-    await userEvent.click(menuItem)
+    await user.click(menuItem)
 
     //User clicks modal's spawn button
-    await userEvent.click(modalSpawnButton[1])
+    await user.click(modalSpawnButton[1])
 
     await screen.findByText(spawnSMConstants.successMessage)
 
@@ -77,7 +78,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    await userEvent.click(spawnButton)
+    await user.click(spawnButton)
 
     await screen.findByText(spawnSMConstants.agentNotRunningMessage)
 
@@ -108,7 +109,7 @@ describe('SpawnSMButton', () => {
 
     //User clicks spawn button
     const spawnButton = await screen.findByRole('button', { name: 'Spawn' })
-    await userEvent.click(spawnButton)
+    await user.click(spawnButton)
 
     //modal will appear with spawn button
     await screen.findByText(spawnSMConstants.modalTitle)
@@ -126,10 +127,10 @@ describe('SpawnSMButton', () => {
       name: agentPrefix.toJSON()
     })
     //User selects agent machine
-    await userEvent.click(menuItem)
+    await user.click(menuItem)
 
     //User clicks modal's spawn button
-    await userEvent.click(modalSpawnButton[1])
+    await user.click(modalSpawnButton[1])
 
     await screen.findByText(`${spawnSMConstants.failureMessage}, reason: Config file not found`)
   })

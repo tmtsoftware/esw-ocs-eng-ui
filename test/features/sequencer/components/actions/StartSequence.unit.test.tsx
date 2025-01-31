@@ -10,6 +10,7 @@ import { startSequenceConstants } from '../../../../../src/features/sequencer/se
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Start Sequence', () => {
+  const user = userEvent.setup()
   const testData: [SubmitResponse, string, string][] = [
     [{ _type: 'Started', runId: '' }, startSequenceConstants.successMessage, 'successful'],
     [{ _type: 'Completed', runId: '', result: mock(Result) }, startSequenceConstants.successMessage, 'successful'],
@@ -42,7 +43,7 @@ describe('Start Sequence', () => {
 
       const button = await screen.findByRole('StartSequence')
 
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(msg)
 
@@ -57,7 +58,7 @@ describe('Start Sequence', () => {
 
     const button = await screen.findByRole('StartSequence')
 
-    await userEvent.click(button)
+    await user.click(button)
 
     await screen.findByText(`${startSequenceConstants.failureMessage}, reason: Something went wrong`)
 

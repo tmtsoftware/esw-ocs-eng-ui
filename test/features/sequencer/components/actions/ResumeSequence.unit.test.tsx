@@ -9,6 +9,7 @@ import { resumeSequenceConstants } from '../../../../../src/features/sequencer/s
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('Resume Sequence', () => {
+  const user = userEvent.setup()
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, resumeSequenceConstants.successMessage, 'successful'],
     [
@@ -31,7 +32,7 @@ describe('Resume Sequence', () => {
 
       const button = await screen.findByRole('ResumeSequence')
 
-      await userEvent.click(button)
+      await user.click(button)
 
       await screen.findByText(msg)
 
@@ -46,7 +47,7 @@ describe('Resume Sequence', () => {
 
     const button = await screen.findByRole('ResumeSequence')
 
-    await userEvent.click(button)
+    await user.click(button)
 
     await screen.findByText(`${resumeSequenceConstants.failureMessage}, reason: Something went wrong`)
 

@@ -13,6 +13,7 @@ import { getObsModes } from '../../utils/observationUtils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
 
 describe('Observation page', () => {
+  const user = userEvent.setup()
   beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
     const smService = mockServices.mock.smService
@@ -63,12 +64,12 @@ describe('Observation page', () => {
     expect(noRunningObsModes).to.exist
 
     // User will click on configurable tab
-    await userEvent.click(configurableTab)
+    await user.click(configurableTab)
 
     await screen.findByText('No Configurable ObsModes')
 
     // User will click on non-configurable tab
-    await userEvent.click(nonConfigurableTab)
+    await user.click(nonConfigurableTab)
 
     await screen.findByText('No Non-configurable ObsModes')
 
@@ -125,14 +126,14 @@ describe('Observation page', () => {
       const tab = await screen.findByRole('tab', {
         name: tabName
       })
-      await userEvent.click(tab)
+      await user.click(tab)
 
       const menuItem = await screen.findByRole('menuitem', {
         name: obsModes[0]
       })
       await screen.findByRole('menuitem', { name: new RegExp(obsModes[0]) })
 
-      await userEvent.click(menuItem)
+      await user.click(menuItem)
       expect(screen.getAllByText(obsModes[0])).to.have.length(2)
 
       //Checking that obsMode status is NA
@@ -188,7 +189,7 @@ describe('Observation page', () => {
     const shutdownButton = within(runningTabPanel).getByRole('button', {
       name: observationShutdownConstants.buttonText
     })
-    await userEvent.click(shutdownButton)
+    await user.click(shutdownButton)
 
     // const modalDocument = await screen.findByRole('document')
     // const modalShutdownButton = within(modalDocument).getByRole('button', {
@@ -198,12 +199,12 @@ describe('Observation page', () => {
       name: observationShutdownConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(modalShutdownButtons[1])
+    await user.click(modalShutdownButtons[1])
 
     const configurableTab = await screen.findByRole('tab', {
       name: 'Configurable'
     })
-    await userEvent.click(configurableTab)
+    await user.click(configurableTab)
     await screen.findByText(observationShutdownConstants.getSuccessMessage(new ObsMode('DarkNight_1')))
 
     const configurableTabPanel = await screen.findByRole('tabpanel')

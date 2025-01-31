@@ -1,6 +1,5 @@
 import { PlusCircleOutlined } from '@ant-design/icons'
 import type { Sequence, SequenceCommand, SequencerService } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -9,13 +8,9 @@ import { addStepConstants } from '../../sequencerConstants'
 import { handleStepActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { UploadSequence } from '../UploadSequence'
+import { ItemType } from 'antd/es/menu/interface'
 
-type AddStepsProps = {
-  disabled: boolean
-  stepId: string
-}
-
-export const AddSteps = ({ disabled, stepId }: AddStepsProps): React.JSX.Element => {
+export function addStepsItem(disabled: boolean, stepId: string): ItemType {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()
 
@@ -25,8 +20,10 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): React.JSX.Element
     onError: (e) => errorMessage(addStepConstants.failureMessage, e)
   })
 
-  return (
-    <Menu.Item key='AddSteps' disabled={disabled}>
+  return {
+    key: 'AddSteps',
+    disabled: disabled,
+    label: (
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
         request={() => sequencerService && addStepAction.mutate(sequencerService)}
@@ -38,6 +35,6 @@ export const AddSteps = ({ disabled, stepId }: AddStepsProps): React.JSX.Element
           {addStepConstants.menuItemText}
         </div>
       </UploadSequence>
-    </Menu.Item>
-  )
+    )
+  }
 }

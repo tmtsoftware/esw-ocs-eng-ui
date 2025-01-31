@@ -10,6 +10,7 @@ import { stopSequenceConstants } from '../../../../../src/features/sequencer/seq
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('StopSequence', () => {
+  const user = userEvent.setup()
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, stopSequenceConstants.successMessage, 'successful'],
     [
@@ -38,14 +39,14 @@ describe('StopSequence', () => {
 
       const stopSeqButton = await screen.findByRole('StopSequence')
 
-      await userEvent.click(stopSeqButton, { button: 0 })
+      await user.click(stopSeqButton)
 
       await screen.findByText(stopSequenceConstants.modalTitle)
       const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
         name: stopSequenceConstants.modalOkText
       })
 
-      await userEvent.click(modalConfirmButton, { button: 0 })
+      await user.click(modalConfirmButton)
 
       await screen.findByText(msg)
 
@@ -65,25 +66,25 @@ describe('StopSequence', () => {
     //*********testing cancel button ***********************
     const stopSeqButton1 = await screen.findByRole('StopSequence')
 
-    await userEvent.click(stopSeqButton1, { button: 0 })
+    await user.click(stopSeqButton1)
     await screen.findByText(stopSequenceConstants.modalTitle)
     const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
       name: 'Cancel'
     })
-    await userEvent.click(modalCancelButton)
+    await user.click(modalCancelButton)
 
     verify(sequencerServiceMock.stop()).never()
 
     //*********testing stop(confirm) button ***********************
     const stopSeqButton2 = await screen.findByRole('StopSequence')
 
-    await userEvent.click(stopSeqButton2, { button: 0 })
+    await user.click(stopSeqButton2)
     await screen.findByText(stopSequenceConstants.modalTitle)
     const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
       name: stopSequenceConstants.modalOkText
     })
 
-    await userEvent.click(modalConfirmButton)
+    await user.click(modalConfirmButton)
 
     await screen.findByText(`${stopSequenceConstants.failureMessage}, reason: error occurred`)
 

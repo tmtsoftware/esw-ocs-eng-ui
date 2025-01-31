@@ -71,6 +71,7 @@ describe('Infrastructure page', () => {
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService
+  const user = userEvent.setup()
 
   when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
@@ -166,7 +167,7 @@ describe('Infrastructure page', () => {
       ui: <Infrastructure />
     })
     const button = await screen.findByRole('button', { name: configureConstants.buttonText })
-    await userEvent.click(button, { button: 1 })
+    await user.click(button)
 
     //verify only configurable obsmodes are shown in the list
     const dialog = await screen.findByRole('dialog', {
@@ -178,14 +179,14 @@ describe('Infrastructure page', () => {
     })
 
     //select item by clicking on it
-    await userEvent.click(darkNightObsMode)
+    await user.click(darkNightObsMode)
     // wait for button to be enabled.
     await waitFor(async () => {
       const configureButton = within(dialog).getByRole('button', {
         name: configureConstants.modalOkText
       }) as HTMLButtonElement
       expect(configureButton.disabled).false
-      await userEvent.click(configureButton)
+      await user.click(configureButton)
     })
 
     verify(smService.getObsModesDetails()).called()
@@ -241,7 +242,7 @@ describe('Infrastructure page', () => {
     await waitFor(() => expect(provisionButton.disabled).false)
 
     //User clicks provision button
-    await userEvent.click(provisionButton)
+    await user.click(provisionButton)
 
     // const document = await screen.findByRole('document')
     // const confirmButton = within(document).getByRole('button', {
@@ -251,7 +252,7 @@ describe('Infrastructure page', () => {
       name: provisionConstants.modalOkText
     })
     // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-    await userEvent.click(confirmButtons[1])
+    await user.click(confirmButtons[1])
 
     await screen.findByText(provisionConstants.successMessage)
 

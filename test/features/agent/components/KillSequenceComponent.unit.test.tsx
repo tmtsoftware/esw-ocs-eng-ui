@@ -7,10 +7,11 @@ import { Menu } from 'antd'
 import { expect } from 'chai'
 import React from 'react'
 import { killSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
-import { KillSequenceComponent } from '../../../../src/features/agent/components/KillSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import { killSequenceComponentItem } from '../../../../src/features/agent/components/KillSequenceComponent'
 
 describe('Kill sequence component button', () => {
+  const user = userEvent.setup()
   const prefix = new Prefix('ESW', 'ESW_1')
   const sequenceComponentID = new ComponentId(prefix, 'SequenceComponent')
   const responseScenarios: [string, KillResponse, string][] = [
@@ -37,13 +38,11 @@ describe('Kill sequence component button', () => {
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
       renderWithAuth({
         ui: (
-          <Menu>
-            <KillSequenceComponent componentId={sequenceComponentID} />
-          </Menu>
+          <Menu items={[killSequenceComponentItem(sequenceComponentID)]}/>
         )
       })
       const KillSequenceComponentItem = screen.getByRole('KillSequenceComponent')
-      await waitFor(() => userEvent.click(KillSequenceComponentItem))
+      await waitFor(() => user.click(KillSequenceComponentItem))
 
       await screen.findByText(killSequenceComponentConstants.getModalTitle(sequenceComponentID.prefix.toJSON()))
 
@@ -53,7 +52,7 @@ describe('Kill sequence component button', () => {
         name: killSequenceComponentConstants.modalOkText
       })
       // TODO: FIXME: screen.findByRole('document') above did not work anymore after dependency update
-      await userEvent.click(confirm[0])
+      await user.click(confirm[0])
 
       await screen.findByText(message)
 

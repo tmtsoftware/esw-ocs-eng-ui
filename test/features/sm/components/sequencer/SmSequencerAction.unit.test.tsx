@@ -18,6 +18,7 @@ describe('SmSequencerAction', () => {
   const obsMode = new ObsMode('IRIS_Darknight')
   const sequencerPrefix = new Prefix(subsystem, obsMode.name)
   const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
+  const user = userEvent.setup()
 
   beforeEach(() => {
     reset(smService)
@@ -36,10 +37,10 @@ describe('SmSequencerAction', () => {
     })
 
     const link = await screen.findByText(sequencerActionConstants.reloadScript)
-    await waitFor(() => userEvent.click(link))
+    await waitFor(() => user.click(link))
     const yesButton = await screen.findByRole('button', { name: sequencerActionConstants.popConfirmOkText })
     screen.getByText(sequencerActionConstants.getPopConfirmTitleWithState(sequencerPrefix, running))
-    await waitFor(() => userEvent.click(yesButton))
+    await waitFor(() => user.click(yesButton))
     await screen.findByText(reloadScriptConstants.getSuccessMessage(sequencerPrefix.toJSON()))
 
     verify(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
@@ -56,7 +57,7 @@ describe('SmSequencerAction', () => {
     })
 
     const link = await screen.findByText(sequencerActionConstants.startSequencer)
-    await waitFor(() => userEvent.click(link))
+    await waitFor(() => user.click(link))
 
     await screen.findByText(startSequencerConstants.successMessage)
     verify(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).once()
@@ -80,10 +81,10 @@ describe('SmSequencerAction', () => {
     })
 
     const link = await screen.findByText(sequencerActionConstants.reloadScript)
-    await waitFor(() => userEvent.click(link))
+    await waitFor(() => user.click(link))
     const yesButton = await screen.findByRole('button', { name: sequencerActionConstants.popConfirmOkText })
     screen.getByText(sequencerActionConstants.getPopConfirmTitle(sequencerPrefix))
-    await waitFor(() => userEvent.click(yesButton))
+    await waitFor(() => user.click(yesButton))
 
     await screen.findByText(reloadScriptConstants.getSuccessMessage(sequencerPrefix.toJSON()))
 

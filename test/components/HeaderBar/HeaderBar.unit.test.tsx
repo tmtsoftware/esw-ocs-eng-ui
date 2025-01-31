@@ -8,8 +8,8 @@ import { HeaderBar } from '../../../src/components/headerBar/HeaderBar'
 import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
 
-const leftClick = { button: 0 }
 describe('header bar', () => {
+  const user = userEvent.setup()
   it('renders with logout button & logo when user is logged in | ESW-441', async () => {
     renderWithAuth({
       ui: (
@@ -25,7 +25,7 @@ describe('header bar', () => {
     expect(logo).to.exist
 
     //should be able to click on logo
-    await userEvent.click(logo, leftClick)
+    await user.click(logo)
     expect(window.location.pathname).to.equal(HOME)
 
     const logoutButton = await screen.findByText('ESW-USER')
@@ -46,10 +46,10 @@ describe('header bar', () => {
     })
 
     const logoutButton = await screen.findByText('ESW-USER')
-    await userEvent.click(logoutButton, leftClick)
+    await user.click(logoutButton)
     // wait for dropdown to appear
     const logoutMenuItem = await screen.findByRole('menuitem')
-    await waitFor(() => userEvent.click(logoutMenuItem))
+    await waitFor(() => user.click(logoutMenuItem))
 
     //verify that the logout function passed by auth context is called on click of logout button of modal
     verify(mockAuthFunctions.logout()).called()

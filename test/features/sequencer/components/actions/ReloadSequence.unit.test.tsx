@@ -11,6 +11,7 @@ import { getStepList } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('ReloadSequence', () => {
+  const user = userEvent.setup()
   afterEach(async () => {
     reset(sequencerServiceMock)
   })
@@ -37,7 +38,7 @@ describe('ReloadSequence', () => {
 
       const button = await screen.findByRole('ReloadSequence')
       expect(button).to.exist
-      await waitFor(() => userEvent.click(button))
+      await waitFor(() => user.click(button))
 
       await screen.findByText(msg)
       const sequence = new Sequence([stepList.steps[0].command])

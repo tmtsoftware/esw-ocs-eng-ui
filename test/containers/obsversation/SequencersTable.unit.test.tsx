@@ -12,6 +12,7 @@ import { getSequencersInfo, getStep } from '../../utils/sequence-utils'
 import { renderWithAuth } from '../../utils/test-utils'
 
 describe('sequencer table', () => {
+  const user = userEvent.setup()
   const stepList1: StepList = new StepList([getStep('Pending', '11', true), getStep('Pending', '12')])
   const stepList2: StepList = new StepList([
     getStep('Success', '21'),
@@ -75,7 +76,7 @@ describe('sequencer table', () => {
     })
 
     const sequencer = await screen.findByRole('link')
-    await userEvent.click(sequencer)
+    await user.click(sequencer)
 
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darknight')

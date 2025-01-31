@@ -33,6 +33,7 @@ import {
   defaultStepListTableContext,
   StepListContextProvider
 } from '../../src/features/sequencer/hooks/useStepListContext'
+import { ItemType } from 'antd/es/menu/interface'
 
 export const getMockAuth = (loggedIn: boolean): Auth => {
   let loggedInValue = loggedIn
@@ -226,10 +227,10 @@ const MenuWithStepListContext = ({
     sequencerService: sequencerServiceInstance
   }
 }: {
-  menuItem: React.JSX.Element
+  menuItem: ItemType
   value?: StepListTableContextType
 }): React.JSX.Element => {
-  const MenuComponent = () => <Menu>{menuItem}</Menu>
+  const MenuComponent = () => <Menu items={[menuItem]}/>
   return (
     <StepListContextProvider value={value}>
       <MenuComponent />

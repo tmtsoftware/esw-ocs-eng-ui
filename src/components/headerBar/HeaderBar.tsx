@@ -6,6 +6,7 @@ import styles from './headerBar.module.css'
 import { useAuth } from '../../hooks/useAuth'
 import { HOME } from '../../routes/RoutesConfig'
 import { getUsername } from '../../utils/getUsername'
+import { ItemType } from 'antd/es/menu/interface'
 
 export const HeaderBar = (): React.JSX.Element => {
   const { auth, logout } = useAuth()
@@ -15,22 +16,18 @@ export const HeaderBar = (): React.JSX.Element => {
     setUsername(getUsername(auth))
   }, [auth])
 
-  const items: MenuProps['items'] = [
+  const items: ItemType[] = [
     {
       label: 'Logout',
       key: '1',
       icon: <LogoutOutlined />,
-      danger: true
+      danger: true,
+      onClick: logout
     }
   ]
 
-  const menuProps = {
-    items,
-    onClick: logout
-  }
-
   const Logout = () => (
-    <Dropdown menu={menuProps}>
+    <Dropdown menu={{items}}>
       {username ? (
         <Button type='text'>
           <Space>

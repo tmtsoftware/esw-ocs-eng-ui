@@ -1,7 +1,6 @@
 // To replace remove step and add new step
 import { PlusCircleOutlined } from '@ant-design/icons'
 import type { SequencerService, Sequence, SequenceCommand } from '@tmtsoftware/esw-ts'
-import { Menu } from 'antd'
 import React, { useState } from 'react'
 import { useMutation } from '../../../../hooks/useMutation'
 import { errorMessage, successMessage } from '../../../../utils/message'
@@ -10,13 +9,9 @@ import { replaceStepConstants } from '../../sequencerConstants'
 import { handleStepActionResponse } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { UploadSequence } from '../UploadSequence'
+import { ItemType } from 'antd/es/menu/interface'
 
-type ReplaceActionProps = {
-  disabled: boolean
-  step: string
-}
-
-export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): React.JSX.Element => {
+export function replaceStepItem(disabled: boolean, step: string): ItemType {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()
 
@@ -26,8 +21,10 @@ export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): React.JSX.E
     onError: (e) => errorMessage(replaceStepConstants.failureMessage, e)
   })
 
-  return (
-    <Menu.Item key='ReplaceStep' disabled={disabled}>
+  return {
+    key: 'ReplaceStep',
+    disabled: disabled,
+    label: (
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
         request={() => sequencerService && replaceAction.mutate(sequencerService)}
@@ -39,6 +36,6 @@ export const ReplaceStep = ({ step, disabled }: ReplaceActionProps): React.JSX.E
           {replaceStepConstants.menuItemText}
         </div>
       </UploadSequence>
-    </Menu.Item>
-  )
+    )
+  }
 }

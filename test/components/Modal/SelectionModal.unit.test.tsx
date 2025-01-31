@@ -5,6 +5,7 @@ import React from 'react'
 import { SelectionModal } from '../../../src/components/modal/SelectionModal'
 
 describe('SelectionModal', () => {
+  const user = userEvent.setup()
   it('should render modal with title and given list of data | ESW-441', async () => {
     const modalProps = {
       data: ['data-1', 'data-2'],
@@ -45,7 +46,7 @@ describe('SelectionModal', () => {
       name: 'data-1'
     })
 
-    await userEvent.click(data1)
+    await user.click(data1)
 
     expect(value).eq('data-1')
   })
@@ -67,10 +68,10 @@ describe('SelectionModal', () => {
     const okButton = screen.getByRole('button', { name: 'Start' })
     const cancelButton = screen.getByRole('button', { name: 'Cancel' })
 
-    await userEvent.click(okButton)
+    await user.click(okButton)
     expect(value).eq('Ok')
 
-    await userEvent.click(cancelButton)
+    await user.click(cancelButton)
     expect(value).eq('canceled')
   })
 
@@ -90,7 +91,7 @@ describe('SelectionModal', () => {
 
     const okButton = screen.getByRole('button', { name: 'Start' })
 
-    await userEvent.click(okButton)
+    await user.click(okButton)
     expect(value).eq('value not changed')
   })
 

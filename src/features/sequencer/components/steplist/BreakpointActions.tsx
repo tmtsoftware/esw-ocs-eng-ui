@@ -7,6 +7,7 @@ import { errorMessage, successMessage } from '../../../../utils/message'
 import { useStepListContext } from '../../hooks/useStepListContext'
 import { insertBreakPointConstants, removeBreakPointConstants } from '../../sequencerConstants'
 import { handleStepActionResponse } from '../../utils'
+import { ItemType } from 'antd/es/menu/interface'
 
 const insertAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.addBreakpoint(id).then(handleStepActionResponse)
@@ -14,7 +15,7 @@ const insertAction = (id: string) => (sequencerService: SequencerService) =>
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.removeBreakpoint(id).then(handleStepActionResponse)
 
-export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled: boolean }): React.JSX.Element => {
+export function breakpointActionItem(step: Step, isDisabled: boolean): ItemType {
   const { sequencerService } = useStepListContext()
 
   const insertBreakpointAction = useMutation({
@@ -40,9 +41,11 @@ export const BreakpointAction = ({ step, isDisabled }: { step: Step; isDisabled:
 
   const itemText = step.hasBreakpoint ? removeBreakPointConstants.menuItemText : insertBreakPointConstants.menuItemText
 
-  return (
-    <Menu.Item key='BreakpointAction' disabled={isDisabled} icon={icon} onClick={handleOnClick}>
-      {itemText}
-    </Menu.Item>
-  )
+  return {
+    key: 'BreakpointAction',
+    disabled: isDisabled,
+    icon: icon,
+    onClick: handleOnClick,
+    label: itemText
+  }
 }

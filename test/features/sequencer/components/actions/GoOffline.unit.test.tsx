@@ -10,6 +10,7 @@ import { goOfflineConstants } from '../../../../../src/features/sequencer/sequen
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
 describe('GoOffline', () => {
+  const user = userEvent.setup()
   const testData: [GoOfflineResponse, string, string][] = [
     [{ _type: 'Ok' }, goOfflineConstants.successMessage, 'successful'],
     [{ _type: 'GoOfflineHookFailed' }, `${goOfflineConstants.failureMessage}, reason: GoOfflineHookFailed`, 'failed'],
@@ -37,7 +38,7 @@ describe('GoOffline', () => {
         name: goOfflineConstants.buttonText
       })
 
-      await userEvent.click(offlineButton, { button: 0 })
+      await user.click(offlineButton)
 
       await screen.findByText(msg)
 
@@ -56,7 +57,7 @@ describe('GoOffline', () => {
       name: goOfflineConstants.buttonText
     })
 
-    await userEvent.click(offlineButton, { button: 0 })
+    await user.click(offlineButton)
 
     await screen.findByText(`${goOfflineConstants.failureMessage}, reason: error occurred`)
 

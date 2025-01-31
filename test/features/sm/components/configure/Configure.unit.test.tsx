@@ -89,6 +89,7 @@ const failedResponse: FailedResponse = {
 }
 
 describe('Configure button', () => {
+  const user = userEvent.setup()
   beforeEach(() => {
     reset(smService)
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
@@ -101,7 +102,7 @@ describe('Configure button', () => {
     const button = await screen.findByRole('button', {
       name: configureConstants.modalOkText
     })
-    await userEvent.click(button)
+    await user.click(button)
 
     const dialog = screen.queryByRole('dialog', {
       name: configureConstants.modalTitle
@@ -116,7 +117,7 @@ describe('Configure button', () => {
       ui: <Configure disabled={false} />
     })
     const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
-    await userEvent.click(button)
+    await user.click(button)
 
     const dialog = await screen.findByRole('dialog', {
       name: configureConstants.modalTitle
@@ -182,8 +183,9 @@ describe('Configure button', () => {
 })
 
 const openConfigureModalAndClickConfigureButton = async () => {
+  const user = userEvent.setup()
   const button = await screen.findByRole('button', { name: configureConstants.modalOkText })
-  await userEvent.click(button)
+  await user.click(button)
   const dialog = screen.getByRole('dialog', {
     name: configureConstants.modalTitle
   })
@@ -193,7 +195,7 @@ const openConfigureModalAndClickConfigureButton = async () => {
   })
 
   //select item by clicking on it
-  await userEvent.click(darkNightObsMode)
+  await user.click(darkNightObsMode)
   const configureButton = within(dialog).getByRole('button', {
     name: configureConstants.modalOkText
 
@@ -201,6 +203,6 @@ const openConfigureModalAndClickConfigureButton = async () => {
   }) as HTMLButtonElement
   await waitFor(async () => {
     expect(configureButton.disabled).false
-    await userEvent.click(configureButton)
+    await user.click(configureButton)
   })
 }

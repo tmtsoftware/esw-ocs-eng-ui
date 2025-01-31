@@ -15,6 +15,7 @@ const mkStepList = (statusList: StepStatus['_type'][]): StepList => {
   return new StepList(steps)
 }
 describe('sequencer details selected step', () => {
+  const user = userEvent.setup()
   let simulateBackendEvent: (sequencerStateResponse: SequencerStateResponse) => void = () => ({})
   beforeEach(() => {
     reset(sequencerServiceMock)
@@ -90,7 +91,7 @@ describe('sequencer details selected step', () => {
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep1InProgress)))
     //User clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
-    await userEvent.click(step3)
+    await user.click(step3)
 
     //step1 is executing, but ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
@@ -117,7 +118,7 @@ describe('sequencer details selected step', () => {
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepListWithStep1InProgress)))
     //user clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
-    await userEvent.click(step3)
+    await user.click(step3)
 
     //step1 is executing, ui should show step3(which was clicked by user) details on right side
     await assertRunningStepIs(/Command-1/i, 500)
@@ -146,7 +147,7 @@ describe('sequencer details selected step', () => {
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(stepList)))
     //user clicks step3
     const step3 = await screen.findByRole('button', { name: /Command-3/i })
-    await userEvent.click(step3)
+    await user.click(step3)
 
     //step1 is executing, ui should show step3 (which was clicked by user) details on right side i.e. user goes to non-follow mode
     await assertRunningStepIs(/Command-1/i, 500)
@@ -158,7 +159,7 @@ describe('sequencer details selected step', () => {
 
     //user clicks step2, which is in progress to go in follow mode again, and now ui should show step2 details on right side
     const step2 = await screen.findByRole('button', { name: /Command-2/i })
-    await userEvent.click(step2)
+    await user.click(step2)
     await screen.findByText('ESW.test2')
 
     simulateBackendEvent(mkSeqStateResponse('Running', mkStepList(updatedStepListWithStep3InProgress)))

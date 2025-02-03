@@ -60,7 +60,7 @@ export const SpawnSMButton = (): React.JSX.Element => {
       <SelectionModal
         title={spawnSMConstants.modalTitle}
         okText={spawnSMConstants.modalOkText}
-        visible={modalVisibility}
+        open={modalVisibility}
         confirmLoading={spawnSmAction.isPending}
         onOk={handleModalOk}
         onCancel={handleModalCancel}

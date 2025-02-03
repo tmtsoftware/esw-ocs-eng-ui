@@ -29,22 +29,24 @@ export const Sider = (): React.JSX.Element => {
     setSelectedKey(location.pathname)
   }, [location])
 
+  const items = menuItemLabels.map((item) => {
+    return {
+      title: item.title,
+      className: styles.menuItem,
+      icon: item.defaultIcon,
+      onClick: () => setSelectedKey(item.link),
+      key: item.link,
+      label: (
+        <Link role={item.role} to={item.link}>
+          {item.title}
+        </Link>
+      )
+    }
+  })
+
   return (
     <Layout.Sider theme={'light'} collapsible collapsed={collapsed} onCollapse={onCollapse} width={215}>
-      <Menu selectedKeys={[selectedKey]} mode='inline'>
-        {menuItemLabels.map((item) => (
-          <Menu.Item
-            title={item.title}
-            className={styles.menuItem}
-            icon={item.defaultIcon}
-            onClick={() => setSelectedKey(item.link)}
-            key={item.link}>
-            <Link role={item.role} to={item.link}>
-              {item.title}
-            </Link>
-          </Menu.Item>
-        ))}
-      </Menu>
+      <Menu selectedKeys={[selectedKey]} mode='inline' items={items} />
     </Layout.Sider>
   )
 }

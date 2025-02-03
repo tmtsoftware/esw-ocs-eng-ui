@@ -36,7 +36,7 @@ export const HeaderBar = (): React.JSX.Element => {
           </Space>
         </Button>
       ) : (
-        <></>
+        <div></div>
       )}
     </Dropdown>
   )

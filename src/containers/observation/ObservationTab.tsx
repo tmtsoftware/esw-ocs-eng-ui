@@ -45,16 +45,23 @@ export const ObservationTab = ({ tabName }: { tabName: TabName }): React.JSX.Ele
   const selectedObs = thisTabObsModes.find((x) => x.obsMode.name === selectedObservation) ?? thisTabObsModes[0]
   const resources = getTabBasedResources(tabName, selectedObs.resources, runningResources)
 
+  const items = thisTabObsModes.map((item) => {
+    return {
+      onClick: () => setSelectedObservation(item.obsMode.name),
+      key: item.obsMode.name,
+      label: item.obsMode.name
+    }
+  })
+
   return (
     <Layout style={{ height: '99%' }}>
       <Sider theme='light' style={{ overflowY: 'scroll' }} width={'13rem'}>
-        <Menu mode='inline' selectedKeys={selectedObs && [selectedObs.obsMode.name]} style={{ paddingTop: '1rem' }}>
-          {thisTabObsModes.map((item) => (
-            <Menu.Item onClick={() => setSelectedObservation(item.obsMode.name)} key={item.obsMode.name}>
-              {item.obsMode.name}
-            </Menu.Item>
-          ))}
-        </Menu>
+        <Menu
+          mode='inline'
+          selectedKeys={selectedObs && [selectedObs.obsMode.name]}
+          style={{ paddingTop: '1rem' }}
+          items={items}
+        />
       </Sider>
       <Content style={{ marginRight: '2rem' }}>
         {selectedObs && <SelectedObsMode obsModeDetails={selectedObs} resources={resources} currentTab={tabName} />}

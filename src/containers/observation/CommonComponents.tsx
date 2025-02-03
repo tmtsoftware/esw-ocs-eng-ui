@@ -40,8 +40,7 @@ export const ObsModeCard = ({
   return (
     <Card
       style={{ display: 'flex', flexDirection: 'column', height: '100%', borderTop: 'none' }}
-      headStyle={{ paddingBottom: '0.75rem' }}
-      bodyStyle={{ overflowY: 'scroll', height: '100%' }}
+      styles={{ body: {overflowY: 'scroll', height: '100%'}, header: {paddingBottom: '0.75rem'} }}
       title={title}
       extra={extra}>
       {children}

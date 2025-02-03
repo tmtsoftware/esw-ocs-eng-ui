@@ -15,27 +15,24 @@ const getList = (selectedItem: string, data: string[] | undefined, onChange: (va
   if (data === undefined || data.length === 0) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   }
-  return (
-    <Menu selectable onSelect={onSelect} selectedKeys={[selectedItem]} className={styles.menu}>
-      {data.map((item) => {
-        return (
-          <Menu.Item
-            className={styles.menuItem + ` ${item === selectedItem ? styles.selectedItem : ''}`}
-            style={{ paddingLeft: '1.5rem', marginTop: 0, marginBottom: 0 }}
-            key={item}>
-            {item}
-          </Menu.Item>
-        )
-      })}
-    </Menu>
-  )
+
+  const items = data.map((item) => {
+    return {
+      className: styles.menuItem + ` ${item === selectedItem ? styles.selectedItem : ''}`,
+      style: { paddingLeft: '1.5rem', marginTop: 0, marginBottom: 0 },
+      key: item,
+      label: item
+    }
+  })
+
+  return <Menu selectable onSelect={onSelect} selectedKeys={[selectedItem]} className={styles.menu} items={items} />
 }
 export const SelectionModal = ({
   selectedItem,
   data,
   title,
   okText,
-  visible,
+  open,
   confirmLoading,
   onOk,
   onCancel,
@@ -49,9 +46,9 @@ export const SelectionModal = ({
     }
     okText={okText}
     centered
-    visible={visible}
+    open={open}
     confirmLoading={confirmLoading}
-    bodyStyle={{ padding: 0 }}
+    styles={{body: { padding: 0 }}}
     okButtonProps={{
       disabled: !selectedItem || !data || data.length === 0
     }}

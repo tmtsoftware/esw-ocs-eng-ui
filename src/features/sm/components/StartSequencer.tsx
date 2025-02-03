@@ -71,7 +71,7 @@ export const StartSequencer = ({ disabled }: { disabled?: boolean }): React.JSX.
       </Button>
       <Modal
         title={startSequencerConstants.modalTitle}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         okText={startSequencerConstants.modalOkText}
         okButtonProps={{

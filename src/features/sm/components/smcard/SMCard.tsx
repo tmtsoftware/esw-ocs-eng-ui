@@ -18,9 +18,8 @@ export const SMCard = (): React.JSX.Element => {
             Sequence Manager
           </Typography.Title>
         }
-        headStyle={{ paddingTop: '0.5rem', paddingBottom: '0.5rem' }}
+        styles={{header: { paddingTop: '0.5rem', paddingBottom: '0.5rem' }, body: { display: 'none' }}}
         extra={smContext ? <ShutdownSMButton /> : <SpawnSMButton />}
-        bodyStyle={{ display: 'none' }}
       />
     </CustomErrorBoundary>
   )

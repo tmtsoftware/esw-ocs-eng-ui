@@ -13,7 +13,7 @@ describe('SelectionModal', () => {
       okText: 'Start',
       onChange: () => true,
       selectedItem: '',
-      visible: true
+      open: true
     }
     render(<SelectionModal {...modalProps} />)
 
@@ -38,7 +38,7 @@ describe('SelectionModal', () => {
       okText: 'Start',
       onChange: (selectedKey: string) => (value = selectedKey),
       selectedItem: '',
-      visible: true
+      open: true
     }
     render(<SelectionModal {...modalProps} />)
 
@@ -61,7 +61,7 @@ describe('SelectionModal', () => {
       onOk: () => (value = 'Ok'),
       onCancel: () => (value = 'canceled'),
       selectedItem: 'data-1',
-      visible: true
+      open: true
     }
     render(<SelectionModal {...modalProps} />)
 
@@ -85,7 +85,7 @@ describe('SelectionModal', () => {
       onOk: () => (value = 'Ok'),
       onCancel: () => (value = 'canceled'),
       selectedItem: '',
-      visible: true
+      open: true
     }
     render(<SelectionModal {...modalProps} />)
 
@@ -104,7 +104,7 @@ describe('SelectionModal', () => {
       onOk: () => true,
       onCancel: () => true,
       selectedItem: '',
-      visible: false
+      open: false
     }
 
     render(<SelectionModal {...modalProps} />)
@@ -120,12 +120,12 @@ describe('SelectionModal', () => {
       onOk: () => true,
       onCancel: () => true,
       selectedItem: '',
-      visible: true
+      open: true
     }
 
     render(<SelectionModal {...modalProps} />)
 
-    expect(screen.getByText('No data')).to.exist
+    expect(screen.getAllByText('No data')).to.exist
     expect(screen.queryByRole('menuitem')).to.null
     expect((screen.queryByRole('button', { name: 'Start' }) as HTMLButtonElement).disabled).to.true
   })

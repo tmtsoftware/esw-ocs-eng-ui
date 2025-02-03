@@ -66,7 +66,7 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
         }
         icon={<></>}
         onCancel={resetComponentName}
-        onVisibleChange={(visible) => {
+        onOpenChange={(visible) => {
           if (!visible) resetComponentName()
         }}
         onConfirm={onConfirm}

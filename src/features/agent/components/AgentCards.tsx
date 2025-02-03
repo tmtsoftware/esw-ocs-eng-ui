@@ -28,11 +28,10 @@ const AgentCard = ({ agentPrefix, seqCompsStatus }: AgentCardProps): React.JSX.E
 
   return (
     <Card
-      headStyle={{ paddingRight: '0.75rem' }}
+      styles={{header: {paddingRight: '0.75rem'}, body: bodyStyle}}
       className={styles.agentCard}
       title={<Typography.Text>{agentName}</Typography.Text>}
-      extra={<SpawnSequenceComponent agentPrefix={agentPrefix} />}
-      bodyStyle={bodyStyle}>
+      extra={<SpawnSequenceComponent agentPrefix={agentPrefix} />}>
       {sequenceCompCards}
     </Card>
   )

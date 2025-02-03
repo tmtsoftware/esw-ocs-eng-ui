@@ -10,7 +10,7 @@ import { AgentCards } from '../../features/agent/components/AgentCards'
 const { Meta } = Card
 
 const SMHeader = (): React.JSX.Element => {
-  return <Card title={<SmStatusCard />} bodyStyle={{ display: 'none' }} extra={<SmActions />} />
+  return <Card title={<SmStatusCard />} styles={{body: { display: 'none' }}} extra={<SmActions />} />
 }
 
 const SMStatus = (): React.JSX.Element => {

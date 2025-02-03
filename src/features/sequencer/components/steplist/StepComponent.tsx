@@ -23,7 +23,7 @@ const color: Record<StepStatus['_type'], string> = {
 export const StepComponent = (
   step: StepData,
   setSelectedStep: (_: Step) => void,
-  stepRefs: React.MutableRefObject<StepRefInfo>
+  stepRefs: React.RefObject<StepRefInfo>
 ): React.JSX.Element => {
   const stepsStyle = {
     borderColor: color[step.status._type],
@@ -36,7 +36,7 @@ export const StepComponent = (
 
   return (
     <Space style={{ textAlign: 'right' }}>
-      <div ref={(el) => el && (stepRefs.current[step.id] = el)} style={{ width: '1.5rem', marginRight: '0.5rem' }}>
+      <div ref={(el) => {el && (stepRefs.current[step.id] = el)}} style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{step.index + 1}</Typography.Text>
       </div>
       <Tooltip title={isVisible ? step.command.commandName : undefined}>

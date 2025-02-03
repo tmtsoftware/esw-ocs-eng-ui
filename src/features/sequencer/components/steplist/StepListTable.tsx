@@ -59,7 +59,7 @@ export const getCurrentAndNextStepId = (
 
 const columns = (
   setSelectedStep: (_: Step) => void,
-  stepRefs: React.MutableRefObject<StepRefInfo>
+  stepRefs: React.RefObject<StepRefInfo>
 ): ColumnsType<StepData> => [
   {
     key: 'index',

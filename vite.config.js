@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import { defineConfig } from 'vite'
 import { AppConfig } from './src/config/AppConfig.js'
 
@@ -10,7 +9,7 @@ import { AppConfig } from './src/config/AppConfig.js'
 //         '@testing-library/react',
 //         '@testing-library/user-event',
 //         'chai',
-//         '@typestrong/ts-mockito'
+//         '@johanblumenberg/ts-mockito'
 //       ]
 //     : []
 const testDeps = []
@@ -46,5 +45,5 @@ export default defineConfig({
       }
     }
   },
-  plugins: [react(), nodePolyfills()]
+  plugins: [react()]
 })

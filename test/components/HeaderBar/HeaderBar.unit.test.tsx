@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { instance, mock, verify } from '@typestrong/ts-mockito'
+import { instance, mock, imock, verify } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -33,7 +33,8 @@ describe('header bar', () => {
   })
 
   it('open logout modal on click of username button when user is logged in | ESW-441', async () => {
-    const mockAuthFunctions = mock<{ logout: () => void }>()
+    class T {logout() {}}
+    const mockAuthFunctions = imock<T>()
     const authFunctionsInstance = instance(mockAuthFunctions)
     renderWithAuth({
       ui: (

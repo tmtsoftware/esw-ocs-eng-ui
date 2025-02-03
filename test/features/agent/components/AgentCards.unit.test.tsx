@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AgentStatus } from '@tmtsoftware/esw-ts'
 import { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
-import { deepEqual, verify, when } from '@typestrong/ts-mockito'
+import { deepEqual, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -29,10 +29,10 @@ const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
   const user = userEvent.setup()
-  const agentService = mockServices.mock.agentService
+  const agentServiceMock = mockServices.mock.agentService
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -54,11 +54,11 @@ describe('Agents Grid View', () => {
     expect(screen.getAllByRole('sequencerActions')).length(1)
     expect(screen.getByRole('addSeqCompIcon')).exist
 
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should render multiple agents', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus, emptyAgentStatus],
       seqCompsWithoutAgent: []
@@ -77,11 +77,11 @@ describe('Agents Grid View', () => {
     expect(screen.getAllByRole('sequenceCompActions')).length(1)
     expect(screen.getAllByRole('sequencerActions')).length(1)
     expect(screen.getAllByRole('addSeqCompIcon')).length(2)
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should render agents when getAgentStatus returns orphan seqComps | ESW-443', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: [
@@ -121,11 +121,11 @@ describe('Agents Grid View', () => {
     expect(screen.getByText('IRIS.comp1')).exist
     expect(screen.getByText('[IRIS.clearskies]')).exist
     expect(screen.getByText('TCS.comp1')).exist
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should not render agents when getAgentStatus returns locationServiceError | ESW-443', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'LocationServiceError',
       reason: 'Failed to fetch agents location'
     })
@@ -139,11 +139,11 @@ describe('Agents Grid View', () => {
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
     expect(screen.queryByText('unknown')).null
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should not render agents when getAgentStatus returns unhandled error | ESW-443', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Unhandled',
       msg: 'failed to process getAgentStatus',
       messageType: 'ServiceError',
@@ -159,15 +159,15 @@ describe('Agents Grid View', () => {
     expect(screen.queryByText('ESW.machine1')).null
     expect(screen.queryByText('IRIS.comp1')).null
     expect(screen.queryByText('unknown')).null
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should add sequence components on agent| ESW-446', async () => {
     when(
-      agentService.spawnSequenceComponent(deepEqual(Prefix.fromString('ESW.machine1')), deepEqual('ESW_1'))
+      agentServiceMock.spawnSequenceComponent(deepEqual(Prefix.fromString('ESW.machine1')), deepEqual('ESW_1'))
     ).thenResolve({ _type: 'Spawned' })
 
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -193,16 +193,16 @@ describe('Agents Grid View', () => {
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should kill sequence components on agent| ESW-446,  ESW-502', async () => {
     const seqCompPrefix = new Prefix('ESW', 'ESW2')
-    when(agentService.killComponent(deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent')))).thenResolve({
+    when(agentServiceMock.killComponent(deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent')))).thenResolve({
       _type: 'Killed'
     })
 
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -233,11 +233,11 @@ describe('Agents Grid View', () => {
 
     await screen.findByText(killSequenceComponentConstants.getSuccessMessage('ESW.ESW2'))
 
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 
   it('should display menu items applicable to sequence components| ESW-502', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -262,7 +262,7 @@ describe('Agents Grid View', () => {
 
   it('should display menu items applicable to sequencer | ESW-502, ESW-506', async () => {
     const agentStatus = getAgentStatusMock('IRIS')
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -290,7 +290,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
       seqCompsWithoutAgent: []
@@ -310,6 +310,6 @@ describe('Agents Grid View', () => {
     expect(window.location.pathname).to.equal('/sequencer')
     expect(window.location.search).to.equal('?prefix=ESW.darkNight')
 
-    verify(agentService.getAgentStatus()).called()
+    verify(agentServiceMock.getAgentStatus()).called()
   })
 })

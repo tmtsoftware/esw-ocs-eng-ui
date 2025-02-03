@@ -21,7 +21,7 @@ import {
   setAppName,
   TestUtils
 } from '@tmtsoftware/esw-ts'
-import { anything, instance, mock, when } from '@typestrong/ts-mockito'
+import { anything, instance, mock, imock, when } from '@johanblumenberg/ts-mockito'
 import { Menu } from 'antd'
 import React, { ReactElement } from 'react'
 import { AgentServiceProvider } from '../../src/contexts/AgentServiceContext'
@@ -81,7 +81,7 @@ export const sequencerServiceInstanceTcs = instance<SequencerService>(sequencerS
 const getMockServices: () => MockServices = () => {
   const agentServiceMock = mock<AgentService>(TestUtils.AgentServiceImpl)
   const agentServiceInstance = instance<AgentService>(agentServiceMock)
-  const locationServiceMock = mock<LocationService>()
+  const locationServiceMock = imock<LocationService>()
   const locationServiceInstance = instance(locationServiceMock)
 
   when(locationServiceMock.track(anything())).thenReturn(() => {
@@ -165,15 +165,15 @@ const getContextProvider = (loggedIn: boolean, loginFunc: () => void, logoutFunc
         login: loginFunc,
         logout: logoutFunc
       }}>
-      <LocationServiceProvider locationService={mockServices.instance.locationService}>
-        <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
-          <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
-            <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
-              {children}
-            </SMServiceProvider>
-          </AgentServiceProvider>
-        </GatewayLocationProvider>
-      </LocationServiceProvider>
+        <LocationServiceProvider locationService={mockServices.instance.locationService}>
+          <GatewayLocationProvider initialValue={[gatewayLocation, false]}>
+            <AgentServiceProvider initialValue={[mockServices.instance.agentService, false]}>
+              <SMServiceProvider initialValue={[{ smService: mockServices.instance.smService, smLocation }, false]}>
+                {children}
+              </SMServiceProvider>
+            </AgentServiceProvider>
+          </GatewayLocationProvider>
+        </LocationServiceProvider>
     </AuthContext.Provider>
   )
 
@@ -230,7 +230,7 @@ const MenuWithStepListContext = ({
   menuItem: ItemType
   value?: StepListTableContextType
 }): React.JSX.Element => {
-  const MenuComponent = () => <Menu items={[menuItem]}/>
+  const MenuComponent = () => <Menu items={[menuItem]} />
   return (
     <StepListContextProvider value={value}>
       <MenuComponent />

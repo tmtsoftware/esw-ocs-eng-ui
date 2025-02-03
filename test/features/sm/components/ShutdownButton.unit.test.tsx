@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { verify, when } from '@typestrong/ts-mockito'
+import { verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { ShutdownSMButton } from '../../../../src/features/sm/components/ShutdownButton'

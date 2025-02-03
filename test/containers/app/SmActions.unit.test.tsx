@@ -8,7 +8,7 @@ import {
   SEQUENCE_MANAGER_CONNECTION
 } from '@tmtsoftware/esw-ts'
 import type { AgentStatus, AgentStatusResponse, SequenceComponentStatus } from '@tmtsoftware/esw-ts'
-import { mock, verify, when } from '@typestrong/ts-mockito'
+import { imock, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
@@ -19,7 +19,7 @@ describe('SM actions', () => {
   const agentService = mockServices.mock.agentService
   const smService = mockServices.mock.smService
   const locServiceMock = mockServices.mock.locationService
-  const sequenceComponentStatus = mock<SequenceComponentStatus>()
+  const sequenceComponentStatus = imock<SequenceComponentStatus>()
   when(smService.getObsModesDetails()).thenResolve({
     _type: 'Success',
     obsModes: [

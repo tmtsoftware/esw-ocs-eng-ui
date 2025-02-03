@@ -2,7 +2,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix, Setup, StepList } from '@tmtsoftware/esw-ts'
 import type { SequencerState, SequencerStateResponse, Step } from '@tmtsoftware/esw-ts'
-import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
+import { deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import {

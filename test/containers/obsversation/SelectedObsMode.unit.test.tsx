@@ -7,7 +7,7 @@ import type {
   SequencerStateResponse,
   TrackingEvent
 } from '@tmtsoftware/esw-ts'
-import { deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
+import { deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'

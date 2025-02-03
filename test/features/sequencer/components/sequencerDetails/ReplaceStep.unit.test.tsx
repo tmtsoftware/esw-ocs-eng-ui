@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
+import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
 import { replaceStepItem } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'
 import {

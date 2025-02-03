@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { GATEWAY_CONNECTION, ServiceError } from '@tmtsoftware/esw-ts'
 import type { HttpLocation } from '@tmtsoftware/esw-ts'
-import { anything, verify, when } from '@typestrong/ts-mockito'
+import { anything, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { LocationServiceProvider } from '../../../src/contexts/LocationServiceContext'

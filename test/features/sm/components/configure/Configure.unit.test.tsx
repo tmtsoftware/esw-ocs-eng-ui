@@ -7,7 +7,7 @@ import type {
   ObsModesDetailsResponse,
   SequenceManagerService
 } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@typestrong/ts-mockito'
+import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { Configure } from '../../../../../src/features/sm/components/Configure'

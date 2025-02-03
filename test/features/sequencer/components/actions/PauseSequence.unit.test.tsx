@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { PauseResponse } from '@tmtsoftware/esw-ts'
-import { verify, when } from '@typestrong/ts-mockito'
+import { verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/steplist/PauseSequence'
 import { pauseSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'

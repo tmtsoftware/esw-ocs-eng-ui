@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, RemoveBreakpointResponse, Step } from '@tmtsoftware/esw-ts'
-import { reset, verify, when } from '@typestrong/ts-mockito'
+import { reset, verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
 import {
   breakpointActionItem

@@ -19,7 +19,7 @@ import type {
   HttpLocation,
   ObsModesDetailsResponse
 } from '@tmtsoftware/esw-ts'
-import { deepEqual, verify, when } from '@typestrong/ts-mockito'
+import { deepEqual, verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { Infrastructure } from '../../../src/containers/infrastructure/Infrastructure'
@@ -68,8 +68,9 @@ const smLocation: HttpLocation = {
 }
 
 describe('Infrastructure page', () => {
-  const agentService = mockServices.mock.agentService
-  const smService = mockServices.mock.smService
+  const agentServiceMock = mockServices.mock.agentService
+  const agentServiceInstance = mockServices.instance.agentService
+  const smServiceInstance = mockServices.instance.smService
   const locServiceMock = mockServices.mock.locationService
   const user = userEvent.setup()
 
@@ -83,7 +84,7 @@ describe('Infrastructure page', () => {
     return { cancel: () => ({}) }
   })
   it('should render infrastructure page | ESW-442', async () => {
-    when(agentService.getAgentStatus()).thenResolve({
+    when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [],
       seqCompsWithoutAgent: []
@@ -97,13 +98,13 @@ describe('Infrastructure page', () => {
     await screen.findByRole('button', { name: provisionConstants.buttonText })
     await screen.findByRole('button', { name: configureConstants.buttonText })
 
-    await waitFor(() => verify(agentService.getAgentStatus()).called())
+    await waitFor(() => verify(agentServiceMock.getAgentStatus()).called())
   })
 
   it('should render service down status if sequence manager is not spawned | ESW-442', async () => {
     renderWithAuth({
       ui: (
-        <AgentServiceProvider initialValue={[agentService, false]}>
+        <AgentServiceProvider initialValue={[agentServiceInstance, false]}>
           <SMServiceProvider initialValue={[undefined, false]}>
             <Infrastructure />
           </SMServiceProvider>
@@ -126,8 +127,8 @@ describe('Infrastructure page', () => {
 
     renderWithAuth({
       ui: (
-        <AgentServiceProvider initialValue={[agentService, false]}>
-          <SMServiceProvider initialValue={[{ smService, smLocation }, false]}>
+        <AgentServiceProvider initialValue={[agentServiceInstance, false]}>
+          <SMServiceProvider initialValue={[{ smService: smServiceInstance, smLocation }, false]}>
             <Infrastructure />
           </SMServiceProvider>
         </AgentServiceProvider>

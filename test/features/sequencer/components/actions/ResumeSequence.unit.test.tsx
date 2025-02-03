@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
-import { verify, when } from '@typestrong/ts-mockito'
+import { verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { ResumeSequence } from '../../../../../src/features/sequencer/components/steplist/ResumeSequence'

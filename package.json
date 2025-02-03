@@ -22,7 +22,11 @@
     "build:reporter": "tsc --p tsconfig.test.json",
     "test:unit": "web-test-runner 'test/**/*.unit.test.{ts,tsx}'",
     "test:unit:watch": "export ESW_OCS_ENG_UI_LOGS=true && npm run test:unit -- --watch",
-    "xxx": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/hooks/useAuth.unit.test.tsx --watch",
+    "xxx1": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/hooks/useAuth.unit.test.tsx --watch",
+    "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/routes/Routes.unit.test.tsx --watch",
+    "xxx3": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/components/HeaderBar/HeaderBar.unit.test.tsx --watch",
+    "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/infrastructure/Infrastructure.unit.test.tsx",
+    "xxx5": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/app/App.unit.test.tsx --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
     "test": "npm run test:unit",
@@ -48,7 +52,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-router-dom": "^5.3.3",
-    "@typestrong/ts-mockito": "^2.7.12",
+    "@johanblumenberg/ts-mockito": "^1.0.45",
     "@vitejs/plugin-react": "^4.3.4",
     "@web/dev-server-import-maps": "^0.2.1",
     "@web/test-runner": "^0.19.0",
@@ -62,7 +66,6 @@
     "stylelint-config-standard": "^37.0.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.22.0",
-    "vite": "^6.0.11",
-    "vite-plugin-node-polyfills": "^0.23.0"
+    "vite": "^6.0.11"
   }
 }

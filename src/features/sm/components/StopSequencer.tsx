@@ -44,6 +44,7 @@ const stopSequencer =
   (subsystem: Subsystem, obsMode: ObsMode, variation?: Variation) => (smService: SequenceManagerService) =>
     smService.shutdownSequencer(subsystem, obsMode, variation).then(handleResponse)
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function stopSequencerItem(sequencerPrefix: Prefix, sequencerState: SequencerState | undefined): ItemType {
   const [smContext, isLoading] = useSMService()
   const isInProgress = isSequencerInProgress(sequencerState)

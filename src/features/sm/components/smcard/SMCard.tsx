@@ -19,6 +19,7 @@ export const SMCard = (): React.JSX.Element => {
           </Typography.Title>
         }
         styles={{header: { paddingTop: '0.5rem', paddingBottom: '0.5rem' }, body: { display: 'none' }}}
+        // XXX TODO FIXME: react rules for hooks?
         extra={smContext ? <ShutdownSMButton /> : <SpawnSMButton />}
       />
     </CustomErrorBoundary>

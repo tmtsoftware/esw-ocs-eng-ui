@@ -14,6 +14,7 @@ import type { StepListInfo, StepListStatus } from '../../utils'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
+import { Key, RowSelectMethod } from 'antd/es/table/interface'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -57,10 +58,7 @@ export const getCurrentAndNextStepId = (
   return [currentStepId, nextStepId]
 }
 
-const columns = (
-  setSelectedStep: (_: Step) => void,
-  stepRefs: React.RefObject<StepRefInfo>
-): ColumnsType<StepData> => [
+const columns = (setSelectedStep: (_: Step) => void, stepRefs: React.RefObject<StepRefInfo>): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
@@ -143,6 +141,7 @@ export const StepListTable = ({
 
   const stepRefs = useRef<StepRefInfo>({})
 
+  // XXX TODO FIXME: See doc, should only use this for external system
   useEffect(() => {
     if (followProgress) {
       const runningStep = getRunningStep(stepList, stepListInfo.status)
@@ -168,6 +167,16 @@ export const StepListTable = ({
     },
     hideSelectAll: true
   }
+  // Note: using 'undefined' for this did not work!
+  const rowSelectionUndefined = {
+    onChange: () => {}
+  }
+
+  const xxx = stepList.steps.map((step, index) => ({
+    ...step,
+    index
+  }))
+  // console.log("XXX stepList = ", stepList)
 
   return (
     <StepListContextProvider
@@ -184,7 +193,7 @@ export const StepListTable = ({
           sticky
           showHeader={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
-          rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
+          rowSelection={isDuplicateEnabled ? rowSelection : rowSelectionUndefined}
           rowKey={(step) => step.id}
           pagination={false}
           dataSource={stepList.steps.map((step, index) => ({
@@ -193,7 +202,7 @@ export const StepListTable = ({
           }))}
           columns={columns(setSelectedStep, stepRefs)}
           onRow={(step) => ({
-            id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : undefined,
+            id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : styles.unselectedRow,
             className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
           })}
         />

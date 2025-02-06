@@ -16,7 +16,7 @@ const StepItem = (label: string, item: string) => {
           {label}
         </Typography.Title>
       }>
-      <Tooltip title={isVisible ? item : undefined}>
+      <Tooltip title={isVisible ? item : ""}>
         <Typography.Text aria-label={`${label}-Value`} ellipsis={{ onEllipsis: setVisible }} style={{ width: '20rem' }}>
           {item}
         </Typography.Text>

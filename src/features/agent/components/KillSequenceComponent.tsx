@@ -15,6 +15,7 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function killSequenceComponentItem(componentId: ComponentId): ItemType {
   const [agentService, isLoading] = useAgentService()
 

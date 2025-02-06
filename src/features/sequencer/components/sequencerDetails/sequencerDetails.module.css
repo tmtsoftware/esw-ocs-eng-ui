@@ -44,6 +44,10 @@ tr#selectedRow > td {
   border-bottom: transparent;
 }
 
+tr#unselectedRow > td {
+  opacity: 1;
+}
+
 tr > td:last-child::after {
   position: absolute;
   top: 0;

@@ -14,6 +14,7 @@ import { useAuth } from '../hooks/useAuth'
 const RedirectToLogin = () => {
   const { login } = useAuth()
 
+  // XXX TODO FIXME: See https://react.dev/warnings/invalid-hook-call-warning
   useEffect(login, [login])
 
   return <Result icon={<LoadingOutlined />} />

@@ -14,6 +14,7 @@ const getModalTitle = (isInProgress: boolean, sequencerPrefix: Prefix, sequencer
     ? reloadScriptConstants.getModalTitleWithState(sequencerPrefix.toJSON(), sequencerState)
     : reloadScriptConstants.getModalTitle(sequencerPrefix.toJSON())
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function reloadScriptItem(sequencerPrefix: Prefix, sequencerState: SequencerState | undefined): ItemType {
   const [smContext, loading] = useSMService()
   const smService = smContext?.smService

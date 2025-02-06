@@ -31,6 +31,7 @@ const showConfirmModal = (stepName: string, onYes: () => void): void => {
   })
 }
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function deleteActionItem(step: Step, isDisabled: boolean): ItemType {
   const { sequencerService } = useStepListContext()
   const deleteAction = useMutation({

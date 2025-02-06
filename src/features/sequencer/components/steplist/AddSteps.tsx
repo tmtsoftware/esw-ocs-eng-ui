@@ -10,6 +10,7 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { UploadSequence } from '../UploadSequence'
 import { ItemType } from 'antd/es/menu/interface'
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function addStepsItem(disabled: boolean, stepId: string): ItemType {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()

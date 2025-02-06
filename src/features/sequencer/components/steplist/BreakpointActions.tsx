@@ -15,6 +15,7 @@ const insertAction = (id: string) => (sequencerService: SequencerService) =>
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.removeBreakpoint(id).then(handleStepActionResponse)
 
+// XXX TODO FIXME: Was a react element, make ito a hook?
 export function breakpointActionItem(step: Step, isDisabled: boolean): ItemType {
   const { sequencerService } = useStepListContext()
 

@@ -10,6 +10,7 @@ import { useStepListContext } from '../../hooks/useStepListContext'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import type { ItemType } from 'antd/es/menu/interface'
 
+// XXX TODO FIXME: use custom hook?
 function stepActionsMenuItems(step: Step): ItemType[] {
   const status = step.status._type
   const isFinished = status === 'Failure' || status === 'Success'

@@ -4,7 +4,7 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
-import { replaceStepItem } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'
+import { useReplaceStepItem } from '../../../../../src/features/sequencer/components/steplist/ReplaceStep'
 import {
   replaceStepConstants,
   stepConstants,
@@ -67,7 +67,7 @@ describe('ReplaceStep', () => {
     it(testName, async () => {
       when(sequencerServiceMock.replace(id, anything())).thenResolve(response)
 
-      const menuItem = replaceStepItem(false, id)
+      const menuItem = useReplaceStepItem(false, id)
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={menuItem} />
       })
@@ -90,7 +90,7 @@ describe('ReplaceStep', () => {
       type: 'application/json'
     })
 
-    const menuItem = replaceStepItem(false, id)
+    const menuItem = useReplaceStepItem(false, id)
     renderWithAuth({
       ui: <MenuWithStepListContext menuItem={menuItem} />
     })

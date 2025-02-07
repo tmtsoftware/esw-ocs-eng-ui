@@ -4,7 +4,7 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, Step } from '@tmtsoftware/esw-ts'
 import { verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
-import { deleteActionItem } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
+import { useDeleteActionItem } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
 import { deleteStepConstants, stepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 
@@ -55,7 +55,7 @@ describe('Delete action', () => {
       }
 
       when(sequencerServiceMock.delete(step.id)).thenResolve(res)
-      const menuItem = deleteActionItem(step, false)
+      const menuItem = useDeleteActionItem(step, false)
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={menuItem} />
       })

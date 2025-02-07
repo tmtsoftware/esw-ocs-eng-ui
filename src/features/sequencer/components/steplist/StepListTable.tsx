@@ -14,7 +14,7 @@ import type { StepListInfo, StepListStatus } from '../../utils'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
-import { Key, RowSelectMethod } from 'antd/es/table/interface'
+import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -158,6 +158,7 @@ export const StepListTable = ({
       setFollowProgress(true)
     }
   }, [followProgress, selectedStep, stepList, stepListInfo.status, setSelectedStep])
+
   const sequencerService = useSequencerService(sequencerPrefix)
 
   const rowSelection = {
@@ -167,16 +168,11 @@ export const StepListTable = ({
     },
     hideSelectAll: true
   }
-  // Note: using 'undefined' for this did not work!
+  // XXX TODO FIXME: using 'undefined' for this did not work!
   const rowSelectionUndefined = {
-    onChange: () => {}
+    onChange: () => {},
+    hideSelectAll: true
   }
-
-  const xxx = stepList.steps.map((step, index) => ({
-    ...step,
-    index
-  }))
-  // console.log("XXX stepList = ", stepList)
 
   return (
     <StepListContextProvider
@@ -189,23 +185,25 @@ export const StepListTable = ({
       }}>
       <div style={{ height: '90%' }}>
         <StepListHeader sequencerStateResponse={sequencerStateResponse} stepListInfo={stepListInfo} />
-        <Table
-          sticky
-          showHeader={false}
-          className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
-          rowSelection={isDuplicateEnabled ? rowSelection : rowSelectionUndefined}
-          rowKey={(step) => step.id}
-          pagination={false}
-          dataSource={stepList.steps.map((step, index) => ({
-            ...step,
-            index
-          }))}
-          columns={columns(setSelectedStep, stepRefs)}
-          onRow={(step) => ({
-            id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : styles.unselectedRow,
-            className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
-          })}
-        />
+        <CustomErrorBoundary>
+          <Table
+            sticky
+            showHeader={false}
+            className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
+            rowSelection={isDuplicateEnabled ? rowSelection : rowSelectionUndefined}
+            rowKey={(step) => step.id}
+            pagination={false}
+            dataSource={stepList.steps.map((step, index) => ({
+              ...step,
+              index
+            }))}
+            columns={columns(setSelectedStep, stepRefs)}
+            onRow={(step) => ({
+              id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : styles.unselectedRow,
+              className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
+            })}
+          />
+        </CustomErrorBoundary>
       </div>
       {isDuplicateEnabled && <DuplicateAction commands={commands} />}
     </StepListContextProvider>

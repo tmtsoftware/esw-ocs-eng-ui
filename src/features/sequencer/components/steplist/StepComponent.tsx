@@ -34,13 +34,17 @@ export const StepComponent = (
   const { isDuplicateEnabled, setFollowProgress } = useStepListContext()
   const [isVisible, setVisible] = useState<boolean>(false)
 
-  // XXX TODO FIXME: Fix Tooltip
+  // XXX TODO FIXME: Fix Tooltip?
   return (
     <Space style={{ textAlign: 'right' }}>
-      <div ref={(el) => {el && (stepRefs.current[step.id] = el)}} style={{ width: '1.5rem', marginRight: '0.5rem' }}>
+      <div
+        ref={(el) => {
+          el && (stepRefs.current[step.id] = el)
+        }}
+        style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{step.index + 1}</Typography.Text>
       </div>
-      <Tooltip title={isVisible ? step.command.commandName : ""}>
+      <Tooltip title={isVisible ? step.command.commandName : ''}>
         <Button
           key={step.command.commandName}
           style={stepsStyle}
@@ -52,7 +56,7 @@ export const StepComponent = (
           <Typography.Text
             ellipsis={{ onEllipsis: setVisible }}
             style={{ width: '100%', color: color[step.status._type] }}
-            strong>
+            strong={true}>
             {step.command.commandName}
           </Typography.Text>
         </Button>

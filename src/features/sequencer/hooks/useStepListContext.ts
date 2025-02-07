@@ -12,8 +12,8 @@ export type StepListTableContextType = {
 }
 
 export const defaultStepListTableContext: StepListTableContextType = {
-  handleDuplicate: () => undefined,
-  setFollowProgress: () => undefined,
+  handleDuplicate: () => () => {},
+  setFollowProgress: () => (_: boolean) => {},
   isDuplicateEnabled: false,
   stepListStatus: 'NA',
   sequencerService: undefined

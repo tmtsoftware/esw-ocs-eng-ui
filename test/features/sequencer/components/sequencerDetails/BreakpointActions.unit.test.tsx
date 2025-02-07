@@ -5,7 +5,7 @@ import type { GenericResponse, RemoveBreakpointResponse, Step } from '@tmtsoftwa
 import { reset, verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
 import {
-  breakpointActionItem
+  useBreakpointActionItem
 } from '../../../../../src/features/sequencer/components/steplist/BreakpointActions'
 import {
   insertBreakPointConstants,
@@ -64,7 +64,7 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.addBreakpoint(step.id)).thenResolve(res)
 
-      const menuItem = breakpointActionItem(step, false)
+      const menuItem = useBreakpointActionItem(step, false)
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={menuItem} />
       })
@@ -118,7 +118,7 @@ describe('Breakpoint actions', () => {
 
       when(sequencerServiceMock.removeBreakpoint(step.id)).thenResolve(res)
 
-      const menuItem = breakpointActionItem(step, false)
+      const menuItem = useBreakpointActionItem(step, false)
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={menuItem} />
       })

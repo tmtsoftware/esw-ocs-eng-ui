@@ -12,7 +12,7 @@ import { UploadSequence } from '../UploadSequence'
 import { ItemType } from 'antd/es/menu/interface'
 
 // XXX TODO FIXME: Was a react element, make ito a hook?
-export function replaceStepItem(disabled: boolean, step: string): ItemType {
+export function useReplaceStepItem(disabled: boolean, step: string): ItemType {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()
 

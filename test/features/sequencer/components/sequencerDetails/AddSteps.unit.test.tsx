@@ -4,7 +4,7 @@ import { Prefix, Setup } from '@tmtsoftware/esw-ts'
 import type { GenericResponse, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { anything, reset, verify, when } from '@johanblumenberg/ts-mockito'
 import React from 'react'
-import { addStepsItem } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
+import { useAddStepsItem } from '../../../../../src/features/sequencer/components/steplist/AddSteps'
 import {
   addStepConstants,
   stepConstants,
@@ -66,7 +66,7 @@ describe('AddSteps', () => {
   testCases.forEach(({ testName, response, message }) => {
     it(testName, async () => {
       when(sequencerServiceMock.insertAfter(id, anything())).thenResolve(response)
-      const menuItem = addStepsItem(false, id)
+      const menuItem = useAddStepsItem(false, id)
       renderWithAuth({
         ui: <MenuWithStepListContext menuItem={menuItem} />
       })
@@ -89,7 +89,7 @@ describe('AddSteps', () => {
       type: 'application/json'
     })
 
-    const menuItem = addStepsItem(false, id)
+    const menuItem = useAddStepsItem(false, id)
     renderWithAuth({
       ui: <MenuWithStepListContext menuItem={menuItem} />
     })

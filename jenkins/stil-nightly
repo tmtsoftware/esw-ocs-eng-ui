@@ -38,6 +38,7 @@ pipeline {
     }
     post {
         always {
+            sh "redis-server --version"
             // upload test coverage
             publishHTML(target: [
                 allowMissing         : true,

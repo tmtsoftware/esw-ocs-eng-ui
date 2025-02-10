@@ -15,8 +15,8 @@ const killComponent = (componentId: ComponentId) => (agentService: AgentService)
     return res
   })
 
-// XXX TODO FIXME: Was a react element, make ito a hook?
-export function killSequenceComponentItem(componentId: ComponentId): ItemType {
+// XXX NOTE: Was an antd 4.x MenuItem react component, made into a hook returning ItemType props for antd 5.x
+export function useKillSequenceComponentItem(componentId: ComponentId): ItemType {
   const [agentService, isLoading] = useAgentService()
 
   const killSequenceComponentAction = useMutation({

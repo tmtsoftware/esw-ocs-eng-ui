@@ -34,7 +34,6 @@ export const StepComponent = (
   const { isDuplicateEnabled, setFollowProgress } = useStepListContext()
   const [isVisible, setVisible] = useState<boolean>(false)
 
-  // XXX TODO FIXME: Fix Tooltip?
   return (
     <Space style={{ textAlign: 'right' }}>
       <div

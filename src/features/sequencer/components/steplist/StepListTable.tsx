@@ -141,7 +141,10 @@ export const StepListTable = ({
 
   const stepRefs = useRef<StepRefInfo>({})
 
-  // XXX TODO FIXME: See doc, should only use this for external system
+  // XXX Note: React doc says you should only use useEffect this for external systems,
+  // however you also should not set state at the top level, to avoid a render loop,
+  // so maybe it is justified here.
+  // See https://www.reddit.com/r/reactjs/comments/1ecjr7n/setting_state_at_the_top_level_of_a_component/
   useEffect(() => {
     if (followProgress) {
       const runningStep = getRunningStep(stepList, stepListInfo.status)
@@ -163,6 +166,7 @@ export const StepListTable = ({
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
+      console.log("XXX rowSelection: selectedRows = ", selectedRows)
       const sortedRows = selectedRows.sort((a, b) => a.index - b.index)
       setCommands(sortedRows.map((step) => step.command))
     },

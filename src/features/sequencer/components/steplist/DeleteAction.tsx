@@ -31,7 +31,7 @@ const showConfirmModal = (stepName: string, onYes: () => void): void => {
   })
 }
 
-// XXX TODO FIXME: Was a react element, make ito a hook?
+// XXX NOTE: Was an antd 4.x MenuItem react component, made into a hook returning ItemType props for antd 5.x
 export function useDeleteActionItem(step: Step, isDisabled: boolean): ItemType {
   const { sequencerService } = useStepListContext()
   const deleteAction = useMutation({

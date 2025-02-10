@@ -29,6 +29,7 @@
     "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/StepListTable.unit.test.tsx --watch",
     "xxx3": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/routes/Routes.unit.test.tsx --watch",
     "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/components/HeaderBar/HeaderBar.unit.test.tsx --watch",
+    "xxx5": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/agent/components/SpawnSequenceComponent.unit.test.tsx --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
     "test": "npm run test:unit",

@@ -11,7 +11,7 @@ import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { UploadSequence } from '../UploadSequence'
 import { ItemType } from 'antd/es/menu/interface'
 
-// XXX TODO FIXME: Was a react element, make ito a hook?
+// XXX NOTE: Was an antd 4.x MenuItem react component, made into a hook returning ItemType props for antd 5.x
 export function useReplaceStepItem(disabled: boolean, step: string): ItemType {
   const [commands, setCommands] = useState<SequenceCommand[]>([])
   const { sequencerService } = useStepListContext()

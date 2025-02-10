@@ -15,7 +15,7 @@ const insertAction = (id: string) => (sequencerService: SequencerService) =>
 const removeAction = (id: string) => (sequencerService: SequencerService) =>
   sequencerService.removeBreakpoint(id).then(handleStepActionResponse)
 
-// XXX TODO FIXME: Was a react element, make ito a hook?
+// XXX NOTE: Was an antd 4.x MenuItem component, changed to be a hook returning the props for antd 5,x
 export function useBreakpointActionItem(step: Step, isDisabled: boolean): ItemType {
   const { sequencerService } = useStepListContext()
 

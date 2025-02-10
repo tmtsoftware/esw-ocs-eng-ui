@@ -3,9 +3,9 @@ import type { ComponentId, Prefix } from '@tmtsoftware/esw-ts'
 import { Dropdown, Grid, MenuProps } from 'antd'
 import React from 'react'
 import styles from './agentCards.module.css'
-import { killSequenceComponentItem } from './KillSequenceComponent'
-import { reloadScriptItem } from '../../sm/components/ReloadScript'
-import { stopSequencerItem } from '../../sm/components/StopSequencer'
+import { useKillSequenceComponentItem } from './KillSequenceComponent'
+import { useReloadScriptItem } from '../../sm/components/ReloadScript'
+import { useStopSequencerItem } from '../../sm/components/StopSequencer'
 import { useSequencerState } from '../../sm/hooks/useSequencerState'
 import { disabledSequencerActions } from '../agentConstants'
 
@@ -24,7 +24,7 @@ export const SequenceComponentActions = ({ componentId }: SequenceComponentActio
   const screen = useBreakpoint()
   const width = screen.lg ? '200px' : '150px'
   const items: MenuProps['items'] = [
-    killSequenceComponentItem(componentId),
+    useKillSequenceComponentItem(componentId),
     {
       type: 'divider'
     },
@@ -48,9 +48,9 @@ export const SequenceComponentActions = ({ componentId }: SequenceComponentActio
 export const SequencerActions = ({ componentId, sequencerPrefix }: SequencerActionProps): React.JSX.Element => {
   const { data: sequencerState } = useSequencerState(sequencerPrefix)
   const items: MenuProps['items'] = [
-    stopSequencerItem(sequencerPrefix, sequencerState),
-    reloadScriptItem(sequencerPrefix, sequencerState),
-    killSequenceComponentItem(componentId)
+    useStopSequencerItem(sequencerPrefix, sequencerState),
+    useReloadScriptItem(sequencerPrefix, sequencerState),
+    useKillSequenceComponentItem(componentId)
   ]
   return (
     <Dropdown menu={{ items }} trigger={['click']}>

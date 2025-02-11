@@ -166,7 +166,6 @@ export const StepListTable = ({
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
-      console.log("XXX rowSelection: selectedRows = ", selectedRows)
       const sortedRows = selectedRows.sort((a, b) => a.index - b.index)
       setCommands(sortedRows.map((step) => step.command))
     },
@@ -193,8 +192,10 @@ export const StepListTable = ({
           <Table
             sticky
             showHeader={false}
+            // XXX TODO FIXME: hover was causing crash here
+            rowHoverable={false}
             className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
-            rowSelection={isDuplicateEnabled ? rowSelection : rowSelectionUndefined}
+            rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
             rowKey={(step) => step.id}
             pagination={false}
             dataSource={stepList.steps.map((step, index) => ({

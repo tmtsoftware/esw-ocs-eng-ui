@@ -14,7 +14,6 @@ import type { StepListInfo, StepListStatus } from '../../utils'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
-import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -166,7 +165,6 @@ export const StepListTable = ({
 
   const rowSelection = {
     onChange: (_: React.Key[], selectedRows: StepData[]) => {
-      console.log("XXX rowSelection: selectedRows = ", selectedRows)
       const sortedRows = selectedRows.sort((a, b) => a.index - b.index)
       setCommands(sortedRows.map((step) => step.command))
     },
@@ -189,25 +187,27 @@ export const StepListTable = ({
       }}>
       <div style={{ height: '90%' }}>
         <StepListHeader sequencerStateResponse={sequencerStateResponse} stepListInfo={stepListInfo} />
-        <CustomErrorBoundary>
-          <Table
-            sticky
-            showHeader={false}
-            className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
-            rowSelection={isDuplicateEnabled ? rowSelection : rowSelectionUndefined}
-            rowKey={(step) => step.id}
-            pagination={false}
-            dataSource={stepList.steps.map((step, index) => ({
-              ...step,
-              index
-            }))}
-            columns={columns(setSelectedStep, stepRefs)}
-            onRow={(step) => ({
-              id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : styles.unselectedRow,
-              className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
-            })}
-          />
-        </CustomErrorBoundary>
+        <Table
+          sticky
+          showHeader={false}
+          // XXX TODO FIXME: hover was causing crash here.
+          // Not sure how to enable the default highlighting on hover without causing an error to be thrown,
+          // complaining about the order of react hooks.
+          rowHoverable={false}
+          className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
+          rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
+          rowKey={(step) => step.id}
+          pagination={false}
+          dataSource={stepList.steps.map((step, index) => ({
+            ...step,
+            index
+          }))}
+          columns={columns(setSelectedStep, stepRefs)}
+          onRow={(step) => ({
+            id: selectedStep && step.id === selectedStep.id ? styles.selectedRow : styles.unselectedRow,
+            className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
+          })}
+        />
       </div>
       {isDuplicateEnabled && <DuplicateAction commands={commands} />}
     </StepListContextProvider>

@@ -38,7 +38,7 @@ export const StepComponent = (
     <Space style={{ textAlign: 'right' }}>
       <div
         ref={(el) => {
-          el && (stepRefs.current[step.id] = el)
+          el && stepRefs.current && (stepRefs.current[step.id] = el)
         }}
         style={{ width: '1.5rem', marginRight: '0.5rem' }}>
         <Typography.Text type={'secondary'}>{step.index + 1}</Typography.Text>

@@ -54,12 +54,5 @@ export const useService = <T>(
     locationService.find(connection).finally(() => setLoading(false))
   }, [connection, locationService])
 
-  // useEffect(() => {
-  //   const f = async () => {
-  //     await locationService.find(connection).finally(() => setLoading(false))
-  //   }
-  //   f().catch((e) => {console.error("XXX " + e.stack)})
-  // }, [connection, locationService])
-
   return [value, loading]
 }

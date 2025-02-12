@@ -8,7 +8,7 @@ import { useStepListContext } from '../../hooks/useStepListContext'
 import { deleteStepConstants } from '../../sequencerConstants'
 import { handleStepActionResponse } from '../../utils'
 import { ItemType } from 'antd/es/menu/interface'
-import '@ant-design/v5-patch-for-react-19';
+import '@ant-design/v5-patch-for-react-19'
 
 const deleteStep = (id: string) => (sequencerService: SequencerService) => {
   return sequencerService.delete(id).then(handleStepActionResponse)

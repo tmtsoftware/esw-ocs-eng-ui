@@ -170,11 +170,6 @@ export const StepListTable = ({
     },
     hideSelectAll: true
   }
-  // XXX TODO FIXME: using 'undefined' for this did not work!
-  const rowSelectionUndefined = {
-    onChange: () => {},
-    hideSelectAll: true
-  }
 
   return (
     <StepListContextProvider

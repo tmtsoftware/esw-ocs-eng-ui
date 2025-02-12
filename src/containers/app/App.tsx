@@ -14,7 +14,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useQuery } from '../../hooks/useQuery'
 import { Routes } from '../../routes'
 import { getUsername } from '../../utils/getUsername'
-import '@ant-design/v5-patch-for-react-19';
+import '@ant-design/v5-patch-for-react-19'
 
 const { Header } = Layout
 

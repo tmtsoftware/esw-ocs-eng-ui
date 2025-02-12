@@ -21,6 +21,7 @@ import {
 
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const getSequencerStateResponse = (state: SequencerState['_type'], stepList: StepList): SequencerStateResponse => ({
   _type: 'SequencerStateResponse',

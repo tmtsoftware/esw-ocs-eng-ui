@@ -14,7 +14,6 @@ import type { StepListInfo, StepListStatus } from '../../utils'
 import { getStepListInfo } from '../../utils'
 import styles from '../sequencerDetails/sequencerDetails.module.css'
 import { statusTextType } from '../SequencersTable'
-import { CustomErrorBoundary } from '../../../../components/errorBoundary/CustomErrorBoundary'
 
 const isSelectedStepNotPresentInStepList = (stepList: StepList, selectedStep: Step) => {
   return !stepList.steps.find((step) => step.id === selectedStep.id)
@@ -171,12 +170,6 @@ export const StepListTable = ({
     },
     hideSelectAll: true
   }
-  // XXX TODO FIXME: using 'undefined' for this did not work!
-  const rowSelectionUndefined = {
-    onChange: () => {},
-    hideSelectAll: true
-  }
-
   return (
     <StepListContextProvider
       value={{
@@ -188,11 +181,12 @@ export const StepListTable = ({
       }}>
       <div style={{ height: '90%' }}>
         <StepListHeader sequencerStateResponse={sequencerStateResponse} stepListInfo={stepListInfo} />
-        <CustomErrorBoundary>
           <Table
             sticky
             showHeader={false}
-            // XXX TODO FIXME: hover was causing crash here
+          // XXX TODO FIXME: hover was causing crash here.
+          // Not sure how to enable the default highlighting on hover without causing an error to be thrown,
+          // complaining about the order of react hooks.
             rowHoverable={false}
             className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
             rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
@@ -208,7 +202,6 @@ export const StepListTable = ({
               className: isDuplicateEnabled ? styles.cellInDuplicate : styles.cell
             })}
           />
-        </CustomErrorBoundary>
       </div>
       {isDuplicateEnabled && <DuplicateAction commands={commands} />}
     </StepListContextProvider>

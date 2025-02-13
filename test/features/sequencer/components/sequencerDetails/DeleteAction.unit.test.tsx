@@ -7,6 +7,7 @@
 // import { useDeleteActionItem } from '../../../../../src/features/sequencer/components/steplist/DeleteAction'
 // import { deleteStepConstants, stepConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 // import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+// import '@ant-design/v5-patch-for-react-19'
 //
 // describe('Delete action', () => {
 //   const user = userEvent.setup()

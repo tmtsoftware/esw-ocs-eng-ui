@@ -9,6 +9,7 @@
 // import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 // import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 // import { useReloadScriptItem } from '../../../../src/features/sm/components/ReloadScript'
+// import '@ant-design/v5-patch-for-react-19'
 //
 // describe('Reload script', () => {
 //   const user = userEvent.setup()

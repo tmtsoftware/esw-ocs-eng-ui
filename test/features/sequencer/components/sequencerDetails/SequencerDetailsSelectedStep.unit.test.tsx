@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import { getStep, makeSeqStateResponse as mkSeqStateResponse } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const mkStepList = (statusList: StepStatus['_type'][]): StepList => {
   const steps = statusList.map((x, index) => getStep(x, `${index + 1}`))

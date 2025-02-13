@@ -7,6 +7,7 @@ import React from 'react'
 import { ResumeSequence } from '../../../../../src/features/sequencer/components/steplist/ResumeSequence'
 import { resumeSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Resume Sequence', () => {
   const user = userEvent.setup()

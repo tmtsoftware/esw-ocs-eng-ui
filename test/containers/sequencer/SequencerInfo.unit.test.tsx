@@ -8,6 +8,7 @@ import { ManageSequencer } from '../../../src/containers/sequencer/ManageSequenc
 import { sequencerDetailsConstants } from '../../../src/features/sequencer/sequencerConstants'
 import { getSequencerPath } from '../../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('SequencerInfo ', () => {
   beforeEach(() => {

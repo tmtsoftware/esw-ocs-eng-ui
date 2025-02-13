@@ -9,6 +9,7 @@ import { SpawnSMButton } from '../../../../src/features/sm/components/SpawnButto
 import { OBS_MODE_CONFIG } from '../../../../src/features/sm/constants'
 import { spawnSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('SpawnSMButton', () => {
   const user = userEvent.setup()

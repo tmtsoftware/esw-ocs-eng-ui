@@ -5,6 +5,7 @@ import React from 'react'
 import { useAuth } from '../../src/hooks/useAuth'
 import { getUsername } from '../../src/utils/getUsername'
 import { getMockAuth } from '../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Auth hook', () => {
   it('Auth should return null if not initialised', async () => {

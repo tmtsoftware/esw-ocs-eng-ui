@@ -36,7 +36,7 @@ export const ResumeSequence = ({
   return (
     <Tooltip title={'Resume sequence'}>
       <Button
-        onClick={() => sequencerService && resumeSequence.mutate(sequencerService)}
+        onClick={async () => sequencerService && await resumeSequence.mutate(sequencerService)}
         type={'text'}
         shape={'circle'}
         icon={<PlayCircleOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}

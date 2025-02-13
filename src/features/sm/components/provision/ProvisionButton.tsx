@@ -97,12 +97,12 @@ export const ProvisionButton = ({ disabled = false }: { disabled?: boolean }): R
     throwOnError
   )
 
-  const onProvisionClick = () => {
-    if (configService) fetchProvisionConfAction.mutateAsync(configService)
+  const onProvisionClick = async () => {
+    if (configService) await fetchProvisionConfAction.mutateAsync(configService)
   }
 
-  const handleModalOk = () => {
-    if (smService) provisionAction.mutateAsync(smService)
+  const handleModalOk = async () => {
+    if (smService) await provisionAction.mutateAsync(smService)
     setModalVisibility(false)
   }
 

@@ -8,6 +8,7 @@ import React from 'react'
 import { GoOnline } from '../../../../../src/features/sequencer/components/actions/GoOnline'
 import { goOnlineConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('GoOnline', () => {
   const user = userEvent.setup()

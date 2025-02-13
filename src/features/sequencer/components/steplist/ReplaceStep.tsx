@@ -28,7 +28,7 @@ export function useReplaceStepItem(disabled: boolean, step: string): ItemType {
     label: (
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
-        request={() => sequencerService && replaceAction.mutate(sequencerService)}
+        request={async () => sequencerService && await replaceAction.mutate(sequencerService)}
         uploadErrorMsg={replaceStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>

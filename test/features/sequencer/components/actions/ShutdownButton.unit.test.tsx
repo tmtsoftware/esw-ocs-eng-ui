@@ -8,6 +8,7 @@ import React from 'react'
 import { ShutdownButton } from '../../../../../src/features/sequencer/components/actions/ShutdownButton'
 import { observationShutdownConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Shutdown button for Sequencer ', () => {
   const user = userEvent.setup()

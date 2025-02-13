@@ -8,6 +8,7 @@ import React from 'react'
 import { LoadSequence } from '../../../../../src/features/sequencer/components/actions/LoadSequence'
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('LoadSequence', () => {
   afterEach(async () => {

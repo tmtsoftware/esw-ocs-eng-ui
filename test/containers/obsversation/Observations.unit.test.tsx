@@ -11,6 +11,7 @@ import { observationShutdownConstants } from '../../../src/features/sequencer/se
 import { configurableObsModesData, nonConfigurableObsModesData, obsModesData } from '../../jsons/obsmodes'
 import { getObsModes } from '../../utils/observationUtils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Observation page', () => {
   const user = userEvent.setup()

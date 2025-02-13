@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { HeaderBar } from '../../../src/components/headerBar/HeaderBar'
 import { HOME } from '../../../src/routes/RoutesConfig'
 import { renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('header bar', () => {
   const user = userEvent.setup()

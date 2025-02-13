@@ -35,6 +35,7 @@ import {
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/sequence-utils'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('sequencer details', () => {
   const user = userEvent.setup()

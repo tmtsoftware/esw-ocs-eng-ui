@@ -12,6 +12,7 @@ import { configureConstants } from '../../../src/features/sm/smConstants'
 import { obsModesData } from '../../jsons/obsmodes'
 import { assertTableHeader, assertTableHeaderNotPresent } from '../../utils/tableTestUtils'
 import { getAgentStatusMock, mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService

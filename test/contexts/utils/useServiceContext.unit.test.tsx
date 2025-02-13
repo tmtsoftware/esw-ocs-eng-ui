@@ -7,6 +7,8 @@ import React from 'react'
 import { LocationServiceProvider } from '../../../src/contexts/LocationServiceContext'
 import { createServiceCtx } from '../../../src/contexts/utils/createServiceCtx'
 import { mockServices } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
+
 const gatewayLocation: HttpLocation = {
   _type: 'HttpLocation',
   connection: GATEWAY_CONNECTION,

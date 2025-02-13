@@ -13,6 +13,7 @@ import React from 'react'
 import { Configure } from '../../../../../src/features/sm/components/Configure'
 import { configureConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const obsModesDetails: ObsModesDetailsResponse = {
   _type: 'Success',

@@ -11,6 +11,7 @@ import {
   startSequencerConstants
 } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('SmSequencerAction', () => {
   const smService = mockServices.mock.smService

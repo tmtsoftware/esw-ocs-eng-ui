@@ -5,6 +5,7 @@ import { verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
 import { getContextWithQueryClientProvider, mockServices } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('useAgents', () => {
   it('should return list of agents up and running | ESW-441', async () => {

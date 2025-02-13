@@ -8,6 +8,7 @@ import React from 'react'
 import { StartSequence } from '../../../../../src/features/sequencer/components/steplist/StartSequence'
 import { startSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Start Sequence', () => {
   const user = userEvent.setup()

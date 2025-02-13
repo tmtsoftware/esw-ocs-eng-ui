@@ -10,6 +10,7 @@ import { startSequencerConstants } from '../../../../src/features/sm/smConstants
 import { _createErrorMsg } from '../../../../src/utils/message'
 import { obsModesData } from '../../../jsons/obsmodes'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const FakeComponent = ({
   subsystem,

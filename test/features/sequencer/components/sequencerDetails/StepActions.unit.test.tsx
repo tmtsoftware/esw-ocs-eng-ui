@@ -15,6 +15,7 @@ import {
   removeBreakPointConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceInstance } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('StepActions', () => {
   const user = userEvent.setup()

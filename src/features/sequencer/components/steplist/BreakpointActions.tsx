@@ -31,11 +31,11 @@ export function useBreakpointActionItem(step: Step, isDisabled: boolean): ItemTy
     onError: (e) => errorMessage(removeBreakPointConstants.failureMessage, e)
   })
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     if (step.hasBreakpoint) {
-      sequencerService && removeBreakpointAction.mutate(sequencerService)
+      sequencerService && await removeBreakpointAction.mutate(sequencerService)
     } else {
-      sequencerService && insertBreakpointAction.mutate(sequencerService)
+      sequencerService && await insertBreakpointAction.mutate(sequencerService)
     }
   }
   const icon = step.hasBreakpoint ? <CloseCircleOutlined /> : <VerticalAlignMiddleOutlined />

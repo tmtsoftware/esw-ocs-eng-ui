@@ -12,6 +12,7 @@
 // } from '../../../../../src/features/sequencer/sequencerConstants'
 // import { _createErrorMsg } from '../../../../../src/utils/message'
 // import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+// import '@ant-design/v5-patch-for-react-19'
 //
 // type TestData = {
 //   testName: string

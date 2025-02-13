@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { expect } from 'chai'
 import React from 'react'
 import { SelectionModal } from '../../../src/components/modal/SelectionModal'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('SelectionModal', () => {
   const user = userEvent.setup()

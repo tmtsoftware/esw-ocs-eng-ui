@@ -30,6 +30,7 @@ import { ProvisionButton } from '../../../src/features/sm/components/provision/P
 import { PROVISION_CONF_PATH } from '../../../src/features/sm/constants'
 import { configureConstants, provisionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const obsModeDetails: ObsModesDetailsResponse = {
   _type: 'Success',

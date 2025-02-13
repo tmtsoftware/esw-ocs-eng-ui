@@ -8,6 +8,7 @@ import React from 'react'
 import { spawnSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 import { SpawnSequenceComponent } from '../../../../src/features/agent/components/SpawnSequenceComponent'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Spawn sequence component icon', () => {
   const user = userEvent.setup()

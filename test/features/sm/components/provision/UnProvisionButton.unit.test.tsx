@@ -7,6 +7,7 @@ import React from 'react'
 import { UnProvisionButton } from '../../../../../src/features/sm/components/provision/UnProvisionButton'
 import { unProvisionConstants } from '../../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('UnProvision button', () => {
   const user = userEvent.setup()

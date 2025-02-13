@@ -8,6 +8,7 @@ import React from 'react'
 import { AbortSequence } from '../../../../../src/features/sequencer/components/actions/AbortSequence'
 import { abortSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('AbortSequence', () => {
   const user = userEvent.setup()

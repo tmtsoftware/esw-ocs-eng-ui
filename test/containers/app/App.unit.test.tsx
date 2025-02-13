@@ -3,6 +3,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { App } from '../../../src/containers/app/App' // fixed to absolute path
 import { renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('App page', () => {
   it('should render app with layout when user is logged in | ESW-441, ESW-542', async () => {

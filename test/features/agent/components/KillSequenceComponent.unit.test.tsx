@@ -9,6 +9,7 @@
 // import { killSequenceComponentConstants } from '../../../../src/features/agent/agentConstants'
 // import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 // import { useKillSequenceComponentItem } from '../../../../src/features/agent/components/KillSequenceComponent'
+// import '@ant-design/v5-patch-for-react-19'
 //
 // describe('Kill sequence component button', () => {
 //   const user = userEvent.setup()

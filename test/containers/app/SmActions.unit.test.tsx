@@ -14,6 +14,7 @@ import React from 'react'
 import { SmActions } from '../../../src/containers/infrastructure/SMActions'
 import { configureConstants, startSequencerConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('SM actions', () => {
   const agentService = mockServices.mock.agentService

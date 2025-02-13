@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { expect } from 'chai'
 import { useStream } from '../../src/hooks/useStream'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Stream hook', () => {
   it('should run streaming call on render', async () => {

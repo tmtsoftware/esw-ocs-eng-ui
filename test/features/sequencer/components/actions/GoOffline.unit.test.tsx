@@ -8,6 +8,7 @@ import React from 'react'
 import { GoOffline } from '../../../../../src/features/sequencer/components/actions/GoOffline'
 import { goOfflineConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('GoOffline', () => {
   const user = userEvent.setup()

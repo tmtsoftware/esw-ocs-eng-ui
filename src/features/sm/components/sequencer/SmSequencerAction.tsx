@@ -30,14 +30,14 @@ export const SmSequencerAction = ({
     return (
       <Typography.Link
         disabled={smLoading || startSequencerAction.isPending}
-        onClick={() => smService && startSequencerAction.mutateAsync(smService)}>
+        onClick={async () => smService && await startSequencerAction.mutateAsync(smService)}>
         {sequencerActionConstants.startSequencer}
       </Typography.Link>
     )
   }
 
-  const reload = () => {
-    smService && reloadAction.mutateAsync(smService)
+  const reload = async () => {
+    smService && await reloadAction.mutateAsync(smService)
   }
 
   const popConfirmTitle = (): React.JSX.Element => (

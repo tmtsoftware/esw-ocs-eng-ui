@@ -3,6 +3,8 @@ import { expect } from 'chai'
 import React from 'react'
 import { createCtx } from '../../../src/contexts/utils/createCtx'
 import { renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
+
 const dummyValue = '1234'
 const [useContext, ContextProvider] = createCtx(() => dummyValue)
 const Component = () => {

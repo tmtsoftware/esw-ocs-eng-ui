@@ -25,6 +25,8 @@ import type { IntKey, Key, SequenceCommand } from '@tmtsoftware/esw-ts'
 import { expect } from 'chai'
 import React from 'react'
 import { formatParameters } from '../../../../../src/features/sequencer/components/sequencerDetails/ParamFormatter'
+import '@ant-design/v5-patch-for-react-19'
+
 describe('Parameter Formatter', () => {
   // construct coord parameters
   const eqCoord = eqCoordKey('eq').set([

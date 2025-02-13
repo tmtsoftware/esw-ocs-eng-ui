@@ -6,6 +6,7 @@ import React from 'react'
 import { PauseSequence } from '../../../../../src/features/sequencer/components/steplist/PauseSequence'
 import { pauseSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Pause Sequence', () => {
   const user = userEvent.setup()

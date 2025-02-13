@@ -43,7 +43,7 @@ export const StartSequence = ({ sequencerState }: { sequencerState: SequencerSta
   return (
     <Tooltip title={'Start sequence'}>
       <Button
-        onClick={() => sequencerService && startSequence.mutate(sequencerService)}
+        onClick={async () => sequencerService && await startSequence.mutate(sequencerService)}
         type={'text'}
         shape={'circle'}
         icon={<PlayCircleOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}

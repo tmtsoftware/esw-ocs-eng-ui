@@ -191,6 +191,7 @@ export const StepListTable = ({
           rowHoverable={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
+          columns={columns}
           rowKey={(step) => step.id}
           pagination={false}
           dataSource={stepList.steps.map((step, index) => ({

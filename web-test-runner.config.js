@@ -18,10 +18,10 @@ export default {
         importMap: {
           imports: {
             // this path needs to be absolute url whatever browser trys to load. cannot be relative path. prod file path: mocked file path
-            'http://localhost:9000/src/features/sequencer/hooks/useSequencerService.ts':
-              'http://localhost:9000/test/mocks/useSequencerService.ts',
-            'http://localhost:9000/src/contexts/ConfigServiceContext.tsx':
-              'http://localhost:9000/test/mocks/ConfigServiceContext.tsx'
+            'http://localhost:9001/src/features/sequencer/hooks/useSequencerService.ts':
+              'http://localhost:9001/test/mocks/useSequencerService.ts',
+            'http://localhost:9001/src/contexts/ConfigServiceContext.tsx':
+              'http://localhost:9001/test/mocks/ConfigServiceContext.tsx'
           }
         }
       }

@@ -10,6 +10,7 @@
 // import { stopSequencerConstants } from '../../../../src/features/sm/smConstants'
 // import { _createErrorMsg } from '../../../../src/utils/message'
 // import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+// import '@ant-design/v5-patch-for-react-19'
 //
 // describe('Stop Sequencer', () => {
 //   const user = userEvent.setup()

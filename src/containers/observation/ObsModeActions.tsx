@@ -24,7 +24,7 @@ export const ConfigurableActions = ({ obsMode }: ObsModeActionsProps): React.JSX
 
   return (
     <Button
-      onClick={() => smService && configureAction.mutate(smService)}
+      onClick={async () => smService && await configureAction.mutate(smService)}
       loading={isLoading || configureAction.isPending}
       disabled={!provisionStatus}>
       Configure

@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import { groupBy } from '../../src/utils/groupBy'
+import '@ant-design/v5-patch-for-react-19'
 
 type randomType = {
   name: 'A' | 'B' | 'C'

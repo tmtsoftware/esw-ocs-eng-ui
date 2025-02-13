@@ -8,6 +8,7 @@ import React from 'react'
 import { StopSequence } from '../../../../../src/features/sequencer/components/actions/StopSequence'
 import { stopSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('StopSequence', () => {
   const user = userEvent.setup()

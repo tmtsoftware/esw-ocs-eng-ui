@@ -14,7 +14,7 @@ export const LoadSequence = ({ prefix, sequencerState }: LoadSequenceProps): Rea
   const [sequence, setSequence] = useState<Sequence>()
   const loadSequenceAction = useLoadAction(sequence)
 
-  const request = () => sequencerService && loadSequenceAction.mutate(sequencerService)
+  const request = async () => sequencerService && await loadSequenceAction.mutate(sequencerService)
 
   return (
     <UploadSequence setSequence={setSequence} request={request} uploadErrorMsg={loadSequenceConstants.failureMessage}>

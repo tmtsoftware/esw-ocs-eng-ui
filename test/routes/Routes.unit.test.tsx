@@ -6,6 +6,7 @@ import React from 'react'
 import { App } from '../../src/containers/app/App'
 import { HOME, INFRASTRUCTURE, OBSERVATIONS, RESOURCES } from '../../src/routes/RoutesConfig'
 import { mockServices, renderWithAuth } from '../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const renderWithRouter = (ui: React.ReactElement) => {
   window.history.pushState({}, 'Home page', HOME)

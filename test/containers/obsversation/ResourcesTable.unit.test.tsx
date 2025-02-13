@@ -3,7 +3,9 @@ import { expect } from 'chai'
 import React from 'react'
 import { ResourcesTable } from '../../../src/features/sequencer/components/ResourcesTable'
 import type { ResourceTableStatus } from '../../../src/features/sequencer/components/ResourcesTable'
+import '@ant-design/v5-patch-for-react-19'
 import { renderWithAuth } from '../../utils/test-utils'
+
 describe('Resources table', () => {
   it('should render resources with status', async () => {
     const resources: ResourceTableStatus[] = [

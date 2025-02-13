@@ -7,6 +7,7 @@ import { ShutdownSMButton } from '../../../../src/features/sm/components/Shutdow
 import { SM_COMPONENT_ID } from '../../../../src/features/sm/constants'
 import { shutdownSMConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('ShutdownSMButton', () => {
   const user = userEvent.setup()

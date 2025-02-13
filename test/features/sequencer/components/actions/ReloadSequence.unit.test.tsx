@@ -9,6 +9,7 @@ import { ReloadSequence } from '../../../../../src/features/sequencer/components
 import { loadSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('ReloadSequence', () => {
   const user = userEvent.setup()

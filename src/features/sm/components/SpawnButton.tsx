@@ -30,9 +30,9 @@ export const SpawnSMButton = (): React.JSX.Element => {
     throwOnError: true // TODO : Remove error boundary
   })
 
-  const handleModalOk = () => {
+  const handleModalOk = async () => {
     if (agentPrefix !== '') {
-      agentService && spawnSmAction.mutateAsync(agentService)
+      agentService && await spawnSmAction.mutateAsync(agentService)
       setModalVisibility(false)
     } else {
       errorMessage(spawnSMConstants.selectAgentMessage)

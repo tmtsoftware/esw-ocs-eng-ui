@@ -8,6 +8,7 @@ import { StepThroughSequence } from '../../../../../src/features/sequencer/compo
 import { stepConstants, stepThroughConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStep } from '../../../../utils/sequence-utils'
 import { renderWithStepListContext, sequencerServiceMock } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Step-Through Sequence', () => {
   const user = userEvent.setup()

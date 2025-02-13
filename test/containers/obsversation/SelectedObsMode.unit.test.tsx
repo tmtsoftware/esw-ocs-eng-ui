@@ -14,6 +14,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { SelectedObsMode } from '../../../src/containers/observation/SelectedObsMode'
 import { sequencerActionConstants } from '../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('CurrentObsMode', () => {
   beforeEach(() => {

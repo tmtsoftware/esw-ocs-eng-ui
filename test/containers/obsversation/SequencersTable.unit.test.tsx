@@ -10,6 +10,7 @@ import { getCurrentStepCommandName } from '../../../src/features/sequencer/utils
 import type { SequencerInfo, StepListStatus } from '../../../src/features/sequencer/utils'
 import { getSequencersInfo, getStep } from '../../utils/sequence-utils'
 import { renderWithAuth } from '../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('sequencer table', () => {
   const user = userEvent.setup()

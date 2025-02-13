@@ -17,6 +17,7 @@ import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
 import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestUtils'
 import { renderWithAuth } from '../../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 describe('Parameters Table', () => {
   it('should display all the parameters in a step of a Sequence | ESW-457, ESW-503, ESW-537', async () => {

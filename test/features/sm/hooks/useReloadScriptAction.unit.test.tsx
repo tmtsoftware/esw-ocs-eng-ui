@@ -8,6 +8,7 @@ import { useSMService } from '../../../../src/contexts/SMContext'
 import { useReloadScriptAction } from '../../../../src/features/sm/hooks/useReloadScriptAction'
 import { reloadScriptConstants } from '../../../../src/features/sm/smConstants'
 import { mockServices, renderWithAuth } from '../../../utils/test-utils'
+import '@ant-design/v5-patch-for-react-19'
 
 const Component = ({
   subsystem,
@@ -21,7 +22,7 @@ const Component = ({
   const [smContext] = useSMService()
   const reloadSequencerAction = useReloadScriptAction(subsystem, obsmode, variation)
   return (
-    <button onClick={() => smContext && reloadSequencerAction.mutateAsync(smContext.smService)}>
+    <button onClick={async () => smContext && await reloadSequencerAction.mutateAsync(smContext.smService)}>
       Restart sequencer
     </button>
   )

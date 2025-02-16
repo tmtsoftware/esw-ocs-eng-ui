@@ -9,7 +9,7 @@ import { getUsername } from '../../utils/getUsername'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
 
-// XXX TODO FIXME: react hooks rules!
+// XXX TODO FIXME: react hooks rules?
 export const createServiceCtx = <T>(
   connection: Connection,
   factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T
@@ -19,7 +19,7 @@ export const createServiceCtx = <T>(
   return createCtx(useHook)
 }
 
-// XXX TODO FIXME: react hooks rules!
+// XXX TODO FIXME: react hooks rules?
 export const useService = <T>(
   connection: Connection,
   factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T

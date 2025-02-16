@@ -27,7 +27,7 @@ export function useAddStepsItem(disabled: boolean, stepId: string): ItemType {
     label: (
       <UploadSequence
         setSequence={(seq: Sequence) => setCommands(seq.commands)}
-        request={() => sequencerService && addStepAction.mutate(sequencerService)}
+        request={async () => sequencerService && await addStepAction.mutate(sequencerService)}
         uploadErrorMsg={addStepConstants.failureMessage}
         disabled={disabled}
         className={styles.upload}>

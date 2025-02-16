@@ -83,7 +83,7 @@ export const Resources = (): React.JSX.Element => {
     <>
       <PageHeader title='Resources' />
       <Card className={styles.resourcesCard}>
-        <Table
+        <Table<ResourceData>
           sticky
           bordered
           onRow={() => ({ style: { fontSize: '1rem' } })}

@@ -28,7 +28,7 @@ const getObsModesDetails = async (smService: SequenceManagerService): Promise<Gr
 export const useObsModesDetails = (): UseQueryResult<GroupedObsModeDetails> => {
   const [smContext] = useSMService()
   const smService = smContext?.smService
-  return useQuery([OBS_MODES_DETAILS.key], () => smService && getObsModesDetails(smService), {
+  return useQuery([OBS_MODES_DETAILS.key], async () => smService && await getObsModesDetails(smService), {
     // The query will not execute until the smService is resolved
     enabled: !!smService,
     refetchInterval: OBS_MODES_DETAILS.refetchInterval,

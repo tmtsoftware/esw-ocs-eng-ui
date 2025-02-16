@@ -16,7 +16,7 @@ import { reloadScriptConstants, stopSequencerConstants } from '../../../../src/f
 import {
   getAgentStatusMock,
   mockServices,
-  renderWithAuth,
+  renderWithAuth, sequencerServiceInstanceIris,
   sequencerServiceMock,
   sequencerServiceMockIris
 } from '../../../utils/test-utils'
@@ -185,11 +185,13 @@ describe('Agents Grid View', () => {
     await user.click(icon)
     const inputBox = await screen.findByText('Add a sequence component')
     expect(inputBox).to.exist
-    const textBox = screen.getByRole('textbox')
+    const textBox: HTMLInputElement = screen.getByRole('textbox')
+    expect(textBox).to.exist
 
     await waitFor(() => user.click(textBox))
-    await userEvent.type(textBox, 'ESW_1')
-    await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
+    await user.type(textBox, 'ESW_1')
+    const confirmButton = screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText })
+    await user.click(confirmButton)
 
     await screen.findByText(spawnSequenceComponentConstants.getSuccessMessage('ESW.ESW_1'))
 
@@ -279,12 +281,13 @@ describe('Agents Grid View', () => {
     })
     // first find the dropdown menu
     const sequencerActions = await screen.findByRole('sequencerActions')
+    expect(sequencerActions).exist
     await waitFor(() => user.click(sequencerActions))
 
     // checking different menu items for sequencers and sequence components
-    await screen.findByText(killSequenceComponentConstants.menuItemText)
-    await screen.findByText(reloadScriptConstants.menuItemText)
-    await screen.findByText(stopSequencerConstants.menuItemText)
+    expect(await screen.findByText(killSequenceComponentConstants.menuItemText)).exist
+    expect(await screen.findByText(reloadScriptConstants.menuItemText)).exist
+    expect(await screen.findByText(stopSequencerConstants.menuItemText)).exist
     await waitFor(() => expect(screen.queryByText(disabledSequencerActions.displayMessage)).to.null)
     verify(sequencerServiceMockIris.getSequencerState()).called()
   })

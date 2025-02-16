@@ -43,8 +43,8 @@ export const SpawnSequenceComponent = ({ agentPrefix }: { agentPrefix: Prefix })
 
   const resetComponentName = () => setComponentName('')
 
-  const onConfirm = () => {
-    !validateComponentName(componentName) && agentService && spawnSequenceComponentAction.mutateAsync(agentService)
+  const onConfirm = async () => {
+    !validateComponentName(componentName) && agentService && await spawnSequenceComponentAction.mutateAsync(agentService)
     resetComponentName()
   }
   return (

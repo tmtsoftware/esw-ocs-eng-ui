@@ -29,7 +29,7 @@ export const PauseSequence = (): React.JSX.Element => {
   const { sequencerService } = useStepListContext()
   const pauseSequence = usePauseSequence()
 
-  const onClick = () => sequencerService && pauseSequence.mutate(sequencerService)
+  const onClick = async () => sequencerService && await pauseSequence.mutate(sequencerService)
 
   return (
     <Tooltip title={'Pause sequence'}>

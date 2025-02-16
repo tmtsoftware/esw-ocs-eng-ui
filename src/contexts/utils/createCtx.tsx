@@ -15,10 +15,11 @@ export type CtxType<T> = readonly [Hook<T>, Provider<T>]
 export function createCtx<T>(useHook: () => T): CtxType<T> {
   const ctx = createContext<T | undefined>(undefined)
 
-  // XXX TODO FIXME: Hook used in nested function against rules?
+  // XXX TODO FIXME: React hook rules?
   const useCtx = () => {
     const c = useContext(ctx)
     if (!c) {
+      console.log('XXX =====> useCtx must be inside a Provider with a value')
       throw new Error('useCtx must be inside a Provider with a value')
     }
     return c

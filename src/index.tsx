@@ -10,11 +10,12 @@ setAppName(AppConfig.applicationName)
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  // <React.StrictMode>
     <AuthContextProvider>
+    {/* XXX TODO FIXME: See https://github.com/react-keycloak/react-keycloak/issues/182*/}
+    {/*<React.StrictMode>*/}
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
+    {/*</React.StrictMode>*/}
     </AuthContextProvider>
-  // </React.StrictMode>
 )

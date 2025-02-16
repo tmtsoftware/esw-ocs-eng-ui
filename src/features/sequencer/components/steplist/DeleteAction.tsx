@@ -45,8 +45,8 @@ export function useDeleteActionItem(step: Step, isDisabled: boolean): ItemType {
     danger: !isDisabled,
     icon: <DeleteOutlined />,
     onClick: () =>
-      showConfirmModal(step.command.commandName, () => {
-        sequencerService && deleteAction.mutateAsync(sequencerService)
+      showConfirmModal(step.command.commandName, async () => {
+        sequencerService && await deleteAction.mutateAsync(sequencerService)
       }),
     label: deleteStepConstants.menuItemText
   }

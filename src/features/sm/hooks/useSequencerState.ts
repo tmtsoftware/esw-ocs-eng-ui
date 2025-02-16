@@ -8,7 +8,7 @@ export const useSequencerState = (sequencerPrefix: Prefix): UseQueryResult<Seque
   const sequencerService = useSequencerService(sequencerPrefix)
   return useQuery({
     queryKey: [SEQUENCER_STATE.key, sequencerPrefix],
-    queryFn: () => sequencerService && sequencerService.getSequencerState(),
+    queryFn: async () => sequencerService && await sequencerService.getSequencerState(),
     enabled: !!sequencerService
   })
 }

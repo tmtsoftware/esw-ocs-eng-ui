@@ -13,6 +13,7 @@ export const LocationServiceProvider = ({
 export const useLocationService = (): LocationService => {
   const c = useContext(LocationServiceContext)
   if (!c) {
+    console.log('XXX =====> useLocationService must be inside a LocationServiceProvider with a value')
     throw new Error('useLocationService must be inside a LocationServiceProvider with a value')
   }
   return c

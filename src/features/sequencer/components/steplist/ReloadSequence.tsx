@@ -19,7 +19,7 @@ export const ReloadSequence = ({ stepList }: { stepList?: StepList }): React.JSX
   return (
     <Tooltip title={'Reload sequence'}>
       <Button
-        onClick={() => sequencerService && reloadSequence.mutate(sequencerService)}
+        onClick={async () => sequencerService && await reloadSequence.mutate(sequencerService)}
         type={'text'}
         shape={'circle'}
         icon={<ReloadOutlined className={disabled ? styles.actionDisabled : styles.actionEnabled} />}

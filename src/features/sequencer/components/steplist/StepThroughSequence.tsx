@@ -38,7 +38,7 @@ export const StepThroughSequence = ({
     <Tooltip title={'Step-Through'}>
       <Button
         style={{ paddingTop: '0.33rem' }}
-        onClick={() => sequencerService && stepThroughAction.mutate(sequencerService)}
+        onClick={async () => sequencerService && await stepThroughAction.mutate(sequencerService)}
         icon={<StepThroughIcon className={disabled ? styles.actionDisabled : styles.actionEnabled} />}
         role='StepThroughSequence'
         disabled={disabled}

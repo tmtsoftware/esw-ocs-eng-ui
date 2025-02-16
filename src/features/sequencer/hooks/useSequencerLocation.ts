@@ -9,6 +9,6 @@ export const useSequencerLocation = (prefix: Prefix): UseQueryResult<Location> =
   const locationService = useLocationService()
   return useQuery({
     queryKey: [SEQUENCER_LOCATION.key, prefix.toJSON()],
-    queryFn: () => locationService.find(PekkoConnection(prefix, 'Sequencer'))
+    queryFn: async () => await locationService.find(PekkoConnection(prefix, 'Sequencer'))
   })
 }

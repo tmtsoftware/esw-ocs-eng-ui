@@ -34,8 +34,8 @@ export const DuplicateAction = ({ commands: selectedCommands }: { commands: Sequ
           type='primary'
           loading={duplicateAction.isPending}
           disabled={selectedCommands.length === 0}
-          onClick={() => {
-            sequencerService && duplicateAction.mutateAsync(sequencerService)
+          onClick={async () => {
+            sequencerService && await duplicateAction.mutateAsync(sequencerService)
             handleDuplicate()
           }}>
           <CopyOutlined />

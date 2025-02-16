@@ -27,7 +27,6 @@ describe('Resources page', () => {
     expect(screen.getAllByText('Resource')).to.length(1)
     //Find resources table
     const [, tableBody] = await screen.findAllByRole('table')
-    screen.debug()
     const inUseResourcesRows: HTMLElement[] = within(tableBody).getAllByRole('row', {
       name: /InUse/i
     })

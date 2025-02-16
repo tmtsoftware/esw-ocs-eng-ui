@@ -57,7 +57,10 @@ export const getCurrentAndNextStepId = (
   return [currentStepId, nextStepId]
 }
 
-const columns = (setSelectedStep: (_: Step) => void, stepRefs: React.RefObject<StepRefInfo>): ColumnsType<StepData> => [
+const columns = (
+  setSelectedStep: (_: Step) => void,
+  stepRefs: React.RefObject<StepRefInfo>
+): ColumnsType<StepData> => [
   {
     key: 'index',
     dataIndex: 'status',
@@ -140,10 +143,6 @@ export const StepListTable = ({
 
   const stepRefs = useRef<StepRefInfo>({})
 
-  // XXX Note: React doc says you should only use useEffect this for external systems,
-  // however you also should not set state at the top level, to avoid a render loop,
-  // so maybe it is justified here.
-  // See https://www.reddit.com/r/reactjs/comments/1ecjr7n/setting_state_at_the_top_level_of_a_component/
   useEffect(() => {
     if (followProgress) {
       const runningStep = getRunningStep(stepList, stepListInfo.status)
@@ -191,7 +190,6 @@ export const StepListTable = ({
           rowHoverable={false}
           className={isDuplicateEnabled ? styles.duplicateStepListTable : styles.stepListTable}
           rowSelection={isDuplicateEnabled ? { ...rowSelection } : undefined}
-          columns={columns}
           rowKey={(step) => step.id}
           pagination={false}
           dataSource={stepList.steps.map((step, index) => ({

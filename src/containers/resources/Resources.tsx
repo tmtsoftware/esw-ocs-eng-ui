@@ -51,14 +51,14 @@ const groupByResourceStatus = (groupedObsModes: GroupedObsModeDetails): Resource
 }
 
 export const resourceStatusCol = (status: ResourceType): React.JSX.Element => (
-    <Typography.Text
-      strong
-      style={{
-        color: `${status === 'Available' ? 'var(--purple)' : 'var(--successColor)'}`
-      }}>
-      {status}
-    </Typography.Text>
-  )
+  <Typography.Text
+    strong
+    style={{
+      color: `${status === 'Available' ? 'var(--purple)' : 'var(--successColor)'}`
+    }}>
+    {status}
+  </Typography.Text>
+)
 
 const columns: ColumnsType<ResourceData> = [
   {
@@ -79,7 +79,7 @@ const columns: ColumnsType<ResourceData> = [
 export const Resources = (): React.JSX.Element => {
   const { data: groupedObsModes, isLoading } = useObsModesDetails()
 
-    return (
+  return (
     <>
       <PageHeader title='Resources' />
       <Card className={styles.resourcesCard}>

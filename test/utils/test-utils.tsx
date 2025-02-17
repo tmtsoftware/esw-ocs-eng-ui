@@ -49,7 +49,7 @@ export const getMockAuth = (loggedIn: boolean): Auth => {
     tokenParsed: () =>
       ({
         preferred_username: loggedIn ? 'esw-user' : undefined
-      }) as TestUtils.KeycloakTokenParsed,
+      } as TestUtils.KeycloakTokenParsed),
     realmAccess: () => [''] as unknown as TestUtils.KeycloakRoles,
     resourceAccess: () => [''] as unknown as TestUtils.KeycloakResourceAccess,
     loadUserProfile: () => Promise.resolve({}) as Promise<TestUtils.KeycloakProfile>
@@ -263,3 +263,9 @@ export function getByTagName(container: HTMLElement, tagName: keyof React.JSX.In
   }
   return result[0] || null
 }
+
+// Delay execution for ms milliseconds
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+

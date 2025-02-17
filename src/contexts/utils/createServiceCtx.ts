@@ -9,7 +9,6 @@ import { getUsername } from '../../utils/getUsername'
 import { errorMessage } from '../../utils/message'
 import { useLocationService } from '../LocationServiceContext'
 
-// XXX TODO FIXME: react hooks rules?
 export const createServiceCtx = <T>(
   connection: Connection,
   factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T
@@ -19,7 +18,6 @@ export const createServiceCtx = <T>(
   return createCtx(useHook)
 }
 
-// XXX TODO FIXME: react hooks rules?
 export const useService = <T>(
   connection: Connection,
   factory: (location: Location, tokenFactory: TokenFactory, username?: string) => T
@@ -37,7 +35,7 @@ export const useService = <T>(
     [auth, factory, username]
   )
   const track = useCallback(
-    (onEvent: (trackingEvent: TrackingEvent) => void) =>
+    (onEvent) =>
       locationService.track(connection)(onEvent, (error: ServiceError) => {
         errorMessage(error.message)
         setLoading(false)

@@ -32,8 +32,9 @@ const handleConfigureResponse = (res: ConfigureResponse, obsMode: ObsMode) => {
   }
 }
 
-const configureObsMode = (sequenceManagerService: SequenceManagerService, obsMode: ObsMode) =>
-  sequenceManagerService.configure(obsMode).then((res) => handleConfigureResponse(res, obsMode))
+const configureObsMode = (sequenceManagerService: SequenceManagerService, obsMode: ObsMode) => {
+  return sequenceManagerService.configure(obsMode).then((res) => handleConfigureResponse(res, obsMode))
+}
 
 export const useConfigureAction = (
   obsMode: ObsMode | undefined

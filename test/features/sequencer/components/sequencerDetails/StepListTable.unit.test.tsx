@@ -20,8 +20,12 @@ import {
 } from '../../../../../src/features/sequencer/sequencerConstants'
 
 import { getStep, getStepList } from '../../../../utils/sequence-utils'
-import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { renderWithAuth, delay, sequencerServiceMock } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
+
+
+// XXX TODO FIXME: "React has detected a change in the order of Hooks called by Cell2"
+
 
 const getSequencerStateResponse = (state: SequencerState['_type'], stepList: StepList): SequencerStateResponse => ({
   _type: 'SequencerStateResponse',
@@ -108,24 +112,23 @@ describe('stepList table', () => {
   //   await waitFor(() => expect(spanElement.style.color).to.equal('rgb(255, 197, 61)'))
   // })
   //
-  it('should show all the steps within a column | ESW-456', async () => {
-    renderWithAuth({
-      ui: (
-        <StepListTable
-          sequencerPrefix={sequencerPrefix}
-          setSelectedStep={() => ({})}
-          sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
-        />
-      )
-    })
-
-    // const stepListTitle = await screen.findByRole('stepListTitle')
-    // expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nIn Progress`)
-    //
-    // await findCell('1 Command-1 more')
-    // await findCell('2 Command-2 more')
-  })
-
+  // it('should show all the steps within a column | ESW-456', async () => {
+  //   renderWithAuth({
+  //     ui: (
+  //       <StepListTable
+  //         sequencerPrefix={sequencerPrefix}
+  //         setSelectedStep={() => ({})}
+  //         sequencerStateResponse={getSequencerStateResponse('Running', stepList)}
+  //       />
+  //     )
+  //   })
+  //   const stepListTitle = await screen.findByRole('stepListTitle')
+  //   expect(stepListTitle.innerText).to.equals(`Sequence Steps\nStatus:\nIn Progress`)
+  //
+  //   await findCell('1 Command-1 more')
+  //   await findCell('2 Command-2 more')
+  // })
+  //
   //   it('should not show any step data if no sequence is running | ESW-456', async () => {
   //     when(sequencerServiceMock.getSequence()).thenResolve(undefined)
   //

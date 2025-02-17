@@ -15,6 +15,7 @@
 // import { MenuWithStepListContext, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 // import '@ant-design/v5-patch-for-react-19'
 //
+// XXX TODO FIXME (antd MenuItem removed, replaced with items=ItemType[] prop, test needs to be rewritten)
 // describe('Breakpoint actions', () => {
 //   beforeEach(() => reset(sequencerServiceMock))
 //

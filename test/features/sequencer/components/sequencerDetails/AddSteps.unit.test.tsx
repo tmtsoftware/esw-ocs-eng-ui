@@ -24,6 +24,7 @@
 //   reset(sequencerServiceMock)
 // })
 //
+// XXX TODO FIXME (antd MenuItem removed, replaced with items=ItemType[] prop, test needs to be rewritten)
 // describe('AddSteps', () => {
 //   const user = userEvent.setup()
 //   const unhandledMsg = 'unhandled'

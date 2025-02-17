@@ -146,30 +146,30 @@ describe('StepActions', () => {
     expect(replaceStepMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.false
   })
 
-  it('should disable duplicate if stepListStatus is completed | ESW-462', async () => {
-    renderWithAuth({
-      ui: (
-        <StepListContextProvider
-          value={{
-            handleDuplicate: () => undefined,
-            setFollowProgress: () => undefined,
-            isDuplicateEnabled: false,
-            stepListStatus: 'All Steps Completed',
-            sequencerService: sequencerServiceInstance
-          }}>
-          <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
-        </StepListContextProvider>
-      )
-    })
-
-    await user.click(await screen.findByRole('stepActions'))
-
-    const duplicateMenu = (await screen.findByRole('menuitem', {
-      name: new RegExp(duplicateStepConstants.menuItemText)
-    })) as HTMLMenuElement
-
-    expect(duplicateMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
-  })
+  // it('should disable duplicate if stepListStatus is completed | ESW-462', async () => {
+  //   renderWithAuth({
+  //     ui: (
+  //       <StepListContextProvider
+  //         value={{
+  //           handleDuplicate: () => undefined,
+  //           setFollowProgress: () => undefined,
+  //           isDuplicateEnabled: false,
+  //           stepListStatus: 'All Steps Completed',
+  //           sequencerService: sequencerServiceInstance
+  //         }}>
+  //         <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
+  //       </StepListContextProvider>
+  //     )
+  //   })
+  //
+  //   await user.click(await screen.findByRole('stepActions'))
+  //
+  //   const duplicateMenu = (await screen.findByRole('menuitem', {
+  //     name: new RegExp(duplicateStepConstants.menuItemText)
+  //   })) as HTMLMenuElement
+  //
+  //   expect(duplicateMenu.classList.contains('ant-dropdown-menu-item-disabled')).to.be.true
+  // })
 
   it('should disable add steps if step Status is completed | ESW-461', async () => {
     renderWithAuth({

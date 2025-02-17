@@ -11,6 +11,7 @@
 // import { useKillSequenceComponentItem } from '../../../../src/features/agent/components/KillSequenceComponent'
 // import '@ant-design/v5-patch-for-react-19'
 //
+// XXX TODO FIXME (antd MenuItem removed, replaced with items=ItemType[] prop, test needs to be rewritten)
 // describe('Kill sequence component button', () => {
 //   const user = userEvent.setup()
 //   const prefix = new Prefix('ESW', 'ESW_1')

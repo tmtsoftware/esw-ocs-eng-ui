@@ -28,6 +28,8 @@
     "xxx1": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetails.unit.test.tsx --watch",
     "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetailsSelectedStep.unit.test.tsx --watch",
     "xxx3": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/StepActions.unit.test.tsx --watch",
+    "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/ObservationTab.unit.test.tsx --watch",
+    "xxx5": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/ParameterTable.unit.test.tsx --watch",
     "test:reporter": "npm run test:unit -- --config wtr-rtm.config.js --coverage",
     "test:ci": "npm-run-all build:reporter test:reporter",
     "test": "npm run test:unit",

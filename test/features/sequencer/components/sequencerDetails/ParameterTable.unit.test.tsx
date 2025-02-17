@@ -15,7 +15,7 @@ import {
 import type { BooleanKey, IntArrayKey, IntKey, StringKey } from '@tmtsoftware/esw-ts'
 import React from 'react'
 import { ParameterTable } from '../../../../../src/features/sequencer/components/sequencerDetails/ParameterTable'
-import { assertTableBody, assertTableHeader } from '../../../../utils/tableTestUtils'
+import { assertTableBody, assertTableHeader2 } from '../../../../utils/tableTestUtils'
 import { renderWithAuth } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
@@ -38,9 +38,9 @@ describe('Parameters Table', () => {
     const table = await screen.findByRole('table')
     const paramHeaderTable: HTMLElement =  document.querySelector(".ant-table-thead")!
     const paramBodyTable: HTMLElement =  document.querySelector(".ant-table-body")!
-    assertTableHeader(paramHeaderTable, 'Parameter')
-    assertTableHeader(paramHeaderTable, 'Unit')
-    assertTableHeader(paramHeaderTable, 'Values')
+    assertTableHeader2(paramHeaderTable, 'Parameter')
+    assertTableHeader2(paramHeaderTable, 'Unit')
+    assertTableHeader2(paramHeaderTable, 'Values')
 
     assertTableBody(paramBodyTable, 'flag false none')
     assertTableBody(paramBodyTable, 'randomKey 123, 12432 m')

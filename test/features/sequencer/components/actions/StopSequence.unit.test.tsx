@@ -9,6 +9,7 @@ import { StopSequence } from '../../../../../src/features/sequencer/components/a
 import { stopSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
+import { provisionConstants } from '../../../../../src/features/sm/smConstants'
 
 describe('StopSequence', () => {
   const user = userEvent.setup()
@@ -43,10 +44,9 @@ describe('StopSequence', () => {
       await user.click(stopSeqButton)
 
       await screen.findByText(stopSequenceConstants.modalTitle)
-      const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
+      const modalConfirmButton = screen.getByRole('button', {
         name: stopSequenceConstants.modalOkText
       })
-
       await user.click(modalConfirmButton)
 
       await screen.findByText(msg)
@@ -69,7 +69,7 @@ describe('StopSequence', () => {
 
     await user.click(stopSeqButton1)
     await screen.findByText(stopSequenceConstants.modalTitle)
-    const modalCancelButton = await within(await screen.findByRole('document')).findByRole('button', {
+    const modalCancelButton = screen.getByRole('button', {
       name: 'Cancel'
     })
     await user.click(modalCancelButton)
@@ -81,10 +81,10 @@ describe('StopSequence', () => {
 
     await user.click(stopSeqButton2)
     await screen.findByText(stopSequenceConstants.modalTitle)
-    const modalConfirmButton = await within(await screen.findByRole('document')).findByRole('button', {
+
+    const modalConfirmButton = screen.getByRole('button', {
       name: stopSequenceConstants.modalOkText
     })
-
     await user.click(modalConfirmButton)
 
     await screen.findByText(`${stopSequenceConstants.failureMessage}, reason: error occurred`)

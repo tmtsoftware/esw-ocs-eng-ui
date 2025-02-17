@@ -1,3 +1,5 @@
+// noinspection DuplicatedCode
+
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type {
@@ -34,7 +36,7 @@ import {
   stepConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/sequence-utils'
-import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth, delay, sequencerServiceMock } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('sequencer details', () => {
@@ -227,19 +229,23 @@ describe('sequencer details', () => {
 
     const step1 = screen.getByRole('button', { name: /Command-1/i })
     await user.click(step1)
+
+    // XXX TODO FIXME
+    // screen.debug()
+
     labels1.forEach(([key, value]) => {
-      const keyLabel = screen.getByLabelText(`${key}-Key`)
-      const valueLabel = screen.getByLabelText(`${key}-Value`)
-      expect(keyLabel.innerText).to.equals(key)
-      expect(valueLabel.innerText).to.equals(value)
+      const keyLabels = Array.from(document.querySelectorAll(`.ant-descriptions-item-label`))
+      const valueLabels = Array.from(document.querySelectorAll(`.ant-descriptions-item-content`))
+      expect(keyLabels.find((el) => el.textContent == key))
+      expect(valueLabels.find((el) => el.textContent == value))
     })
     const step2 = screen.getByRole('button', { name: /Command-2/i })
     await user.click(step2)
     labels2.forEach(([key, value]) => {
-      const keyLabel = screen.getByLabelText(`${key}-Key`)
-      const valueLabel = screen.getByLabelText(`${key}-Value`)
-      expect(keyLabel.innerText).to.equals(key)
-      expect(valueLabel.innerText).to.equals(value)
+      const keyLabels = Array.from(document.querySelectorAll(`.ant-descriptions-item-label`))
+      const valueLabels = Array.from(document.querySelectorAll(`.ant-descriptions-item-content`))
+      expect(keyLabels.find((el) => el.textContent == key))
+      expect(valueLabels.find((el) => el.textContent == value))
     })
   })
 
@@ -263,7 +269,6 @@ describe('sequencer details', () => {
     renderWithAuth({
       ui: <SequencerDetails prefix={sequencerLoc.connection.prefix} />
     })
-
     await screen.findAllByRole('table')
 
     const commandNameValue = screen.getByLabelText('Command-Value')

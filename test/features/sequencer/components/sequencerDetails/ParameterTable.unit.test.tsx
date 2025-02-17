@@ -35,10 +35,9 @@ describe('Parameters Table', () => {
     const command = new Setup(Prefix.fromString('ESW.darknight'), 'setup', paramSet)
 
     renderWithAuth({ ui: <ParameterTable command={command} /> })
-    await screen.findByRole('table')
-    // const [paramHeaderTable, paramBodyTable] = screen.queryAllByRole('table')
-    const paramHeaderTable = screen.getByRole('thead')
-    const paramBodyTable = screen.getByRole('tbody')
+    const table = await screen.findByRole('table')
+    const paramHeaderTable: HTMLElement =  document.querySelector(".ant-table-thead")!
+    const paramBodyTable: HTMLElement =  document.querySelector(".ant-table-body")!
     assertTableHeader(paramHeaderTable, 'Parameter')
     assertTableHeader(paramHeaderTable, 'Unit')
     assertTableHeader(paramHeaderTable, 'Values')

@@ -46,6 +46,7 @@ export const UploadSequence = ({
       customRequest={request}
       showUploadList={false}
       accept='application/json'
+      data-testid={'UploadSequence'}
       className={className}>
       {children}
     </Upload>

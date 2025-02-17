@@ -4,7 +4,7 @@ import type { HttpLocation } from '@tmtsoftware/esw-ts'
 import { verify, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import { useAgentsList } from '../../../../src/features/agent/hooks/useAgentsList'
-import { getContextWithQueryClientProvider, mockServices } from '../../../utils/test-utils'
+import { getContextWithQueryClientProvider, mockServices, delay } from '../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('useAgents', () => {
@@ -23,7 +23,8 @@ describe('useAgents', () => {
     const { result } = renderHook(() => useAgentsList(), {
       wrapper: ContextAndQueryClientProvider
     })
-
+    // XXX Delay needed to allow background status to progress from pending
+    await delay(500)
     await waitFor(() => {
       return result.current.isSuccess
     })

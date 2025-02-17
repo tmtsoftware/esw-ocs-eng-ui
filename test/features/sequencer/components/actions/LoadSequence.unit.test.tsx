@@ -11,6 +11,8 @@ import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('LoadSequence', () => {
+  const user = userEvent.setup()
+
   afterEach(async () => {
     reset(sequencerServiceMock)
   })
@@ -44,16 +46,12 @@ describe('LoadSequence', () => {
         ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
       })
 
-      const button: HTMLElement[] = screen.getAllByRole('button', {
-        name: 'Load Sequence'
-      })
+      const input: HTMLInputElement = screen.getByTestId('UploadSequence')
 
-      const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
-      // const input = getByTagName(view.container, 'input') as HTMLInputElement
       expect(input.type).equal('file')
       expect(input.style.display).equal('none')
 
-      await userEvent.upload(input, file)
+      await user.upload(input, file)
 
       await screen.findByText(msg)
 
@@ -68,15 +66,11 @@ describe('LoadSequence', () => {
       ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
     })
 
-    const button: HTMLElement[] = screen.getAllByRole('button', {
-      name: 'Load Sequence'
-    })
+    const input: HTMLInputElement = screen.getByTestId('UploadSequence')
 
-    const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
+    await user.upload(input, file0)
 
-    await userEvent.upload(input, file0)
-
-    await screen.findByText(/failed to load the sequence, reason: /i)
+    await screen.findAllByText(/failed to load the sequence, reason: /i)
 
     await waitFor(() => verify(sequencerServiceMock.loadSequence(anything())).never())
   })
@@ -88,13 +82,9 @@ describe('LoadSequence', () => {
       ui: <LoadSequence prefix={Prefix.fromString('ESW.darknight')} sequencerState={'Idle'} />
     })
 
-    const button: HTMLElement[] = screen.getAllByRole('button', {
-      name: 'Load Sequence'
-    })
+    const input: HTMLInputElement = screen.getByTestId('UploadSequence')
 
-    const input: HTMLInputElement = button[0].querySelector('input') as HTMLInputElement
-
-    await userEvent.upload(input, file)
+    await user.upload(input, file)
 
     await screen.findByText(`${loadSequenceConstants.failureMessage}, reason: error occurred`)
 

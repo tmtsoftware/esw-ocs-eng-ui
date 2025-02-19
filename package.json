@@ -37,16 +37,19 @@
     "fix:prettier": "prettier --write --config ./.prettierrc './**/*.{ts,tsx}' ",
     "audit": "npm audit",
     "style:check": "stylelint 'src/**/*.css' ",
-
     "xxx1": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetails.unit.test.tsx --watch",
     "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetailsSelectedStep.unit.test.tsx --watch",
     "xxx3": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/StepActions.unit.test.tsx --watch",
-    "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/ObservationTab.unit.test.tsx --watch",
+    "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/ObservationTab.unit.test.tsx --static-logging",
     "xxx5": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/ParameterTable.unit.test.tsx --watch",
     "xxx6": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/app/App.unit.test.tsx --watch",
     "xxx7": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/routes/Routes.unit.test.tsx --watch",
     "xxx8": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/actions/AbortSequence.unit.test.tsx",
-    "xxx9": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/Observations.unit.test.tsx"
+    "xxx9": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/Observations.unit.test.tsx --config wtr-rtm.config.js --coverage",
+    "xxx10": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/StepListTable.unit.test.tsx",
+    "xxx11": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/ObservationTab.unit.test.tsx --config wtr-rtm.config.js --coverage",
+    "xxx12": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sm/components/provision/ProvisionButton.unit.test.tsx",
+    "xxx13": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/infrastructure/Infrastructure.unit.test.tsx --config wtr-rtm.config.js --coverage"
   },
   "browserslist": [
     "last 1 chrome version"

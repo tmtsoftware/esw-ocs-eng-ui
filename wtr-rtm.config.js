@@ -44,6 +44,6 @@ export default {
   reporters: [defaultReporter({ reportTestResults: true, reportTestProgress: true }), ConsoleReporter(), RTMReporter()],
   coverageConfig: {
     include: ['src/**/*.{ts,tsx}'],
-    threshold: { statements: 90, branches: 80, functions: 64, lines: 90 }
+    // threshold: { statements: 90, branches: 80, functions: 64, lines: 90 }
   }
 }

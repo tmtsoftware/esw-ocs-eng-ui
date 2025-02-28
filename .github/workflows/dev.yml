@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: "22.14.0"
           registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@11.1.0
 
       - uses: coursier/setup-action@v1.2.0
         with:
@@ -44,9 +45,6 @@ jobs:
 
       - name: Build
         run: |
-          # XXX TODO FIXME
-          rm -rf node_modules package-lock.json
-          npm install
           npm run build
 
       - name: Unit tests

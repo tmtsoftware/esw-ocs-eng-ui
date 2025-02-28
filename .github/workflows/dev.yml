@@ -23,7 +23,7 @@ jobs:
           jvm: temurin:1.21
           apps: sbt sbtn
 
-      - uses: coursier/cache-action@v6
+#      - uses: coursier/cache-action@v6
 
 #      - name: Cache ~/.npm
 #        uses: actions/cache@v4

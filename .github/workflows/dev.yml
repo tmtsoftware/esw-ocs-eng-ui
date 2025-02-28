@@ -46,7 +46,8 @@ jobs:
         run: npm run build
 
       - name: Unit tests
-        run: npm run test:ci
+#        run: npm run test:ci
+        run: npm run test:unit
 
       - name: Generate RTM
         if: always()

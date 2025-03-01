@@ -37,7 +37,7 @@
     "fix:prettier": "prettier --write --config ./.prettierrc './**/*.{ts,tsx}' ",
     "audit": "npm audit",
     "style:check": "stylelint 'src/**/*.css' ",
-    "xxx1": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetails.unit.test.tsx --watch",
+    "xxx1": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/components/HeaderBar/HeaderBar.unit.test.tsx",
     "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetailsSelectedStep.unit.test.tsx --watch",
     "xxx3": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/StepActions.unit.test.tsx --watch",
     "xxx4": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/obsversation/ObservationTab.unit.test.tsx --static-logging",

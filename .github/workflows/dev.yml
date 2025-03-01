@@ -50,7 +50,9 @@ jobs:
       - name: Unit tests
         # XXX TODO FIXME
 #        run: npm run test:ci
-        run: npm run test:unit
+        run: |
+          npm run xxx1
+          npm run test:unit
 
 #      - name: Generate RTM
 #        if: always()

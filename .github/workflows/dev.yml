@@ -35,7 +35,7 @@ jobs:
 #            ${{ runner.os }}-node-
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Docs makeSite
         working-directory: ./docs
@@ -48,9 +48,12 @@ jobs:
           npm run build
 
       - name: Unit tests
-        # XXX TODO FIXME: need to fix some commented out tests to get coverage to pass again
+        # XXX TODO FIXME: need to fix some commented out tests to get coverage to pass again.
+        # XXX TODO FIXME: For some reason, the tests fail if the xxx1 (or similar) test is not run first...
 #        run: npm run test:ci
-        run: npm run test:unit
+        run: |
+          npm run xxx1
+          npm run test:unit
 
 #      - name: Generate RTM
 #        if: always()

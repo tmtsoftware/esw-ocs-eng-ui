@@ -2,7 +2,11 @@ import { importMapsPlugin } from '@web/dev-server-import-maps'
 import { defaultReporter } from '@web/test-runner'
 import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import ConsoleReporter from './ConsoleReporter.js'
+
 process.env.NODE_ENV = 'development'
+
+if (!process.env.ESW_OCS_ENG_UI_LOGS)
+  process.env.ESW_OCS_ENG_UI_LOGS = false
 console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
   concurrency: 1,

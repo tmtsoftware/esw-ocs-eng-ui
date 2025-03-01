@@ -24,15 +24,15 @@ jobs:
           jvm: temurin:1.21
           apps: sbt sbtn
 
-#      - uses: coursier/cache-action@v6
+      - uses: coursier/cache-action@v6
 
-#      - name: Cache ~/.npm
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.npm
-#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-node-
+      - name: Cache ~/.npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install
         run: npm install
@@ -48,11 +48,9 @@ jobs:
           npm run build
 
       - name: Unit tests
-        # XXX TODO FIXME
+        # XXX TODO FIXME: need to fix some commented out tests to get coverage to pass again
 #        run: npm run test:ci
-        run: |
-          npm run xxx1
-          npm run test:unit
+        run: npm run test:unit
 
 #      - name: Generate RTM
 #        if: always()
@@ -76,11 +74,11 @@ jobs:
 #          name: Coverage
 #          path: ./coverage
 #
-#      - name: Notify slack
-#        if: always()
-#        continue-on-error: true
-#        uses: kpritam/slack-job-status-action@v1
-#        with:
-#          job-status: ${{ job.status }}
-#          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-#          channel: ci-dev
+      - name: Notify slack
+        if: always()
+        continue-on-error: true
+        uses: kpritam/slack-job-status-action@v1
+        with:
+          job-status: ${{ job.status }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: ci-dev

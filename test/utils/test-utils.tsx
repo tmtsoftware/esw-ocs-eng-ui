@@ -217,26 +217,25 @@ const renderWithAuth = (
 }
 
 // noinspection JSUnusedGlobalSymbols
-const MenuWithStepListContext = ({
-  menuItem,
-  value = {
-    setFollowProgress: () => undefined,
-    handleDuplicate: () => undefined,
-    isDuplicateEnabled: false,
-    stepListStatus: 'In Progress',
-    sequencerService: sequencerServiceInstance
-  }
-}: {
-  menuItem: ItemType
-  value?: StepListTableContextType
-}): React.JSX.Element => {
-  const MenuComponent = () => <Menu items={[menuItem]} />
-  return (
-    <StepListContextProvider value={value}>
-      <MenuComponent />
-    </StepListContextProvider>
-  )
-}
+// const MenuWithStepListContext = ({
+//   menuItem,
+//   value = {
+//     setFollowProgress: () => undefined,
+//     handleDuplicate: () => undefined,
+//     isDuplicateEnabled: false,
+//     stepListStatus: 'In Progress',
+//     sequencerService: sequencerServiceInstance
+//   }
+// }: {
+//   menuItem: ItemType
+//   value?: StepListTableContextType
+// }): React.JSX.Element => {
+//   return (
+//     <StepListContextProvider value={value}>
+//       <Menu items={[menuItem]} />
+//     </StepListContextProvider>
+//   )
+// }
 
 export const renderWithStepListContext = (element: React.ReactNode): RenderResult =>
   renderWithAuth({
@@ -246,7 +245,7 @@ export const renderWithStepListContext = (element: React.ReactNode): RenderResul
       </StepListContextProvider>
     )
   })
-export { renderWithAuth, getContextWithQueryClientProvider, MenuWithStepListContext }
+export { renderWithAuth, getContextWithQueryClientProvider }
 export type { MockServices }
 
 // From https://stackoverflow.com/questions/54234515/get-by-html-element-with-react-testing-library

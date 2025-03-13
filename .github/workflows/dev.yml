@@ -17,7 +17,13 @@ jobs:
         with:
           node-version: "22.14.0"
           registry-url: "https://registry.npmjs.org"
-      - run: npm install -g npm@11.1.0
+      - run: |
+          npm install -g npm@11.1.0
+          which node
+          node --version
+          which npm
+          npm --version
+          rm -rf node_modules
 
       - uses: coursier/setup-action@v1.2.0
         with:

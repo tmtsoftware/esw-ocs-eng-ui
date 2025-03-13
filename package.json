@@ -38,7 +38,7 @@
     "audit": "npm audit",
     "style:check": "stylelint 'src/**/*.css' ",
     "xxx1": "export ESW_OCS_ENG_UI_LOGS=false && web-test-runner test/components/HeaderBar/HeaderBar.unit.test.tsx",
-    "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/features/sequencer/components/sequencerDetails/SequencerDetails.unit.test.tsx"
+    "xxx2": "export ESW_OCS_ENG_UI_LOGS=true && web-test-runner test/containers/infrastructure/Infrastructure.unit.test.tsx"
   },
   "browserslist": [
     "last 1 chrome version"

@@ -19,11 +19,6 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: |
           npm install -g npm@11.1.0
-          which node
-          node --version
-          which npm
-          npm --version
-          rm -rf node_modules
 
       - uses: coursier/setup-action@v1.2.0
         with:
@@ -53,7 +48,9 @@ jobs:
         run: npm run build
 
       - name: Unit tests
-        run: npm run test:ci
+        run: |
+          npm run xxx1
+          npm run test:ci
 
       - name: Generate RTM
         if: always()

@@ -6,6 +6,9 @@ import { RTMReporter } from './dist/test/utils/RTMReporter.js'
 process.env.NODE_ENV = 'development'
 
 export default {
+  concurrency: 1,
+  concurrentBrowsers: 1,
+  testsFinishTimeout: 500000,
   testFramework: {
     config: {
       timeout: '3000'

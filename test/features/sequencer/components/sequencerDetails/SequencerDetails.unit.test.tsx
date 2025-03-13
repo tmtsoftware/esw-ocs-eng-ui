@@ -245,7 +245,7 @@ describe('sequencer details', () => {
     })
   })
 
-  // XXX TODO FIXME
+  // XXX TODO FIXME (Fails due to changes in StepInfo.tsx to replace deprecated Descriptions.Item and tooltip)
   // it('should render step details with text data having elipsis when viewport size is small | ESW-457, ESW-489', async () => {
   //   const stepList: StepList = new StepList([
   //     {

@@ -24,15 +24,15 @@ jobs:
           jvm: temurin:1.21
           apps: sbt sbtn
 
-#      - uses: coursier/cache-action@v6
-#
-#      - name: Cache ~/.npm
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.npm
-#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-node-
+      - uses: coursier/cache-action@v6
+
+      - name: Cache ~/.npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install
         run: npm ci
@@ -55,28 +55,28 @@ jobs:
           npm run xxx1
           npm run test:unit
 
-#      - name: Generate RTM
-#        if: always()
-#        continue-on-error: true
-#        run: |
-#          sh rtm.sh
-#
-#      - name: Upload RTM
-#        if: always()
-#        continue-on-error: true
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: RTM
-#          path: ./RTM
-#
-#      - name: Upload Coverage
-#        if: always()
-#        continue-on-error: true
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: Coverage
-#          path: ./coverage
-#
+      - name: Generate RTM
+        if: always()
+        continue-on-error: true
+        run: |
+          sh rtm.sh
+
+      - name: Upload RTM
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: RTM
+          path: ./RTM
+
+      - name: Upload Coverage
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage
+          path: ./coverage
+
       - name: Notify slack
         if: always()
         continue-on-error: true

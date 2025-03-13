@@ -44,22 +44,15 @@ jobs:
           sbt makeSite
 
       - name: Build
-        run: |
-          npm run build
+        run: npm run build
 
       - name: Unit tests
-        # XXX TODO FIXME: need to fix some commented out tests to get coverage to pass again.
-        # XXX TODO FIXME: For some reason, the tests fail if the xxx1 (or similar) test is not run first...
-#        run: npm run test:ci
-        run: |
-          npm run xxx1
-          npm run test:unit
+        run: npm run test:ci
 
       - name: Generate RTM
         if: always()
         continue-on-error: true
-        run: |
-          sh rtm.sh
+        run: sh rtm.sh
 
       - name: Upload RTM
         if: always()

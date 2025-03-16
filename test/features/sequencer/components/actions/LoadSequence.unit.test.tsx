@@ -11,7 +11,6 @@ import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('LoadSequence', () => {
-  const user = userEvent.setup()
 
   afterEach(async () => {
     reset(sequencerServiceMock)
@@ -40,6 +39,7 @@ describe('LoadSequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-458`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.loadSequence(anything())).thenResolve(res)
 
       renderWithAuth({
@@ -60,6 +60,7 @@ describe('LoadSequence', () => {
   })
 
   it('should show error if the sequence is not valid | ESW-458', async () => {
+    const user = userEvent.setup()
     const file0 = new File([], 'sequence.json', { type: 'application/json' })
 
     renderWithAuth({
@@ -76,6 +77,7 @@ describe('LoadSequence', () => {
   })
 
   it('should show failed if error is returned | ESW-458', async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.loadSequence(anything())).thenReject(Error('error occurred'))
 
     renderWithAuth({

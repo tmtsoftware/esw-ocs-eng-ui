@@ -11,7 +11,6 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Shutdown button for Sequencer ', () => {
-  const user = userEvent.setup()
   const obsMode = new ObsMode('ESW.DarkNight')
   const smService = mockServices.mock.smService
   const failureMessage = observationShutdownConstants.getFailureMessage(obsMode)
@@ -55,6 +54,7 @@ describe('Shutdown button for Sequencer ', () => {
   tests.forEach(([testname, response, message]) => {
     const modalMessage = observationShutdownConstants.getModalTitle(obsMode)
     it(`should return ${testname} | ESW-454, ESW-507`, async () => {
+      const user = userEvent.setup()
       when(smService.shutdownObsModeSequencers(deepEqual(obsMode))).thenResolve(response)
 
       renderWithAuth({

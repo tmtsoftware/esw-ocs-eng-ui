@@ -11,7 +11,6 @@ import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('GoOnline', () => {
-  const user = userEvent.setup()
   const testData: [GoOnlineResponse, string, string][] = [
     [{ _type: 'Ok' }, goOnlineConstants.successMessage, 'successful'],
     [{ _type: 'GoOnlineHookFailed' }, `${goOnlineConstants.failureMessage}, reason: GoOnlineHookFailed`, 'failed'],
@@ -29,6 +28,7 @@ describe('GoOnline', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-493`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.goOnline()).thenResolve(res)
 
       renderWithAuth({
@@ -48,6 +48,7 @@ describe('GoOnline', () => {
   })
 
   it(`should be failed if goOnline call fails | ESW-493`, async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.goOnline()).thenReject(Error('error occurred'))
 
     renderWithAuth({

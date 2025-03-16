@@ -18,7 +18,6 @@ const smService = mockServices.mock.smService
 const agentService = mockServices.mock.agentService
 
 describe('observation tabs', () => {
-  const user = userEvent.setup()
   beforeEach(() => {
     reset(smService)
     reset(agentService)
@@ -28,6 +27,7 @@ describe('observation tabs', () => {
     })
   })
   it('should be able to shutdown running observation | ESW-450, ESW-454, ESW-489', async () => {
+    const user = userEvent.setup()
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     const obsMode = new ObsMode('DarkNight_1')
     const modalMessage = observationShutdownConstants.getModalTitle(obsMode)
@@ -68,6 +68,7 @@ describe('observation tabs', () => {
   })
 
   it('should be able to configure a configurable observation | ESW-450, ESW-489', async () => {
+    const user = userEvent.setup()
     // mock setup starts here
     const agentStatusMock: AgentStatus = getAgentStatusMock()
     when(agentService.getAgentStatus()).thenResolve({
@@ -173,6 +174,7 @@ describe('observation tabs', () => {
   })
 
   it('should render alert if sequence components are missing on non-configurable tab | ESW-529', async () => {
+    const user = userEvent.setup()
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -190,6 +192,7 @@ describe('observation tabs', () => {
   })
 
   it('should render sequencers based on selected obsModes | ESW-566', async () => {
+    const user = userEvent.setup()
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     renderWithAuth({
       ui: <ObservationTab tabName='Running' />

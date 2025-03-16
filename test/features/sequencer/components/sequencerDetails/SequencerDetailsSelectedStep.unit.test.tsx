@@ -16,7 +16,6 @@ const mkStepList = (statusList: StepStatus['_type'][]): StepList => {
   return new StepList(steps)
 }
 describe('sequencer details selected step', () => {
-  const user = userEvent.setup()
   let simulateBackendEvent: (sequencerStateResponse: SequencerStateResponse) => void = () => ({})
   beforeEach(() => {
     reset(sequencerServiceMock)
@@ -80,6 +79,7 @@ describe('sequencer details selected step', () => {
   // })
 
   it('should not follow step list progress when user selects step other than in-flight step | ESW-501, ESW-489', async () => {
+    const user = userEvent.setup()
     const stepListWithStep1InProgress: StepStatus['_type'][] = ['InFlight', 'Pending', 'Pending']
 
     const stepListWithStep2InProgress: StepStatus['_type'][] = ['Success', 'InFlight', 'Pending']
@@ -106,6 +106,7 @@ describe('sequencer details selected step', () => {
   })
 
   it('should go to last existing step in stepList when user do abort sequence | ESW-501, ESW-489', async () => {
+    const user = userEvent.setup()
     const stepListWithStep1InProgress: StepStatus['_type'][] = ['InFlight', 'Pending', 'Pending']
     const stepListWithStep2InProgress: StepStatus['_type'][] = ['Success', 'InFlight', 'Pending']
     //this simulates abort sequence action, and removes step3 from stepList which was not executed
@@ -136,6 +137,7 @@ describe('sequencer details selected step', () => {
   })
 
   it('should start following step list progress again when user selects in-flight step | ESW-501', async () => {
+    const user = userEvent.setup()
     const stepList: StepStatus['_type'][] = ['InFlight', 'Pending', 'Pending']
     const updatedStepListWithStep2InProgress: StepStatus['_type'][] = ['Success', 'InFlight', 'Pending']
     const updatedStepListWithStep3InProgress: StepStatus['_type'][] = ['Success', 'Success', 'InFlight']

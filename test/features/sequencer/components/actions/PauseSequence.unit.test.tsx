@@ -9,7 +9,6 @@ import { renderWithStepListContext, sequencerServiceMock } from '../../../../uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Pause Sequence', () => {
-  const user = userEvent.setup()
   const testData: [PauseResponse, string, string][] = [
     [{ _type: 'Ok' }, pauseSequenceConstants.successMessage, 'successful'],
     [
@@ -31,6 +30,7 @@ describe('Pause Sequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.pause()).thenResolve(res)
 
       renderWithStepListContext(<PauseSequence />)
@@ -46,6 +46,7 @@ describe('Pause Sequence', () => {
   })
 
   it('should show failed if error is returned | ESW-497', async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.pause()).thenReject(Error('Something went wrong'))
 
     renderWithStepListContext(<PauseSequence />)

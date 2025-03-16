@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Prefix } from '@tmtsoftware/esw-ts'
 import type { OkOrUnhandledResponse } from '@tmtsoftware/esw-ts'
@@ -9,10 +9,8 @@ import { StopSequence } from '../../../../../src/features/sequencer/components/a
 import { stopSequenceConstants } from '../../../../../src/features/sequencer/sequencerConstants'
 import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
-import { provisionConstants } from '../../../../../src/features/sm/smConstants'
 
 describe('StopSequence', () => {
-  const user = userEvent.setup()
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, stopSequenceConstants.successMessage, 'successful'],
     [
@@ -33,6 +31,7 @@ describe('StopSequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-500`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.stop()).thenResolve(res)
 
       renderWithAuth({
@@ -58,6 +57,7 @@ describe('StopSequence', () => {
   })
 
   it(`should be failed if stopSequence call fails | ESW-500`, async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.stop()).thenReject(Error('error occurred'))
 
     renderWithAuth({

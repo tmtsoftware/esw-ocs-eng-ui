@@ -12,7 +12,6 @@ import { useKillSequenceComponentItem } from '../../../../src/features/agent/com
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Kill sequence component button', () => {
-  const user = userEvent.setup()
   const prefix = new Prefix('ESW', 'ESW_1')
   const sequenceComponentID = new ComponentId(prefix, 'SequenceComponent')
   const TestKillSequenceComponent = (): React.JSX.Element => {
@@ -43,6 +42,7 @@ describe('Kill sequence component button', () => {
 
   responseScenarios.forEach(([testName, res, message]) => {
     it(`should return ${testName} when ShutdownComponent is clicked  | ESW-446, ESW-502`, async () => {
+      const user = userEvent.setup()
       const agentService = mockServices.mock.agentService
       when(agentService.killComponent(deepEqual(sequenceComponentID))).thenResolve(res)
       renderWithAuth({

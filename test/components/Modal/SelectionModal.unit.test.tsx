@@ -6,7 +6,6 @@ import { SelectionModal } from '../../../src/components/modal/SelectionModal'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('SelectionModal', () => {
-  const user = userEvent.setup()
   it('should render modal with title and given list of data | ESW-441', async () => {
     const modalProps = {
       data: ['data-1', 'data-2'],
@@ -32,6 +31,7 @@ describe('SelectionModal', () => {
   })
 
   it('should call onChange method when menu item is selected | ESW-441', async () => {
+    const user = userEvent.setup()
     let value = ''
     const modalProps = {
       data: ['data-1', 'data-2'],
@@ -53,6 +53,7 @@ describe('SelectionModal', () => {
   })
 
   it('should handle onOk and onCancel event | ESW-441', async () => {
+    const user = userEvent.setup()
     let value = ''
     const modalProps = {
       data: ['data-1'],
@@ -77,6 +78,7 @@ describe('SelectionModal', () => {
   })
 
   it('should not call onOk if any item is not selected | ESW-441', async () => {
+    const user = userEvent.setup()
     let value = 'value not changed'
     const modalProps = {
       data: ['data-1'],

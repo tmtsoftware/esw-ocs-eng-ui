@@ -29,7 +29,6 @@ const emptyAgentStatus: AgentStatus = {
 const agentStatus: AgentStatus = getAgentStatusMock()
 
 describe('Agents Grid View', () => {
-  const user = userEvent.setup()
   const agentServiceMock = mockServices.mock.agentService
 
   it('should render agents when getAgentStatus returns agents | ESW-443', async () => {
@@ -164,6 +163,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should add sequence components on agent| ESW-446', async () => {
+    const user = userEvent.setup()
     when(
       agentServiceMock.spawnSequenceComponent(deepEqual(Prefix.fromString('ESW.machine1')), deepEqual('ESW_1'))
     ).thenResolve({ _type: 'Spawned' })
@@ -200,6 +200,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should kill sequence components on agent| ESW-446,  ESW-502', async () => {
+    const user = userEvent.setup()
     const seqCompPrefix = new Prefix('ESW', 'ESW2')
     when(agentServiceMock.killComponent(deepEqual(new ComponentId(seqCompPrefix, 'SequenceComponent')))).thenResolve({
       _type: 'Killed'
@@ -240,6 +241,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should display menu items applicable to sequence components| ESW-502', async () => {
+    const user = userEvent.setup()
     when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],
@@ -264,6 +266,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should display menu items applicable to sequencer | ESW-502, ESW-506', async () => {
+    const user = userEvent.setup()
     const agentStatus = getAgentStatusMock('IRIS')
     when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
@@ -294,6 +297,7 @@ describe('Agents Grid View', () => {
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {
+    const user = userEvent.setup()
     when(agentServiceMock.getAgentStatus()).thenResolve({
       _type: 'Success',
       agentStatus: [agentStatus],

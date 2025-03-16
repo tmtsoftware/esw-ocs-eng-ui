@@ -11,7 +11,6 @@ import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Start Sequencer', () => {
-  const user = userEvent.setup()
   const ESW = 'ESW'
   const smService = mockServices.mock.smService
   const subsystem = ESW
@@ -24,6 +23,7 @@ describe('Start Sequencer', () => {
   })
 
   it('should start the sequencer for given subsystem and obsmode only i.e without variation | ESW-447, ESW-507, ESW-565', async () => {
+    const user = userEvent.setup()
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Started',
@@ -53,6 +53,7 @@ describe('Start Sequencer', () => {
   })
 
   it('should start the sequencer for given subsystem and obsmode along with a variation| ESW-565', async () => {
+    const user = userEvent.setup()
     const variation = new Variation('IRIS_IFS')
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
     when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), deepEqual(variation))).thenResolve({
@@ -86,6 +87,7 @@ describe('Start Sequencer', () => {
   })
 
   it('should open modal and render a form containing subsystem and obsmode input| ESW-447', async () => {
+    const user = userEvent.setup()
     when(smService.getObsModesDetails()).thenResolve(obsModesData)
 
     renderWithAuth({
@@ -117,7 +119,7 @@ const enterUserInputInSelect = async (
   const combobox = within(withinElement).getByRole('combobox', { name: label })
   const user = userEvent.setup()
   await user.click(combobox)
-  await userEvent.type(combobox, userInput)
+  await user.type(combobox, userInput)
   const option = await screen.findByText(optionToChoose)
 
   await waitFor(() => user.click(option))
@@ -132,7 +134,7 @@ const enterUserInputInAutoComplete = async (
   const combobox = within(withinElement).getByRole('combobox', { name: label })
   const user = userEvent.setup()
   await user.click(combobox)
-  await userEvent.type(combobox, userInput)
+  await user.type(combobox, userInput)
 
   const obsModeItem = await screen.findAllByText(optionToChoose)
   await waitFor(() => user.click(obsModeItem[1]))
@@ -142,5 +144,5 @@ const enterUserInputInInputBox = async (withinElement: HTMLElement, label: strin
   const combobox = within(withinElement).getByRole('textbox', { name: label })
   const user = userEvent.setup()
   await user.click(combobox)
-  await userEvent.type(combobox, userInput)
+  await user.type(combobox, userInput)
 }

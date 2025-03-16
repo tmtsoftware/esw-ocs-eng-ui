@@ -11,10 +11,10 @@ import { renderWithStepListContext, sequencerServiceMock } from '../../../../uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Step-Through Sequence', () => {
-  const user = userEvent.setup()
   beforeEach(() => reset(sequencerServiceMock))
 
   it(`should add breakpoint in next step and remove from current step | ESW-509`, async () => {
+    const user = userEvent.setup()
     const currentStep = getStep('Pending', 'currentStep')
     const nextStep = getStep('Pending', 'nextStep')
 
@@ -33,6 +33,7 @@ describe('Step-Through Sequence', () => {
   })
 
   it(`should not add breakpoint in next step but remove from current step when current step is last step | ESW-509`, async () => {
+    const user = userEvent.setup()
     const currentStep = getStep('Pending', 'currentStep')
 
     when(sequencerServiceMock.removeBreakpoint(currentStep.id)).thenResolve({ _type: 'Ok' })
@@ -78,6 +79,7 @@ describe('Step-Through Sequence', () => {
 
   stepThroughInsertBreakpointFailsTests.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Step-Through is clicked and Insert breakpoint Fails | ESW-509`, async () => {
+      const user = userEvent.setup()
       const currentStep = getStep('Pending', 'currentStep')
       const nextStep = getStep('Pending', 'nextStep')
 
@@ -120,6 +122,7 @@ describe('Step-Through Sequence', () => {
 
   stepThroughRemoveBreakpointFailsTests.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Step-Through is clicked and Remove breakpoint Fails| ESW-509`, async () => {
+      const user = userEvent.setup()
       const currentStep = getStep('Pending', 'currentStep')
       const nextStep = getStep('Pending', 'nextStep')
 

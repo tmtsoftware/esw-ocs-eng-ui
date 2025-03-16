@@ -10,7 +10,6 @@ import { renderWithStepListContext, sequencerServiceMock } from '../../../../uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Resume Sequence', () => {
-  const user = userEvent.setup()
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, resumeSequenceConstants.successMessage, 'successful'],
     [
@@ -27,6 +26,7 @@ describe('Resume Sequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.resume()).thenResolve(res)
 
       renderWithStepListContext(<ResumeSequence isSequencerRunning isCurrentStepRunningAndNextPaused={false} />)
@@ -42,6 +42,7 @@ describe('Resume Sequence', () => {
   })
 
   it('should show failed if error is returned | ESW-497', async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.resume()).thenReject(Error('Something went wrong'))
 
     renderWithStepListContext(<ResumeSequence isSequencerRunning isCurrentStepRunningAndNextPaused={false} />)

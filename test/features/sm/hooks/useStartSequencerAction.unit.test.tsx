@@ -28,7 +28,6 @@ const FakeComponent = ({
 }
 
 describe('Component using useStartSequencerAction', () => {
-  const user = userEvent.setup()
   const subsystem = 'ESW'
   const obsMode = new ObsMode('DarkNight_1')
   const smService = mockServices.mock.smService
@@ -106,6 +105,7 @@ describe('Component using useStartSequencerAction', () => {
 
   tests.forEach(([testname, response, message]) => {
     it(`should return ${testname} | ESW-447, ESW-507, ESW-506`, async () => {
+      const user = userEvent.setup()
       when(smService.getObsModesDetails()).thenResolve(obsModesData)
       when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve(response)
 

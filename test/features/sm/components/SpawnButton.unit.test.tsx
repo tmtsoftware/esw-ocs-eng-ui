@@ -12,7 +12,6 @@ import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('SpawnSMButton', () => {
-  const user = userEvent.setup()
   const locServiceMock = mockServices.mock.locationService
   when(locServiceMock.track(anything())).thenReturn(() => {
     return {
@@ -20,6 +19,7 @@ describe('SpawnSMButton', () => {
     }
   })
   it('should spawn the sequence manager | ESW-441', async () => {
+    const user = userEvent.setup()
     const agentServiceMock = mockServices.mock.agentService
     const agentPrefix = new Prefix('ESW', 'ESW.Machine1')
     const agentLocation: HttpLocation = {
@@ -71,6 +71,7 @@ describe('SpawnSMButton', () => {
   })
 
   it('should show error message if no agents are present and user tries spawning machine | ESW-441', async () => {
+    const user = userEvent.setup()
     when(locServiceMock.listByComponentType('Machine')).thenResolve([])
 
     renderWithAuth({
@@ -87,6 +88,7 @@ describe('SpawnSMButton', () => {
   })
 
   it('should show notification if spawning sequence manager fails | ESW-441', async () => {
+    const user = userEvent.setup()
     const agentServiceMock = mockServices.mock.agentService
 
     const agentPrefix = new Prefix('ESW', 'ESW.Machine1')

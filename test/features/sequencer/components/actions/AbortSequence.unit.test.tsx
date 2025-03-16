@@ -11,7 +11,6 @@ import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('AbortSequence', () => {
-  const user = userEvent.setup()
   const testData: [OkOrUnhandledResponse, string, string][] = [
     [{ _type: 'Ok' }, abortSequenceConstants.successMessage, 'successful'],
     [
@@ -32,6 +31,7 @@ describe('AbortSequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-494`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.abortSequence()).thenResolve(res)
 
       renderWithAuth({
@@ -63,6 +63,7 @@ describe('AbortSequence', () => {
   })
 
   it(`should be failed if abortSequence call fails | ESW-494`, async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.abortSequence()).thenReject(Error('error occurred'))
 
     renderWithAuth({

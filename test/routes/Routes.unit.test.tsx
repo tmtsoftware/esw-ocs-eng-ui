@@ -24,9 +24,9 @@ const renderWithRouter = (ui: React.ReactElement) => {
 }
 
 describe('Full app navigation', () => {
-  const user = userEvent.setup()
 
   it('Infrastructure route | ESW-441, ESW-542', async () => {
+    const user = userEvent.setup()
     renderWithRouter(<App />)
 
     const manageInfra = await screen.findByRole('ManageInfrastructure')
@@ -37,6 +37,7 @@ describe('Full app navigation', () => {
   })
 
   it('Observations route | ESW-441, ESW-542', async () => {
+    const user = userEvent.setup()
     renderWithRouter(<App />)
 
     const manageObservations = await screen.findByRole('ManageObservations')
@@ -47,6 +48,7 @@ describe('Full app navigation', () => {
   })
 
   it('Resources | ESW-441, ESW-542', async () => {
+    const user = userEvent.setup()
     renderWithRouter(<App />)
 
     const resources = await screen.findAllByRole('Resources')

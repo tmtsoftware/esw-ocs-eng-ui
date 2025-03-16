@@ -13,7 +13,6 @@ import { renderWithAuth } from '../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('sequencer table', () => {
-  const user = userEvent.setup()
   const stepList1: StepList = new StepList([getStep('Pending', '11', true), getStep('Pending', '12')])
   const stepList2: StepList = new StepList([
     getStep('Success', '21'),
@@ -66,6 +65,7 @@ describe('sequencer table', () => {
   })
 
   it('should change the location on click of sequencer | ESW-492', async () => {
+    const user = userEvent.setup()
     const sequencersInfo = getSequencersInfo()
 
     renderWithAuth({

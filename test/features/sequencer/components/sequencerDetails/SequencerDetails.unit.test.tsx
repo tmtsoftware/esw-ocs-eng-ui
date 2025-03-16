@@ -1,6 +1,6 @@
 // noinspection DuplicatedCode
 
-import { screen, waitFor, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type {
   SequencerState,
@@ -23,24 +23,21 @@ import {
   stringKey,
   Units
 } from '@tmtsoftware/esw-ts'
-import { anything, deepEqual, reset, verify, when } from '@johanblumenberg/ts-mockito'
+import { anything, reset, when } from '@johanblumenberg/ts-mockito'
 import { expect } from 'chai'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { SequencerDetails } from '../../../../../src/features/sequencer/components/sequencerDetails/SequencerDetails'
 import {
   abortSequenceConstants,
-  addStepConstants,
-  replaceStepConstants,
   goOfflineConstants,
   stepConstants
 } from '../../../../../src/features/sequencer/sequencerConstants'
 import { getStepList, makeSeqStateResponse, sendEvent } from '../../../../utils/sequence-utils'
-import { mockServices, renderWithAuth, delay, sequencerServiceMock } from '../../../../utils/test-utils'
+import { mockServices, renderWithAuth, sequencerServiceMock } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('sequencer details', () => {
-  const user = userEvent.setup()
   afterEach(async () => {
     reset(sequencerServiceMock)
   })
@@ -139,6 +136,7 @@ describe('sequencer details', () => {
   })
 
   it('should render parameter table when a Step is clicked from the StepList | ESW-457, ESW-489, ESW-537', async () => {
+    const user = userEvent.setup()
     const booleanParam: Parameter<BooleanKey> = booleanKey('flagKey').set([false])
     const intParam: Parameter<IntKey> = intKey('randomKey').set([123, 12432])
     const filterKey = intArrayKey('filter', Units.count)
@@ -192,6 +190,7 @@ describe('sequencer details', () => {
   })
 
   it('should render Step details when a Step is clicked from the StepLists | ESW-457, ESW-489', async () => {
+    const user = userEvent.setup()
     const stepList: StepList = new StepList([
       {
         hasBreakpoint: false,

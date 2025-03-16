@@ -11,7 +11,6 @@ import { renderWithAuth, sequencerServiceMock } from '../../../../utils/test-uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('GoOffline', () => {
-  const user = userEvent.setup()
   const testData: [GoOfflineResponse, string, string][] = [
     [{ _type: 'Ok' }, goOfflineConstants.successMessage, 'successful'],
     [{ _type: 'GoOfflineHookFailed' }, `${goOfflineConstants.failureMessage}, reason: GoOfflineHookFailed`, 'failed'],
@@ -29,6 +28,7 @@ describe('GoOffline', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-493`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.goOffline()).thenResolve(res)
 
       renderWithAuth({
@@ -48,6 +48,7 @@ describe('GoOffline', () => {
   })
 
   it(`should be failed if goOffline call fails | ESW-493`, async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.goOffline()).thenReject(Error('error occurred'))
 
     renderWithAuth({

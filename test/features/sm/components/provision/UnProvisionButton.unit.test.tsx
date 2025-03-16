@@ -10,7 +10,6 @@ import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('UnProvision button', () => {
-  const user = userEvent.setup()
   const modalTitle = unProvisionConstants.modalTitle
 
   const unhandled: ShutdownSequenceComponentResponse = {
@@ -58,6 +57,7 @@ describe('UnProvision button', () => {
 
   unProvisionTestData.forEach(([type, name, shutdownRes, errMsg]) => {
     it(`should be able to show ${type} log if shutdownAllSequenceComponents return ${name} | ESW-444, ESW-507`, async () => {
+      const user = userEvent.setup()
       const smService = mockServices.mock.smService
 
       when(smService.shutdownAllSequenceComponents()).thenReturn(shutdownRes)

@@ -18,7 +18,6 @@ import { renderWithAuth, sequencerServiceInstance } from '../../../../utils/test
 import '@ant-design/v5-patch-for-react-19'
 
 describe('StepActions', () => {
-  const user = userEvent.setup()
   const stepStatusPending: StepStatus = { _type: 'Pending' }
   const stepStatusInProgress: StepStatus = { _type: 'InFlight' }
   const stepStatusSuccess: StepStatus = { _type: 'Success' }
@@ -32,6 +31,7 @@ describe('StepActions', () => {
   })
 
   it('should give insert breakpoint option in menu if step does not have breakpoint | ESW-459', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
@@ -41,6 +41,7 @@ describe('StepActions', () => {
   })
 
   it('should give remove breakpoint option in menu if step has a breakpoint | ESW-459', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(true, stepStatusPending)} />
     })
@@ -49,6 +50,7 @@ describe('StepActions', () => {
   })
 
   it('should disable insertBreakpoint and delete when status is in Progress | ESW-459, ESW-490', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusInProgress)} />
     })
@@ -66,6 +68,7 @@ describe('StepActions', () => {
   })
 
   it('should disable delete, insert breakpoint and add a step when status is failure | ESW-459, ESW-490, ESW-550', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusFailure)} />
     })
@@ -93,6 +96,7 @@ describe('StepActions', () => {
   })
 
   it('should disable delete, insert breakpoint and add a step when status is success | ESW-459, ESW-490, ESW-550', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusSuccess)} />
     })
@@ -120,6 +124,7 @@ describe('StepActions', () => {
   })
 
   it('should enable every menu item when status is pending | ESW-459, ESW-490, ESW-550', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <StepActions step={getStepWithBreakpoint(false, stepStatusPending)} />
     })
@@ -172,6 +177,7 @@ describe('StepActions', () => {
   // })
 
   it('should disable add steps if step Status is completed | ESW-461', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: (
         <StepListContextProvider
@@ -198,6 +204,7 @@ describe('StepActions', () => {
     expect(addStepsDiv.style.color).to.be.equal('var(--disabledColor)')
   })
   it('should disable replace steps if step Status is completed | ESW-550', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: (
         <StepListContextProvider

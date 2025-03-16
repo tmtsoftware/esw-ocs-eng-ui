@@ -19,12 +19,12 @@ describe('SmSequencerAction', () => {
   const obsMode = new ObsMode('IRIS_Darknight')
   const sequencerPrefix = new Prefix(subsystem, obsMode.name)
   const componentId = new ComponentId(sequencerPrefix, 'Sequencer')
-  const user = userEvent.setup()
 
   beforeEach(() => {
     reset(smService)
   })
   it('should reload scripts if sequencer state exists | ESW-506', async () => {
+    const user = userEvent.setup()
     when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Success',
       componentId: componentId
@@ -48,6 +48,7 @@ describe('SmSequencerAction', () => {
   })
 
   it('should start sequencer if sequencer is down | ESW-506', async () => {
+    const user = userEvent.setup()
     when(smService.startSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Started',
       componentId: componentId
@@ -65,6 +66,7 @@ describe('SmSequencerAction', () => {
   })
 
   it(`should show confirm modal without state when sequencer is not inProgress | ESW-506`, async () => {
+    const user = userEvent.setup()
     when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve({
       _type: 'Success',
       componentId: componentId

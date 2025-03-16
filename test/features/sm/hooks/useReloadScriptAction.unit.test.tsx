@@ -29,7 +29,6 @@ const Component = ({
 }
 
 describe('Reload script', () => {
-  const user = userEvent.setup()
   beforeEach(() => resetCalls(smService))
   const smService = mockServices.mock.smService
   const obsMode = new ObsMode('Darknight')
@@ -77,6 +76,7 @@ describe('Reload script', () => {
 
   responseScenarios.forEach(([testName, res, message]) => {
     it(`should return ${testName} when Reload Script is clicked | ESW-502`, async () => {
+      const user = userEvent.setup()
       when(smService.restartSequencer(deepEqual(subsystem), deepEqual(obsMode), anything())).thenResolve(res)
 
       renderWithAuth({

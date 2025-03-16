@@ -12,7 +12,6 @@ import { renderWithStepListContext, sequencerServiceMock } from '../../../../uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('ReloadSequence', () => {
-  const user = userEvent.setup()
   afterEach(async () => {
     reset(sequencerServiceMock)
   })
@@ -33,6 +32,7 @@ describe('ReloadSequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should be ${state} if sequencer response is ${res._type}| ESW-583`, async () => {
+      const user = userEvent.setup()
       const stepList = getStepList('Success')
       when(sequencerServiceMock.loadSequence(anything())).thenResolve(res)
       renderWithStepListContext(<ReloadSequence stepList={stepList} />)

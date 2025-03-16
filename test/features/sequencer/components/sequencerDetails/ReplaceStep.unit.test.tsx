@@ -54,7 +54,6 @@ describe('ReplaceStep', () => {
     )
   }
 
-  const user = userEvent.setup()
   const unhandledMsg = 'unhandled'
   const id = 'step_1'
   const seqPrefix = Prefix.fromString('ESW.darknight')
@@ -95,6 +94,7 @@ describe('ReplaceStep', () => {
 
   testCases.forEach(({ testName, response, message }) => {
     it(testName, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.replace(id, anything())).thenResolve(response)
 
       renderWithAuth({
@@ -104,7 +104,7 @@ describe('ReplaceStep', () => {
       const replaceStepButton = await screen.findByRole('menuitem')
       await user.click(replaceStepButton)
       const inputBox = screen.getByTestId("UploadSequence")
-      await userEvent.upload(inputBox, file)
+      await user.upload(inputBox, file)
 
       await screen.findByText(message)
       verify(sequencerServiceMock.replace(id, deepEqual(commands))).called()
@@ -112,6 +112,7 @@ describe('ReplaceStep', () => {
   })
 
   it('should show error if file content is not valid ', async () => {
+    const user = userEvent.setup()
     const file = new File([JSON.stringify({ invalidCommands: 'invalidCommands' })], 'commands.json', {
       type: 'application/json'
     })
@@ -123,7 +124,7 @@ describe('ReplaceStep', () => {
     const replaceStepButton = await screen.findByRole('menuitem')
     await user.click(replaceStepButton)
     const inputBox = screen.getByTestId("UploadSequence")
-    await userEvent.upload(inputBox, file)
+    await user.upload(inputBox, file)
 
     await screen.findByText(
       _createErrorMsg(replaceStepConstants.failureMessage, uploadSequenceConstants.couldNotDeserializeReason)

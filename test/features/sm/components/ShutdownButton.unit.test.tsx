@@ -10,8 +10,8 @@ import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('ShutdownSMButton', () => {
-  const user = userEvent.setup()
   it('should shutdown the sequence manager | ESW-441', async () => {
+    const user = userEvent.setup()
     const modalTitle = shutdownSMConstants.modalTitle
 
     const agentServiceMock = mockServices.mock.agentService
@@ -53,6 +53,7 @@ describe('ShutdownSMButton', () => {
   })
 
   it('should show notification if sequence manager shutdown fails | ESW-441', async () => {
+    const user = userEvent.setup()
     const agentServiceMock = mockServices.mock.agentService
 
     when(agentServiceMock.killComponent(SM_COMPONENT_ID)).thenResolve({

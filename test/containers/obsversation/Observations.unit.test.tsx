@@ -14,7 +14,6 @@ import { mockServices, renderWithAuth, sequencerServiceMock } from '../../utils/
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Observation page', () => {
-  const user = userEvent.setup()
   beforeEach(() => resetCalls(sequencerServiceMock))
   it('should render observation page with three tabs | ESW-450', async () => {
     const smService = mockServices.mock.smService
@@ -45,6 +44,7 @@ describe('Observation page', () => {
   })
 
   it('should render no obsModes if no obsModes are available in tab | ESW-450', async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
 
     when(smService.getObsModesDetails()).thenResolve({
@@ -110,6 +110,7 @@ describe('Observation page', () => {
 
   tabTests.forEach(([tabName, obsModes, data]) => {
     it(`should render ${tabName} obsModes | ESW-450`, async () => {
+      const user = userEvent.setup()
       const smService = mockServices.mock.smService
       const agentService = mockServices.mock.agentService
 
@@ -164,6 +165,7 @@ describe('Observation page', () => {
     })
   })
   it(`should render correct status when running obsmode is shutdown and configurable tab is clicked | ESW-450, ESW-489`, async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
 
     when(smService.getObsModesDetails())

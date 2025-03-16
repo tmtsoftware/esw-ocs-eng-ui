@@ -73,7 +73,6 @@ describe('Infrastructure page', () => {
   const agentServiceInstance = mockServices.instance.agentService
   const smServiceInstance = mockServices.instance.smService
   const locServiceMock = mockServices.mock.locationService
-  const user = userEvent.setup()
 
   when(locServiceMock.track(SEQUENCE_MANAGER_CONNECTION)).thenReturn(() => {
     return { cancel: () => ({}) }
@@ -152,6 +151,7 @@ describe('Infrastructure page', () => {
   })
 
   it('should refetch agent cards after configure success | ESW-443', async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
     const agentService = mockServices.mock.agentService
 
@@ -200,6 +200,7 @@ describe('Infrastructure page', () => {
   })
 
   it('should refetch agent cards after provision success | ESW-443', async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
     const configService = mockServices.mock.configService
     const agentService = mockServices.mock.agentService

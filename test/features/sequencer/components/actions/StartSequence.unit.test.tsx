@@ -11,7 +11,6 @@ import { renderWithStepListContext, sequencerServiceMock } from '../../../../uti
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Start Sequence', () => {
-  const user = userEvent.setup()
   const testData: [SubmitResponse, string, string][] = [
     [{ _type: 'Started', runId: '' }, startSequenceConstants.successMessage, 'successful'],
     [{ _type: 'Completed', runId: '', result: mock(Result) }, startSequenceConstants.successMessage, 'successful'],
@@ -38,6 +37,7 @@ describe('Start Sequence', () => {
 
   testData.forEach(([res, msg, state]) => {
     it(`should show ${state} if sequencer response is ${res._type}| ESW-497`, async () => {
+      const user = userEvent.setup()
       when(sequencerServiceMock.startSequence()).thenResolve(res)
 
       renderWithStepListContext(<StartSequence sequencerState={'Loaded'} />)
@@ -53,6 +53,7 @@ describe('Start Sequence', () => {
   })
 
   it('should show failed if error is returned | ESW-497', async () => {
+    const user = userEvent.setup()
     when(sequencerServiceMock.startSequence()).thenReject(Error('Something went wrong'))
 
     renderWithStepListContext(<StartSequence sequencerState={'Loaded'} />)

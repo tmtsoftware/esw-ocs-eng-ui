@@ -8,13 +8,11 @@ import React from 'react'
 import { ProvisionButton } from '../../../../../src/features/sm/components/provision/ProvisionButton'
 import { PROVISION_CONF_PATH } from '../../../../../src/features/sm/constants'
 import { provisionConfConstants, provisionConstants } from '../../../../../src/features/sm/smConstants'
-import { mockServices, renderWithAuth } from '../../../../../test/utils/test-utils'
+import { mockServices, renderWithAuth } from '../../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
-// import { ConfigServiceProvider } from '../../../../mocks/ConfigServiceContext'
 import { ConfigServiceProvider } from '../../../../../src/contexts/ConfigServiceContext'
 
 describe('ProvisionButton component', () => {
-  const user = userEvent.setup()
   const provisionRes: ProvisionResponse = {
     _type: 'Success'
   }
@@ -42,6 +40,7 @@ describe('ProvisionButton component', () => {
   })
 
   it('should be able to successfully provision | ESW-444', async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
     const configService = mockServices.mock.configService
 
@@ -71,6 +70,7 @@ describe('ProvisionButton component', () => {
   })
 
   it('should log if fetching provision config call failed | ESW-444', async () => {
+    const user = userEvent.setup()
     const smService = mockServices.mock.smService
     const configService = mockServices.mock.configService
 
@@ -117,6 +117,7 @@ describe('ProvisionButton component', () => {
 
   provisionConfTestData.forEach(([agentPrefix, errMsg, statement]) => {
     it(`should log error if provision config agent field is not a valid ${statement} | ESW-444`, async () => {
+      const user = userEvent.setup()
       const smService = mockServices.mock.smService
 
       const configService = mockServices.mock.configService
@@ -210,6 +211,7 @@ describe('ProvisionButton component', () => {
 
   provisionErrorTestData.forEach(([name, provisionRes, errMsg]) => {
     it(`should be able to show error log if provision return ${name} | ESW-444, ESW-507`, async () => {
+      const user = userEvent.setup()
       const smService = mockServices.mock.smService
       const configService = mockServices.mock.configService
 

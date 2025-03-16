@@ -90,12 +90,12 @@ const failedResponse: FailedResponse = {
 }
 
 describe('Configure button', () => {
-  const user = userEvent.setup()
   beforeEach(() => {
     reset(smService)
     when(smService.getObsModesDetails()).thenResolve(obsModesDetails)
   })
   it('should be disabled | ESW-445', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <Configure disabled={true} />
     })
@@ -114,6 +114,7 @@ describe('Configure button', () => {
   })
 
   it('on click should show only configurable obsmodes in modal| ESW-445', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <Configure disabled={false} />
     })

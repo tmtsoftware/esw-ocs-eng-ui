@@ -11,7 +11,6 @@ import { mockServices, renderWithAuth } from '../../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('Spawn sequence component icon', () => {
-  const user = userEvent.setup()
   const agentPrefix = new Prefix('ESW', 'primary')
   const agentService = mockServices.mock.agentService
   const seqCompName = 'ESW_1'
@@ -24,25 +23,27 @@ describe('Spawn sequence component icon', () => {
   })
 
   it('should show validation error on invalid component name | ESW-446', async function () {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
     })
     await assertPopup()
     const textBox = screen.getByRole('textbox')
     await waitFor(() => user.click(textBox))
-    await userEvent.type(textBox, ' primary21 ')
+    await user.type(textBox, ' primary21 ')
     await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.whiteSpaceValidation)
   })
 
   it("should show validation error on invalid component name with '-' | ESW-446", async function () {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: <SpawnSequenceComponent agentPrefix={agentPrefix} />
     })
     await assertPopup()
     const textBox = screen.getByRole('textbox')
     await waitFor(() => user.click(textBox))
-    await userEvent.type(textBox, 'primary-21')
+    await user.type(textBox, 'primary-21')
     await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
     await screen.findByText(spawnSequenceComponentConstants.hyphenValidation)
   })
@@ -65,6 +66,7 @@ describe('Spawn sequence component icon', () => {
 
   tests.forEach(([testname, response, message]) => {
     it(`should ${testname} sequence component on a agent | ESW-446`, async function () {
+      const user = userEvent.setup()
       when(agentService.spawnSequenceComponent(deepEqual(agentPrefix), deepEqual(seqCompName))).thenResolve(response)
 
       renderWithAuth({
@@ -73,7 +75,7 @@ describe('Spawn sequence component icon', () => {
       await assertPopup()
       const textBox = screen.getByRole('textbox')
       await waitFor(() => user.click(textBox))
-      await userEvent.type(textBox, seqCompName)
+      await user.type(textBox, seqCompName)
       await user.click(screen.getByRole('button', { name: spawnSequenceComponentConstants.modalOkText }))
 
       await screen.findByText(message)
@@ -81,6 +83,7 @@ describe('Spawn sequence component icon', () => {
   })
 
   const assertPopup = async () => {
+    const user = userEvent.setup()
     const icon = await screen.findByRole('addSeqCompIcon')
     await waitFor(() => user.click(icon))
     const inputBox = await screen.findByText('Add a sequence component')

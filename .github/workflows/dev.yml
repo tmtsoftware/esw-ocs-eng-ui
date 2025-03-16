@@ -48,8 +48,6 @@ jobs:
 
       - name: Unit tests
         run: |
-          npm --version
-          node --version
           npm run xxx1
           npm run test:ci
 

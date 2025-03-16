@@ -39,7 +39,6 @@ describe('Delete action', () => {
     )
   }
 
-  const user = userEvent.setup()
   const deleteActionTests: [string, GenericResponse, string][] = [
     [
       'success',
@@ -77,6 +76,7 @@ describe('Delete action', () => {
 
   deleteActionTests.forEach(([testName, res, message]) => {
     it(`should return ${testName} when delete is clicked | ESW-490`, async () => {
+      const user = userEvent.setup()
       const step: Step = {
         hasBreakpoint: false,
         status: { _type: 'Pending' },

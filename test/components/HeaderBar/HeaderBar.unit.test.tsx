@@ -10,8 +10,8 @@ import { renderWithAuth } from '../../utils/test-utils'
 import '@ant-design/v5-patch-for-react-19'
 
 describe('header bar', () => {
-  const user = userEvent.setup()
   it('renders with logout button & logo when user is logged in | ESW-441', async () => {
+    const user = userEvent.setup()
     renderWithAuth({
       ui: (
         <BrowserRouter>
@@ -34,6 +34,7 @@ describe('header bar', () => {
   })
 
   it('open logout modal on click of username button when user is logged in | ESW-441', async () => {
+    const user = userEvent.setup()
     class T {logout() {}}
     const mockAuthFunctions = imock<T>()
     const authFunctionsInstance = instance(mockAuthFunctions)

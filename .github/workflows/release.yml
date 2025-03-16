@@ -21,15 +21,15 @@ jobs:
           jvm: temurin:1.21
           apps: sbt sbtn
 
-      - uses: coursier/cache-action@v6
-
-      - name: Cache ~/.npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+#      - uses: coursier/cache-action@v6
+#
+#      - name: Cache ~/.npm
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm
+#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node-
 
       - name: Get tag
         id: tag

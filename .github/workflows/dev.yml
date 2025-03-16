@@ -49,6 +49,7 @@ jobs:
 
       - name: Unit tests
         run: |
+          rm -rf node_modules
           npm run xxx1
           npm run test:ci
 

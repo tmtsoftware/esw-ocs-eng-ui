@@ -43,9 +43,7 @@ jobs:
         run: echo "JITPACK_VERSION=${{steps.tag.outputs.tag}}" >> $GITHUB_ENV
 
       - name: Install
-        run: |
-          rm -rf node_modules
-          npm ci
+        run: npm ci
 
       - name: Build
         run: npm run build

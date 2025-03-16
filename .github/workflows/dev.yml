@@ -36,9 +36,7 @@ jobs:
 #            ${{ runner.os }}-node-
 
       - name: Install
-        run: |
-          rm -rf node_modules
-          npm ci
+        run: npm ci
 
       - name: Docs makeSite
         working-directory: ./docs

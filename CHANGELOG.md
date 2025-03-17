@@ -7,7 +7,8 @@ This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tm
 ## [ESW-OCS-ENG-UI v0.6.0] - 2025-
 
 - Updated all dependencies
-- Fixed deprecated code, in particular antd APIs (MenuItems replaced with array of ItemType props, for example)
+- Fixed deprecated code, in particular Antd APIs (MenuItems replaced with array of ItemType props, for example)
+- Due to internal changes in Antd, many uses of React testing-library had to be changed (due to changed roles, layouts, hierarchies)
 - Updated react syntax and APIs
 
 ## [ESW-OCS-ENG-UI v0.3.1] - 2023-04-13

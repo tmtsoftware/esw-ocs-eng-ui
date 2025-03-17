@@ -95,7 +95,7 @@ describe('Delete action', () => {
       await screen.findAllByText(deleteStepConstants.getModalTitle('Command-1'))
       const deleteStep = screen.getAllByRole('button', { name: deleteStepConstants.modalOkText })
 
-      user.click(deleteStep[0])
+      await user.click(deleteStep[0])
 
       await screen.findByText(message)
 

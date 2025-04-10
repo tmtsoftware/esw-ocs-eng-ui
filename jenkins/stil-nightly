@@ -18,6 +18,8 @@ pipeline {
 
         stage('Install') {
             steps {
+                //sh "./scripts/install_node.sh"
+                //sh "./scripts/install_chrome.sh"
                 sh "which node && node --version"
                 sh "which npm && npm --version"
                 sh "which google-chrome && google-chrome --version"
@@ -36,7 +38,7 @@ pipeline {
         stage('Unit tests') {
             steps {
                 sh "npm run xxx1"
-                sh "npm run test:ci"
+                sh "npm run test:ciJenkins"
             }
         }
     }

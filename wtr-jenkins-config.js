@@ -7,6 +7,15 @@ process.env.NODE_ENV = 'development'
 
 export default {
   concurrency: 1,
+  browsers: [
+    chromeLauncher({
+      launchOptions: {
+        executablePath: '/local/jenkins/jobs/ESW-OCS-Engineering-UI-Nightly/workspace/chrome-linux64/chrome',
+        headless: true,
+        devtools: true,
+      },
+    }),
+  ],
   concurrentBrowsers: 1,
   testsFinishTimeout: 500000,
   testFramework: {

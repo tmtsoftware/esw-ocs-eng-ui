@@ -10,7 +10,6 @@ if (!process.env.ESW_OCS_ENG_UI_LOGS)
 console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
   concurrency: 1,
-  browsers: [chromeLauncher()],
   concurrentBrowsers: 1,
   testsFinishTimeout: 500000,
   testFramework: {

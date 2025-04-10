@@ -20,7 +20,7 @@ jobs:
 
       - name: Paradox Validate Links
         working-directory: ./docs
-        run: sbtn paradoxValidateLinks
+        run: sbt paradoxValidateLinks
 
       - name: Notify slack
         if: always()

@@ -1,5 +1,5 @@
 import { importMapsPlugin } from '@web/dev-server-import-maps'
-import { defaultReporter } from '@web/test-runner'
+import { chromeLauncher, defaultReporter } from '@web/test-runner'
 import { vitePlugin } from '@remcovaes/web-test-runner-vite-plugin';
 import ConsoleReporter from './ConsoleReporter.js'
 
@@ -10,6 +10,7 @@ if (!process.env.ESW_OCS_ENG_UI_LOGS)
 console.log('process.logs', process.env.ESW_OCS_ENG_UI_LOGS)
 export default {
   concurrency: 1,
+  browsers: [chromeLauncher()],
   concurrentBrowsers: 1,
   testsFinishTimeout: 500000,
   testFramework: {

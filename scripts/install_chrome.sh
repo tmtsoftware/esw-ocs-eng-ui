@@ -5,4 +5,3 @@ if test ! -d chrome-linux64; then
   unzip chrome-linux64.zip
 fi
 
-

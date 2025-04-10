@@ -23,6 +23,11 @@ pipeline {
                 sh "which google-chrome && google-chrome --version"
                 sh "which npx && npx --version"
                 sh "npm ci"
+                // See https://developer.chrome.com/blog/chrome-for-testing/
+                sh "npx @puppeteer/browsers install chrome@stable"
+                sh "npx @puppeteer/browsers install chrome@116.0.5793.0"
+                sh "npx @puppeteer/browsers install chromedriver@canary"
+                sh "npx @puppeteer/browsers install chromedriver@116.0.5793.0"
             }
         }
 

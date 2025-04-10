@@ -20,6 +20,7 @@ pipeline {
             steps {
                 sh "which node && node --version"
                 sh "which npm && npm --version"
+                sh "which google-chrome && google-chrome --version"
                 sh "npm ci"
             }
         }

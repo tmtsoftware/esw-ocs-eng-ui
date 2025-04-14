@@ -4,7 +4,7 @@ The ESW-OCS-ENG-UI provides a browser based User Interface to manage and track s
 
 This source code is in GitHub repository: [ESW-OCS-ENG-UI](https://github.com/tmtsoftware/esw-ocs-eng-ui)
 
-## [ESW-OCS-ENG-UI v0.6.0] - 2025-
+## [ESW-OCS-ENG-UI v1.0.0-RC1] - 2025-04-14
 
 - Updated all dependencies
 - Fixed deprecated code, in particular Antd APIs (MenuItems replaced with array of ItemType props, for example)

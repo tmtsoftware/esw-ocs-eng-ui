@@ -13,9 +13,9 @@ jobs:
 
       - uses: actions/setup-node@v4.2.0
         with:
-          node-version: "22.14.0"
+          node-version: "22.15.0"
           registry-url: "https://registry.npmjs.org"
-      - run: npm install -g npm@11.2.0
+      - run: npm install -g npm@10.9.2
 
       - uses: coursier/setup-action@v1.2.0
         with:

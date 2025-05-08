@@ -97,6 +97,8 @@ The project has the following structure:
 
 | esw-ocs-eng-ui | esw        | csw        | esw-ts     |
 |----------------|------------|------------|------------|
+| v1.0.0         | v1.0.0     | v6.0.0     | v1.0.2     |
+| v1.0.0-RC3     | v1.0.0     | v6.0.0     | v1.0.0-RC1 |
 | v0.3.1         | v0.5.1     | v5.0.1     | v0.4.1     |
 | v0.3.1-RC1     | v0.5.1-RC1 | v5.0.1-RC1 | v0.4.1-RC1 |
 | v0.3.0         | v0.5.0     | v5.0.0     | v0.4.0     |
@@ -113,6 +115,7 @@ The project has the following structure:
 
 | Date       | Tag    | Source                                                                            | Docs                                                                             | Assets                                                                                           |
 |------------|--------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 2025-05-08 | v1.0.0 | [esw-ocs-eng-ui-1.0.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v1.0.0) | [esw-ocs-eng-ui-1.0.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/1.0.0/) | [esw-ocs-eng-ui-1.0.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v1.0.0) |
 | 2023-04-13 | v0.3.1 | [esw-ocs-eng-ui-0.3.1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.3.1) | [esw-ocs-eng-ui-0.3.1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.3.1/) | [esw-ocs-eng-ui-0.3.1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.1) |
 | 2022-11-15 | v0.3.0 | [esw-ocs-eng-ui-0.3.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.3.0) | [esw-ocs-eng-ui-0.3.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.3.0/) | [esw-ocs-eng-ui-0.3.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.0) |
 | 2022-02-09 | v0.2.0 | [esw-ocs-eng-ui-0.2.0](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.2.0) | [esw-ocs-eng-ui-0.2.0 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.2.0/) | [esw-ocs-eng-ui-0.2.0 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.2.0) |
@@ -122,6 +125,7 @@ The project has the following structure:
 
 | Date       | Tag        | Source                                                                                    | Docs                                                                                     | Assets                                                                                                   |
 |------------|------------|-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| 2025-05-05 | v1.0.0-RC3 | [esw-ocs-eng-ui-1.0.0-RC3](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v1.0.0-RC3) | [esw-ocs-eng-ui-1.0.0-RC3 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/1.0.0-RC3/) | [esw-ocs-eng-ui-1.0.0-RC3 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.1-RC1) |
 | 2022-10-04 | v0.3.1-RC1 | [esw-ocs-eng-ui-0.3.1-RC1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.3.1-RC1) | [esw-ocs-eng-ui-0.3.1-RC1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.3.1-RC1/) | [esw-ocs-eng-ui-0.3.1-RC1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.1-RC1) |
 | 2022-10-10 | v0.3.0-RC2 | [esw-ocs-eng-ui-0.3.0-RC2](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.3.0-RC2) | [esw-ocs-eng-ui-0.3.0-RC2 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.3.0-RC2/) | [esw-ocs-eng-ui-0.3.0-RC2 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.0-RC2) |
 | 2022-10-04 | v0.3.0-RC1 | [esw-ocs-eng-ui-0.3.0-RC1](https://github.com/tmtsoftware/esw-ocs-eng-ui/tree/v0.3.0-RC1) | [esw-ocs-eng-ui-0.3.0-RC1 docs](https://tmtsoftware.github.io/esw-ocs-eng-ui/0.3.0-RC1/) | [esw-ocs-eng-ui-0.3.0-RC1 assets](https://github.com/tmtsoftware/esw-ocs-eng-ui/releases/tag/v0.3.0-RC1) |

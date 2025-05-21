@@ -37,7 +37,7 @@ To see the OCS-ENG-UI working, it is necessary to have a few pieces of infrastru
 
 * Sequence manager could be started from UI. However, Sometimes you may want to work in a simulation environment & to start a simulated Sequence Manager, use
     `esw-services start --agent-service -s --simulation`
-* Alternatively, You can use `esw-services start-eng-ui-services --scripts-version 0.5.1  --esw-version 1.0.0` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
+* Alternatively, You can use `esw-services start-eng-ui-services --scripts-version 0.5.1  --esw-version 1.0.2` command to start all the required services and agents required to test the observation scripts written in repo `sequencer-scripts/ui-setup` branch.
 
 ## Run the ESW-OCS-ENG-UI Application in Local Environment
 

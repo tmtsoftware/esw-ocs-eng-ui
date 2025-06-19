@@ -5,7 +5,7 @@ SCRIPTPATH="$(
   pwd -P
 )"
 
-RTM_VERSION="0.4.0"
+RTM_VERSION="0.4.3"
 
 TEST_STORY_FILE="./RTM/testStoryMapping.txt"
 
